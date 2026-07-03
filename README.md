@@ -79,12 +79,12 @@ The command above documents the target interface. It is not implemented yet. The
 
 Run the local hygiene checks with:
 
-`ash
+```bash
 python -m ruff check .
 python -m mypy
 python -m pytest
 python tools/check_public_surface.py
-`
+```
 
 Or run only the public surface check with:
 

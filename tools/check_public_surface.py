@@ -7,14 +7,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+README_LOCAL_HYGIENE_BLOCK = """Run the local hygiene checks with:
+
+```bash
+python -m ruff check .
+python -m mypy
+python -m pytest
+python tools/check_public_surface.py
+```"""
+
 REQUIRED_SNIPPETS = {
     "README.md": [
         "Public bootstrap.",
         "It is not implemented yet.",
         "No production, compliance, signing, SLSA, or security-audit claim",
-        "python -m ruff check .",
-        "python -m mypy",
-        "python -m pytest",
+        README_LOCAL_HYGIENE_BLOCK,
         "```bash\npython tools/check_public_surface.py\n```",
         "Apache-2.0. See [LICENSE](LICENSE).",
         "docs/RELEASE_GOVERNANCE.md",
