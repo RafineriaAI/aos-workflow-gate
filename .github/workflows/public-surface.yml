@@ -16,5 +16,7 @@ jobs:
       - name: Checkout
         # actions/checkout v5 pinned to a full commit SHA.
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
       - name: Check public surface
         run: python tools/check_public_surface.py

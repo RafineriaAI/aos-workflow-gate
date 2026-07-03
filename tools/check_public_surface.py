@@ -12,6 +12,8 @@ REQUIRED_SNIPPETS = {
         "Public bootstrap.",
         "It is not implemented yet.",
         "No production, compliance, signing, SLSA, or security-audit claim",
+        "```bash\npython tools/check_public_surface.py\n```",
+        "Apache-2.0. See [LICENSE](LICENSE).",
     ],
     "docs/SCOPE.md": [
         "## Decision boundary",
@@ -101,11 +103,24 @@ def check_examples() -> None:
             fail(f"draft policy is missing required snippet: {snippet!r}")
 
 
+def check_repository_hygiene() -> None:
+    license_text = read_text("LICENSE")
+    if "Apache License" not in license_text or "Version 2.0" not in license_text:
+        fail("LICENSE must remain Apache-2.0")
+
+    workflow = read_text(".github/workflows/public-surface.yml")
+    if "uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd" not in workflow:
+        fail("workflow must pin actions/checkout to the reviewed full commit SHA")
+    if "persist-credentials: false" not in workflow:
+        fail("workflow checkout must set persist-credentials: false")
+
+
 def main() -> None:
     check_docs_index()
     check_required_snippets()
     check_claim_boundary()
     check_examples()
+    check_repository_hygiene()
     print("public-surface check OK")
 
 

@@ -78,9 +78,9 @@ The command above documents the target interface. It is not implemented yet. The
 
 Run the public surface check with:
 
-`ash
+```bash
 python tools/check_public_surface.py
-`
+```
 
 This check validates the documentation index, bootstrap claim boundary, and draft example files. It is not a product audit.
 
@@ -90,4 +90,4 @@ This check validates the documentation index, bootstrap claim boundary, and draf
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+Apache-2.0. See [LICENSE](LICENSE).
