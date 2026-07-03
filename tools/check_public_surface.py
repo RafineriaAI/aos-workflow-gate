@@ -12,8 +12,12 @@ REQUIRED_SNIPPETS = {
         "Public bootstrap.",
         "It is not implemented yet.",
         "No production, compliance, signing, SLSA, or security-audit claim",
+        "python -m ruff check .",
+        "python -m mypy",
+        "python -m pytest",
         "```bash\npython tools/check_public_surface.py\n```",
         "Apache-2.0. See [LICENSE](LICENSE).",
+        "docs/RELEASE_GOVERNANCE.md",
     ],
     "docs/SCOPE.md": [
         "## Decision boundary",
@@ -24,6 +28,15 @@ REQUIRED_SNIPPETS = {
         "## Competency unblock",
         "## Barriers and design responses",
         "## Research inputs",
+    ],
+    "docs/RELEASE_GOVERNANCE.md": [
+        "AOS Workflow Gate CI / validate",
+        "no Lean build is required",
+        "Do not delete, recreate, or force-push a published `v*` tag",
+        (
+            "no production, compliance, security-audit, signing, SBOM, SLSA, "
+            "or attestation claim"
+        ),
     ],
     "ROADMAP.md": [
         "## Phase 0: public bootstrap",
@@ -40,7 +53,7 @@ UNSUPPORTED_POSITIVE_CLAIMS = [
     re.compile(r"\bformally proves workflow correctness\b", re.IGNORECASE),
 ]
 
-INDEX_SECTIONS = ("documents", "examples", "policies", "tools")
+INDEX_SECTIONS = ("documents", "examples", "policies", "tools", "ci")
 
 
 def fail(message: str) -> None:
@@ -85,7 +98,10 @@ def check_claim_boundary() -> None:
 def check_examples() -> None:
     bundle = json.loads(read_text("examples/github-pr-signal-bundle.json"))
     if bundle.get("schema_version") != "draft-0":
-        fail("example signal bundle must stay draft-0 until the CLI contract is implemented")
+        fail(
+            "example signal bundle must stay draft-0 until the CLI contract "
+            "is implemented"
+        )
     if not bundle.get("subject", {}).get("sha"):
         fail("example signal bundle must include a subject sha")
     source_ids = [source.get("id") for source in bundle.get("sources", [])]
@@ -108,11 +124,38 @@ def check_repository_hygiene() -> None:
     if "Apache License" not in license_text or "Version 2.0" not in license_text:
         fail("LICENSE must remain Apache-2.0")
 
-    workflow = read_text(".github/workflows/public-surface.yml")
-    if "uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd" not in workflow:
-        fail("workflow must pin actions/checkout to the reviewed full commit SHA")
-    if "persist-credentials: false" not in workflow:
-        fail("workflow checkout must set persist-credentials: false")
+    pyproject = read_text("pyproject.toml")
+    for snippet in (
+        "mypy>=1.10,<2",
+        "pytest>=8.2,<10",
+        "ruff>=0.6,<1",
+        "disallow_untyped_defs = true",
+    ):
+        if snippet not in pyproject:
+            fail(f"pyproject.toml is missing required hygiene snippet: {snippet!r}")
+
+    workflow = read_text(".github/workflows/aos-workflow-gate-ci.yml")
+    required_workflow_snippets = (
+        "name: AOS Workflow Gate CI",
+        "name: AOS Workflow Gate CI / validate",
+        "uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd",
+        "persist-credentials: false",
+        "uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1",
+        "python -m pip install -e .[dev]",
+        "python -m ruff check .",
+        "python -m mypy",
+        "python -m pytest",
+        "python tools/check_public_surface.py",
+    )
+    for snippet in required_workflow_snippets:
+        if snippet not in workflow:
+            fail(f"workflow is missing required hygiene snippet: {snippet!r}")
+
+    if (ROOT / ".github/workflows/public-surface.yml").exists():
+        fail(
+            "legacy public-surface workflow should be replaced by "
+            "aos-workflow-gate-ci.yml"
+        )
 
 
 def main() -> None:

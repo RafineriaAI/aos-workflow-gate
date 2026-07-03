@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aos-workflow-gate"
+version = "0.0.0"
+description = "Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Szymon Hetnar" }]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.10,<2",
+    "pytest>=8.2,<10",
+    "ruff>=0.6,<1",
+]
+
+[tool.setuptools]
+packages = []
+
+[tool.mypy]
+python_version = "3.11"
+files = ["tools", "tests"]
+check_untyped_defs = true
+disallow_untyped_defs = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+addopts = "-p no:cacheprovider"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

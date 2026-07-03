@@ -8,6 +8,7 @@
     "docs/ARCHITECTURE.md",
     "docs/USE_CASES.md",
     "docs/ADOPTION_GUIDE.md",
+    "docs/RELEASE_GOVERNANCE.md",
     "ROADMAP.md",
     "SECURITY.md",
     "CONTRIBUTING.md",
@@ -20,6 +21,12 @@
     "policies/default.yml"
   ],
   "tools": [
+    "tools/__init__.py",
     "tools/check_public_surface.py"
+  ],
+  "ci": [
+    "pyproject.toml",
+    ".github/workflows/aos-workflow-gate-ci.yml",
+    "tests/test_public_surface.py"
   ]
 }
