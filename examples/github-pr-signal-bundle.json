@@ -1,0 +1,35 @@
+{
+  "schema_version": "draft-0",
+  "subject": {
+    "repository": "owner/repo",
+    "ref": "refs/pull/42/merge",
+    "sha": "0123456789abcdef0123456789abcdef01234567",
+    "pull_request": 42
+  },
+  "sources": [
+    {
+      "id": "ci.validate",
+      "kind": "github_check",
+      "status": "success",
+      "required": true,
+      "observed_at": "2026-07-03T00:00:00Z",
+      "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    {
+      "id": "scanner.sarif",
+      "kind": "sarif_summary",
+      "status": "warning",
+      "required": false,
+      "summary": "Advisory findings remain below blocking threshold.",
+      "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+    },
+    {
+      "id": "agent.review",
+      "kind": "ai_agent_review_summary",
+      "status": "success",
+      "required": false,
+      "summary": "No release-blocking policy issue reported by the configured agent.",
+      "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+    }
+  ]
+}
