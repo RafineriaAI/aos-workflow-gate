@@ -5,6 +5,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+README_LOCAL_HYGIENE_BLOCK = """Run the local hygiene checks with:
+
+```bash
+python -m ruff check .
+python -m mypy
+python -m pytest
+python tools/check_public_surface.py
+```"""
+
 
 def read_text(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
@@ -19,6 +28,7 @@ def test_docs_json_paths_exist() -> None:
 
 def test_readme_license_and_local_check_are_renderable() -> None:
     readme = read_text("README.md")
+    assert README_LOCAL_HYGIENE_BLOCK in readme
     assert "```bash\npython tools/check_public_surface.py\n```" in readme
     assert "Apache-2.0. See [LICENSE](LICENSE)." in readme
     assert "MIT. See [LICENSE](LICENSE)." not in readme
