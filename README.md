@@ -70,13 +70,23 @@ The command above documents the target interface. It is not implemented yet. The
 - [Use cases](docs/USE_CASES.md) gives the first practical workflow scenarios.
 - [Adoption guide](docs/ADOPTION_GUIDE.md) removes terminology and integration barriers.
 - [Roadmap](ROADMAP.md) defines the phased plan.
+- [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.
 - [Draft signal bundle](examples/github-pr-signal-bundle.json) and [draft policy](policies/default.yml) make the first use case concrete.
 - [Security policy](SECURITY.md) defines responsible reporting boundaries.
 - [Contributing](CONTRIBUTING.md) defines contribution expectations.
 
 ## Local check
 
-Run the public surface check with:
+Run the local hygiene checks with:
+
+`ash
+python -m ruff check .
+python -m mypy
+python -m pytest
+python tools/check_public_surface.py
+`
+
+Or run only the public surface check with:
 
 ```bash
 python tools/check_public_surface.py
