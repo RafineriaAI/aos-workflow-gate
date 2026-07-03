@@ -10,7 +10,7 @@ Public bootstrap. The repository currently defines the product boundary, adoptio
 
 No production, compliance, signing, SLSA, or security-audit claim is made by this repository at this stage.
 
-## Aha moment
+## Core idea
 
 A normal CI dashboard tells you which checks passed. `aos-workflow-gate` is intended to answer a stricter question:
 
