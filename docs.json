@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1.0",
+  "project": "aos-workflow-gate",
+  "status": "public-bootstrap",
+  "documents": [
+    "README.md",
+    "docs/SCOPE.md",
+    "docs/ARCHITECTURE.md",
+    "docs/USE_CASES.md",
+    "docs/ADOPTION_GUIDE.md",
+    "ROADMAP.md",
+    "SECURITY.md",
+    "CONTRIBUTING.md",
+    "LICENSE"
+  ],
+  "examples": [
+    "examples/github-pr-signal-bundle.json"
+  ],
+  "policies": [
+    "policies/default.yml"
+  ],
+  "tools": [
+    "tools/check_public_surface.py"
+  ]
+}

@@ -1,0 +1,20 @@
+name: Public Surface
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: public-surface
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        # actions/checkout v5 pinned to a full commit SHA.
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+      - name: Check public surface
+        run: python tools/check_public_surface.py
