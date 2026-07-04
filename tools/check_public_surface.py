@@ -27,9 +27,16 @@ REQUIRED_SNIPPETS = {
         README_LOCAL_HYGIENE_BLOCK,
         "```bash\npython tools/check_public_surface.py\n```",
         "Apache-2.0. See [LICENSE](LICENSE).",
+        "See [NOTICE](NOTICE).",
         "docs/RELEASE_GOVERNANCE.md",
         "docs/STANDARDS_COMPATIBILITY.md",
         ".github/workflows/aos-workflow-gate-self.yml",
+    ],
+    "NOTICE": [
+        "Copyright (c) 2026 Szymon Hetnar (RafineriaAI)",
+        "does not grant any right to use",
+        "Apache-2.0, Section 6",
+        "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/SCOPE.md": [
         "## Decision boundary",
