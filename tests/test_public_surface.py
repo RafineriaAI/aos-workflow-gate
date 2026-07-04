@@ -51,3 +51,24 @@ def test_release_governance_names_required_check() -> None:
     assert "AOS Workflow Gate CI / validate" in governance
     assert "no Lean build is required" in governance
     assert "Do not delete, recreate, or force-push a published `v*` tag" in governance
+
+
+def test_standards_compatibility_is_indexed_and_bounded() -> None:
+    data = json.loads(read_text("docs.json"))
+    assert "docs/STANDARDS_COMPATIBILITY.md" in data["documents"]
+
+    readme = read_text("README.md")
+    assert "docs/STANDARDS_COMPATIBILITY.md" in readme
+
+    standards = read_text("docs/STANDARDS_COMPATIBILITY.md")
+    for snippet in (
+        "not a compliance claim",
+        "SLSA",
+        "SPDX",
+        "CycloneDX",
+        "SARIF 2.1.0",
+        "in-toto attestations",
+        "OpenSSF Scorecard",
+        "UNSIGNED_NOT_OFFICIAL",
+    ):
+        assert snippet in standards

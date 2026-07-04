@@ -25,6 +25,7 @@ REQUIRED_SNIPPETS = {
         "```bash\npython tools/check_public_surface.py\n```",
         "Apache-2.0. See [LICENSE](LICENSE).",
         "docs/RELEASE_GOVERNANCE.md",
+        "docs/STANDARDS_COMPATIBILITY.md",
     ],
     "docs/SCOPE.md": [
         "## Decision boundary",
@@ -35,6 +36,19 @@ REQUIRED_SNIPPETS = {
         "## Competency unblock",
         "## Barriers and design responses",
         "## Research inputs",
+    ],
+    "docs/STANDARDS_COMPATIBILITY.md": [
+        "## Compatibility principles",
+        "## Integration map",
+        "## Market-entry effect",
+        "SLSA",
+        "SPDX",
+        "CycloneDX",
+        "SARIF 2.1.0",
+        "in-toto attestations",
+        "OpenSSF Scorecard",
+        "not a compliance claim",
+        "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/RELEASE_GOVERNANCE.md": [
         "AOS Workflow Gate CI / validate",
