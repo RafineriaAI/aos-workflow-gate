@@ -6,7 +6,7 @@ This document defines the intended compatibility surface for industry standards.
 
 ## Current status
 
-Phase 0 defines the public boundary only. The repository does not yet implement adapters, signed evidence, provenance generation, SBOM export, SARIF upload, or compliance automation.
+Phase 1 implements the local `evaluate` and `verify` CLI with deterministic replay. The repository does not yet implement adapters, signed evidence, provenance generation, SBOM export, SARIF upload, or compliance automation.
 
 Any early output remains `UNSIGNED_NOT_OFFICIAL` until signing, publication, and verification controls exist.
 
