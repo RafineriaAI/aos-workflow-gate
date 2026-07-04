@@ -36,6 +36,24 @@ def test_render_markdown_covers_decision_fields() -> None:
         assert source["id"] in text
 
 
+def test_render_markdown_reports_coverage_with_required_sources() -> None:
+    record = _record()
+    text, _ = render_markdown(record)
+    assert "### Coverage" in text
+    assert "- Required sources: 1 of 3" in text
+    assert "- Blocking on: `ci.validate`" in text
+
+
+def test_render_markdown_flags_decision_gap_without_required() -> None:
+    record = _record()
+    for source in record["inputs"]:
+        source["required"] = False
+    text, _ = render_markdown(record)
+    assert "- Required sources: 0 of 3" in text
+    assert "Decision gap" in text
+    assert "cannot make this gate BLOCK" in text
+
+
 def test_render_markdown_flags_tampered_record() -> None:
     record = _record()
     record["verdict"] = "PASS"

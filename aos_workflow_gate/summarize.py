@@ -88,8 +88,32 @@ def render_markdown(record: Any) -> tuple[str, bool]:
                     f"| {required} | {source.get('status', '-')} |"
                 )
         lines.append("")
+        lines += _coverage_lines(inputs)
 
     return "\n".join(lines), intact
+
+
+def _coverage_lines(inputs: list[Any]) -> list[str]:
+    sources = [source for source in inputs if isinstance(source, dict)]
+    required = [source for source in sources if source.get("required")]
+    lines = [
+        "### Coverage",
+        "",
+        f"- Required sources: {len(required)} of {len(sources)}",
+    ]
+    if not required:
+        lines.append(
+            "- Decision gap: no source is required, so a missing or failed "
+            "check cannot make this gate BLOCK. The record is evidence, "
+            "not enforcement."
+        )
+    else:
+        required_ids = ", ".join(
+            f"`{source.get('id', '-')}`" for source in required
+        )
+        lines.append(f"- Blocking on: {required_ids}")
+    lines.append("")
+    return lines
 
 
 def _dict_field(record: dict[str, Any], key: str) -> dict[str, Any]:
