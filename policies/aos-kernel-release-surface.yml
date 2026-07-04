@@ -1,0 +1,19 @@
+schema_version: draft-0
+policy_id: aos-kernel-release-surface
+mode: advisory
+verification_status: UNSIGNED_NOT_OFFICIAL
+subject:
+  require_repository: true
+  require_sha: true
+rules:
+  missing_required_source: BLOCK
+  failed_required_source: BLOCK
+  malformed_input: BLOCK
+  advisory_warning: WARN
+required_sources:
+  - ci.validate
+advisory_sources:
+  - codeql.analyze
+  - supply-chain.actionlint
+  - supply-chain.gitleaks
+  - supply-chain.scorecard

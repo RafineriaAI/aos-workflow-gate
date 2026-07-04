@@ -1,0 +1,62 @@
+{
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "version": "0.2.0"
+  },
+  "input_bundle_digest": "sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22",
+  "inputs": [
+    {
+      "digest": "sha256:6ab4bdf05a35bbeee4b945f05c06a877af20ce4c3ab182aa6603861d98fa2546",
+      "id": "ci.validate",
+      "kind": "github_check",
+      "required": true,
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e415e2c29a2fdee185b5d4398ab50e015689d57bf654f76173534e71ab569ec1",
+      "id": "codeql.analyze",
+      "kind": "github_check",
+      "required": false,
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3d10772132a012bb2044d6f8f08744ae51c79ea3ceda1f1f08002a434a965c87",
+      "id": "supply-chain.actionlint",
+      "kind": "github_check",
+      "required": false,
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e7f1f2d12a61342b0d513cc863d40e68d5803d58e1f79d792b5d16f54ab2502e",
+      "id": "supply-chain.gitleaks",
+      "kind": "github_check",
+      "required": false,
+      "status": "success"
+    },
+    {
+      "digest": "sha256:074a42e74541338c47b29dfb025a92e90e2065dc571d32b5c707036c20114ee5",
+      "id": "supply-chain.scorecard",
+      "kind": "github_check",
+      "required": false,
+      "status": "success"
+    }
+  ],
+  "policy": {
+    "digest": "sha256:813550b195c3248805ce605835670dbb59a922af792989ce721e7633be87adcf",
+    "mode": "advisory",
+    "policy_id": "aos-kernel-release-surface",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [],
+  "record_digest": "sha256:3f48b4321b0ff6750b987003a7ebac2ca019a14f0eb97583d803ea8c13c5af36",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": null,
+    "ref": "refs/heads/main",
+    "repository": "RafineriaAI/aos-kernel",
+    "sha": "3c00cddf59ebd233cca4761785e20ad51ac9ed78"
+  },
+  "summary": "Gate PASS: all required checks satisfied; no advisory warnings.",
+  "verdict": "PASS",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}
