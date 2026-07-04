@@ -67,6 +67,7 @@ The draft input and policy files are [examples/github-pr-signal-bundle.json](exa
 - [Architecture](docs/ARCHITECTURE.md) defines the planned layers.
 - [Use cases](docs/USE_CASES.md) gives the first practical workflow scenarios.
 - [Adoption guide](docs/ADOPTION_GUIDE.md) removes terminology and integration barriers.
+- [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md) maps planned integrations to SLSA, SPDX, CycloneDX, SARIF, in-toto, and OpenSSF Scorecard without claiming compliance.
 - [Roadmap](ROADMAP.md) defines the phased plan.
 - [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.
 - [Draft signal bundle](examples/github-pr-signal-bundle.json) and [draft policy](policies/default.yml) make the first use case concrete.
