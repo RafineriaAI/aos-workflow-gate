@@ -26,6 +26,7 @@ Adapters convert external workflow data into a normalized internal bundle. Early
 Initial adapter candidates:
 
 - GitHub check suite summary.
+- GitLab pipeline jobs summary.
 - Pull request metadata summary.
 - SARIF/code scanning summary.
 - OpenSSF Scorecard summary.

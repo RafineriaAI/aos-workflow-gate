@@ -121,6 +121,14 @@ and in the `verdict` output. Set `enforce: "true"` to make a `BLOCK` verdict
 fail the step. This repository runs the action on itself in
 [.github/workflows/aos-workflow-gate-self.yml](.github/workflows/aos-workflow-gate-self.yml).
 
+## Platform neutrality
+
+The gate core is platform-neutral: plain Python, zero runtime dependencies,
+JSON in and out. GitHub Enterprise Server works out of the box, and GitLab
+CI or Jenkins can run the same evaluation on an explicitly provided bundle —
+see [docs/CI_INTEGRATIONS.md](docs/CI_INTEGRATIONS.md). Only the check-runs
+collector and the Action are GitHub-specific by design.
+
 ## What this is
 
 - A deterministic gate over workflow evidence.
@@ -144,6 +152,7 @@ fail the step. This repository runs the action on itself in
 - [Adoption guide](docs/ADOPTION_GUIDE.md) removes terminology and integration barriers.
 - [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md) maps planned integrations to SLSA, SPDX, CycloneDX, SARIF, in-toto, and OpenSSF Scorecard without claiming compliance.
 - [Decision record predicate](docs/DECISION_PREDICATE.md) defines the in-toto Statement export and operator-key signing recipe.
+- [CI integrations](docs/CI_INTEGRATIONS.md) covers GitHub Enterprise Server, GitLab CI, and generic shell usage.
 - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
 - [Roadmap](ROADMAP.md) defines the phased plan.
 - [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.

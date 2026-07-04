@@ -98,6 +98,54 @@ def test_resolve_github_context_prefers_pr_head_sha(
         resolve_github_context()
 
 
+def test_resolve_github_context_qualifies_ghes_repository(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("GITHUB_REPOSITORY", "owner/repo")
+    monkeypatch.setenv("GITHUB_SERVER_URL", "https://ghes.example.com/")
+    monkeypatch.setenv("GITHUB_SHA", "c" * 40)
+    monkeypatch.delenv("GITHUB_EVENT_PATH", raising=False)
+    monkeypatch.delenv("GITHUB_REF", raising=False)
+    context = resolve_github_context()
+    assert context["repository"] == "https://ghes.example.com/owner/repo"
+
+
+def test_fetch_url_strips_repository_url(monkeypatch: pytest.MonkeyPatch) -> None:
+    from aos_workflow_gate import collect as collect_module
+
+    seen: dict[str, str] = {}
+
+    class _FakeResponse:
+        def __enter__(self) -> _FakeResponse:
+            return self
+
+        def __exit__(self, *args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return b'{"check_runs": []}'
+
+    def fake_urlopen(request):  # type: ignore[no-untyped-def]
+        seen["url"] = request.full_url
+        return _FakeResponse()
+
+    monkeypatch.setattr(
+        collect_module.urllib.request, "urlopen", fake_urlopen
+    )
+    monkeypatch.setattr(
+        collect_module.json, "load", lambda fh: {"check_runs": []}
+    )
+    collect_module.fetch_check_runs(
+        "https://ghes.example.com/owner/repo",
+        SHA,
+        token=None,
+        api_url="https://ghes.example.com/api/v3",
+    )
+    assert seen["url"].startswith(
+        "https://ghes.example.com/api/v3/repos/owner/repo/commits/"
+    )
+
+
 def test_cli_collect_then_evaluate_offline(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

@@ -38,6 +38,17 @@ def test_build_statement_refuses_tampered_record() -> None:
         build_statement(record)
 
 
+def test_build_statement_uses_url_repository_verbatim() -> None:
+    record = _record()
+    record["subject"]["repository"] = "https://ghes.example.com/owner/repo"
+    record["subject"]["ref"] = None
+    payload = {k: v for k, v in record.items() if k != "record_digest"}
+    record["record_digest"] = canonical.digest(payload)
+    statement = build_statement(record)
+    (subject,) = statement["subject"]
+    assert subject["name"] == "git+https://ghes.example.com/owner/repo"
+
+
 def test_build_statement_requires_git_sha() -> None:
     record = _record()
     record["subject"]["sha"] = "not-a-sha"
