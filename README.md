@@ -6,7 +6,7 @@ This repository is the workflow layer around `aos-kernel`. Its job is to make a 
 
 ## Current status
 
-Phase 1: the local `evaluate` CLI is implemented. It turns a signal bundle plus an explicit policy into a deterministic `PASS`, `WARN`, or `BLOCK` decision record that is replayable and tamper-evident. The GitHub Action (Phase 2) is planned next.
+Phase 2: the local `evaluate` CLI and the advisory GitHub Action are implemented. The gate turns a signal bundle plus an explicit policy into a deterministic `PASS`, `WARN`, or `BLOCK` decision record that is replayable and tamper-evident, locally and in pull requests. Signal adapters (Phase 3) are planned next.
 
 Decision records carry `UNSIGNED_NOT_OFFICIAL` verification status: they are structure- and replay-checkable, not an official signed verdict.
 
@@ -44,14 +44,57 @@ aos-workflow-gate verify \
   --bundle examples/github-pr-signal-bundle.json
 ```
 
+Render a record as Markdown (the same summary the GitHub Action posts):
+
+```bash
+aos-workflow-gate summarize --input examples/gate-decision.json
+```
+
 The draft input and policy files are [examples/github-pr-signal-bundle.json](examples/github-pr-signal-bundle.json) and [policies/default.yml](policies/default.yml).
+
+## GitHub Action
+
+Run the gate in a pull request in advisory mode. The action is read-only, needs
+no repository secrets, writes a Markdown summary to the job page, and exposes
+the decision record for artifact upload:
+
+```yaml
+permissions:
+  contents: read
+
+steps:
+  # Pinned from actions/checkout@v5 on 2026-07-03.
+  - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+    with:
+      persist-credentials: false
+  # Pinned from actions/setup-python@v6 on 2026-07-03.
+  - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+    with:
+      python-version: "3.11"
+  - name: Run gate (advisory)
+    id: gate
+    uses: RafineriaAI/aos-workflow-gate@v0.2.0
+    with:
+      input: examples/github-pr-signal-bundle.json
+  # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
+  - name: Upload decision record
+    uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+    with:
+      name: gate-decision
+      path: gate-decision.json
+```
+
+Advisory mode never fails the job; the verdict is reported in the step summary
+and in the `verdict` output. Set `enforce: "true"` to make a `BLOCK` verdict
+fail the step. This repository runs the action on itself in
+[.github/workflows/aos-workflow-gate-self.yml](.github/workflows/aos-workflow-gate-self.yml).
 
 ## What this is
 
 - A deterministic gate over workflow evidence.
 - A policy and evidence layer for CI, PR, scanner, and AI-agent signals.
 - A practical bridge between `aos-kernel` verdict semantics and real repository workflows.
-- A future GitHub Action and local CLI that can run in advisory mode before it blocks anything.
+- A GitHub Action and local CLI that run in advisory mode before they block anything.
 
 ## What this is not
 
@@ -64,7 +107,7 @@ The draft input and policy files are [examples/github-pr-signal-bundle.json](exa
 ## Documentation map
 
 - [Scope](docs/SCOPE.md) defines claim boundaries and non-goals.
-- [Architecture](docs/ARCHITECTURE.md) defines the planned layers.
+- [Architecture](docs/ARCHITECTURE.md) defines the layers and what each phase implements.
 - [Use cases](docs/USE_CASES.md) gives the first practical workflow scenarios.
 - [Adoption guide](docs/ADOPTION_GUIDE.md) removes terminology and integration barriers.
 - [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md) maps planned integrations to SLSA, SPDX, CycloneDX, SARIF, in-toto, and OpenSSF Scorecard without claiming compliance.

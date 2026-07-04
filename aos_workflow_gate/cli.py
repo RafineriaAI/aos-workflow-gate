@@ -2,8 +2,9 @@
 
 ``evaluate`` turns a signal bundle plus a policy into a decision record.
 ``verify`` recomputes a record's digests to detect tampering or a mismatched
-source bundle. In advisory mode the process exit code is always 0; only a
-policy in blocking mode (or ``--enforce``) makes a ``BLOCK`` verdict fail.
+source bundle. ``summarize`` renders a record as Markdown for maintainers.
+In advisory mode the process exit code is always 0; only a policy in blocking
+mode (or ``--enforce``) makes a ``BLOCK`` verdict fail.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ from .errors import InputError
 from .evaluate import BLOCK, evaluate
 from .evidence import build_record, verify_record
 from .policy import load_policy
+from .summarize import render_markdown
 from .version import __version__
 
 
@@ -30,6 +32,8 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_evaluate(args)
         if args.command == "verify":
             return _cmd_verify(args)
+        if args.command == "summarize":
+            return _cmd_summarize(args)
     except InputError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -65,6 +69,13 @@ def _build_parser() -> argparse.ArgumentParser:
     verify_parser.add_argument(
         "--bundle", help="also check the record against this source bundle"
     )
+
+    summarize_parser = subparsers.add_parser(
+        "summarize", help="render a decision record as Markdown"
+    )
+    summarize_parser.add_argument(
+        "--input", required=True, help="decision record JSON"
+    )
     return parser
 
 
@@ -91,6 +102,13 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
     if (args.enforce or policy.mode == "blocking") and decision.verdict == BLOCK:
         return 1
     return 0
+
+
+def _cmd_summarize(args: argparse.Namespace) -> int:
+    record = _load_json(args.input)
+    text, intact = render_markdown(record)
+    sys.stdout.write(text)
+    return 0 if intact else 1
 
 
 def _cmd_verify(args: argparse.Namespace) -> int:
