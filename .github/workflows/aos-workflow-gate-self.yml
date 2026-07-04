@@ -42,3 +42,34 @@ jobs:
         with:
           name: gate-decision
           path: .tmp/gate-decision.json
+
+  zero-config:
+    name: AOS Workflow Gate Self / zero-config
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned from actions/checkout@v5 on 2026-07-03.
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
+      # Pinned from actions/setup-python@v6 on 2026-07-03.
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+      - name: Run gate (advisory, zero-config)
+        id: gate
+        uses: ./
+        with:
+          out: .aos-gate/gate-decision.json
+      - name: Replay collected decision offline
+        env:
+          RECORD: ${{ steps.gate.outputs.record }}
+        run: |
+          test -f "$RECORD"
+          python3 -m aos_workflow_gate verify --input "$RECORD" \
+            --bundle .aos-gate/bundle.json
+      # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
+      - name: Upload zero-config decision record
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: gate-decision-zero-config
+          path: .aos-gate/

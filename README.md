@@ -6,7 +6,7 @@ This repository is the workflow layer around `aos-kernel`. Its job is to make a 
 
 ## Current status
 
-Phase 2: the local `evaluate` CLI and the advisory GitHub Action are implemented. The gate turns a signal bundle plus an explicit policy into a deterministic `PASS`, `WARN`, or `BLOCK` decision record that is replayable and tamper-evident, locally and in pull requests. Signal adapters (Phase 3) are planned next.
+Phase 2: the local `evaluate` CLI and the advisory GitHub Action are implemented. Phase 3 has started: the zero-config GitHub check-runs collector is implemented, so the action can gate a pull request without any hand-written input. The gate turns collected signals plus an explicit policy into a deterministic `PASS`, `WARN`, or `BLOCK` decision record that is replayable and tamper-evident. Further signal adapters (SARIF, Scorecard summaries) are planned next.
 
 Decision records carry `UNSIGNED_NOT_OFFICIAL` verification status: they are structure- and replay-checkable, not an official signed verdict.
 
@@ -54,9 +54,30 @@ The draft input and policy files are [examples/github-pr-signal-bundle.json](exa
 
 ## GitHub Action
 
-Run the gate in a pull request in advisory mode. The action is read-only, needs
-no repository secrets, writes a Markdown summary to the job page, and exposes
-the decision record for artifact upload:
+Zero-config quickstart — gate a pull request without writing any bundle or
+policy. The action collects the completed check runs of the current commit,
+generates an explicit advisory policy over them, and writes a replayable
+decision record plus a Markdown summary to the job page:
+
+```yaml
+permissions:
+  contents: read
+
+steps:
+  - name: Run gate (advisory, zero-config)
+    uses: RafineriaAI/aos-workflow-gate@v0.3.0
+    with:
+      required-checks: "ci / validate"
+```
+
+`required-checks` is optional; named checks become required (missing or
+failed means `BLOCK`), every other collected check is advisory. The
+generated bundle and policy are written to `.aos-gate/` so the decision
+stays replayable.
+
+For full control, provide an explicit bundle and policy. The action is
+read-only, needs no repository secrets, writes a Markdown summary to the job
+page, and exposes the decision record for artifact upload:
 
 ```yaml
 permissions:
@@ -73,7 +94,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.2.0
+    uses: RafineriaAI/aos-workflow-gate@v0.3.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
