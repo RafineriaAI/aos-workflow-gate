@@ -18,8 +18,8 @@ python tools/check_public_surface.py
 
 REQUIRED_SNIPPETS = {
     "README.md": [
-        "Public bootstrap.",
-        "It is not implemented yet.",
+        "Phase 1: the local `evaluate` CLI is implemented.",
+        "UNSIGNED_NOT_OFFICIAL",
         "No production, compliance, signing, SLSA, or security-audit claim",
         README_LOCAL_HYGIENE_BLOCK,
         "```bash\npython tools/check_public_surface.py\n```",
@@ -105,10 +105,7 @@ def check_claim_boundary() -> None:
 def check_examples() -> None:
     bundle = json.loads(read_text("examples/github-pr-signal-bundle.json"))
     if bundle.get("schema_version") != "draft-0":
-        fail(
-            "example signal bundle must stay draft-0 until the CLI contract "
-            "is implemented"
-        )
+        fail("example signal bundle must declare the current draft-0 input schema")
     if not bundle.get("subject", {}).get("sha"):
         fail("example signal bundle must include a subject sha")
     source_ids = [source.get("id") for source in bundle.get("sources", [])]
@@ -124,6 +121,23 @@ def check_examples() -> None:
     ):
         if snippet not in policy:
             fail(f"draft policy is missing required snippet: {snippet!r}")
+
+
+def check_decision_fixture() -> None:
+    record = json.loads(read_text("examples/gate-decision.json"))
+    required_keys = (
+        "verdict",
+        "verification_status",
+        "record_digest",
+        "input_bundle_digest",
+    )
+    for key in required_keys:
+        if key not in record:
+            fail(f"committed decision fixture is missing '{key}'")
+    if record.get("verification_status") != "UNSIGNED_NOT_OFFICIAL":
+        fail("committed decision fixture must stay UNSIGNED_NOT_OFFICIAL")
+    if record.get("verdict") not in {"PASS", "WARN", "BLOCK"}:
+        fail("committed decision fixture verdict must be PASS, WARN, or BLOCK")
 
 
 def check_repository_hygiene() -> None:
@@ -170,6 +184,7 @@ def main() -> None:
     check_required_snippets()
     check_claim_boundary()
     check_examples()
+    check_decision_fixture()
     check_repository_hygiene()
     print("public-surface check OK")
 

@@ -8,6 +8,10 @@ Phase 0 is repository hygiene and public boundary work only. It may define docum
 
 Unlike `aos-kernel`, no Lean build is required in this repository. Formal verdict semantics remain in the kernel. This repository owns workflow inputs, policy evaluation shape, evidence output shape, and integration hygiene.
 
+## Phase 1 Release Boundary
+
+Phase 1 adds the local `evaluate` and `verify` CLI. A release may now claim a local, deterministic, replayable gate decision with a tamper-evident record. It must still not claim production enforcement, signed or official evidence, SLSA or SBOM provenance, security-audit certification, or that a `PASS` means a repository is secure, correct, production-ready, or legally compliant. Decision records remain `UNSIGNED_NOT_OFFICIAL`.
+
 ## Immutable Release Tags
 
 Release tags are immutable once pushed to `origin`.

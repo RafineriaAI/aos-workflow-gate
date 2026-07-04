@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aos-workflow-gate"
-version = "0.0.0"
+version = "0.1.0"
 description = "Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -12,6 +12,9 @@ license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [{ name = "Szymon Hetnar" }]
 dependencies = []
+
+[project.scripts]
+aos-workflow-gate = "aos_workflow_gate.cli:main"
 
 [project.optional-dependencies]
 dev = [
@@ -21,11 +24,11 @@ dev = [
 ]
 
 [tool.setuptools]
-packages = []
+packages = ["aos_workflow_gate"]
 
 [tool.mypy]
 python_version = "3.11"
-files = ["tools", "tests"]
+files = ["aos_workflow_gate", "tools", "tests"]
 check_untyped_defs = true
 disallow_untyped_defs = true
 warn_unused_configs = true

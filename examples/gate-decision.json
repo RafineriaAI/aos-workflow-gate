@@ -1,0 +1,55 @@
+{
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "version": "0.1.0"
+  },
+  "input_bundle_digest": "sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19",
+  "inputs": [
+    {
+      "digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "id": "agent.review",
+      "kind": "ai_agent_review_summary",
+      "required": false,
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "id": "ci.validate",
+      "kind": "github_check",
+      "required": true,
+      "status": "success"
+    },
+    {
+      "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "id": "scanner.sarif",
+      "kind": "sarif_summary",
+      "required": false,
+      "status": "warning"
+    }
+  ],
+  "policy": {
+    "digest": "sha256:3f33e4ad37f96d56f5a132d95b4c673aa774d410611111bfef235832aad81272",
+    "mode": "advisory",
+    "policy_id": "default",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "advisory source status is 'warning'",
+      "rule": "advisory_warning",
+      "severity": "WARN",
+      "source_id": "scanner.sarif"
+    }
+  ],
+  "record_digest": "sha256:885cd86485b376aeaccbef14c83e3fbb7d055302910927564cae79b5cd12c36a",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 42,
+    "ref": "refs/pull/42/merge",
+    "repository": "owner/repo",
+    "sha": "0123456789abcdef0123456789abcdef01234567"
+  },
+  "summary": "Gate WARN: required checks satisfied; 1 advisory warning(s).",
+  "verdict": "WARN",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": "0.1.0",
   "project": "aos-workflow-gate",
-  "status": "public-bootstrap",
+  "status": "phase-1-local-cli",
   "documents": [
     "README.md",
     "docs/SCOPE.md",
@@ -15,7 +15,8 @@
     "LICENSE"
   ],
   "examples": [
-    "examples/github-pr-signal-bundle.json"
+    "examples/github-pr-signal-bundle.json",
+    "examples/gate-decision.json"
   ],
   "policies": [
     "policies/default.yml"
@@ -27,6 +28,7 @@
   "ci": [
     "pyproject.toml",
     ".github/workflows/aos-workflow-gate-ci.yml",
-    "tests/test_public_surface.py"
+    "tests/test_public_surface.py",
+    "tests/test_evaluate.py"
   ]
 }
