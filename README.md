@@ -165,3 +165,7 @@ This check validates the documentation index, bootstrap claim boundary, and draf
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
+
+The license covers this repository's source code only. It grants no rights
+to the "AOS", "AOS Kernel", or "RafineriaAI" names and marks, and no rights
+to the separate proprietary AOS Core technology. See [NOTICE](NOTICE).

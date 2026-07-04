@@ -14,7 +14,8 @@
     "ROADMAP.md",
     "SECURITY.md",
     "CONTRIBUTING.md",
-    "LICENSE"
+    "LICENSE",
+    "NOTICE"
   ],
   "examples": [
     "examples/github-pr-signal-bundle.json",

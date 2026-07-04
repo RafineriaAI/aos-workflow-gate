@@ -1,0 +1,17 @@
+aos-workflow-gate
+Copyright (c) 2026 Szymon Hetnar (RafineriaAI)
+
+This product is the workflow gate layer around the AOS Kernel public
+demonstrator (https://github.com/RafineriaAI/aos-kernel).
+
+The Apache License, Version 2.0 covers the source code of this repository
+only. It does not grant any right to use the "AOS", "AOS Kernel",
+"aos-workflow-gate", or "RafineriaAI" names, marks, logos, or product
+positioning, except as required for reasonable and customary use in
+describing the origin of the work (Apache-2.0, Section 6).
+
+No license is granted by this repository to the separate, proprietary AOS
+Core technology, its calibration methods, private policies, or other
+unpublished implementation material of the copyright holder. Decision
+records produced by this software carry UNSIGNED_NOT_OFFICIAL verification
+status and are not official signed RafineriaAI/AOS verdicts.
