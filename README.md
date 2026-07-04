@@ -6,7 +6,9 @@ This repository is the workflow layer around `aos-kernel`. Its job is to make a 
 
 ## Current status
 
-Public bootstrap. The repository currently defines the product boundary, adoption model, draft example inputs, and first release plan. The executable CLI and GitHub Action are planned next.
+Phase 1: the local `evaluate` CLI is implemented. It turns a signal bundle plus an explicit policy into a deterministic `PASS`, `WARN`, or `BLOCK` decision record that is replayable and tamper-evident. The GitHub Action (Phase 2) is planned next.
+
+Decision records carry `UNSIGNED_NOT_OFFICIAL` verification status: they are structure- and replay-checkable, not an official signed verdict.
 
 No production, compliance, signing, SLSA, or security-audit claim is made by this repository at this stage.
 
@@ -22,31 +24,27 @@ That turns gate behavior from a scattered set of green and red checks into a rep
 
 A maintainer wants a release candidate to be blocked when required checks are missing, warned when non-blocking scanners report known risks, and passed only when required evidence is present.
 
-The planned first CLI shape is:
+Run the gate locally:
 
 ```bash
+python -m pip install -e .
 aos-workflow-gate evaluate \
   --input examples/github-pr-signal-bundle.json \
   --policy policies/default.yml \
-  --out evidence/gate-decision.json
+  --out examples/gate-decision.json
 ```
 
-Expected output shape:
+This prints the verdict and writes a full decision record. For the committed example the verdict is `WARN`: the required check passed and one advisory scanner warning remains. The record preserves subject identity, policy identity and digest, input identities and digests, the explained reasons, and a self-digest for tamper detection. A committed copy is checked in at [examples/gate-decision.json](examples/gate-decision.json).
 
-```json
-{
-  "verdict": "WARN",
-  "subject": {
-    "repo": "owner/repo",
-    "sha": "abc123"
-  },
-  "policy": "default",
-  "verification_status": "UNSIGNED_NOT_OFFICIAL",
-  "summary": "Required checks passed; advisory scanner warnings remain."
-}
+Verify a decision record has not been altered:
+
+```bash
+aos-workflow-gate verify \
+  --input examples/gate-decision.json \
+  --bundle examples/github-pr-signal-bundle.json
 ```
 
-The command above documents the target interface. It is not implemented yet. The draft input and policy files are available in [examples/github-pr-signal-bundle.json](examples/github-pr-signal-bundle.json) and [policies/default.yml](policies/default.yml).
+The draft input and policy files are [examples/github-pr-signal-bundle.json](examples/github-pr-signal-bundle.json) and [policies/default.yml](policies/default.yml).
 
 ## What this is
 

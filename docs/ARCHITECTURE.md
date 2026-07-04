@@ -1,6 +1,9 @@
 # Architecture
 
-This document describes the planned architecture. It is not an implementation claim.
+This document describes the planned architecture. Phase 1 implements the
+policy-evaluation and evidence-writer layers for the local `evaluate` CLI;
+signal adapters and the GitHub Action remain planned. Sections below that are
+not yet implemented are not implementation claims.
 
 ## Layers
 

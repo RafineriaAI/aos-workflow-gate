@@ -13,9 +13,12 @@ Goal: make the repository understandable and auditable before implementation.
 
 ## Phase 1: local MVP CLI
 
+Status: implemented. The `evaluate` and `verify` commands are available and
+covered by tests; the committed decision fixture is replayable.
+
 Goal: evaluate a fixed workflow signal bundle against an explicit policy.
 
-Planned command shape:
+Command shape:
 
 ```bash
 aos-workflow-gate evaluate --input examples/github-pr-signal-bundle.json --policy policies/default.yml --out evidence/gate-decision.json
