@@ -11,12 +11,24 @@ branding:
 
 inputs:
   input:
-    description: Path to the signal bundle JSON.
-    required: true
+    description: >-
+      Path to the signal bundle JSON. Leave empty for zero-config mode: the
+      completed check runs of the current commit are collected from the
+      GitHub API and gated with an explicit generated advisory policy.
+    required: false
+    default: ""
   policy:
     description: >-
-      Path to the policy JSON or YAML. Defaults to the bundled advisory
-      default policy.
+      Path to the policy JSON or YAML. With an explicit input bundle it
+      defaults to the bundled advisory default policy; in zero-config mode
+      it defaults to the generated advisory policy.
+    required: false
+    default: ""
+  required-checks:
+    description: >-
+      Zero-config mode only. Comma- or newline-separated check run names to
+      mark required in the generated policy; a missing or failed required
+      check makes the verdict BLOCK.
     required: false
     default: ""
   out:
@@ -55,13 +67,32 @@ runs:
         GATE_POLICY: ${{ inputs.policy }}
         GATE_OUT: ${{ inputs.out }}
         GATE_ENFORCE: ${{ inputs.enforce }}
+        GATE_REQUIRED_CHECKS: ${{ inputs.required-checks }}
+        GITHUB_TOKEN: ${{ github.token }}
       run: |
         set -u
+        input="$GATE_INPUT"
         policy="$GATE_POLICY"
+        if [ -z "$input" ]; then
+          collect_args=(--github-context --out .aos-gate/bundle.json
+            --policy-out .aos-gate/policy.json)
+          while IFS= read -r name; do
+            name="$(printf '%s' "$name" \
+              | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+            if [ -n "$name" ]; then
+              collect_args+=(--require "$name")
+            fi
+          done <<< "$(printf '%s' "$GATE_REQUIRED_CHECKS" | tr ',' '\n')"
+          python3 -m aos_workflow_gate collect "${collect_args[@]}"
+          input=.aos-gate/bundle.json
+          if [ -z "$policy" ]; then
+            policy=.aos-gate/policy.json
+          fi
+        fi
         if [ -z "$policy" ]; then
           policy="$GITHUB_ACTION_PATH/policies/default.yml"
         fi
-        args=(--input "$GATE_INPUT" --policy "$policy" --out "$GATE_OUT")
+        args=(--input "$input" --policy "$policy" --out "$GATE_OUT")
         if [ "$GATE_ENFORCE" = "true" ]; then
           args+=(--enforce)
         fi

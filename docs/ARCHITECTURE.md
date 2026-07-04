@@ -2,8 +2,9 @@
 
 This document describes the planned architecture. Phase 1 implements the
 policy-evaluation and evidence-writer layers for the local `evaluate` CLI;
-Phase 2 implements the advisory GitHub Action around the same evaluation.
-Signal adapters remain planned. Sections below that are not yet implemented
+Phase 2 implements the advisory GitHub Action around the same evaluation;
+Phase 3 has started with the read-only GitHub check-runs collector. Other
+signal adapters remain planned. Sections below that are not yet implemented
 are not implementation claims.
 
 ## Layers

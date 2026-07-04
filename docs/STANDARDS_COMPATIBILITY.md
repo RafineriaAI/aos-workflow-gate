@@ -6,7 +6,7 @@ This document defines the intended compatibility surface for industry standards.
 
 ## Current status
 
-Phase 1 implements the local `evaluate` and `verify` CLI with deterministic replay; Phase 2 implements the advisory GitHub Action around the same evaluation. The repository does not yet implement adapters, signed evidence, provenance generation, SBOM export, SARIF upload, or compliance automation.
+Phase 1 implements the local `evaluate` and `verify` CLI with deterministic replay; Phase 2 implements the advisory GitHub Action around the same evaluation; Phase 3 has started with a read-only GitHub check-runs collector. The repository does not yet implement SARIF or Scorecard adapters, signed evidence, provenance generation, SBOM export, SARIF upload, or compliance automation.
 
 Any early output remains `UNSIGNED_NOT_OFFICIAL` until signing, publication, and verification controls exist.
 

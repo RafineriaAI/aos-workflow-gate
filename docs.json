@@ -37,6 +37,7 @@
     ".github/workflows/aos-workflow-gate-self.yml",
     "tests/test_public_surface.py",
     "tests/test_evaluate.py",
-    "tests/test_summarize.py"
+    "tests/test_summarize.py",
+    "tests/test_collect.py"
   ]
 }

@@ -20,6 +20,8 @@ REQUIRED_SNIPPETS = {
     "README.md": [
         "Phase 2: the local `evaluate` CLI and the advisory GitHub Action "
         "are implemented.",
+        "Phase 3 has started: the zero-config GitHub check-runs collector "
+        "is implemented",
         "UNSIGNED_NOT_OFFICIAL",
         "No production, compliance, signing, SLSA, or security-audit claim",
         README_LOCAL_HYGIENE_BLOCK,
@@ -67,6 +69,7 @@ REQUIRED_SNIPPETS = {
         "## Phase 0: public bootstrap",
         "## Phase 1: local MVP CLI",
         "## Phase 2: GitHub Action advisory mode",
+        "## Phase 3: signal adapters and policy packs",
         "These are future layers, not current claims.",
     ],
 }
@@ -205,6 +208,7 @@ def check_action_surface() -> None:
         "UNSIGNED_NOT_OFFICIAL",
         'default: "false"',
         "GITHUB_STEP_SUMMARY",
+        "python3 -m aos_workflow_gate collect",
         "python3 -m aos_workflow_gate evaluate",
         "python3 -m aos_workflow_gate summarize",
     )

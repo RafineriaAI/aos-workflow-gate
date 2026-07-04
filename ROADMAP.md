@@ -49,9 +49,16 @@ Expected properties:
 - JSON artifact upload.
 - Clear distinction between advisory and blocking modes.
 
-## Phase 3: policy packs
+## Phase 3: signal adapters and policy packs
 
-Goal: provide reusable policy profiles without hiding the policy.
+Status: in progress. The zero-config GitHub check-runs collector is
+implemented: `collect` builds a signal bundle from the check-runs API with
+digest-anchored sources and can generate an explicit advisory policy over
+every collected check. SARIF and Scorecard summary adapters and reusable
+policy packs remain planned.
+
+Goal: provide signal adapters and reusable policy profiles without hiding
+the policy.
 
 Candidate packs:
 

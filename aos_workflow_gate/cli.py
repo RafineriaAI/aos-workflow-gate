@@ -1,5 +1,7 @@
 """Command-line interface for aos-workflow-gate.
 
+``collect`` builds a signal bundle (and optionally an explicit advisory
+policy) from the GitHub check-runs API for one commit.
 ``evaluate`` turns a signal bundle plus a policy into a decision record.
 ``verify`` recomputes a record's digests to detect tampering or a mismatched
 source bundle. ``summarize`` renders a record as Markdown for maintainers.
@@ -11,11 +13,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
 
 from . import canonical
+from .collect import (
+    build_bundle,
+    build_generated_policy,
+    fetch_check_runs,
+    resolve_github_context,
+)
 from .errors import InputError
 from .evaluate import BLOCK, evaluate
 from .evidence import build_record, verify_record
@@ -28,6 +37,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
     try:
+        if args.command == "collect":
+            return _cmd_collect(args)
         if args.command == "evaluate":
             return _cmd_evaluate(args)
         if args.command == "verify":
@@ -49,6 +60,53 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--version", action="version", version=__version__)
     subparsers = parser.add_subparsers(dest="command")
+
+    collect_parser = subparsers.add_parser(
+        "collect", help="build a signal bundle from the GitHub check-runs API"
+    )
+    collect_parser.add_argument(
+        "--repository", help="owner/repo (defaults to the GitHub context)"
+    )
+    collect_parser.add_argument(
+        "--sha", help="commit SHA (defaults to the GitHub context)"
+    )
+    collect_parser.add_argument("--ref", help="optional subject ref")
+    collect_parser.add_argument(
+        "--pull-request", type=int, help="optional subject pull request number"
+    )
+    collect_parser.add_argument(
+        "--github-context",
+        action="store_true",
+        help="resolve repository/sha/ref/pull request from GitHub Actions "
+        "environment variables",
+    )
+    collect_parser.add_argument(
+        "--token-env",
+        default="GITHUB_TOKEN",
+        help="name of the environment variable holding the API token "
+        "(default: GITHUB_TOKEN; unset means anonymous)",
+    )
+    collect_parser.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        help="check run name to exclude (repeatable)",
+    )
+    collect_parser.add_argument(
+        "--require",
+        action="append",
+        default=[],
+        help="collected check name to mark required in the generated "
+        "policy (repeatable)",
+    )
+    collect_parser.add_argument(
+        "--out", required=True, help="write the signal bundle here"
+    )
+    collect_parser.add_argument(
+        "--policy-out",
+        help="also write an explicit advisory policy covering every "
+        "collected source",
+    )
 
     evaluate_parser = subparsers.add_parser(
         "evaluate", help="evaluate a signal bundle against a policy"
@@ -77,6 +135,53 @@ def _build_parser() -> argparse.ArgumentParser:
         "--input", required=True, help="decision record JSON"
     )
     return parser
+
+
+def _cmd_collect(args: argparse.Namespace) -> int:
+    if args.github_context:
+        context = resolve_github_context()
+    else:
+        context = {"repository": None, "sha": None, "ref": None, "pull_request": None}
+    repository = args.repository or context["repository"]
+    sha = args.sha or context["sha"]
+    if not repository or not sha:
+        raise InputError(
+            "collect needs --repository and --sha, or --github-context"
+        )
+    token = os.environ.get(args.token_env) if args.token_env else None
+
+    runs = fetch_check_runs(repository, sha, token=token)
+    bundle = build_bundle(
+        runs,
+        repository=repository,
+        sha=sha,
+        ref=args.ref or context["ref"],
+        pull_request=(
+            args.pull_request
+            if args.pull_request is not None
+            else context["pull_request"]
+        ),
+        exclude=args.exclude,
+        required=args.require,
+    )
+    _write_json(Path(args.out), bundle)
+    print(f"collected {len(bundle['sources'])} completed check run(s)")
+    print(f"bundle: {args.out}")
+
+    if args.policy_out:
+        policy = build_generated_policy(bundle, required=args.require)
+        _write_json(Path(args.policy_out), policy)
+        print(f"policy: {args.policy_out}")
+    elif args.require:
+        raise InputError("--require needs --policy-out")
+    return 0
+
+
+def _write_json(path: Path, value: dict[str, Any]) -> None:
+    text = json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
+    if path.parent != Path(""):
+        path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8", newline="\n")
 
 
 def _cmd_evaluate(args: argparse.Namespace) -> int:
