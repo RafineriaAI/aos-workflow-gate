@@ -30,8 +30,14 @@ GENERATED_POLICY_ID = "collected-advisory"
 def fetch_check_runs(
     repository: str, sha: str, *, token: str | None, api_url: str = DEFAULT_API_URL
 ) -> list[dict[str, Any]]:
-    """Fetch completed check runs for a commit from the GitHub API."""
-    url = f"{api_url}/repos/{repository}/commits/{sha}/check-runs?per_page=100"
+    """Fetch completed check runs for a commit from the GitHub API.
+
+    ``repository`` may be ``owner/repo`` or a full project URL (GitHub
+    Enterprise Server); only the ``owner/repo`` path is sent to the API.
+    """
+    repo_path = repository.rstrip("/").rsplit("/", 2)
+    repo_slug = "/".join(repo_path[-2:]) if len(repo_path) >= 2 else repository
+    url = f"{api_url}/repos/{repo_slug}/commits/{sha}/check-runs?per_page=100"
     headers = {"Accept": "application/vnd.github+json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
@@ -152,6 +158,9 @@ def resolve_github_context() -> dict[str, Any]:
     repository = os.environ.get("GITHUB_REPOSITORY")
     if not repository:
         raise InputError("GITHUB_REPOSITORY is not set; not a GitHub context")
+    server_url = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+    if server_url.rstrip("/") != "https://github.com":
+        repository = f"{server_url.rstrip('/')}/{repository}"
     sha = os.environ.get("GITHUB_SHA")
     ref = os.environ.get("GITHUB_REF")
     pull_request: int | None = None

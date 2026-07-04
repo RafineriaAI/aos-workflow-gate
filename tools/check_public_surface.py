@@ -32,6 +32,12 @@ REQUIRED_SNIPPETS = {
         "docs/STANDARDS_COMPATIBILITY.md",
         ".github/workflows/aos-workflow-gate-self.yml",
     ],
+    "docs/CI_INTEGRATIONS.md": [
+        "platform-neutral",
+        "GitHub Enterprise Server",
+        "GitLab jobs collector is planned",
+        "the operator's\nclaim, not the gate's",
+    ],
     "docs/DECISION_PREDICATE.md": [
         "https://github.com/RafineriaAI/aos-workflow-gate/decision-record/v0",
         "https://in-toto.io/Statement/v1",

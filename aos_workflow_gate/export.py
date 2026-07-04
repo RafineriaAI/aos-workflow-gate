@@ -5,6 +5,10 @@ existing supply-chain tooling can bind it to the gated commit and sign it
 with keys the operator already holds (for example ``cosign sign-blob`` or
 ``cosign attest-blob``). The exported Statement is UNSIGNED; per the
 standards boundary it must not be called an attestation until it is signed.
+
+A subject repository given as a full URL (for example a GitHub Enterprise
+Server or GitLab project URL) is used verbatim; the bare ``owner/repo``
+form keeps its historical github.com meaning.
 """
 
 from __future__ import annotations
@@ -48,7 +52,10 @@ def build_statement(record: Any) -> dict[str, Any]:
             "an in-toto subject needs a gitCommit digest"
         )
 
-    name = f"git+https://github.com/{repository}"
+    if "://" in repository:
+        name = f"git+{repository}"
+    else:
+        name = f"git+https://github.com/{repository}"
     ref = subject.get("ref")
     if isinstance(ref, str) and ref:
         name = f"{name}@{ref}"

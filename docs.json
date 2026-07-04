@@ -10,6 +10,7 @@
     "docs/ADOPTION_GUIDE.md",
     "docs/STANDARDS_COMPATIBILITY.md",
     "docs/DECISION_PREDICATE.md",
+    "docs/CI_INTEGRATIONS.md",
     "docs/case-studies/aos-kernel-release-surface-replay.md",
     "docs/RELEASE_GOVERNANCE.md",
     "ROADMAP.md",

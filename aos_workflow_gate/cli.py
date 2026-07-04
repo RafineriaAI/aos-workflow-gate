@@ -91,6 +91,11 @@ def _build_parser() -> argparse.ArgumentParser:
         "(default: GITHUB_TOKEN; unset means anonymous)",
     )
     collect_parser.add_argument(
+        "--api-url",
+        help="GitHub API base URL (default: GITHUB_API_URL env or "
+        "https://api.github.com; set for GitHub Enterprise Server)",
+    )
+    collect_parser.add_argument(
         "--exclude",
         action="append",
         default=[],
@@ -169,8 +174,13 @@ def _cmd_collect(args: argparse.Namespace) -> int:
             "collect needs --repository and --sha, or --github-context"
         )
     token = os.environ.get(args.token_env) if args.token_env else None
+    api_url = (
+        args.api_url
+        or os.environ.get("GITHUB_API_URL")
+        or "https://api.github.com"
+    )
 
-    runs = fetch_check_runs(repository, sha, token=token)
+    runs = fetch_check_runs(repository, sha, token=token, api_url=api_url)
     bundle = build_bundle(
         runs,
         repository=repository,
