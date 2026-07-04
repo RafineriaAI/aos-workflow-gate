@@ -12,6 +12,10 @@ Unlike `aos-kernel`, no Lean build is required in this repository. Formal verdic
 
 Phase 1 adds the local `evaluate` and `verify` CLI. A release may now claim a local, deterministic, replayable gate decision with a tamper-evident record. It must still not claim production enforcement, signed or official evidence, SLSA or SBOM provenance, security-audit certification, or that a `PASS` means a repository is secure, correct, production-ready, or legally compliant. Decision records remain `UNSIGNED_NOT_OFFICIAL`.
 
+## Phase 2 Release Boundary
+
+Phase 2 adds the advisory GitHub Action around the Phase 1 evaluation. A release may now claim an advisory pull-request gate with a Markdown summary and a replayable decision artifact. Advisory mode must stay the default; a release must not claim production enforcement, and enforcement remains an explicit per-workflow opt-in (`enforce: "true"` or a blocking policy). All Phase 1 boundary limits continue to apply.
+
 ## Immutable Release Tags
 
 Release tags are immutable once pushed to `origin`.

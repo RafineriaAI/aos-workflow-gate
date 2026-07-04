@@ -18,7 +18,8 @@ python tools/check_public_surface.py
 
 REQUIRED_SNIPPETS = {
     "README.md": [
-        "Phase 1: the local `evaluate` CLI is implemented.",
+        "Phase 2: the local `evaluate` CLI and the advisory GitHub Action "
+        "are implemented.",
         "UNSIGNED_NOT_OFFICIAL",
         "No production, compliance, signing, SLSA, or security-audit claim",
         README_LOCAL_HYGIENE_BLOCK,
@@ -26,6 +27,7 @@ REQUIRED_SNIPPETS = {
         "Apache-2.0. See [LICENSE](LICENSE).",
         "docs/RELEASE_GOVERNANCE.md",
         "docs/STANDARDS_COMPATIBILITY.md",
+        ".github/workflows/aos-workflow-gate-self.yml",
     ],
     "docs/SCOPE.md": [
         "## Decision boundary",
@@ -58,10 +60,13 @@ REQUIRED_SNIPPETS = {
             "no production, compliance, security-audit, signing, SBOM, SLSA, "
             "or attestation claim"
         ),
+        "## Phase 2 Release Boundary",
+        "Advisory mode must stay the default",
     ],
     "ROADMAP.md": [
         "## Phase 0: public bootstrap",
         "## Phase 1: local MVP CLI",
+        "## Phase 2: GitHub Action advisory mode",
         "These are future layers, not current claims.",
     ],
 }
@@ -193,6 +198,34 @@ def check_repository_hygiene() -> None:
         )
 
 
+def check_action_surface() -> None:
+    action = read_text("action.yml")
+    required_action_snippets = (
+        'using: "composite"',
+        "UNSIGNED_NOT_OFFICIAL",
+        'default: "false"',
+        "GITHUB_STEP_SUMMARY",
+        "python3 -m aos_workflow_gate evaluate",
+        "python3 -m aos_workflow_gate summarize",
+    )
+    for snippet in required_action_snippets:
+        if snippet not in action:
+            fail(f"action.yml is missing required snippet: {snippet!r}")
+
+    workflow = read_text(".github/workflows/aos-workflow-gate-self.yml")
+    required_self_snippets = (
+        "name: AOS Workflow Gate Self / advisory",
+        "permissions:\n  contents: read",
+        "persist-credentials: false",
+        "uses: ./",
+        "uses: actions/upload-artifact@"
+        "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+    )
+    for snippet in required_self_snippets:
+        if snippet not in workflow:
+            fail(f"self-gate workflow is missing required snippet: {snippet!r}")
+
+
 def main() -> None:
     check_docs_index()
     check_required_snippets()
@@ -200,6 +233,7 @@ def main() -> None:
     check_examples()
     check_decision_fixture()
     check_repository_hygiene()
+    check_action_surface()
     print("public-surface check OK")
 
 

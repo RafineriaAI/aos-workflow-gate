@@ -1,0 +1,81 @@
+name: AOS Workflow Gate
+description: >-
+  Evidence-based workflow gate: turn a signal bundle plus an explicit policy
+  into a deterministic PASS/WARN/BLOCK decision record that is replayable and
+  tamper-evident. Advisory by default. Decision records carry
+  UNSIGNED_NOT_OFFICIAL verification status; no production, compliance,
+  signing, SLSA, or security-audit claim is made.
+branding:
+  icon: check-circle
+  color: gray-dark
+
+inputs:
+  input:
+    description: Path to the signal bundle JSON.
+    required: true
+  policy:
+    description: >-
+      Path to the policy JSON or YAML. Defaults to the bundled advisory
+      default policy.
+    required: false
+    default: ""
+  out:
+    description: Path where the decision record JSON is written.
+    required: false
+    default: gate-decision.json
+  enforce:
+    description: >-
+      Set to "true" to exit non-zero on BLOCK regardless of policy mode.
+      Default is advisory; the step succeeds and the verdict is reported.
+    required: false
+    default: "false"
+
+outputs:
+  verdict:
+    description: The gate verdict (PASS, WARN, or BLOCK).
+    value: ${{ steps.evaluate.outputs.verdict }}
+  record:
+    description: Path to the decision record JSON.
+    value: ${{ steps.evaluate.outputs.record }}
+  record-digest:
+    description: Self-digest of the decision record.
+    value: ${{ steps.evaluate.outputs.record-digest }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install gate
+      shell: bash
+      run: python3 -m pip install --quiet "$GITHUB_ACTION_PATH"
+    - name: Evaluate
+      id: evaluate
+      shell: bash
+      env:
+        GATE_INPUT: ${{ inputs.input }}
+        GATE_POLICY: ${{ inputs.policy }}
+        GATE_OUT: ${{ inputs.out }}
+        GATE_ENFORCE: ${{ inputs.enforce }}
+      run: |
+        set -u
+        policy="$GATE_POLICY"
+        if [ -z "$policy" ]; then
+          policy="$GITHUB_ACTION_PATH/policies/default.yml"
+        fi
+        args=(--input "$GATE_INPUT" --policy "$policy" --out "$GATE_OUT")
+        if [ "$GATE_ENFORCE" = "true" ]; then
+          args+=(--enforce)
+        fi
+        set +e
+        python3 -m aos_workflow_gate evaluate "${args[@]}"
+        rc=$?
+        set -e
+        if [ -f "$GATE_OUT" ]; then
+          python3 -m aos_workflow_gate summarize --input "$GATE_OUT" \
+            >> "$GITHUB_STEP_SUMMARY" || true
+          {
+            echo "verdict=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['verdict'])")"
+            echo "record=$GATE_OUT"
+            echo "record-digest=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['record_digest'])")"
+          } >> "$GITHUB_OUTPUT"
+        fi
+        exit "$rc"

@@ -1,0 +1,107 @@
+"""Markdown summary rendering for decision records.
+
+``summarize`` turns a decision record into a compact Markdown block for
+maintainers, for example a GitHub Actions step summary. It re-checks the
+record's self-digest so a tampered record is visibly flagged instead of being
+summarized as if it were trustworthy.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from .errors import InputError
+from .evidence import verify_record
+
+VERDICTS = ("PASS", "WARN", "BLOCK")
+
+
+def render_markdown(record: Any) -> tuple[str, bool]:
+    """Render a decision record as Markdown.
+
+    Returns the Markdown text and whether the record's self-digest check
+    passed. Raises :class:`InputError` when the value is not a decision
+    record at all.
+    """
+    if not isinstance(record, dict):
+        raise InputError("decision record must be a JSON object")
+    verdict = record.get("verdict")
+    if verdict not in VERDICTS:
+        raise InputError("decision record has no valid verdict")
+
+    intact = verify_record(record)
+    subject = _dict_field(record, "subject")
+    policy = _dict_field(record, "policy")
+
+    lines: list[str] = [f"## Gate decision: {verdict}", ""]
+    summary = record.get("summary")
+    if isinstance(summary, str) and summary:
+        lines += [summary, ""]
+    if not intact:
+        lines += [
+            "> **Warning:** record content does not match its self-digest. "
+            "Do not trust this record.",
+            "",
+        ]
+
+    lines += ["| Field | Value |", "| --- | --- |"]
+    lines += _subject_rows(subject)
+    policy_id = policy.get("policy_id", "-")
+    mode = policy.get("mode", "-")
+    lines.append(f"| Policy | `{policy_id}` ({mode}) |")
+    lines.append(f"| Policy digest | `{policy.get('digest', '-')}` |")
+    lines.append(
+        f"| Input bundle digest | `{record.get('input_bundle_digest', '-')}` |"
+    )
+    lines.append(f"| Record digest | `{record.get('record_digest', '-')}` |")
+    lines.append(f"| Record self-check | {'OK' if intact else 'FAILED'} |")
+    lines.append(
+        f"| Verification status | {record.get('verification_status', '-')} |"
+    )
+    lines.append("")
+
+    reasons = record.get("reasons")
+    if isinstance(reasons, list) and reasons:
+        lines += ["### Reasons", ""]
+        for reason in reasons:
+            if isinstance(reason, dict):
+                severity = reason.get("severity", "-")
+                rule = reason.get("rule", "-")
+                source = reason.get("source_id") or "-"
+                detail = reason.get("detail", "")
+                lines.append(f"- {severity} `{rule}` {source}: {detail}")
+        lines.append("")
+
+    inputs = record.get("inputs")
+    if isinstance(inputs, list) and inputs:
+        lines += [
+            "### Inputs",
+            "",
+            "| Id | Kind | Required | Status |",
+            "| --- | --- | --- | --- |",
+        ]
+        for source in inputs:
+            if isinstance(source, dict):
+                required = "yes" if source.get("required") else "no"
+                lines.append(
+                    f"| {source.get('id', '-')} | {source.get('kind', '-')} "
+                    f"| {required} | {source.get('status', '-')} |"
+                )
+        lines.append("")
+
+    return "\n".join(lines), intact
+
+
+def _dict_field(record: dict[str, Any], key: str) -> dict[str, Any]:
+    value = record.get(key)
+    return value if isinstance(value, dict) else {}
+
+
+def _subject_rows(subject: dict[str, Any]) -> list[str]:
+    rows = [f"| Repository | {subject.get('repository', '-')} |"]
+    if subject.get("ref"):
+        rows.append(f"| Ref | `{subject['ref']}` |")
+    rows.append(f"| Commit | `{subject.get('sha', '-')}` |")
+    if subject.get("pull_request") is not None:
+        rows.append(f"| Pull request | #{subject['pull_request']} |")
+    return rows

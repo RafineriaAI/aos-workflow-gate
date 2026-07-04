@@ -53,6 +53,22 @@ def test_release_governance_names_required_check() -> None:
     assert "Do not delete, recreate, or force-push a published `v*` tag" in governance
 
 
+def test_action_and_self_workflow_are_bounded() -> None:
+    action = read_text("action.yml")
+    assert 'using: "composite"' in action
+    assert "UNSIGNED_NOT_OFFICIAL" in action
+    assert 'default: "false"' in action
+
+    workflow = read_text(".github/workflows/aos-workflow-gate-self.yml")
+    assert "permissions:\n  contents: read" in workflow
+    assert "persist-credentials: false" in workflow
+    pinned_upload = (
+        "uses: actions/upload-artifact@"
+        "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+    )
+    assert pinned_upload in workflow
+
+
 def test_standards_compatibility_is_indexed_and_bounded() -> None:
     data = json.loads(read_text("docs.json"))
     assert "docs/STANDARDS_COMPATIBILITY.md" in data["documents"]

@@ -34,6 +34,11 @@ Expected properties:
 
 ## Phase 2: GitHub Action advisory mode
 
+Status: implemented. The composite action runs `evaluate` in advisory mode by
+default, writes a Markdown step summary, exposes verdict and record outputs,
+and the repository runs it on itself in CI with the decision record uploaded
+as a JSON artifact.
+
 Goal: run the same evaluation in pull requests without blocking by default.
 
 Expected properties:
