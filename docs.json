@@ -9,6 +9,7 @@
     "docs/USE_CASES.md",
     "docs/ADOPTION_GUIDE.md",
     "docs/STANDARDS_COMPATIBILITY.md",
+    "docs/DECISION_PREDICATE.md",
     "docs/case-studies/aos-kernel-release-surface-replay.md",
     "docs/RELEASE_GOVERNANCE.md",
     "ROADMAP.md",
@@ -39,6 +40,7 @@
     "tests/test_public_surface.py",
     "tests/test_evaluate.py",
     "tests/test_summarize.py",
-    "tests/test_collect.py"
+    "tests/test_collect.py",
+    "tests/test_export.py"
   ]
 }

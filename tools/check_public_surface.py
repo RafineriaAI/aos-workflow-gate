@@ -32,6 +32,13 @@ REQUIRED_SNIPPETS = {
         "docs/STANDARDS_COMPATIBILITY.md",
         ".github/workflows/aos-workflow-gate-self.yml",
     ],
+    "docs/DECISION_PREDICATE.md": [
+        "https://github.com/RafineriaAI/aos-workflow-gate/decision-record/v0",
+        "https://in-toto.io/Statement/v1",
+        "UNSIGNED",
+        "not an official RafineriaAI/AOS verdict",
+        "must not be called an attestation",
+    ],
     "NOTICE": [
         "Copyright (c) 2026 Szymon Hetnar (RafineriaAI)",
         "does not grant any right to use",
