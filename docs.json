@@ -36,6 +36,7 @@
   "ci": [
     "pyproject.toml",
     "action.yml",
+    ".github/ISSUE_TEMPLATE/guided-pilot.yml",
     ".github/workflows/aos-workflow-gate-ci.yml",
     ".github/workflows/aos-workflow-gate-self.yml",
     "tests/test_public_surface.py",

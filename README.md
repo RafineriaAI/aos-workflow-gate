@@ -65,21 +65,27 @@ The draft input and policy files are [examples/github-pr-signal-bundle.json](exa
 
 ## GitHub Action
 
-Zero-config quickstart — gate a pull request without writing any bundle or
-policy. The action collects the completed check runs of the current commit,
-generates an explicit advisory policy over them, and writes a replayable
-decision record plus a Markdown summary to the job page:
+Zero-config quickstart — an advisory self-test of your pipeline, without
+writing any bundle or policy. The action collects the completed check runs
+of the current commit, generates an explicit advisory policy over them, and
+writes a replayable decision record plus a Markdown summary to the job page:
 
 ```yaml
 permissions:
   contents: read
+  checks: read
 
 steps:
   - name: Run gate (advisory, zero-config)
-    uses: RafineriaAI/aos-workflow-gate@v0.5.0
+    uses: RafineriaAI/aos-workflow-gate@v0.6.0
     with:
       required-checks: "ci / validate"
 ```
+
+`checks: read` is needed because a `permissions:` block sets every unlisted
+scope to `none`, and zero-config mode reads the commit's check runs through
+the workflow token. Public repositories happen to work without it; private
+repositories do not.
 
 `required-checks` is optional; named checks become required (missing or
 failed means `BLOCK`), every other collected check is advisory. The
@@ -105,7 +111,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.5.0
+    uses: RafineriaAI/aos-workflow-gate@v0.6.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

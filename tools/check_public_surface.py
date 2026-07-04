@@ -28,6 +28,7 @@ REQUIRED_SNIPPETS = {
         "```bash\npython tools/check_public_surface.py\n```",
         "Apache-2.0. See [LICENSE](LICENSE).",
         "See [NOTICE](NOTICE).",
+        "checks: read",
         "docs/RELEASE_GOVERNANCE.md",
         "docs/STANDARDS_COMPATIBILITY.md",
         ".github/workflows/aos-workflow-gate-self.yml",
@@ -37,6 +38,8 @@ REQUIRED_SNIPPETS = {
         "GitHub Enterprise Server",
         "GitLab jobs collector is planned",
         "the operator's\nclaim, not the gate's",
+        "checks: read",
+        "read-only by design",
     ],
     "docs/DECISION_PREDICATE.md": [
         "https://github.com/RafineriaAI/aos-workflow-gate/decision-record/v0",
@@ -260,6 +263,7 @@ def check_action_surface() -> None:
         "python3 -m aos_workflow_gate collect",
         "python3 -m aos_workflow_gate evaluate",
         "python3 -m aos_workflow_gate summarize",
+        "issues/new?template=guided-pilot.yml",
     )
     for snippet in required_action_snippets:
         if snippet not in action:
@@ -268,7 +272,7 @@ def check_action_surface() -> None:
     workflow = read_text(".github/workflows/aos-workflow-gate-self.yml")
     required_self_snippets = (
         "name: AOS Workflow Gate Self / advisory",
-        "permissions:\n  contents: read",
+        "permissions:\n  contents: read\n  checks: read",
         "persist-credentials: false",
         "uses: ./",
         "uses: actions/upload-artifact@"

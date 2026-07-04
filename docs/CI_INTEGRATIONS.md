@@ -10,6 +10,24 @@ and the GitHub check-runs collector.
 
 Zero-config and explicit modes are documented in the [README](../README.md).
 
+Required token permissions: a workflow `permissions:` block sets every
+unlisted scope to `none`, so declare both scopes the gate needs:
+
+```yaml
+permissions:
+  contents: read
+  checks: read
+```
+
+- `contents: read` — checkout and repository access.
+- `checks: read` — zero-config mode reads the commit's check runs through
+  the workflow token (`github.token`). Public repositories are readable
+  without it, but declare it anyway so the same workflow works on private
+  repositories.
+
+Explicit-bundle mode does not call the API and needs only `contents: read`.
+No `write` scope of any kind is required; the gate is read-only by design.
+
 ## GitHub Enterprise Server
 
 The collector works against GHES out of the box:
@@ -18,6 +36,9 @@ The collector works against GHES out of the box:
   `GITHUB_SERVER_URL` environment variables are used automatically; the
   subject repository is recorded as the full project URL so evidence stays
   unambiguous across hosts.
+- The same `permissions:` block applies (`contents: read` plus
+  `checks: read` for zero-config mode); GHES repositories are typically
+  private, so `checks: read` is effectively mandatory there.
 - Outside workflows, pass `--api-url https://<ghes-host>/api/v3` to
   `collect`.
 
@@ -30,7 +51,7 @@ exists, run the platform-neutral core on an explicitly provided bundle:
 gate:
   image: python:3.12-slim
   script:
-    - pip install --quiet "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.5.0"
+    - pip install --quiet "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.6.0"
     - aos-workflow-gate evaluate
         --input signal-bundle.json
         --policy policy.yml
@@ -48,7 +69,7 @@ in-toto subject with that URL verbatim.
 ## Jenkins or any shell
 
 ```bash
-python3 -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.5.0"
+python3 -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.6.0"
 aos-workflow-gate evaluate --input bundle.json --policy policy.yml --out record.json
 aos-workflow-gate summarize --input record.json > gate-summary.md
 ```
