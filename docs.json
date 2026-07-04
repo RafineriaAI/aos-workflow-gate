@@ -9,6 +9,7 @@
     "docs/USE_CASES.md",
     "docs/ADOPTION_GUIDE.md",
     "docs/STANDARDS_COMPATIBILITY.md",
+    "docs/case-studies/aos-kernel-release-surface-replay.md",
     "docs/RELEASE_GOVERNANCE.md",
     "ROADMAP.md",
     "SECURITY.md",
@@ -17,10 +18,13 @@
   ],
   "examples": [
     "examples/github-pr-signal-bundle.json",
-    "examples/gate-decision.json"
+    "examples/gate-decision.json",
+    "examples/aos-kernel-signal-bundle.json",
+    "examples/aos-kernel-gate-decision.json"
   ],
   "policies": [
-    "policies/default.yml"
+    "policies/default.yml",
+    "policies/aos-kernel-release-surface.yml"
   ],
   "tools": [
     "tools/__init__.py",
