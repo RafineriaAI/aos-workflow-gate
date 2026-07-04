@@ -221,6 +221,35 @@ def check_repository_hygiene() -> None:
         )
 
 
+def check_version_consistency() -> None:
+    version_match = re.search(
+        r'__version__ = "([^"]+)"', read_text("aos_workflow_gate/version.py")
+    )
+    if version_match is None:
+        fail("version.py does not define __version__")
+        return
+    version = version_match.group(1)
+
+    if f'version = "{version}"' not in read_text("pyproject.toml"):
+        fail(f"pyproject.toml version does not match version.py ({version})")
+
+    expected = f"aos-workflow-gate@v{version}"
+    data = json.loads(read_text("docs.json"))
+    documents = list(data.get("documents", []))
+    found_current = False
+    for path in documents:
+        text = read_text(path)
+        for match in re.finditer(r"aos-workflow-gate@v[0-9][^\s\"')]*", text):
+            if match.group(0) != expected:
+                fail(
+                    f"{path} references stale version {match.group(0)!r}; "
+                    f"current is {expected!r}"
+                )
+            found_current = True
+    if not found_current:
+        fail(f"no document references the current version tag {expected!r}")
+
+
 def check_action_surface() -> None:
     action = read_text("action.yml")
     required_action_snippets = (
@@ -258,6 +287,7 @@ def main() -> None:
     check_decision_fixture()
     check_repository_hygiene()
     check_action_surface()
+    check_version_consistency()
     print("public-surface check OK")
 
 

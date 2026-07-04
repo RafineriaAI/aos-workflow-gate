@@ -76,7 +76,7 @@ permissions:
 
 steps:
   - name: Run gate (advisory, zero-config)
-    uses: RafineriaAI/aos-workflow-gate@v0.3.0
+    uses: RafineriaAI/aos-workflow-gate@v0.5.0
     with:
       required-checks: "ci / validate"
 ```
@@ -105,7 +105,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.3.0
+    uses: RafineriaAI/aos-workflow-gate@v0.5.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
