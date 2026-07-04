@@ -5,6 +5,7 @@ policy) from the GitHub check-runs API for one commit.
 ``evaluate`` turns a signal bundle plus a policy into a decision record.
 ``verify`` recomputes a record's digests to detect tampering or a mismatched
 source bundle. ``summarize`` renders a record as Markdown for maintainers.
+``export`` wraps a verified record in an unsigned in-toto Statement.
 In advisory mode the process exit code is always 0; only a policy in blocking
 mode (or ``--enforce``) makes a ``BLOCK`` verdict fail.
 """
@@ -28,6 +29,7 @@ from .collect import (
 from .errors import InputError
 from .evaluate import BLOCK, evaluate
 from .evidence import build_record, verify_record
+from .export import build_statement
 from .policy import load_policy
 from .summarize import render_markdown
 from .version import __version__
@@ -45,6 +47,8 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_verify(args)
         if args.command == "summarize":
             return _cmd_summarize(args)
+        if args.command == "export":
+            return _cmd_export(args)
     except InputError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -134,6 +138,22 @@ def _build_parser() -> argparse.ArgumentParser:
     summarize_parser.add_argument(
         "--input", required=True, help="decision record JSON"
     )
+
+    export_parser = subparsers.add_parser(
+        "export",
+        help="wrap a verified decision record in an unsigned in-toto "
+        "Statement",
+    )
+    export_parser.add_argument(
+        "--input", required=True, help="decision record JSON"
+    )
+    export_parser.add_argument(
+        "--format",
+        choices=["in-toto-statement"],
+        default="in-toto-statement",
+        help="export format (default: in-toto-statement)",
+    )
+    export_parser.add_argument("--out", help="write the statement here")
     return parser
 
 
@@ -214,6 +234,22 @@ def _cmd_summarize(args: argparse.Namespace) -> int:
     text, intact = render_markdown(record)
     sys.stdout.write(text)
     return 0 if intact else 1
+
+
+def _cmd_export(args: argparse.Namespace) -> int:
+    record = _load_json(args.input)
+    statement = build_statement(record)
+    text = json.dumps(statement, indent=2, ensure_ascii=False, sort_keys=True)
+    text += "\n"
+    if args.out:
+        out_path = Path(args.out)
+        if out_path.parent != Path(""):
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(text, encoding="utf-8", newline="\n")
+        print(f"unsigned in-toto statement: {args.out}")
+    else:
+        sys.stdout.write(text)
+    return 0
 
 
 def _cmd_verify(args: argparse.Namespace) -> int:

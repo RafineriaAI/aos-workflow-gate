@@ -69,6 +69,12 @@ Candidate packs:
 
 ## Phase 4: evidence hardening
 
+Status: partially pulled forward. The unsigned in-toto Statement export
+(`export`) is implemented, with an operator-key signing recipe documented in
+`docs/DECISION_PREDICATE.md`. Official RafineriaAI-signed decision
+artifacts, provenance generation, and verification controls remain future
+work.
+
 Goal: strengthen evidence integrity after the decision contract is stable.
 
 Potential additions:

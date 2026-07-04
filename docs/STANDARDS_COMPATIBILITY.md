@@ -6,7 +6,7 @@ This document defines the intended compatibility surface for industry standards.
 
 ## Current status
 
-Phase 1 implements the local `evaluate` and `verify` CLI with deterministic replay; Phase 2 implements the advisory GitHub Action around the same evaluation; Phase 3 has started with a read-only GitHub check-runs collector. The repository does not yet implement SARIF or Scorecard adapters, signed evidence, provenance generation, SBOM export, SARIF upload, or compliance automation.
+Phase 1 implements the local `evaluate` and `verify` CLI with deterministic replay; Phase 2 implements the advisory GitHub Action around the same evaluation; Phase 3 has started with a read-only GitHub check-runs collector; the unsigned in-toto Statement export is implemented (pulled forward from Phase 4). The repository does not yet implement SARIF or Scorecard adapters, signed evidence issued by RafineriaAI, provenance generation, SBOM export, SARIF upload, or compliance automation.
 
 Any early output remains `UNSIGNED_NOT_OFFICIAL` until signing, publication, and verification controls exist.
 
@@ -29,7 +29,7 @@ Any early output remains `UNSIGNED_NOT_OFFICIAL` until signing, publication, and
 | OpenSSF Scorecard | Advisory supply-chain health signal. | Use as one heuristic input; never as a single final authority. |
 | SPDX | Future SBOM presence, license, package, and security metadata signal. | Do not generate or certify SBOMs in early releases. Preserve SBOM identity and digest if supplied. |
 | CycloneDX | Future SBOM, VEX, formulation, declaration, or supply-chain metadata signal. | Do not claim CycloneDX conformance until a concrete export or validation path exists. |
-| in-toto attestations | Future signed evidence envelope and subject binding model. | Current evidence is unsigned and unofficial; do not call it an attestation. |
+| in-toto attestations | Statement (v1) export is implemented: `export` wraps a verified decision record as the predicate and binds it to the gated commit (`gitCommit` digest). Operators may sign it with their own keys. | The exported Statement is unsigned and unofficial; do not call it an attestation until it is signed. |
 | SLSA | Future provenance and verification-summary alignment. | No SLSA level or SLSA compliance claim until build/source requirements and provenance verification are implemented. |
 | OPA/Rego or other policy engines | Possible future policy execution backend. | Start with explicit YAML or JSON policies to keep the MVP inspectable. |
 

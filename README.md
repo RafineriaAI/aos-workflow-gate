@@ -50,6 +50,17 @@ Render a record as Markdown (the same summary the GitHub Action posts):
 aos-workflow-gate summarize --input examples/gate-decision.json
 ```
 
+Export a verified record as an unsigned in-toto Statement and sign it with
+your own keys (see [docs/DECISION_PREDICATE.md](docs/DECISION_PREDICATE.md)):
+
+```bash
+aos-workflow-gate export \
+  --input examples/aos-kernel-gate-decision.json \
+  --out gate-statement.json
+cosign sign-blob --yes gate-statement.json \
+  --output-signature gate-statement.sig
+```
+
 The draft input and policy files are [examples/github-pr-signal-bundle.json](examples/github-pr-signal-bundle.json) and [policies/default.yml](policies/default.yml).
 
 ## GitHub Action
@@ -132,6 +143,7 @@ fail the step. This repository runs the action on itself in
 - [Use cases](docs/USE_CASES.md) gives the first practical workflow scenarios.
 - [Adoption guide](docs/ADOPTION_GUIDE.md) removes terminology and integration barriers.
 - [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md) maps planned integrations to SLSA, SPDX, CycloneDX, SARIF, in-toto, and OpenSSF Scorecard without claiming compliance.
+- [Decision record predicate](docs/DECISION_PREDICATE.md) defines the in-toto Statement export and operator-key signing recipe.
 - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
 - [Roadmap](ROADMAP.md) defines the phased plan.
 - [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.
