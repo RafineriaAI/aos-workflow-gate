@@ -12,9 +12,10 @@ branding:
 inputs:
   input:
     description: >-
-      Path to the signal bundle JSON. Leave empty for zero-config mode: the
-      completed check runs of the current commit are collected from the
-      GitHub API and gated with an explicit generated advisory policy.
+      Path to the signal bundle JSON. Leave empty for Self-Test Mode
+      (zero-config): the completed check runs of the current commit are
+      collected from the GitHub API and gated with an explicit generated
+      advisory policy. Self-Test Mode needs no checkout.
     required: false
     default: ""
   policy:
@@ -26,7 +27,7 @@ inputs:
     default: ""
   required-checks:
     description: >-
-      Zero-config mode only. Comma- or newline-separated check run names to
+      Self-Test Mode only. Comma- or newline-separated check run names to
       mark required in the generated policy; a missing or failed required
       check makes the verdict BLOCK.
     required: false
@@ -106,15 +107,14 @@ runs:
           required_count=$(python3 -c "import json,os;print(sum(1 for i in json.load(open(os.environ['GATE_OUT'])).get('inputs',[]) if i.get('required')))")
           {
             echo ""
-            echo "---"
             if [ "$required_count" = "0" ]; then
-              echo "_Advisory self-test complete: this gate records evidence" \
-                "but cannot BLOCK yet. Set \`required-checks\` to enforce," \
-                "or [request a guided pilot](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot.yml)" \
-                "to design a production-grade gate policy._"
+              echo "Self-Test complete. This gate records evidence but" \
+                "cannot BLOCK yet: set the required-checks input to" \
+                "enforce, or [request guided-pilot scoping](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)" \
+                "to design an enforceable gate policy for your workflows."
             else
-              echo "_Need help extending this gate across repositories or" \
-                "platforms? [Request a guided pilot](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot.yml)._"
+              echo "Need help extending this gate across repositories or" \
+                "platforms? [Request guided-pilot scoping](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)."
             fi
           } >> "$GITHUB_STEP_SUMMARY"
           {

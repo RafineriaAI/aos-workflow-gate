@@ -29,9 +29,29 @@ REQUIRED_SNIPPETS = {
         "Apache-2.0. See [LICENSE](LICENSE).",
         "See [NOTICE](NOTICE).",
         "checks: read",
+        "Self-Test Mode",
+        "No checkout is needed",
         "docs/RELEASE_GOVERNANCE.md",
         "docs/STANDARDS_COMPATIBILITY.md",
+        "docs/TRUST.md",
+        "docs/BUYER_FAQ.md",
         ".github/workflows/aos-workflow-gate-self.yml",
+    ],
+    "docs/TRUST.md": [
+        "Read-only by design",
+        "no telemetry",
+        "Zero runtime dependencies",
+        "AOS Verdict Seal",
+        "reserved product designation",
+        "no signing\nservice exists yet",
+    ],
+    "docs/BUYER_FAQ.md": [
+        "What data leaves my environment?",
+        "No write scopes",
+        "Apache-2.0",
+        "It is not a security audit",
+        "AOS Verdict Seal",
+        "guided-pilot-scoping.yml",
     ],
     "docs/CI_INTEGRATIONS.md": [
         "platform-neutral",
@@ -53,6 +73,8 @@ REQUIRED_SNIPPETS = {
         "does not grant any right to use",
         "Apache-2.0, Section 6",
         "UNSIGNED_NOT_OFFICIAL",
+        '"AOS Verdict Seal" is a reserved product designation',
+        "no right to\nuse that designation is granted",
     ],
     "docs/SCOPE.md": [
         "## Decision boundary",
@@ -99,11 +121,14 @@ REQUIRED_SNIPPETS = {
 
 UNSUPPORTED_POSITIVE_CLAIMS = [
     re.compile(r"\bis production-ready\b", re.IGNORECASE),
+    re.compile(r"\bproduction-grade\b", re.IGNORECASE),
     re.compile(r"\bprovides compliance certification\b", re.IGNORECASE),
     re.compile(r"\bcertifies compliance\b", re.IGNORECASE),
     re.compile(r"\bproves (?:the )?repository is secure\b", re.IGNORECASE),
     re.compile(r"\bformally proves workflow correctness\b", re.IGNORECASE),
 ]
+
+CLAIM_SCAN_EXTRA_PATHS = ["action.yml", "SECURITY.md"]
 
 INDEX_SECTIONS = ("documents", "examples", "policies", "tools", "ci")
 
@@ -134,7 +159,7 @@ def check_required_snippets() -> None:
 
 
 def check_claim_boundary() -> None:
-    checked_paths = []
+    checked_paths = list(CLAIM_SCAN_EXTRA_PATHS)
     data = json.loads(read_text("docs.json"))
     for section in ("documents", "examples", "policies"):
         checked_paths.extend(data.get(section, []))
@@ -263,7 +288,8 @@ def check_action_surface() -> None:
         "python3 -m aos_workflow_gate collect",
         "python3 -m aos_workflow_gate evaluate",
         "python3 -m aos_workflow_gate summarize",
-        "issues/new?template=guided-pilot.yml",
+        "issues/new?template=guided-pilot-scoping.yml",
+        "Self-Test Mode",
     )
     for snippet in required_action_snippets:
         if snippet not in action:

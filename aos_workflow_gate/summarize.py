@@ -15,6 +15,26 @@ from .evidence import verify_record
 
 VERDICTS = ("PASS", "WARN", "BLOCK")
 
+REPAIR_HINTS = {
+    "missing_required_source": (
+        "no completed check run with this exact name was found on the "
+        "commit; verify the name or wait for the check to finish, then "
+        "re-run the gate"
+    ),
+    "failed_required_source": (
+        "the required check did not conclude success; fix or re-run it, "
+        "then re-evaluate"
+    ),
+    "advisory_warning": (
+        "advisory findings warn but never block; review the source's own "
+        "report and decide"
+    ),
+    "malformed_input": (
+        "the signal bundle does not match schema draft-0; compare with "
+        "examples/github-pr-signal-bundle.json"
+    ),
+}
+
 
 def render_markdown(record: Any) -> tuple[str, bool]:
     """Render a decision record as Markdown.
@@ -70,6 +90,9 @@ def render_markdown(record: Any) -> tuple[str, bool]:
                 source = reason.get("source_id") or "-"
                 detail = reason.get("detail", "")
                 lines.append(f"- {severity} `{rule}` {source}: {detail}")
+                hint = REPAIR_HINTS.get(str(rule))
+                if hint:
+                    lines.append(f"  - Hint: {hint}")
         lines.append("")
 
     inputs = record.get("inputs")
@@ -84,8 +107,9 @@ def render_markdown(record: Any) -> tuple[str, bool]:
             if isinstance(source, dict):
                 required = "yes" if source.get("required") else "no"
                 lines.append(
-                    f"| {source.get('id', '-')} | {source.get('kind', '-')} "
-                    f"| {required} | {source.get('status', '-')} |"
+                    f"| {_cell(source.get('id', '-'))} "
+                    f"| {_cell(source.get('kind', '-'))} "
+                    f"| {required} | {_cell(source.get('status', '-'))} |"
                 )
         lines.append("")
         lines += _coverage_lines(inputs)
@@ -116,15 +140,21 @@ def _coverage_lines(inputs: list[Any]) -> list[str]:
     return lines
 
 
+def _cell(value: Any) -> str:
+    """Make a value safe inside a Markdown table cell (old-web friendly)."""
+    text = str(value)
+    return text.replace("|", "\\|").replace("\n", " ")
+
+
 def _dict_field(record: dict[str, Any], key: str) -> dict[str, Any]:
     value = record.get(key)
     return value if isinstance(value, dict) else {}
 
 
 def _subject_rows(subject: dict[str, Any]) -> list[str]:
-    rows = [f"| Repository | {subject.get('repository', '-')} |"]
+    rows = [f"| Repository | {_cell(subject.get('repository', '-'))} |"]
     if subject.get("ref"):
-        rows.append(f"| Ref | `{subject['ref']}` |")
+        rows.append(f"| Ref | `{_cell(subject['ref'])}` |")
     rows.append(f"| Commit | `{subject.get('sha', '-')}` |")
     if subject.get("pull_request") is not None:
         rows.append(f"| Pull request | #{subject['pull_request']} |")

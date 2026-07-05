@@ -36,6 +36,20 @@ def test_render_markdown_covers_decision_fields() -> None:
         assert source["id"] in text
 
 
+def test_render_markdown_adds_repair_hints() -> None:
+    record = _record()
+    text, _ = render_markdown(record)
+    assert "  - Hint: advisory findings warn but never block" in text
+
+
+def test_render_markdown_escapes_pipes_in_table_cells() -> None:
+    record = _record()
+    record["inputs"][0]["id"] = "weird|id"
+    text, _ = render_markdown(record)
+    assert "weird\\|id" in text
+    assert "| weird|id |" not in text
+
+
 def test_render_markdown_reports_coverage_with_required_sources() -> None:
     record = _record()
     text, _ = render_markdown(record)

@@ -6,7 +6,11 @@
 
 ## Reporting security issues
 
-Please report suspected security issues privately to the repository maintainer instead of opening a public issue.
+Please report suspected security issues privately through GitHub private
+vulnerability reporting:
+[Report a vulnerability](https://github.com/RafineriaAI/aos-workflow-gate/security/advisories/new)
+(repository **Security** tab -> **Report a vulnerability**). Do not open a
+public issue for suspected vulnerabilities.
 
 Include:
 
@@ -17,6 +21,6 @@ Include:
 
 ## Claim boundary
 
-At this stage, this repository does not claim to provide a security audit, compliance certification, signed provenance, or production-grade release gate.
+At this stage, this repository does not claim to provide a security audit, compliance certification, signed provenance, or a guaranteed production release gate.
 
-Future GitHub Action integration should use least-privilege permissions and treat all external workflow inputs as untrusted.
+The GitHub Action uses least-privilege, read-only permissions (`contents: read` plus `checks: read` for Self-Test Mode) and treats all external workflow inputs as untrusted.
