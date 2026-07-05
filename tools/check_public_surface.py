@@ -42,6 +42,8 @@ REQUIRED_SNIPPETS = {
         "no security-audit claim is made",
         "Never code, diffs, logs, or annotations",
         "control characters",
+        "AOS_GATE_WORKSPACE",
+        "writes only within the workspace",
         "30-second",
         "fails closed",
         "truncation can never turn a BLOCK into a\n  PASS",
@@ -301,6 +303,7 @@ def check_action_surface() -> None:
         "issues/new?template=guided-pilot-scoping.yml",
         "Self-Test Mode",
         "must not contain control characters",
+        "AOS_GATE_WORKSPACE: ${{ github.workspace }}",
     )
     for snippet in required_action_snippets:
         if snippet not in action:
