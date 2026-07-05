@@ -21,7 +21,7 @@ Every claim below comes with a way to check it without trusting us.
   typed Python (mypy strict). Reading it end to end is an afternoon, not a
   project.
 
-## What the evidence guarantees
+## What the evidence provides
 
 - **Deterministic.** The same bundle and policy always produce the same
   record. Verify: run `evaluate` twice and compare the files.

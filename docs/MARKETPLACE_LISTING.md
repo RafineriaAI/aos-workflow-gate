@@ -33,7 +33,8 @@ means BLOCK) and set enforce: "true" when you want a BLOCK verdict to
 fail the job. Poll slow checks with wait-for-checks.
 
 **Evidence that survives audit** - records are deterministic, replay
-offline forever, and refuse tampering. Export as an unsigned in-toto
+offline with no service dependency, and refuse tampering. Export as an
+unsigned in-toto
 Statement and sign with your own keys.
 
 **Nothing to trust blindly** - read-only permissions (contents + checks),

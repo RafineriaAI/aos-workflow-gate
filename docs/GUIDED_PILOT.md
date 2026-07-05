@@ -7,6 +7,11 @@ pilot pays for guidance, policy design, and evaluation on your data.
 
 ## Path
 
+0. **Readiness check (optional)** — the
+   [browser-only wizard](https://rafineriaai.github.io/aos-workflow-gate/pilot-wizard/)
+   qualifies the fit in two minutes and drafts a Decision-Gap Report that
+   prefills the scoping form. Nothing leaves your browser until you open
+   the form.
 1. **Scoping** — you submit the
    [scoping form](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)
    (platform, scale, what the gate should protect). We agree scope, price,
