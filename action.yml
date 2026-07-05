@@ -126,16 +126,8 @@ runs:
           python3 -m aos_workflow_gate summarize --input "$GATE_OUT" \
             >> "$GITHUB_STEP_SUMMARY" || true
           if [ -f .aos-gate/bundle.json ]; then
-            python3 -c "
-import json
-c = json.load(open('.aos-gate/bundle.json')).get('collection', {})
-status = c.get('status', 'unknown')
-line = f\"Collection: {status}\"
-if c.get('incomplete_required'):
-    names = ', '.join(str(n) for n in c['incomplete_required'])
-    line += f' - still running when the wait ended: {names}'
-print(line)
-" >> "$GITHUB_STEP_SUMMARY" || true
+            python3 -c 'import json; c = json.load(open(".aos-gate/bundle.json")).get("collection", {}); inc = c.get("incomplete_required") or []; extra = " - still running when the wait ended: " + ", ".join(str(n) for n in inc) if inc else ""; print("Collection: " + str(c.get("status", "unknown")) + extra)' \
+              >> "$GITHUB_STEP_SUMMARY" || true
           fi
           required_count=$(python3 -c "import json,os;print(sum(1 for i in json.load(open(os.environ['GATE_OUT'])).get('inputs',[]) if i.get('required')))")
           {

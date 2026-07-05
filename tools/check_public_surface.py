@@ -264,6 +264,7 @@ def check_repository_hygiene() -> None:
         "python -m mypy",
         "python -m pytest",
         "python tools/check_public_surface.py",
+        "yaml.safe_load(open('action.yml'))",
     )
     for snippet in required_workflow_snippets:
         if snippet not in workflow:
