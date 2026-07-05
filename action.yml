@@ -125,6 +125,18 @@ runs:
         if [ -f "$GATE_OUT" ]; then
           python3 -m aos_workflow_gate summarize --input "$GATE_OUT" \
             >> "$GITHUB_STEP_SUMMARY" || true
+          if [ -f .aos-gate/bundle.json ]; then
+            python3 -c "
+import json
+c = json.load(open('.aos-gate/bundle.json')).get('collection', {})
+status = c.get('status', 'unknown')
+line = f\"Collection: {status}\"
+if c.get('incomplete_required'):
+    names = ', '.join(str(n) for n in c['incomplete_required'])
+    line += f' - still running when the wait ended: {names}'
+print(line)
+" >> "$GITHUB_STEP_SUMMARY" || true
+          fi
           required_count=$(python3 -c "import json,os;print(sum(1 for i in json.load(open(os.environ['GATE_OUT'])).get('inputs',[]) if i.get('required')))")
           {
             echo ""
@@ -137,6 +149,13 @@ runs:
               echo "Need help extending this gate across repositories or" \
                 "platforms? [Request guided-pilot scoping](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)."
             fi
+            echo ""
+            echo "Reproduce locally (download the uploaded artifacts first):"
+            echo '```bash'
+            echo "pip install \"git+https://github.com/RafineriaAI/aos-workflow-gate@${GITHUB_ACTION_REF:-main}\""
+            echo "aos-workflow-gate verify --input gate-decision.json --bundle bundle.json"
+            echo "aos-workflow-gate summarize --input gate-decision.json"
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           {
             echo "verdict=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['verdict'])")"
