@@ -2,7 +2,7 @@
   "can_block": false,
   "generator": {
     "tool": "aos-workflow-gate",
-    "version": "0.9.0"
+    "version": "0.10.0"
   },
   "input_bundle_digest": "sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22",
   "inputs": [
@@ -11,6 +11,7 @@
       "id": "ci.validate",
       "kind": "github_check",
       "required": true,
+      "signal_source": null,
       "status": "success"
     },
     {
@@ -18,6 +19,7 @@
       "id": "codeql.analyze",
       "kind": "github_check",
       "required": false,
+      "signal_source": null,
       "status": "success"
     },
     {
@@ -25,6 +27,7 @@
       "id": "supply-chain.actionlint",
       "kind": "github_check",
       "required": false,
+      "signal_source": null,
       "status": "success"
     },
     {
@@ -32,6 +35,7 @@
       "id": "supply-chain.gitleaks",
       "kind": "github_check",
       "required": false,
+      "signal_source": null,
       "status": "success"
     },
     {
@@ -39,6 +43,7 @@
       "id": "supply-chain.scorecard",
       "kind": "github_check",
       "required": false,
+      "signal_source": null,
       "status": "success"
     }
   ],
@@ -49,7 +54,7 @@
     "verification_status": "UNSIGNED_NOT_OFFICIAL"
   },
   "reasons": [],
-  "record_digest": "sha256:87edd53d150dd540b55c1b58cbd4d36d3ecf49c55f46527cbe8ab7e3636cc58c",
+  "record_digest": "sha256:efed6349cafd64b14383f0dedf3f996f7db908376057d3878bc02d8439057b31",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": null,

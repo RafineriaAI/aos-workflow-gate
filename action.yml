@@ -106,11 +106,15 @@ runs:
           if [ -z "$policy" ]; then
             policy=.aos-gate/policy.json
           fi
+          extra_eval_args=(--github-context-match)
+        else
+          extra_eval_args=()
         fi
         if [ -z "$policy" ]; then
           policy="$GITHUB_ACTION_PATH/policies/default.yml"
         fi
-        args=(--input "$input" --policy "$policy" --out "$GATE_OUT")
+        args=(--input "$input" --policy "$policy" --out "$GATE_OUT"
+          "${extra_eval_args[@]}")
         if [ "$GATE_ENFORCE" = "true" ]; then
           args+=(--enforce)
         fi

@@ -2,7 +2,7 @@
   "can_block": false,
   "generator": {
     "tool": "aos-workflow-gate",
-    "version": "0.9.0"
+    "version": "0.10.0"
   },
   "input_bundle_digest": "sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19",
   "inputs": [
@@ -11,6 +11,7 @@
       "id": "agent.review",
       "kind": "ai_agent_review_summary",
       "required": false,
+      "signal_source": null,
       "status": "success"
     },
     {
@@ -18,6 +19,7 @@
       "id": "ci.validate",
       "kind": "github_check",
       "required": true,
+      "signal_source": null,
       "status": "success"
     },
     {
@@ -25,6 +27,7 @@
       "id": "scanner.sarif",
       "kind": "sarif_summary",
       "required": false,
+      "signal_source": null,
       "status": "warning"
     }
   ],
@@ -42,7 +45,7 @@
       "source_id": "scanner.sarif"
     }
   ],
-  "record_digest": "sha256:9936ebe6b605f296ddd2ad288ccc8669a3cd1a60ea2763bcd4bbfdc64b9af654",
+  "record_digest": "sha256:28d4c57723e48adb5d344fe538f04303b7cb7b9c37745f0821c9ebfe4e669b8b",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 42,

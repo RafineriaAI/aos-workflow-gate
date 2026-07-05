@@ -65,6 +65,7 @@ class Source:
     required: bool
     digest: str | None
     summary: str | None
+    signal_source: str | None = None
 
     def as_input(self) -> dict[str, Any]:
         return {
@@ -73,6 +74,7 @@ class Source:
             "status": self.status,
             "required": self.required,
             "digest": self.digest,
+            "signal_source": self.signal_source,
         }
 
 
@@ -273,11 +275,17 @@ def _normalize_source(
     if summary is not None and not isinstance(summary, str):
         reject(f"source '{source_id}' field 'summary' must be a string")
         return None
+    signal_source = item.get("signal_source")
+    if signal_source is not None and not isinstance(signal_source, str):
+        reject(f"source '{source_id}' field 'signal_source' must be a string")
+        return None
 
     seen.add(source_id)
     assert isinstance(kind, str)
     assert isinstance(status, str)
-    return Source(source_id, kind, status, required, digest, summary)
+    return Source(
+        source_id, kind, status, required, digest, summary, signal_source
+    )
 
 
 def _build(

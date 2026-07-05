@@ -83,6 +83,37 @@ rejection.
   `BLOCK` — a reader can tell an enforcing gate from an advisory one
   without guessing.
 
+## Zero-trust signalling
+
+- **Policy-digest guard.** `evaluate --policy-digest sha256:<hex>` pins the
+  expected policy; a swapped or edited policy file is an operational error
+  (exit 2) before any verdict is computed.
+- **Signal provenance.** Collector-produced sources carry
+  `signal_source: github_check_runs_api`; operator-asserted sources carry
+  whatever the operator declares (or nothing). The record preserves the
+  field, so machine-collected and operator-asserted signals stay
+  distinguishable.
+- **Context snapshot.** Self-Test Mode commits a snapshot of the fixed,
+  non-secret GitHub identity variables (repository, sha, ref, workflow,
+  run id and attempt, event name, actor, server URL) into the bundle with
+  its own canonical `context_digest`. A snapshot that fails its digest
+  check is an operational error (exit 2).
+- **Context match.** With `--github-context-match` (set automatically in
+  Self-Test Mode) the bundle subject must match the current GitHub context
+  through the same resolution code path the collector uses; a mismatch is
+  an operational error (exit 2), never a verdict.
+- **Strict token demarcation.** The API token is read from the environment
+  at request time and exists only in the request header; it is never
+  written into bundles, records, policies, summaries, warnings, or error
+  messages. A leak test asserts this against every produced artifact.
+- **Permissions contract.** The workflows request read scopes only; the
+  public-surface guard fails CI if any workflow ever requests a write
+  scope.
+
+Non-claim: zero-trust signalling adds no signing, no provenance
+attestation, no SLSA level, and no runtime attestation. It binds evidence
+to identity and context; it does not certify them.
+
 ## Permissions posture
 
 `contents: read` plus `checks: read` for Self-Test Mode; no `write` scope
