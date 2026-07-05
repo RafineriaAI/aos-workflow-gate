@@ -35,7 +35,32 @@ REQUIRED_SNIPPETS = {
         "docs/STANDARDS_COMPATIBILITY.md",
         "docs/TRUST.md",
         "docs/BUYER_FAQ.md",
+        "docs/GUIDED_PILOT.md",
+        "issues/new?template=feedback.yml",
+        "## Pilots and design partners",
         ".github/workflows/aos-workflow-gate-self.yml",
+    ],
+    "docs/VALUE.md": [
+        "Measured, not promised",
+        "What this does not promise",
+        "UNSIGNED_NOT_OFFICIAL",
+    ],
+    "docs/ONE_PAGER.md": [
+        "deterministic evidence infrastructure for",
+        "Proof, not promises",
+        "commits neither side",
+        "UNSIGNED_NOT_OFFICIAL",
+    ],
+    "docs/GUIDED_PILOT.md": [
+        "Submitting the form\n   commits neither side",
+        "## Design Partner variant",
+        "mutual NDA before any non-public material",
+        "does not deliver a security audit",
+    ],
+    "docs/MARKETPLACE_LISTING.md": [
+        "UI-only",
+        "UNSIGNED_NOT_OFFICIAL",
+        "Status:",
     ],
     "docs/USER_FAQ.md": [
         "## Failure taxonomy",
@@ -309,7 +334,7 @@ def check_version_consistency() -> None:
     found_current = False
     for path in documents:
         text = read_text(path)
-        for match in re.finditer(r"aos-workflow-gate@v[0-9][^\s\"')]*", text):
+        for match in re.finditer(r"aos-workflow-gate@v[0-9][^\s\"'`)]*", text):
             if match.group(0) != expected:
                 fail(
                     f"{path} references stale version {match.group(0)!r}; "

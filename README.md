@@ -144,6 +144,19 @@ and in the `verdict` output. Set `enforce: "true"` to make a `BLOCK` verdict
 fail the step. This repository runs the action on itself in
 [.github/workflows/aos-workflow-gate-self.yml](.github/workflows/aos-workflow-gate-self.yml).
 
+## Pilots and design partners
+
+Self-serve use is free (Apache-2.0, no feature gates). Evaluating a real
+release gate for your workflows? A [guided pilot](docs/GUIDED_PILOT.md)
+designs the policy for one real workflow and hands over measured,
+replayable results — the policy stays yours. A limited
+[design-partner variant](docs/GUIDED_PILOT.md#design-partner-variant)
+trades structured feedback for reduced scope fee.
+**[Request scoping →](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)**
+(commits neither side). Tried the gate?
+[Two minutes of feedback](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=feedback.yml)
+shapes the roadmap.
+
 ## Platform neutrality
 
 The gate core is platform-neutral: plain Python, zero runtime dependencies,
@@ -180,6 +193,10 @@ collector and the Action are GitHub-specific by design.
 - [Buyer FAQ](docs/BUYER_FAQ.md) answers security reviewers: data flows, permissions, free vs paid, vendor risk, platform coverage.
 - [Security readiness](docs/SECURITY_READINESS.md) documents the private-repo data model and implemented input hardening, each with a negative test.
 - [User FAQ](docs/USER_FAQ.md) answers first-run questions and maps every failure symptom to its meaning and fix.
+- [Value](docs/VALUE.md) states what the gate is worth, only as far as the evidence reaches.
+- [One-pager](docs/ONE_PAGER.md) is the sendable summary: problem, product, proof, engagement paths.
+- [Guided pilot](docs/GUIDED_PILOT.md) defines the paid assisted path and the design-partner variant.
+- [Marketplace listing](docs/MARKETPLACE_LISTING.md) holds the paste-ready listing copy and status.
 - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
 - [Roadmap](ROADMAP.md) defines the phased plan.
 - [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.
