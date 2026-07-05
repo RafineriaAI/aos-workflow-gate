@@ -1,0 +1,39 @@
+name: Feedback
+description: >-
+  Two minutes of feedback after trying the gate. No confidential material
+  in this public form, please.
+title: "[Feedback] "
+labels: ["feedback"]
+body:
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: How did the first run go?
+      options:
+        - Worked - I got a decision record
+        - Partially - summary unclear or verdict surprising
+        - Blocked - it failed or I gave up
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: What were you trying to gate?
+      placeholder: e.g. AI-agent PRs before merge; release candidates
+    validations:
+      required: true
+  - type: textarea
+    id: friction
+    attributes:
+      label: Biggest friction or missing piece
+    validations:
+      required: true
+  - type: dropdown
+    id: contact
+    attributes:
+      label: May we follow up on this issue?
+      options:
+        - "Yes"
+        - "No"
+    validations:
+      required: true

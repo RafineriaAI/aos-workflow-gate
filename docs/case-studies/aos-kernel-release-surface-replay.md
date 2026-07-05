@@ -1,5 +1,19 @@
 # Case Study: Real-Repository Release-Surface Replay
 
+## The 60-second version
+
+- Subject: a real public repository at a pinned commit, gated with a
+  policy written directly from its actual branch-protection ruleset.
+- Result: verdict `PASS` over 5 real signals in ~360 ms (cold start).
+- Proof: the committed decision record replays offline —
+  `aos-workflow-gate verify --input examples/aos-kernel-gate-decision.json
+  --bundle examples/aos-kernel-signal-bundle.json` prints `OK` on your
+  machine, today, with no network.
+- Method: every source digest is recomputable from the public API by
+  anyone; the recipe is below.
+
+## Full study
+
 This case study runs the gate on real workflow signals from a public
 repository at a pinned commit, and shows that the resulting decision record
 is replayable offline from the committed files alone.

@@ -23,6 +23,19 @@ body:
     validations:
       required: true
   - type: dropdown
+    id: engagement
+    attributes:
+      label: Engagement type
+      description: >-
+        Design partner runs at reduced scope fee in exchange for structured
+        feedback (see docs/GUIDED_PILOT.md).
+      options:
+        - Guided pilot
+        - Design partner
+        - Not sure yet
+    validations:
+      required: true
+  - type: dropdown
     id: platform
     attributes:
       label: CI platform
