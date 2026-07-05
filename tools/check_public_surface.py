@@ -37,6 +37,16 @@ REQUIRED_SNIPPETS = {
         "docs/BUYER_FAQ.md",
         ".github/workflows/aos-workflow-gate-self.yml",
     ],
+    "docs/SECURITY_READINESS.md": [
+        "## Private-repo data model",
+        "no security-audit claim is made",
+        "Never code, diffs, logs, or annotations",
+        "control characters",
+        "30-second",
+        "fails closed",
+        "truncation can never turn a BLOCK into a\n  PASS",
+        "No checkout required",
+    ],
     "docs/TRUST.md": [
         "Read-only by design",
         "no telemetry",
@@ -290,6 +300,7 @@ def check_action_surface() -> None:
         "python3 -m aos_workflow_gate summarize",
         "issues/new?template=guided-pilot-scoping.yml",
         "Self-Test Mode",
+        "must not contain control characters",
     )
     for snippet in required_action_snippets:
         if snippet not in action:
