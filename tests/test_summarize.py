@@ -29,7 +29,7 @@ def test_render_markdown_covers_decision_fields() -> None:
     assert record["record_digest"] in text
     assert record["input_bundle_digest"] in text
     assert "| Record self-check | OK |" in text
-    assert "UNSIGNED_NOT_OFFICIAL" in text
+    assert "UNSIGNED\\_NOT\\_OFFICIAL" in text
     for reason in record["reasons"]:
         assert reason["rule"] in text
     for source in record["inputs"]:

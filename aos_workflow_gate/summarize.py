@@ -56,7 +56,7 @@ def render_markdown(record: Any) -> tuple[str, bool]:
     lines: list[str] = [f"## Gate decision: {verdict}", ""]
     summary = record.get("summary")
     if isinstance(summary, str) and summary:
-        lines += [summary, ""]
+        lines += [_escape(summary), ""]
     if not intact:
         lines += [
             "> **Warning:** record content does not match its self-digest. "
@@ -66,17 +66,19 @@ def render_markdown(record: Any) -> tuple[str, bool]:
 
     lines += ["| Field | Value |", "| --- | --- |"]
     lines += _subject_rows(subject)
-    policy_id = policy.get("policy_id", "-")
-    mode = policy.get("mode", "-")
-    lines.append(f"| Policy | `{policy_id}` ({mode}) |")
-    lines.append(f"| Policy digest | `{policy.get('digest', '-')}` |")
+    policy_id = _code(policy.get("policy_id", "-"))
+    mode = _escape(policy.get("mode", "-"))
+    lines.append(f"| Policy | {policy_id} ({mode}) |")
+    lines.append(f"| Policy digest | {_code(policy.get('digest', '-'))} |")
     lines.append(
-        f"| Input bundle digest | `{record.get('input_bundle_digest', '-')}` |"
+        "| Input bundle digest | "
+        f"{_code(record.get('input_bundle_digest', '-'))} |"
     )
-    lines.append(f"| Record digest | `{record.get('record_digest', '-')}` |")
+    lines.append(f"| Record digest | {_code(record.get('record_digest', '-'))} |")
     lines.append(f"| Record self-check | {'OK' if intact else 'FAILED'} |")
     lines.append(
-        f"| Verification status | {record.get('verification_status', '-')} |"
+        "| Verification status | "
+        f"{_escape(record.get('verification_status', '-'))} |"
     )
     lines.append("")
 
@@ -85,11 +87,11 @@ def render_markdown(record: Any) -> tuple[str, bool]:
         lines += ["### Reasons", ""]
         for reason in reasons:
             if isinstance(reason, dict):
-                severity = reason.get("severity", "-")
+                severity = _escape(reason.get("severity", "-"))
                 rule = reason.get("rule", "-")
-                source = reason.get("source_id") or "-"
-                detail = reason.get("detail", "")
-                lines.append(f"- {severity} `{rule}` {source}: {detail}")
+                source = _escape(reason.get("source_id") or "-")
+                detail = _escape(reason.get("detail", ""))
+                lines.append(f"- {severity} {_code(rule)} {source}: {detail}")
                 hint = REPAIR_HINTS.get(str(rule))
                 if hint:
                     lines.append(f"  - Hint: {hint}")
@@ -107,9 +109,9 @@ def render_markdown(record: Any) -> tuple[str, bool]:
             if isinstance(source, dict):
                 required = "yes" if source.get("required") else "no"
                 lines.append(
-                    f"| {_cell(source.get('id', '-'))} "
-                    f"| {_cell(source.get('kind', '-'))} "
-                    f"| {required} | {_cell(source.get('status', '-'))} |"
+                    f"| {_escape(source.get('id', '-'))} "
+                    f"| {_escape(source.get('kind', '-'))} "
+                    f"| {required} | {_escape(source.get('status', '-'))} |"
                 )
         lines.append("")
         lines += _coverage_lines(inputs)
@@ -133,17 +135,34 @@ def _coverage_lines(inputs: list[Any]) -> list[str]:
         )
     else:
         required_ids = ", ".join(
-            f"`{source.get('id', '-')}`" for source in required
+            _code(source.get("id", "-")) for source in required
         )
         lines.append(f"- Blocking on: {required_ids}")
     lines.append("")
     return lines
 
 
-def _cell(value: Any) -> str:
-    """Make a value safe inside a Markdown table cell (old-web friendly)."""
-    text = str(value)
-    return text.replace("|", "\\|").replace("\n", " ")
+_ESCAPE_CHARS = "\\`*_[]<>|"
+
+
+def _escape(value: Any) -> str:
+    """Neutralize Markdown in an untrusted value used as plain text.
+
+    Source ids and statuses can be attacker-influenced (for example a fork
+    pull request can rename a job), so links, emphasis, HTML, code spans,
+    and table breaks are all escaped before the value reaches a summary.
+    """
+    text = str(value).replace("\r", " ").replace("\n", " ")
+    for ch in _ESCAPE_CHARS:
+        text = text.replace(ch, "\\" + ch)
+    return text
+
+
+def _code(value: Any) -> str:
+    """Render an untrusted value as an inline code span, safely."""
+    text = str(value).replace("\r", " ").replace("\n", " ")
+    text = text.replace("`", "'")
+    return f"`{text}`"
 
 
 def _dict_field(record: dict[str, Any], key: str) -> dict[str, Any]:
@@ -152,10 +171,10 @@ def _dict_field(record: dict[str, Any], key: str) -> dict[str, Any]:
 
 
 def _subject_rows(subject: dict[str, Any]) -> list[str]:
-    rows = [f"| Repository | {_cell(subject.get('repository', '-'))} |"]
+    rows = [f"| Repository | {_escape(subject.get('repository', '-'))} |"]
     if subject.get("ref"):
-        rows.append(f"| Ref | `{_cell(subject['ref'])}` |")
-    rows.append(f"| Commit | `{subject.get('sha', '-')}` |")
+        rows.append(f"| Ref | {_code(subject['ref'])} |")
+    rows.append(f"| Commit | {_code(subject.get('sha', '-'))} |")
     if subject.get("pull_request") is not None:
-        rows.append(f"| Pull request | #{subject['pull_request']} |")
+        rows.append(f"| Pull request | #{_escape(subject['pull_request'])} |")
     return rows

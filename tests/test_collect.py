@@ -125,7 +125,7 @@ def test_fetch_url_strips_repository_url(monkeypatch: pytest.MonkeyPatch) -> Non
         def read(self) -> bytes:
             return b'{"check_runs": []}'
 
-    def fake_urlopen(request):  # type: ignore[no-untyped-def]
+    def fake_urlopen(request, timeout=None):  # type: ignore[no-untyped-def]
         seen["url"] = request.full_url
         return _FakeResponse()
 

@@ -23,4 +23,4 @@ Include:
 
 At this stage, this repository does not claim to provide a security audit, compliance certification, signed provenance, or a guaranteed production release gate.
 
-The GitHub Action uses least-privilege, read-only permissions (`contents: read` plus `checks: read` for Self-Test Mode) and treats all external workflow inputs as untrusted.
+The GitHub Action uses least-privilege, read-only permissions (`contents: read` plus `checks: read` for Self-Test Mode) and treats all external workflow inputs as untrusted. Implemented input hardening and the private-repo data model are documented in [docs/SECURITY_READINESS.md](docs/SECURITY_READINESS.md).

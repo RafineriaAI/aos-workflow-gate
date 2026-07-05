@@ -16,43 +16,98 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import urllib.request
 from typing import Any
 from urllib.error import URLError
+from urllib.parse import urlparse
 
 from . import canonical
 from .errors import InputError
 
 DEFAULT_API_URL = "https://api.github.com"
 GENERATED_POLICY_ID = "collected-advisory"
+API_TIMEOUT_SECONDS = 30.0
+MAX_PAGES = 10
+_PER_PAGE = 100
+
+
+def validate_api_url(api_url: str) -> str:
+    """Validate an operator-supplied API base URL.
+
+    Only well-formed ``https`` URLs without embedded credentials, whitespace,
+    or control characters are accepted; the value flows into request URLs.
+    """
+    if any(ch.isspace() for ch in api_url) or "\x00" in api_url:
+        raise InputError("api url must not contain whitespace")
+    parsed = urlparse(api_url)
+    if parsed.scheme != "https":
+        raise InputError(f"api url must use https, got {api_url!r}")
+    if not parsed.hostname:
+        raise InputError(f"api url has no host: {api_url!r}")
+    if parsed.username or parsed.password:
+        raise InputError("api url must not embed credentials")
+    return api_url.rstrip("/")
 
 
 def fetch_check_runs(
-    repository: str, sha: str, *, token: str | None, api_url: str = DEFAULT_API_URL
+    repository: str,
+    sha: str,
+    *,
+    token: str | None,
+    api_url: str = DEFAULT_API_URL,
+    timeout: float = API_TIMEOUT_SECONDS,
+    max_pages: int = MAX_PAGES,
 ) -> list[dict[str, Any]]:
     """Fetch completed check runs for a commit from the GitHub API.
 
     ``repository`` may be ``owner/repo`` or a full project URL (GitHub
     Enterprise Server); only the ``owner/repo`` path is sent to the API.
+    Pagination is followed up to ``max_pages`` pages; if the API reports
+    more runs than were collected, a truncation warning goes to stderr and
+    the caller proceeds with what was collected (a truncated required check
+    still fails closed as missing).
     """
+    api_url = validate_api_url(api_url)
     repo_path = repository.rstrip("/").rsplit("/", 2)
     repo_slug = "/".join(repo_path[-2:]) if len(repo_path) >= 2 else repository
-    url = f"{api_url}/repos/{repo_slug}/commits/{sha}/check-runs?per_page=100"
     headers = {"Accept": "application/vnd.github+json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
-    request = urllib.request.Request(url, headers=headers)
-    try:
-        with urllib.request.urlopen(request) as response:
-            payload = json.load(response)
-    except (URLError, OSError, json.JSONDecodeError) as exc:
-        raise InputError(
-            f"cannot fetch check runs for {repository}@{sha}: {exc}"
-        ) from exc
-    runs = payload.get("check_runs")
-    if not isinstance(runs, list):
-        raise InputError("check-runs API response has no 'check_runs' list")
-    return [run for run in runs if isinstance(run, dict)]
+
+    runs: list[dict[str, Any]] = []
+    total_count = 0
+    for page in range(1, max_pages + 1):
+        url = (
+            f"{api_url}/repos/{repo_slug}/commits/{sha}/check-runs"
+            f"?per_page={_PER_PAGE}&page={page}"
+        )
+        request = urllib.request.Request(url, headers=headers)
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                payload = json.load(response)
+        except (URLError, OSError, json.JSONDecodeError) as exc:
+            raise InputError(
+                f"cannot fetch check runs for {repository}@{sha}: {exc}"
+            ) from exc
+        page_runs = payload.get("check_runs")
+        if not isinstance(page_runs, list):
+            raise InputError(
+                "check-runs API response has no 'check_runs' list"
+            )
+        raw_total = payload.get("total_count")
+        total_count = raw_total if isinstance(raw_total, int) else total_count
+        runs.extend(run for run in page_runs if isinstance(run, dict))
+        if len(page_runs) < _PER_PAGE or len(runs) >= total_count:
+            break
+
+    if total_count > len(runs):
+        print(
+            f"warning: collected {len(runs)} of {total_count} check runs "
+            "(truncated); uncollected required checks fail closed as missing",
+            file=sys.stderr,
+        )
+    return runs
 
 
 def build_bundle(

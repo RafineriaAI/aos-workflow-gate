@@ -72,6 +72,12 @@ runs:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
         set -u
+        case "$GATE_OUT" in
+          *$'\n'*|*$'\r'*)
+            echo "error: out path must not contain control characters" >&2
+            exit 2
+            ;;
+        esac
         input="$GATE_INPUT"
         policy="$GATE_POLICY"
         if [ -z "$input" ]; then
