@@ -31,7 +31,7 @@ from .errors import InputError
 from .evaluate import BLOCK, evaluate
 from .evidence import build_record, verify_record
 from .export import build_statement
-from .paths import safe_output_path
+from .paths import safe_output_path, workspace_boundary
 from .policy import load_policy
 from .summarize import render_markdown
 from .version import __version__
@@ -196,13 +196,16 @@ def _cmd_collect(args: argparse.Namespace) -> int:
         exclude=args.exclude,
         required=args.require,
     )
-    _write_json(safe_output_path(args.out), bundle)
+    _write_json(safe_output_path(args.out, workspace=workspace_boundary()), bundle)
     print(f"collected {len(bundle['sources'])} completed check run(s)")
     print(f"bundle: {args.out}")
 
     if args.policy_out:
         policy = build_generated_policy(bundle, required=args.require)
-        _write_json(safe_output_path(args.policy_out), policy)
+        _write_json(
+            safe_output_path(args.policy_out, workspace=workspace_boundary()),
+            policy,
+        )
         print(f"policy: {args.policy_out}")
     elif args.require:
         raise InputError("--require needs --policy-out")
@@ -226,7 +229,7 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
     text = json.dumps(record, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
 
     if args.out:
-        out_path = safe_output_path(args.out)
+        out_path = safe_output_path(args.out, workspace=workspace_boundary())
         if out_path.parent != Path(""):
             out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(text, encoding="utf-8", newline="\n")
@@ -254,7 +257,7 @@ def _cmd_export(args: argparse.Namespace) -> int:
     text = json.dumps(statement, indent=2, ensure_ascii=False, sort_keys=True)
     text += "\n"
     if args.out:
-        out_path = safe_output_path(args.out)
+        out_path = safe_output_path(args.out, workspace=workspace_boundary())
         if out_path.parent != Path(""):
             out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(text, encoding="utf-8", newline="\n")

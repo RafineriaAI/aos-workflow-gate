@@ -70,6 +70,7 @@ runs:
         GATE_ENFORCE: ${{ inputs.enforce }}
         GATE_REQUIRED_CHECKS: ${{ inputs.required-checks }}
         GITHUB_TOKEN: ${{ github.token }}
+        AOS_GATE_WORKSPACE: ${{ github.workspace }}
       run: |
         set -u
         case "$GATE_OUT" in

@@ -23,6 +23,64 @@ def test_safe_output_path_rejects_control_characters() -> None:
     assert safe_output_path("out/dir/record.json").name == "record.json"
 
 
+def test_workspace_bound_rejects_traversal_and_absolute(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "ws"
+    workspace.mkdir()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+
+    inside = safe_output_path("sub/record.json", workspace=workspace)
+    assert inside.is_relative_to(workspace.resolve())
+
+    for bad in ("../escape.json", str(outside / "x.json"), "sub/../../x.json"):
+        with pytest.raises(InputError, match="workspace boundary"):
+            safe_output_path(bad, workspace=workspace)
+
+
+def test_workspace_bound_rejects_symlink_escape(tmp_path: Path) -> None:
+    workspace = tmp_path / "ws"
+    workspace.mkdir()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    link = workspace / "link"
+    try:
+        link.symlink_to(outside, target_is_directory=True)
+    except OSError:
+        pytest.skip("symlinks not available on this system")
+    with pytest.raises(InputError, match="workspace boundary"):
+        safe_output_path("link/record.json", workspace=workspace)
+
+
+def test_cli_enforces_workspace_env(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    workspace = tmp_path / "ws"
+    workspace.mkdir()
+    monkeypatch.setenv("AOS_GATE_WORKSPACE", str(workspace))
+    bundle = ROOT / "examples" / "github-pr-signal-bundle.json"
+    policy = ROOT / "policies" / "default.yml"
+    escape = str(tmp_path / "escape.json")
+    assert (
+        cli.main(
+            ["evaluate", "--input", str(bundle), "--policy", str(policy),
+             "--out", escape]
+        )
+        == 2
+    )
+    assert not (tmp_path / "escape.json").exists()
+
+    assert (
+        cli.main(
+            ["evaluate", "--input", str(bundle), "--policy", str(policy),
+             "--out", "record.json"]
+        )
+        == 0
+    )
+    assert (workspace / "record.json").exists()
+
+
 def test_cli_rejects_injected_out_path(tmp_path: Path) -> None:
     bundle = ROOT / "examples" / "github-pr-signal-bundle.json"
     policy = ROOT / "policies" / "default.yml"

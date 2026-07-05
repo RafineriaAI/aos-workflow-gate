@@ -22,11 +22,17 @@ records with the same sensitivity as your check names.
 
 ## Implemented input hardening
 
-- **Safe output paths.** Operator-supplied `--out`/`--policy-out` paths are
-  rejected if empty or containing control characters (newline, carriage
-  return, NUL), and the action additionally refuses such an `out` input
-  before anything reaches `GITHUB_OUTPUT`. This closes output-file
-  injection through crafted paths.
+- **Workspace-bounded safe output paths.** Operator-supplied
+  `--out`/`--policy-out` paths are rejected if empty or if they contain
+  control characters (newline, carriage return, NUL), and the action
+  additionally refuses such an `out` input before anything reaches
+  `GITHUB_OUTPUT`. In the action, `AOS_GATE_WORKSPACE` is set to the job
+  workspace and every output path must resolve inside it after full
+  resolution — traversal (`..`), absolute paths outside the workspace, and
+  symlinked escapes are rejected. The action
+  therefore writes only within the workspace. Local CLI use without the
+  environment variable stays unbounded by design; set `AOS_GATE_WORKSPACE`
+  to opt in.
 - **Full Markdown escaping.** Every untrusted value rendered into the step
   summary (source ids, kinds, statuses, reason details, subject fields) is
   escaped or forced into a sanitized code span. A fork pull request that
