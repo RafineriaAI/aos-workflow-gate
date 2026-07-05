@@ -32,6 +32,14 @@ inputs:
       check makes the verdict BLOCK.
     required: false
     default: ""
+  wait-for-checks:
+    description: >-
+      Self-Test Mode only. Poll until every required check completes, up
+      to this many seconds (default "0": no polling). Only named
+      required-checks are waited for; a wait that ends incomplete fails
+      closed as missing and is recorded in the bundle's collection status.
+    required: false
+    default: "0"
   out:
     description: Path where the decision record JSON is written.
     required: false
@@ -69,6 +77,7 @@ runs:
         GATE_OUT: ${{ inputs.out }}
         GATE_ENFORCE: ${{ inputs.enforce }}
         GATE_REQUIRED_CHECKS: ${{ inputs.required-checks }}
+        GATE_WAIT_FOR_CHECKS: ${{ inputs.wait-for-checks }}
         GITHUB_TOKEN: ${{ github.token }}
         AOS_GATE_WORKSPACE: ${{ github.workspace }}
       run: |
@@ -83,7 +92,8 @@ runs:
         policy="$GATE_POLICY"
         if [ -z "$input" ]; then
           collect_args=(--github-context --out .aos-gate/bundle.json
-            --policy-out .aos-gate/policy.json)
+            --policy-out .aos-gate/policy.json
+            --wait-seconds "${GATE_WAIT_FOR_CHECKS:-0}")
           while IFS= read -r name; do
             name="$(printf '%s' "$name" \
               | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"

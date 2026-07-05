@@ -21,9 +21,19 @@ RECORD_DIGEST_FIELD = "record_digest"
 
 
 def build_record(
-    decision: Decision, *, policy: Policy, input_bundle_digest: str
+    decision: Decision,
+    *,
+    policy: Policy,
+    input_bundle_digest: str,
+    can_block: bool = False,
 ) -> dict[str, Any]:
-    """Build the stable, self-verifying decision record."""
+    """Build the stable, self-verifying decision record.
+
+    ``can_block`` records whether this evaluation, as configured, could
+    have failed the calling process on a ``BLOCK`` verdict (blocking policy
+    mode or explicit enforcement). A reader can then tell an enforcing gate
+    from a purely advisory one without guessing.
+    """
     record: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "generator": {"tool": "aos-workflow-gate", "version": __version__},
@@ -35,6 +45,7 @@ def build_record(
             "digest": policy.digest,
         },
         "verdict": decision.verdict,
+        "can_block": can_block,
         "verification_status": policy.verification_status,
         "summary": decision.summary,
         "reasons": [reason.as_dict() for reason in decision.reasons],

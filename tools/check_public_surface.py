@@ -46,6 +46,10 @@ REQUIRED_SNIPPETS = {
         "writes only within the workspace",
         "30-second",
         "fails closed",
+        "## Operational resilience",
+        "Infrastructure failure is never a policy verdict",
+        "Collection status is evidence",
+        "`can_block` in the record",
         "truncation can never turn a BLOCK into a\n  PASS",
         "No checkout required",
     ],
@@ -212,6 +216,7 @@ def check_decision_fixture() -> None:
         "verification_status",
         "record_digest",
         "input_bundle_digest",
+        "can_block",
     )
     for key in required_keys:
         if key not in record:
@@ -304,6 +309,7 @@ def check_action_surface() -> None:
         "Self-Test Mode",
         "must not contain control characters",
         "AOS_GATE_WORKSPACE: ${{ github.workspace }}",
+        "wait-for-checks",
     )
     for snippet in required_action_snippets:
         if snippet not in action:

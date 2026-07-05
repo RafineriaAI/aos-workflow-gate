@@ -77,6 +77,9 @@ def render_markdown(record: Any) -> tuple[str, bool]:
     lines.append(f"| Record digest | {_code(record.get('record_digest', '-'))} |")
     lines.append(f"| Record self-check | {'OK' if intact else 'FAILED'} |")
     lines.append(
+        f"| Can block this job | {'yes' if record.get('can_block') else 'no'} |"
+    )
+    lines.append(
         "| Verification status | "
         f"{_escape(record.get('verification_status', '-'))} |"
     )
@@ -115,6 +118,16 @@ def render_markdown(record: Any) -> tuple[str, bool]:
                 )
         lines.append("")
         lines += _coverage_lines(inputs)
+        if inputs and not record.get("can_block"):
+            required_any = any(
+                isinstance(s, dict) and s.get("required") for s in inputs
+            )
+            if required_any:
+                lines += [
+                    "- Advisory only: a BLOCK verdict would not fail the "
+                    "job (no enforcement configured).",
+                    "",
+                ]
 
     return "\n".join(lines), intact
 

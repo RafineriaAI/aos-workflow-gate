@@ -55,6 +55,34 @@ Each control has a negative test in `tests/` — the test suite attacks the
 gate with crafted paths, Markdown payloads, and malformed URLs and asserts
 rejection.
 
+## Operational resilience
+
+- **Bounded retries.** Transient API failures (timeouts, network errors,
+  429, rate-limited 403, 5xx) are retried up to 3 attempts per request
+  with capped backoff; `Retry-After` is honored up to 30 seconds. Other
+  HTTP errors fail immediately.
+- **Hard budgets.** One collection is bounded by a wall-clock deadline
+  (default 300 s), a total API-call limit (default 50), and a page limit;
+  exhausting any budget is an operational error.
+- **Infrastructure failure is never a policy verdict.** Every operational
+  failure (retries exhausted, budget exceeded, malformed API response)
+  exits with code 2 and produces no decision record — it cannot be
+  mistaken for a policy `BLOCK` (exit 1 under enforcement) or for any
+  verdict at all.
+- **Polling waits only for required checks.** `wait-for-checks` polls
+  until the named required checks complete; waiting on "everything" has no
+  stop condition because the gate's own job never completes while it
+  waits. A wait that ends incomplete is not an error: the missing required
+  check fails closed, and the reason is recorded.
+- **Collection status is evidence.** The bundle carries a `collection`
+  object (status complete/truncated/wait_timeout, API calls used, seconds
+  waited, incomplete required checks); the record's `input_bundle_digest`
+  anchors it, so operational context is replay-verifiable.
+- **`can_block` in the record.** Every decision record states whether the
+  evaluation, as configured, could have failed the calling process on
+  `BLOCK` — a reader can tell an enforcing gate from an advisory one
+  without guessing.
+
 ## Permissions posture
 
 `contents: read` plus `checks: read` for Self-Test Mode; no `write` scope

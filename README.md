@@ -92,7 +92,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.8.1
+        uses: RafineriaAI/aos-workflow-gate@v0.9.0
         with:
           required-checks: "ci / validate"
 ```
@@ -103,9 +103,11 @@ the workflow token. Public repositories happen to work without it; private
 repositories do not.
 
 `required-checks` is optional; named checks become required (missing or
-failed means `BLOCK`), every other collected check is advisory. The
-generated bundle and policy are written to `.aos-gate/` so the decision
-stays replayable.
+failed means `BLOCK`), every other collected check is advisory. Set
+`wait-for-checks: "120"` to poll until the required checks complete (only
+required checks are waited for; a wait that ends incomplete fails closed
+and is recorded in the bundle's collection status). The generated bundle
+and policy are written to `.aos-gate/` so the decision stays replayable.
 
 For full control, provide an explicit bundle and policy. The action is
 read-only, needs no repository secrets, writes a Markdown summary to the job
@@ -126,7 +128,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.8.1
+    uses: RafineriaAI/aos-workflow-gate@v0.9.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
