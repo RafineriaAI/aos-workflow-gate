@@ -167,8 +167,9 @@ def test_fetch_paginates_and_passes_timeout(
     monkeypatch.setattr(
         collect_module.urllib.request, "urlopen", fake_urlopen
     )
-    runs = fetch_check_runs("owner/repo", "a" * 40, token=None)
+    runs, truncated = fetch_check_runs("owner/repo", "a" * 40, token=None)
     assert len(runs) == 130
+    assert truncated is False
     assert seen["calls"] == 2
     assert seen["timeouts"] == {30.0}
     assert "page=1" in seen["urls"][0] and "page=2" in seen["urls"][1]
@@ -187,8 +188,11 @@ def test_fetch_warns_on_truncation(
     monkeypatch.setattr(
         collect_module.urllib.request, "urlopen", fake_urlopen
     )
-    runs = fetch_check_runs("owner/repo", "a" * 40, token=None, max_pages=2)
+    runs, truncated = fetch_check_runs(
+        "owner/repo", "a" * 40, token=None, max_pages=2
+    )
     assert len(runs) == 200
+    assert truncated is True
     err = capsys.readouterr().err
     assert "truncated" in err
     assert "fail closed" in err

@@ -22,10 +22,11 @@ from typing import Any
 from . import canonical
 from .collect import (
     DEFAULT_API_URL,
+    Budget,
     build_bundle,
     build_generated_policy,
-    fetch_check_runs,
     resolve_github_context,
+    wait_for_required,
 )
 from .errors import InputError
 from .evaluate import BLOCK, evaluate
@@ -96,6 +97,33 @@ def _build_parser() -> argparse.ArgumentParser:
         "--api-url",
         help="GitHub API base URL (default: GITHUB_API_URL env or "
         "https://api.github.com; set for GitHub Enterprise Server)",
+    )
+    collect_parser.add_argument(
+        "--wait-seconds",
+        type=float,
+        default=0.0,
+        help="poll until every --require check completes, up to this many "
+        "seconds (default 0: no polling)",
+    )
+    collect_parser.add_argument(
+        "--poll-interval",
+        type=float,
+        default=10.0,
+        help="seconds between polls while waiting (default 10)",
+    )
+    collect_parser.add_argument(
+        "--deadline-seconds",
+        type=float,
+        default=300.0,
+        help="hard wall-clock limit for the whole collection including "
+        "retries and waits (default 300)",
+    )
+    collect_parser.add_argument(
+        "--max-api-calls",
+        type=int,
+        default=50,
+        help="hard limit on API requests for the whole collection "
+        "(default 50)",
     )
     collect_parser.add_argument(
         "--exclude",
@@ -181,8 +209,39 @@ def _cmd_collect(args: argparse.Namespace) -> int:
         or os.environ.get("GITHUB_API_URL")
         or DEFAULT_API_URL
     )
+    budget = Budget(
+        deadline_seconds=args.deadline_seconds,
+        max_api_calls=args.max_api_calls,
+    )
 
-    runs = fetch_check_runs(repository, sha, token=token, api_url=api_url)
+    runs, truncated, incomplete, waited = wait_for_required(
+        repository,
+        sha,
+        args.require,
+        token=token,
+        api_url=api_url,
+        wait_seconds=args.wait_seconds,
+        poll_interval=args.poll_interval,
+        budget=budget,
+    )
+    status = "complete"
+    if truncated:
+        status = "truncated"
+    elif incomplete:
+        status = "wait_timeout"
+    collection: dict[str, Any] = {
+        "status": status,
+        "api_calls": budget.api_calls,
+        "waited_seconds": round(waited, 1),
+    }
+    if incomplete:
+        collection["incomplete_required"] = incomplete
+        print(
+            "warning: wait budget ended with incomplete required "
+            f"check(s): {', '.join(incomplete)}; they fail closed as "
+            "missing",
+            file=sys.stderr,
+        )
     bundle = build_bundle(
         runs,
         repository=repository,
@@ -195,6 +254,7 @@ def _cmd_collect(args: argparse.Namespace) -> int:
         ),
         exclude=args.exclude,
         required=args.require,
+        collection=collection,
     )
     _write_json(safe_output_path(args.out, workspace=workspace_boundary()), bundle)
     print(f"collected {len(bundle['sources'])} completed check run(s)")
@@ -224,7 +284,10 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
     policy = load_policy(Path(args.policy))
     decision = evaluate(bundle, policy)
     record = build_record(
-        decision, policy=policy, input_bundle_digest=canonical.digest(bundle)
+        decision,
+        policy=policy,
+        input_bundle_digest=canonical.digest(bundle),
+        can_block=bool(args.enforce or policy.mode == "blocking"),
     )
     text = json.dumps(record, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
 

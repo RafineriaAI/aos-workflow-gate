@@ -135,12 +135,13 @@ def test_fetch_url_strips_repository_url(monkeypatch: pytest.MonkeyPatch) -> Non
     monkeypatch.setattr(
         collect_module.json, "load", lambda fh: {"check_runs": []}
     )
-    collect_module.fetch_check_runs(
+    runs, truncated = collect_module.fetch_check_runs(
         "https://ghes.example.com/owner/repo",
         SHA,
         token=None,
         api_url="https://ghes.example.com/api/v3",
     )
+    assert runs == [] and truncated is False
     assert seen["url"].startswith(
         "https://ghes.example.com/api/v3/repos/owner/repo/commits/"
     )
@@ -153,7 +154,9 @@ def test_cli_collect_then_evaluate_offline(
         _run("ci / validate", run_id=1),
         _run("scanner", "failure", run_id=2),
     ]
-    monkeypatch.setattr(cli, "fetch_check_runs", lambda *a, **k: runs)
+    monkeypatch.setattr(
+        cli, "wait_for_required", lambda *a, **k: (runs, False, [], 0.0)
+    )
     bundle_path = tmp_path / "bundle.json"
     policy_path = tmp_path / "policy.json"
     assert (
@@ -190,8 +193,13 @@ def test_cli_collect_then_evaluate_offline(
         )
         == 0
     )
+    bundle_data = json.loads(bundle_path.read_text(encoding="utf-8"))
+    assert bundle_data["collection"]["status"] == "complete"
+    assert "api_calls" in bundle_data["collection"]
+
     record = json.loads(record_path.read_text(encoding="utf-8"))
     assert record["verdict"] == "WARN"
+    assert record["can_block"] is False
     assert record["policy"]["policy_id"] == "collected-advisory"
     reasons = {(r["rule"], r["source_id"]) for r in record["reasons"]}
     assert ("advisory_warning", "scanner") in reasons
@@ -202,7 +210,9 @@ def test_cli_collect_then_evaluate_offline(
 def test_cli_collect_require_needs_policy_out(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr(cli, "fetch_check_runs", lambda *a, **k: [])
+    monkeypatch.setattr(
+        cli, "wait_for_required", lambda *a, **k: ([], False, [], 0.0)
+    )
     result = cli.main(
         [
             "collect",
