@@ -6,6 +6,7 @@ from typing import Any
 
 import pytest
 
+from aos_workflow_gate import canonical
 from aos_workflow_gate.cli import main
 from aos_workflow_gate.errors import InputError
 from aos_workflow_gate.summarize import render_markdown
@@ -34,6 +35,28 @@ def test_render_markdown_covers_decision_fields() -> None:
         assert reason["rule"] in text
     for source in record["inputs"]:
         assert source["id"] in text
+
+
+def test_render_markdown_top_block() -> None:
+    record = _record()
+    text, _ = render_markdown(record)
+    assert "**What happened:**" in text
+    assert "**Can block this job:** no" in text
+    assert "**Next:**" in text
+    assert "advisory findings warn but never block" in text
+
+
+def test_next_step_adapts_to_decision_gap() -> None:
+    record = _record()
+    record["verdict"] = "PASS"
+    record["reasons"] = []
+    for source in record["inputs"]:
+        source["required"] = False
+    payload = {k: v for k, v in record.items() if k != "record_digest"}
+    record["record_digest"] = canonical.digest(payload)
+    text, _ = render_markdown(record)
+    assert "**Next:** define required checks" in text
+    assert 'required-checks: "' in text
 
 
 def test_render_markdown_adds_repair_hints() -> None:

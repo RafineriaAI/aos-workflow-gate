@@ -56,7 +56,11 @@ def render_markdown(record: Any) -> tuple[str, bool]:
     lines: list[str] = [f"## Gate decision: {verdict}", ""]
     summary = record.get("summary")
     if isinstance(summary, str) and summary:
-        lines += [_escape(summary), ""]
+        lines.append(f"**What happened:** {_escape(summary)}")
+    lines.append(
+        f"**Can block this job:** {'yes' if record.get('can_block') else 'no'}"
+    )
+    lines += [f"**Next:** {_next_step(record, intact)}", ""]
     if not intact:
         lines += [
             "> **Warning:** record content does not match its self-digest. "
@@ -76,9 +80,6 @@ def render_markdown(record: Any) -> tuple[str, bool]:
     )
     lines.append(f"| Record digest | {_code(record.get('record_digest', '-'))} |")
     lines.append(f"| Record self-check | {'OK' if intact else 'FAILED'} |")
-    lines.append(
-        f"| Can block this job | {'yes' if record.get('can_block') else 'no'} |"
-    )
     lines.append(
         "| Verification status | "
         f"{_escape(record.get('verification_status', '-'))} |"
@@ -146,6 +147,18 @@ def _coverage_lines(inputs: list[Any]) -> list[str]:
             "check cannot make this gate BLOCK. The record is evidence, "
             "not enforcement."
         )
+        candidate_ids = ", ".join(
+            str(source.get("id", ""))
+            .replace('"', "")
+            .replace("`", "'")
+            .replace("\n", " ")
+            for source in sources[:5]
+        )
+        if candidate_ids:
+            lines.append(
+                "- Suggestion: start with your detected checks, then trim: "
+                f'`required-checks: "{candidate_ids}"`'
+            )
     else:
         required_ids = ", ".join(
             _code(source.get("id", "-")) for source in required
@@ -153,6 +166,38 @@ def _coverage_lines(inputs: list[Any]) -> list[str]:
         lines.append(f"- Blocking on: {required_ids}")
     lines.append("")
     return lines
+
+
+def _next_step(record: dict[str, Any], intact: bool) -> str:
+    """One adaptive sentence telling the reader what to fix next."""
+    if not intact:
+        return (
+            "do not act on this record; regenerate it from the source "
+            "bundle and investigate the mutation"
+        )
+    verdict = record.get("verdict")
+    reasons = record.get("reasons")
+    if verdict in ("BLOCK", "WARN") and isinstance(reasons, list):
+        for reason in reasons:
+            if isinstance(reason, dict):
+                hint = REPAIR_HINTS.get(str(reason.get("rule")))
+                if hint:
+                    return hint
+    inputs = record.get("inputs")
+    sources = [s for s in inputs if isinstance(s, dict)] if isinstance(
+        inputs, list
+    ) else []
+    if sources and not any(s.get("required") for s in sources):
+        return (
+            "define required checks so the gate can BLOCK "
+            "(see the suggestion under Coverage)"
+        )
+    if not record.get("can_block"):
+        return (
+            'set enforce: "true" (or a blocking policy) so a BLOCK '
+            "verdict fails the job"
+        )
+    return "nothing — the gate is enforcing and green"
 
 
 _ESCAPE_CHARS = "\\`*_[]<>|"

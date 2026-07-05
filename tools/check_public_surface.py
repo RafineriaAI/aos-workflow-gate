@@ -37,6 +37,12 @@ REQUIRED_SNIPPETS = {
         "docs/BUYER_FAQ.md",
         ".github/workflows/aos-workflow-gate-self.yml",
     ],
+    "docs/USER_FAQ.md": [
+        "## Failure taxonomy",
+        "Never treat it as a policy decision",
+        "aos-workflow-gate verify --input gate-decision.json",
+        "wait-for-checks",
+    ],
     "docs/SECURITY_READINESS.md": [
         "## Private-repo data model",
         "no security-audit claim is made",
@@ -328,6 +334,7 @@ def check_action_surface() -> None:
         "must not contain control characters",
         "AOS_GATE_WORKSPACE: ${{ github.workspace }}",
         "wait-for-checks",
+        "Reproduce locally",
     )
     for snippet in required_action_snippets:
         if snippet not in action:
