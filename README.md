@@ -152,6 +152,10 @@ designs the policy for one real workflow and hands over measured,
 replayable results — the policy stays yours. A limited
 [design-partner variant](docs/GUIDED_PILOT.md#design-partner-variant)
 trades structured feedback for reduced scope fee.
+Not sure where you stand? The
+[pilot readiness wizard](https://rafineriaai.github.io/aos-workflow-gate/pilot-wizard/)
+runs entirely in your browser and drafts a Decision-Gap Report that
+prefills the scoping form.
 **[Request scoping →](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)**
 (commits neither side). Tried the gate?
 [Two minutes of feedback](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=feedback.yml)

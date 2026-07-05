@@ -23,8 +23,8 @@ submitting it commits neither side.
 
 **What happens if RafineriaAI disappears?**
 Your gate keeps working. The code is Apache-2.0, has zero runtime
-dependencies, and your decision records verify offline forever. There is no
-server-side component to lose.
+dependencies, and your decision records verify offline with no service
+dependency. There is no server-side component to lose.
 
 **Does PASS mean my repository is secure or compliant?**
 No. `PASS` means the explicit policy you chose was satisfied by the signals

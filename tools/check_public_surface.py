@@ -62,6 +62,13 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
         "Status:",
     ],
+    "docs/pilot-wizard/index.html": [
+        "Runs entirely in your browser",
+        "No cookies, no\nanalytics, no network calls",
+        "UNSIGNED_NOT_OFFICIAL",
+        "commits neither side",
+        "guided-pilot-scoping.yml",
+    ],
     "docs/USER_FAQ.md": [
         "## Failure taxonomy",
         "Never treat it as a policy decision",
@@ -173,6 +180,8 @@ REQUIRED_SNIPPETS = {
 UNSUPPORTED_POSITIVE_CLAIMS = [
     re.compile(r"\bis production-ready\b", re.IGNORECASE),
     re.compile(r"\bproduction-grade\b", re.IGNORECASE),
+    re.compile(r"\bzero-risk\b", re.IGNORECASE),
+    re.compile(r"\brisk-free\b", re.IGNORECASE),
     re.compile(r"\bprovides compliance certification\b", re.IGNORECASE),
     re.compile(r"\bcertifies compliance\b", re.IGNORECASE),
     re.compile(r"\bproves (?:the )?repository is secure\b", re.IGNORECASE),

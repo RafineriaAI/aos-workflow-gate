@@ -15,9 +15,9 @@ reaches.
 | Value | Mechanism | Verify it yourself |
 | --- | --- | --- |
 | One answer instead of archaeology | A single decision record per gate run: subject, policy digest, input digests, explained reasons | `summarize` any record |
-| Decisions that survive audit | Records are deterministic, tamper-evident, and replayable offline, forever | `verify --input --bundle` |
+| Decisions that survive audit | Records are deterministic, tamper-evident, and replayable offline with no service dependency | `verify --input --bundle` |
 | A gate that can actually block | `required-checks` + `enforce` turn advisory green-noise into an explicit contract | Failure taxonomy in [USER_FAQ.md](USER_FAQ.md) |
-| Zero-risk adoption | Self-Test Mode: no config, no checkout, read-only scopes, no telemetry, zero runtime dependencies, Apache-2.0 | [TRUST.md](TRUST.md) |
+| Low-friction adoption | Self-Test Mode: no config, no checkout, read-only scopes, no telemetry, zero runtime dependencies, Apache-2.0 | [TRUST.md](TRUST.md) |
 | Standards-track evidence | in-toto Statement export, signed with your own keys | [DECISION_PREDICATE.md](DECISION_PREDICATE.md) |
 
 ## Measured, not promised

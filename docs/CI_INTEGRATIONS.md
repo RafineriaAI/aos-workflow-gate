@@ -81,6 +81,6 @@ exits 1 on `BLOCK`; malformed operator input exits 2.
 
 Only the GitHub check-runs collector is implemented today. On other
 platforms the operator supplies the signal bundle, and the record's
-integrity guarantees (digests, replay, tamper evidence) apply from that
+integrity properties (digests, replay, tamper evidence) apply from that
 point on — collection provenance on those platforms is the operator's
 claim, not the gate's.
