@@ -65,21 +65,36 @@ The draft input and policy files are [examples/github-pr-signal-bundle.json](exa
 
 ## GitHub Action
 
-Zero-config quickstart — an advisory self-test of your pipeline, without
-writing any bundle or policy. The action collects the completed check runs
-of the current commit, generates an explicit advisory policy over them, and
-writes a replayable decision record plus a Markdown summary to the job page:
+Self-Test Mode (zero-config) — an advisory self-test of your pipeline,
+without writing any bundle or policy. The action collects the completed
+check runs of the current commit, generates an explicit advisory policy
+over them, and writes a replayable decision record plus a Markdown summary
+to the job page. This is a complete workflow file — copy it as
+`.github/workflows/aos-self-test.yml`. No checkout is needed: Self-Test
+Mode reads check runs through the API and installs from the action itself:
 
 ```yaml
+name: AOS Self-Test
+
+on:
+  pull_request:
+
 permissions:
   contents: read
   checks: read
 
-steps:
-  - name: Run gate (advisory, zero-config)
-    uses: RafineriaAI/aos-workflow-gate@v0.6.0
-    with:
-      required-checks: "ci / validate"
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned from actions/setup-python@v6 on 2026-07-03.
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+      - name: AOS self-test (advisory)
+        uses: RafineriaAI/aos-workflow-gate@v0.7.0
+        with:
+          required-checks: "ci / validate"
 ```
 
 `checks: read` is needed because a `permissions:` block sets every unlisted
@@ -111,7 +126,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.6.0
+    uses: RafineriaAI/aos-workflow-gate@v0.7.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
@@ -159,6 +174,8 @@ collector and the Action are GitHub-specific by design.
 - [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md) maps planned integrations to SLSA, SPDX, CycloneDX, SARIF, in-toto, and OpenSSF Scorecard without claiming compliance.
 - [Decision record predicate](docs/DECISION_PREDICATE.md) defines the in-toto Statement export and operator-key signing recipe.
 - [CI integrations](docs/CI_INTEGRATIONS.md) covers GitHub Enterprise Server, GitLab CI, and generic shell usage.
+- [Trust](docs/TRUST.md) shows how to verify every claim yourself: read-only permissions, no telemetry, zero dependencies, tamper evidence, offline replay.
+- [Buyer FAQ](docs/BUYER_FAQ.md) answers security reviewers: data flows, permissions, free vs paid, vendor risk, platform coverage.
 - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
 - [Roadmap](ROADMAP.md) defines the phased plan.
 - [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.
