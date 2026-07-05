@@ -25,6 +25,7 @@ from .collect import (
     Budget,
     build_bundle,
     build_generated_policy,
+    github_context_snapshot,
     resolve_github_context,
     wait_for_required,
 )
@@ -158,6 +159,18 @@ def _build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="exit non-zero on BLOCK regardless of policy mode",
     )
+    evaluate_parser.add_argument(
+        "--policy-digest",
+        help="expected sha256:<hex> digest of the policy; a mismatch is an "
+        "operational error (exit 2), not a verdict",
+    )
+    evaluate_parser.add_argument(
+        "--github-context-match",
+        action="store_true",
+        help="require the bundle subject to match the current GitHub "
+        "Actions context (repository and commit); a mismatch is an "
+        "operational error (exit 2), not a verdict",
+    )
 
     verify_parser = subparsers.add_parser(
         "verify", help="verify a decision record's integrity"
@@ -234,6 +247,10 @@ def _cmd_collect(args: argparse.Namespace) -> int:
         "api_calls": budget.api_calls,
         "waited_seconds": round(waited, 1),
     }
+    if args.github_context:
+        snapshot = github_context_snapshot()
+        collection["context_snapshot"] = snapshot
+        collection["context_digest"] = canonical.digest(snapshot)
     if incomplete:
         collection["incomplete_required"] = incomplete
         print(
@@ -282,6 +299,12 @@ def _write_json(path: Path, value: dict[str, Any]) -> None:
 def _cmd_evaluate(args: argparse.Namespace) -> int:
     bundle = _load_json(args.input)
     policy = load_policy(Path(args.policy))
+    if args.policy_digest and policy.digest != args.policy_digest:
+        raise InputError(
+            f"policy digest mismatch: expected {args.policy_digest}, "
+            f"loaded {policy.digest} (operational error, not a verdict)"
+        )
+    _check_context_integrity(bundle, require_match=args.github_context_match)
     decision = evaluate(bundle, policy)
     record = build_record(
         decision,
@@ -305,6 +328,39 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
     if (args.enforce or policy.mode == "blocking") and decision.verdict == BLOCK:
         return 1
     return 0
+
+
+def _check_context_integrity(bundle: Any, *, require_match: bool) -> None:
+    """Zero-trust checks binding the bundle to its execution context.
+
+    A committed context snapshot must match its own digest, and with
+    ``--github-context-match`` the bundle subject must match the current
+    GitHub context (resolved through the same code path the collector
+    uses). Failures are operational errors (exit 2), never verdicts.
+    """
+    if isinstance(bundle, dict):
+        collection = bundle.get("collection")
+        if isinstance(collection, dict) and "context_snapshot" in collection:
+            snapshot = collection.get("context_snapshot")
+            claimed = collection.get("context_digest")
+            if canonical.digest(snapshot) != claimed:
+                raise InputError(
+                    "context snapshot does not match its digest "
+                    "(operational error, not a verdict)"
+                )
+    if not require_match:
+        return
+    context = resolve_github_context()
+    subject = bundle.get("subject", {}) if isinstance(bundle, dict) else {}
+    for key in ("repository", "sha"):
+        expected = context.get(key)
+        actual = subject.get(key)
+        if expected != actual:
+            raise InputError(
+                f"bundle subject {key} {actual!r} does not match the "
+                f"current GitHub context {expected!r} "
+                "(operational error, not a verdict)"
+            )
 
 
 def _cmd_summarize(args: argparse.Namespace) -> int:

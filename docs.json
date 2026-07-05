@@ -48,6 +48,7 @@
     "tests/test_collect.py",
     "tests/test_export.py",
     "tests/test_security_hardening.py",
-    "tests/test_resilience.py"
+    "tests/test_resilience.py",
+    "tests/test_zero_trust.py"
   ]
 }

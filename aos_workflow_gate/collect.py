@@ -306,6 +306,7 @@ def build_bundle(
             {
                 "id": name,
                 "kind": "github_check",
+                "signal_source": "github_check_runs_api",
                 "status": conclusion if isinstance(conclusion, str) else "unknown",
                 "required": name in required_names,
                 "observed_at": run.get("completed_at"),
@@ -411,3 +412,31 @@ def resolve_github_context() -> dict[str, Any]:
 def _completed_at(run: dict[str, Any]) -> str:
     value = run.get("completed_at")
     return value if isinstance(value, str) else ""
+
+
+_CONTEXT_ENV_KEYS = (
+    "GITHUB_REPOSITORY",
+    "GITHUB_SHA",
+    "GITHUB_REF",
+    "GITHUB_WORKFLOW",
+    "GITHUB_RUN_ID",
+    "GITHUB_RUN_ATTEMPT",
+    "GITHUB_EVENT_NAME",
+    "GITHUB_ACTOR",
+    "GITHUB_SERVER_URL",
+)
+
+
+def github_context_snapshot() -> dict[str, str]:
+    """Snapshot the non-secret identity of the executing GitHub context.
+
+    Only fixed identity variables are captured — never tokens, secrets, or
+    free-form values beyond what GitHub itself sets. The snapshot is
+    committed into the bundle with its own canonical digest so the
+    execution context is evidence, not an afterthought.
+    """
+    return {
+        key: value
+        for key in _CONTEXT_ENV_KEYS
+        if (value := os.environ.get(key)) is not None
+    }

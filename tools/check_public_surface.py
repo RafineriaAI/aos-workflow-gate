@@ -46,6 +46,10 @@ REQUIRED_SNIPPETS = {
         "writes only within the workspace",
         "30-second",
         "fails closed",
+        "## Zero-trust signalling",
+        "Strict token demarcation",
+        "Permissions contract",
+        "zero-trust signalling adds no signing, no provenance",
         "## Operational resilience",
         "Infrastructure failure is never a policy verdict",
         "Collection status is evidence",
@@ -266,6 +270,20 @@ def check_repository_hygiene() -> None:
         )
 
 
+def check_permissions_contract() -> None:
+    """The gate's workflows must never request a write scope."""
+    workflow_dir = ROOT / ".github" / "workflows"
+    for workflow_path in sorted(workflow_dir.glob("*.yml")):
+        text = workflow_path.read_text(encoding="utf-8")
+        match = re.search(r"^\s+[a-z-]+:\s*write\b", text, re.MULTILINE)
+        if match:
+            fail(
+                f"{workflow_path.name} requests a write permission "
+                f"({match.group(0).strip()!r}); the permissions contract "
+                "is read-only"
+            )
+
+
 def check_version_consistency() -> None:
     version_match = re.search(
         r'__version__ = "([^"]+)"', read_text("aos_workflow_gate/version.py")
@@ -337,6 +355,7 @@ def main() -> None:
     check_decision_fixture()
     check_repository_hygiene()
     check_action_surface()
+    check_permissions_contract()
     check_version_consistency()
     print("public-surface check OK")
 
