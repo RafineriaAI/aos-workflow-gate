@@ -44,10 +44,29 @@ inputs:
     description: Path where the decision record JSON is written.
     required: false
     default: gate-decision.json
+  mode:
+    description: >-
+      "advisory" (default) reports the verdict without failing the job;
+      "enforce" makes a BLOCK verdict fail the step.
+    required: false
+    default: "advisory"
+  policy-pack:
+    description: >-
+      Bundled starter policy by name (minimal-pr-gate, release-candidate,
+      agent-review-advisory). Ignored when "policy" is set. See
+      docs/POLICY_PACKS.md.
+    required: false
+    default: ""
+  upload-artifact:
+    description: >-
+      Set to "true" to upload the decision record and the .aos-gate/
+      evidence files as the "aos-gate-evidence" artifact (runs even when
+      an enforced BLOCK fails the evaluate step).
+    required: false
+    default: "false"
   enforce:
     description: >-
-      Set to "true" to exit non-zero on BLOCK regardless of policy mode.
-      Default is advisory; the step succeeds and the verdict is reported.
+      Deprecated alias: "true" behaves like mode "enforce".
     required: false
     default: "false"
 
@@ -74,7 +93,9 @@ runs:
       env:
         GATE_INPUT: ${{ inputs.input }}
         GATE_POLICY: ${{ inputs.policy }}
+        GATE_POLICY_PACK: ${{ inputs.policy-pack }}
         GATE_OUT: ${{ inputs.out }}
+        GATE_MODE: ${{ inputs.mode }}
         GATE_ENFORCE: ${{ inputs.enforce }}
         GATE_REQUIRED_CHECKS: ${{ inputs.required-checks }}
         GATE_WAIT_FOR_CHECKS: ${{ inputs.wait-for-checks }}
@@ -88,38 +109,36 @@ runs:
             exit 2
             ;;
         esac
-        input="$GATE_INPUT"
-        policy="$GATE_POLICY"
-        if [ -z "$input" ]; then
-          collect_args=(--github-context --out .aos-gate/bundle.json
+        mode="$GATE_MODE"
+        if [ "$GATE_ENFORCE" = "true" ]; then
+          mode="enforce"
+        fi
+        args=(run --out "$GATE_OUT" --mode "$mode")
+        if [ -n "$GATE_INPUT" ]; then
+          args+=(--input "$GATE_INPUT")
+          if [ -z "$GATE_POLICY" ] && [ -z "$GATE_POLICY_PACK" ]; then
+            GATE_POLICY="$GITHUB_ACTION_PATH/policies/default.yml"
+          fi
+        else
+          args+=(--github-context
+            --bundle-out .aos-gate/bundle.json
             --policy-out .aos-gate/policy.json
             --wait-seconds "${GATE_WAIT_FOR_CHECKS:-0}")
           while IFS= read -r name; do
             name="$(printf '%s' "$name" \
               | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
             if [ -n "$name" ]; then
-              collect_args+=(--require "$name")
+              args+=(--require "$name")
             fi
           done <<< "$(printf '%s' "$GATE_REQUIRED_CHECKS" | tr ',' '\n')"
-          python3 -m aos_workflow_gate collect "${collect_args[@]}"
-          input=.aos-gate/bundle.json
-          if [ -z "$policy" ]; then
-            policy=.aos-gate/policy.json
-          fi
-          extra_eval_args=(--github-context-match)
-        else
-          extra_eval_args=()
         fi
-        if [ -z "$policy" ]; then
-          policy="$GITHUB_ACTION_PATH/policies/default.yml"
-        fi
-        args=(--input "$input" --policy "$policy" --out "$GATE_OUT"
-          "${extra_eval_args[@]}")
-        if [ "$GATE_ENFORCE" = "true" ]; then
-          args+=(--enforce)
+        if [ -n "$GATE_POLICY" ]; then
+          args+=(--policy "$GATE_POLICY")
+        elif [ -n "$GATE_POLICY_PACK" ]; then
+          args+=(--policy-pack "$GATE_POLICY_PACK")
         fi
         set +e
-        python3 -m aos_workflow_gate evaluate "${args[@]}"
+        python3 -m aos_workflow_gate "${args[@]}"
         rc=$?
         set -e
         if [ -f "$GATE_OUT" ]; then
@@ -142,6 +161,10 @@ runs:
                 "platforms? [Request guided-pilot scoping](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)."
             fi
             echo ""
+            echo "Replay path: record \`$GATE_OUT\`, bundle" \
+              "\`.aos-gate/bundle.json\`, policy \`.aos-gate/policy.json\`" \
+              "(artifact \`aos-gate-evidence\` when upload-artifact is true)."
+            echo ""
             echo "Reproduce locally (download the uploaded artifacts first):"
             echo '```bash'
             echo "pip install \"git+https://github.com/RafineriaAI/aos-workflow-gate@${GITHUB_ACTION_REF:-main}\""
@@ -156,3 +179,13 @@ runs:
           } >> "$GITHUB_OUTPUT"
         fi
         exit "$rc"
+    # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
+    - name: Upload evidence
+      if: ${{ always() && inputs.upload-artifact == 'true' }}
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+      with:
+        name: aos-gate-evidence
+        path: |
+          ${{ inputs.out }}
+          .aos-gate/
+        if-no-files-found: warn

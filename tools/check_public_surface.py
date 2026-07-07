@@ -372,15 +372,20 @@ def check_action_surface() -> None:
         "UNSIGNED_NOT_OFFICIAL",
         'default: "false"',
         "GITHUB_STEP_SUMMARY",
-        "python3 -m aos_workflow_gate collect",
-        "python3 -m aos_workflow_gate evaluate",
+        "args=(run --out",
         "python3 -m aos_workflow_gate summarize",
+        "--policy-pack",
+        "GATE_MODE: ${{ inputs.mode }}",
         "issues/new?template=guided-pilot-scoping.yml",
         "Self-Test Mode",
         "must not contain control characters",
         "AOS_GATE_WORKSPACE: ${{ github.workspace }}",
         "wait-for-checks",
         "Reproduce locally",
+        "Replay path:",
+        "name: aos-gate-evidence",
+        "uses: actions/upload-artifact@"
+        "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
     )
     for snippet in required_action_snippets:
         if snippet not in action:
