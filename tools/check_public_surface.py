@@ -72,7 +72,7 @@ REQUIRED_SNIPPETS = {
         "Copy workflow",
     ],
     "docs/FUNNEL.md": [
-        "A human enters exactly once",
+        "human enters exactly once",
         "## Where a human is required",
         "no telemetry reporting you were ever here",
         "UNSIGNED_NOT_OFFICIAL",
@@ -387,7 +387,9 @@ def check_version_consistency() -> None:
     found_current = False
     for path in documents:
         text = read_text(path)
-        for match in re.finditer(r"aos-workflow-gate@v[0-9][^\s\"'`)]*", text):
+        for match in re.finditer(
+            r"aos-workflow-gate@v[0-9][^\s\"'`)\\]*", text
+        ):
             if match.group(0) != expected:
                 fail(
                     f"{path} references stale version {match.group(0)!r}; "
