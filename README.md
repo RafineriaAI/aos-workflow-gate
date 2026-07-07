@@ -92,7 +92,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.13.0
+        uses: RafineriaAI/aos-workflow-gate@v0.14.0
         with:
           required-checks: "ci / validate"
 ```
@@ -108,6 +108,13 @@ failed means `BLOCK`), every other collected check is advisory. Set
 required checks are waited for; a wait that ends incomplete fails closed
 and is recorded in the bundle's collection status). The generated bundle
 and policy are written to `.aos-gate/` so the decision stays replayable.
+
+Further inputs: `mode: "enforce"` makes a `BLOCK` verdict fail the step
+(default `advisory` never fails the job); `policy-pack: minimal-pr-gate`
+selects a bundled starter policy (see
+[docs/POLICY_PACKS.md](docs/POLICY_PACKS.md)); `upload-artifact: "true"`
+uploads the record and `.aos-gate/` evidence as the `aos-gate-evidence`
+artifact, even when an enforced `BLOCK` fails the evaluate step.
 
 For full control, provide an explicit bundle and policy. The action is
 read-only, needs no repository secrets, writes a Markdown summary to the job
@@ -128,7 +135,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.13.0
+    uses: RafineriaAI/aos-workflow-gate@v0.14.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

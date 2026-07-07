@@ -28,7 +28,7 @@ names.
 Download the artifacts, then:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.13.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.14.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json
 ```

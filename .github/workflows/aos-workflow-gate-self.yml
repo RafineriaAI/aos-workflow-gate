@@ -21,12 +21,13 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.11"
-      - name: Run gate (advisory)
+      - name: Run gate (advisory, explicit input)
         id: gate
         uses: ./
         with:
           input: examples/github-pr-signal-bundle.json
           policy: policies/default.yml
+          mode: advisory
           out: .tmp/gate-decision.json
       - name: Check outputs
         env:
@@ -56,11 +57,12 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.11"
-      - name: Run gate (advisory, zero-config)
+      - name: Run gate (Self-Test Mode, embedded artifact)
         id: gate
         uses: ./
         with:
           out: .aos-gate/gate-decision.json
+          upload-artifact: "true"
       - name: Replay collected decision offline
         env:
           RECORD: ${{ steps.gate.outputs.record }}
@@ -68,12 +70,6 @@ jobs:
           test -f "$RECORD"
           python3 -m aos_workflow_gate verify --input "$RECORD" \
             --bundle .aos-gate/bundle.json
-      # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
-      - name: Upload zero-config decision record
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: gate-decision-zero-config
-          path: .aos-gate/
 
   no-checkout:
     name: AOS Workflow Gate Self / no-checkout
