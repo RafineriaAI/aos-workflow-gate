@@ -63,6 +63,7 @@
     ".github/ISSUE_TEMPLATE/feedback.yml",
     ".github/workflows/aos-workflow-gate-ci.yml",
     ".github/workflows/aos-workflow-gate-self.yml",
+    ".github/workflows/aos-workflow-gate-release-gate.yml",
     "tests/test_public_surface.py",
     "tests/test_evaluate.py",
     "tests/test_summarize.py",
