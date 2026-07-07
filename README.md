@@ -211,6 +211,7 @@ collector and the Action are GitHub-specific by design.
 - [Guided pilot](docs/GUIDED_PILOT.md) defines the paid assisted path and the design-partner variant.
 - [Marketplace listing](docs/MARKETPLACE_LISTING.md) holds the paste-ready listing copy and status.
 - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
+- [Green, but incomplete](docs/case-studies/green-but-incomplete.md) shows a fully green dashboard hiding a control that never ran — and the gate recording it as a named, replayable `WARN`.
 - [Roadmap](ROADMAP.md) defines the phased plan.
 - [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.
 - [Draft signal bundle](examples/github-pr-signal-bundle.json) and [draft policy](policies/default.yml) make the first use case concrete.

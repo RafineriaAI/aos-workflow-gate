@@ -69,6 +69,12 @@ REQUIRED_SNIPPETS = {
         "commits neither side",
         "guided-pilot-scoping.yml",
     ],
+    "docs/case-studies/green-but-incomplete.md": [
+        "skipped **by design**",
+        "shows visibility, not a vulnerability",
+        "makes no security claim",
+        "UNSIGNED_NOT_OFFICIAL",
+    ],
     "docs/USER_FAQ.md": [
         "## Failure taxonomy",
         "Never treat it as a policy decision",
