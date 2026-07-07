@@ -410,7 +410,7 @@ def check_version_consistency() -> None:
     for path in documents:
         text = read_text(path)
         for match in re.finditer(
-            r"aos-workflow-gate@v[0-9][^\s\"'`)\\]*", text
+            r"aos-workflow-gate@v[0-9][^\s\"'`)\\<]*", text
         ):
             if match.group(0) != expected:
                 fail(
