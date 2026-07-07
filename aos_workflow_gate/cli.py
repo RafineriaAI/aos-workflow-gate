@@ -16,6 +16,7 @@ import argparse
 import json
 import os
 import sys
+from importlib import resources
 from pathlib import Path
 from typing import Any
 
@@ -54,11 +55,51 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_summarize(args)
         if args.command == "export":
             return _cmd_export(args)
+        if args.command == "run":
+            return _cmd_run(args)
     except InputError as exc:
         print(f"error: {exc}", file=sys.stderr)
+        print(
+            "hint: every failure symptom is mapped to its meaning and fix "
+            "in docs/USER_FAQ.md (failure taxonomy)",
+            file=sys.stderr,
+        )
         return 2
     parser.error("no command given")
     return 2
+
+
+_EXAMPLES = """\
+examples:
+  # one command: collect this commit's checks, gate, and summarize
+  aos-workflow-gate run --github-context --require "ci / validate" \\
+      --policy-pack minimal-pr-gate
+
+  # the same, fully offline from committed files
+  aos-workflow-gate run --input examples/github-pr-signal-bundle.json \\
+      --policy policies/default.yml
+
+  # replay a committed decision with no network
+  aos-workflow-gate verify --input examples/gate-decision.json \\
+      --bundle examples/github-pr-signal-bundle.json
+"""
+
+
+def resolve_policy_pack(name: str) -> Path:
+    """Resolve a bundled policy pack by name to a filesystem path."""
+    if not name.replace("-", "").isalnum():
+        raise InputError(f"invalid policy pack name {name!r}")
+    trav = resources.files("aos_workflow_gate").joinpath("packs", f"{name}.yml")
+    path = Path(str(trav))
+    if not path.is_file():
+        packs = sorted(
+            p.stem for p in Path(str(resources.files("aos_workflow_gate")
+            .joinpath("packs"))).glob("*.yml")
+        )
+        raise InputError(
+            f"unknown policy pack {name!r}; available: {', '.join(packs)}"
+        )
+    return path
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -66,9 +107,101 @@ def _build_parser() -> argparse.ArgumentParser:
         prog="aos-workflow-gate",
         description="Evidence-based workflow gate over CI, PR, scanner, "
         "and AI-agent signals.",
+        epilog=_EXAMPLES,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("--version", action="version", version=__version__)
     subparsers = parser.add_subparsers(dest="command")
+
+    run_parser = subparsers.add_parser(
+        "run",
+        help="collect, evaluate, and summarize in one command",
+        epilog=_EXAMPLES,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    run_parser.add_argument(
+        "--input", help="existing signal bundle JSON (skips collection)"
+    )
+    run_parser.add_argument(
+        "--github-context",
+        action="store_true",
+        help="collect from the current GitHub Actions context "
+        "(implies --github-context-match)",
+    )
+    run_parser.add_argument("--repository", help="owner/repo for collection")
+    run_parser.add_argument("--sha", help="commit SHA for collection")
+    run_parser.add_argument("--ref", help="optional subject ref")
+    run_parser.add_argument(
+        "--pull-request", type=int, help="optional subject pull request"
+    )
+    run_parser.add_argument(
+        "--require", action="append", default=[],
+        help="required check name (repeatable)",
+    )
+    run_parser.add_argument(
+        "--exclude", action="append", default=[],
+        help="check run name to exclude (repeatable)",
+    )
+    run_parser.add_argument(
+        "--sarif", action="append", default=[], metavar="PATH",
+        help="add a SARIF file as a source (repeatable)",
+    )
+    run_parser.add_argument(
+        "--scorecard", metavar="PATH",
+        help="add a Scorecard JSON report as a presence source",
+    )
+    run_parser.add_argument(
+        "--policy", help="policy JSON or YAML (path)"
+    )
+    run_parser.add_argument(
+        "--policy-pack",
+        help="bundled starter policy by name (see docs/POLICY_PACKS.md)",
+    )
+    run_parser.add_argument(
+        "--policy-digest",
+        help="expected sha256:<hex> of the policy; mismatch exits 2",
+    )
+    run_parser.add_argument(
+        "--mode", choices=["advisory", "enforce"], default="advisory",
+        help="enforce makes a BLOCK verdict exit 1 (default: advisory)",
+    )
+    run_parser.add_argument(
+        "--out", default="gate-decision.json",
+        help="decision record path (default: gate-decision.json)",
+    )
+    run_parser.add_argument(
+        "--bundle-out", default=".aos-gate/bundle.json",
+        help="where to write the collected bundle",
+    )
+    run_parser.add_argument(
+        "--policy-out", default=".aos-gate/policy.json",
+        help="where to write the generated policy (generated mode only)",
+    )
+    run_parser.add_argument(
+        "--wait-seconds", type=float, default=0.0,
+        help="poll until required checks complete (default 0)",
+    )
+    run_parser.add_argument(
+        "--poll-interval", type=float, default=10.0,
+        help="seconds between polls (default 10)",
+    )
+    run_parser.add_argument(
+        "--deadline-seconds", type=float, default=300.0,
+        help="hard wall-clock limit for collection (default 300)",
+    )
+    run_parser.add_argument(
+        "--max-api-calls", type=int, default=50,
+        help="hard limit on API requests (default 50)",
+    )
+    run_parser.add_argument(
+        "--token-env", default="GITHUB_TOKEN",
+        help="env var holding the API token (default GITHUB_TOKEN)",
+    )
+    run_parser.add_argument(
+        "--api-url",
+        help="GitHub API base URL (default: GITHUB_API_URL env or "
+        "https://api.github.com)",
+    )
 
     collect_parser = subparsers.add_parser(
         "collect", help="build a signal bundle from the GitHub check-runs API"
@@ -172,6 +305,11 @@ def _build_parser() -> argparse.ArgumentParser:
         "--enforce",
         action="store_true",
         help="exit non-zero on BLOCK regardless of policy mode",
+    )
+    evaluate_parser.add_argument(
+        "--mode",
+        choices=["advisory", "enforce"],
+        help="explicit mode; enforce is equivalent to --enforce",
     )
     evaluate_parser.add_argument(
         "--policy-digest",
@@ -315,6 +453,10 @@ def _write_json(path: Path, value: dict[str, Any]) -> None:
 
 
 def _cmd_evaluate(args: argparse.Namespace) -> int:
+    if args.mode == "advisory" and args.enforce:
+        raise InputError("--mode advisory conflicts with --enforce")
+    if args.mode == "enforce":
+        args.enforce = True
     bundle = _load_json(args.input)
     policy = load_policy(Path(args.policy))
     if args.policy_digest and policy.digest != args.policy_digest:
@@ -344,6 +486,128 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
         print(f"{decision.verdict}  {decision.summary}", file=sys.stderr)
 
     if (args.enforce or policy.mode == "blocking") and decision.verdict == BLOCK:
+        return 1
+    return 0
+
+
+def _cmd_run(args: argparse.Namespace) -> int:
+    """Collect, evaluate, and summarize in one command."""
+    if args.policy and args.policy_pack:
+        raise InputError("use either --policy or --policy-pack, not both")
+
+    workspace = workspace_boundary()
+    if args.input:
+        bundle = _load_json(args.input)
+    else:
+        if args.github_context:
+            context = resolve_github_context()
+        else:
+            context = {
+                "repository": None, "sha": None,
+                "ref": None, "pull_request": None,
+            }
+        repository = args.repository or context["repository"]
+        sha = args.sha or context["sha"]
+        if not repository or not sha:
+            raise InputError(
+                "run needs --input, or --repository and --sha, or "
+                "--github-context"
+            )
+        token = os.environ.get(args.token_env) if args.token_env else None
+        api_url = (
+            args.api_url
+            or os.environ.get("GITHUB_API_URL")
+            or DEFAULT_API_URL
+        )
+        budget = Budget(
+            deadline_seconds=args.deadline_seconds,
+            max_api_calls=args.max_api_calls,
+        )
+        runs, truncated, incomplete, waited = wait_for_required(
+            repository, sha, args.require,
+            token=token, api_url=api_url,
+            wait_seconds=args.wait_seconds,
+            poll_interval=args.poll_interval,
+            budget=budget,
+        )
+        status = "complete"
+        if truncated:
+            status = "truncated"
+        elif incomplete:
+            status = "wait_timeout"
+        collection: dict[str, Any] = {
+            "status": status,
+            "api_calls": budget.api_calls,
+            "waited_seconds": round(waited, 1),
+        }
+        if incomplete:
+            collection["incomplete_required"] = incomplete
+        if args.github_context:
+            snapshot = github_context_snapshot()
+            collection["context_snapshot"] = snapshot
+            collection["context_digest"] = canonical.digest(snapshot)
+        extra_sources = [sarif_source(Path(p)) for p in args.sarif]
+        if args.scorecard:
+            extra_sources.append(scorecard_source(Path(args.scorecard)))
+        bundle = build_bundle(
+            runs,
+            repository=repository,
+            sha=sha,
+            ref=args.ref or context["ref"],
+            pull_request=(
+                args.pull_request
+                if args.pull_request is not None
+                else context["pull_request"]
+            ),
+            exclude=args.exclude,
+            required=args.require,
+            collection=collection,
+            extra_sources=extra_sources,
+        )
+        _write_json(safe_output_path(args.bundle_out, workspace=workspace), bundle)
+
+    if args.policy:
+        policy_path = Path(args.policy)
+    elif args.policy_pack:
+        policy_path = resolve_policy_pack(args.policy_pack)
+    elif not args.input:
+        generated = build_generated_policy(bundle, required=args.require)
+        generated_path = safe_output_path(args.policy_out, workspace=workspace)
+        _write_json(generated_path, generated)
+        policy_path = generated_path
+    else:
+        raise InputError("run with --input needs --policy or --policy-pack")
+
+    policy = load_policy(policy_path)
+    if args.policy_digest and policy.digest != args.policy_digest:
+        raise InputError(
+            f"policy digest mismatch: expected {args.policy_digest}, "
+            f"loaded {policy.digest} (operational error, not a verdict)"
+        )
+    _check_context_integrity(bundle, require_match=args.github_context)
+
+    decision = evaluate(bundle, policy)
+    enforce = args.mode == "enforce"
+    record = build_record(
+        decision,
+        policy=policy,
+        input_bundle_digest=canonical.digest(bundle),
+        can_block=bool(enforce or policy.mode == "blocking"),
+    )
+    out_path = safe_output_path(args.out, workspace=workspace)
+    if out_path.parent != Path(""):
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(
+        json.dumps(record, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    text, _ = render_markdown(record)
+    print(f"{decision.verdict}  {decision.summary}")
+    print(f"record: {args.out}")
+    print()
+    sys.stdout.write(text)
+    if (enforce or policy.mode == "blocking") and decision.verdict == BLOCK:
         return 1
     return 0
 

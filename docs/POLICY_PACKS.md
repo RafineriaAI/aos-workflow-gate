@@ -1,6 +1,6 @@
 # Policy Packs
 
-Starter policies under `policies/packs/`. Packs are plain, inspectable
+Starter policies shipped inside the package (`aos_workflow_gate/packs/`), so `--policy-pack NAME` works from any install. Packs are plain, inspectable
 policy files — copy one, rename the `policy_id`, and edit the source ids
 to match your check names (`ci` is a placeholder). Nothing is hidden: a
 pack is exactly what `evaluate --policy` reads.
@@ -11,8 +11,8 @@ pack is exactly what `evaluate --policy` reads.
 | `release-candidate` | **blocking** | `ci`, `scanner.sarif` | `agent.review`, `scorecard` | release gates where a missing scan must block |
 | `agent-review-advisory` | advisory | `ci`, `agent.review` | `scanner.sarif`, `scorecard` | AI-agent changes: agent review must have run |
 
-The GitHub Action selects a pack by name (see the README); the CLI takes
-the file path directly. `release-candidate` is `mode: blocking`, so a
+Both the CLI (`run --policy-pack NAME`) and the GitHub Action select a pack
+by name; `evaluate --policy` takes any file path directly. `release-candidate` is `mode: blocking`, so a
 `BLOCK` verdict fails the process even without `--enforce`.
 
 Boundary: packs encode structure, not judgment about your tools; a pack
