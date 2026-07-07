@@ -30,6 +30,11 @@ pilot pays for guidance, policy design, and evaluation on your data.
 Confidentiality: a mutual NDA before any non-public material; your
 signals and results are your confidential information.
 
+The full deliverable set, file by file, with the handover checklist, is
+defined in [PILOT_PACKAGE.md](PILOT_PACKAGE.md); the report follows
+[a fixed template](templates/PILOT_REPORT_TEMPLATE.md) where every number
+links to a replayable artifact.
+
 ## Design Partner variant
 
 A limited number of design-partner engagements run at reduced scope fee
