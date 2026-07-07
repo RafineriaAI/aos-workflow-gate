@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AOS Workflow Gate — replayable PASS/WARN/BLOCK decisions for CI</title>
+<meta name="description" content="Zero-config GitHub Action and CLI that turn checks, scanners, and AI-agent signals into deterministic, tamper-evident PASS/WARN/BLOCK decision records you can replay offline. Read-only, zero dependencies, Apache-2.0.">
+<link rel="canonical" href="https://rafineriaai.github.io/aos-workflow-gate/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AOS Workflow Gate — replayable gate decisions for CI">
+<meta property="og:description" content="Deterministic, tamper-evident PASS/WARN/BLOCK records for pull requests and releases. Zero-config Self-Test, read-only, Apache-2.0.">
+<meta property="og:url" content="https://rafineriaai.github.io/aos-workflow-gate/">
+<meta property="og:image" content="https://rafineriaai.github.io/aos-workflow-gate/assets/banner.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{color-scheme:light dark}
+*{box-sizing:border-box}
+body{font:16px/1.55 system-ui,sans-serif;max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .6rem}
+.tag{color:#888;margin:0 0 1.6rem}
+.chips span{display:inline-block;font:600 13px/1 ui-monospace,monospace;color:#fff;border-radius:8px;padding:.45rem .7rem;margin-right:.5rem}
+.pass{background:#238636}.warn{background:#9e6a03}.block{background:#da3633}
+pre{background:#8881;border:1px solid #8883;border-radius:10px;padding:1rem;overflow-x:auto;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:.8rem;margin:1.4rem 0}
+.card{border:1px solid #8883;border-radius:12px;padding:1rem}
+.card h3{margin:.1rem 0 .4rem;font-size:1rem}
+.card p{margin:0;color:#888;font-size:.9rem}
+a.btn{display:inline-block;border:1px solid #8886;border-radius:10px;padding:.6rem 1rem;text-decoration:none;font-weight:600;margin:.2rem .4rem .2rem 0}
+.muted{color:#888;font-size:.85rem}
+</style>
+</head>
+<body>
+<h1>AOS Workflow Gate</h1>
+<p class="tag">Deterministic evidence for CI, PR, and release decisions —
+<span class="chips"><span class="pass">PASS</span><span class="warn">WARN</span><span class="block">BLOCK</span></span>
+records that are replayable, tamper-evident, and verifiable offline.</p>
+
+<p>A CI dashboard tells you <em>which</em> checks passed. The gate answers a
+stricter question at decision time: <strong>why did the gate decide, for
+this exact commit, policy, and set of signals</strong> — including controls
+that never ran and would otherwise hide behind a green dashboard.</p>
+
+<pre><code>permissions:
+  contents: read
+  checks: read
+
+steps:
+  - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+    with:
+      python-version: "3.11"
+  - uses: RafineriaAI/aos-workflow-gate@v0.14.0</code></pre>
+
+<p>
+<a class="btn" href="https://github.com/RafineriaAI/aos-workflow-gate">Repository &amp; docs</a>
+<a class="btn" href="pilot-wizard/">Pilot readiness wizard</a>
+<a class="btn" href="https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml">Request pilot scoping</a>
+</p>
+
+<div class="grid">
+<div class="card"><h3>Zero-config Self-Test</h3><p>No checkout, no setup: one step collects your commit's checks and writes a replayable decision record.</p></div>
+<div class="card"><h3>Verify, don't trust</h3><p>Read-only scopes, no telemetry, zero runtime dependencies — every claim has a <a href="https://github.com/RafineriaAI/aos-workflow-gate/blob/main/docs/TRUST.md">self-verification step</a>.</p></div>
+<div class="card"><h3>Real-data proof</h3><p>Two committed case studies replay offline, including a green dashboard <a href="https://github.com/RafineriaAI/aos-workflow-gate/blob/main/docs/case-studies/green-but-incomplete.md">hiding a control that never ran</a>.</p></div>
+<div class="card"><h3>Enforce on your terms</h3><p>Advisory by default; name required checks and switch to enforce when the evidence convinces you.</p></div>
+</div>
+
+<p class="muted">This page and the wizard run without cookies, analytics,
+or network calls. Decision records carry UNSIGNED_NOT_OFFICIAL status; no
+production, compliance, or security-audit claim is made.
+RafineriaAI builds deterministic evidence infrastructure for AI-controlled
+workflows — starting with replayable CI and release-gate decisions.</p>
+</body>
+</html>

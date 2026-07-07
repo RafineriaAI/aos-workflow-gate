@@ -1,5 +1,12 @@
 # aos-workflow-gate
 
+![AOS Workflow Gate — deterministic evidence for CI, PR and release decisions](docs/assets/banner.png)
+
+[![CI](https://github.com/RafineriaAI/aos-workflow-gate/actions/workflows/aos-workflow-gate-ci.yml/badge.svg)](https://github.com/RafineriaAI/aos-workflow-gate/actions/workflows/aos-workflow-gate-ci.yml)
+[![Self-Test](https://github.com/RafineriaAI/aos-workflow-gate/actions/workflows/aos-workflow-gate-self.yml/badge.svg)](https://github.com/RafineriaAI/aos-workflow-gate/actions/workflows/aos-workflow-gate-self.yml)
+[![Release](https://img.shields.io/github/v/release/RafineriaAI/aos-workflow-gate)](https://github.com/RafineriaAI/aos-workflow-gate/releases/latest)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+
 Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals.
 
 This repository is the workflow layer around `aos-kernel`. Its job is to make a pull request or release gate explainable and replayable: collect workflow signals, apply an explicit policy, and produce a `PASS`, `WARN`, or `BLOCK` decision with evidence.

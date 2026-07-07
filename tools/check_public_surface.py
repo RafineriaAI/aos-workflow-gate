@@ -62,6 +62,14 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
         "Status:",
     ],
+    "docs/index.html": [
+        "without cookies, analytics,\nor network calls",
+        "UNSIGNED_NOT_OFFICIAL",
+        "no\nproduction, compliance, or security-audit claim",
+        "deterministic evidence infrastructure for AI-controlled",
+        'name="description"',
+        'property="og:image"',
+    ],
     "docs/pilot-wizard/index.html": [
         "Runs entirely in your browser",
         "No cookies, no\nanalytics, no network calls",
@@ -248,7 +256,7 @@ UNSUPPORTED_POSITIVE_CLAIMS = [
 
 CLAIM_SCAN_EXTRA_PATHS = ["action.yml", "SECURITY.md"]
 
-INDEX_SECTIONS = ("documents", "examples", "policies", "tools", "ci")
+INDEX_SECTIONS = ("documents", "examples", "policies", "tools", "ci", "assets")
 
 
 def fail(message: str) -> None:

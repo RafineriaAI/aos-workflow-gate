@@ -25,6 +25,7 @@
     "docs/FUNNEL.md",
     "docs/PILOT_PACKAGE.md",
     "docs/templates/PILOT_REPORT_TEMPLATE.md",
+    "docs/index.html",
     "docs/pilot-wizard/index.html",
     "docs/MARKETPLACE_LISTING.md",
     "docs/case-studies/aos-kernel-release-surface-replay.md",
@@ -78,5 +79,8 @@
     "tests/test_adapters.py",
     "tests/test_fixtures_replay.py",
     "tests/test_run.py"
+  ],
+  "assets": [
+    "docs/assets/banner.png"
   ]
 }
