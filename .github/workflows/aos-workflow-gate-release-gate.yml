@@ -1,0 +1,44 @@
+name: AOS Workflow Gate Release Gate
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  checks: read
+
+jobs:
+  release-gate:
+    name: AOS Workflow Gate Release Gate / enforce
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned from actions/checkout@v5 on 2026-07-03.
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
+      # Pinned from actions/setup-python@v6 on 2026-07-03.
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+      # The gate gates its own release: enforce mode, the required check is
+      # this repository's own required status check, and the wait budget
+      # covers CI still running on the tagged commit. A missing or failed
+      # required check fails this job, and per RELEASE_GOVERNANCE the
+      # GitHub Release must not be published.
+      - name: Gate the tagged commit (enforce)
+        id: gate
+        uses: ./
+        with:
+          mode: enforce
+          required-checks: "AOS Workflow Gate CI / validate"
+          wait-for-checks: "600"
+          out: .aos-gate/release-gate-decision.json
+          upload-artifact: "true"
+      - name: Replay the release decision offline
+        env:
+          RECORD: ${{ steps.gate.outputs.record }}
+        run: |
+          python3 -m aos_workflow_gate verify --input "$RECORD" \
+            --bundle .aos-gate/bundle.json

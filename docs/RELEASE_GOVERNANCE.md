@@ -53,6 +53,22 @@ Recommended release tag protection:
 
 If a tag ruleset is not yet configured, this documented no-retag policy is the minimum public repository policy. It is weaker than enforced tag protection and must be called out during release review.
 
+## Self-Gated Releases
+
+Every `v*` tag push triggers the release-gate workflow
+(`.github/workflows/aos-workflow-gate-release-gate.yml`): the gate gates
+its own release in **enforce mode**, requiring this repository's own
+required status check on the tagged commit (waiting up to 10 minutes for
+CI still in flight). A failed release gate means the GitHub Release must
+not be published.
+
+The decision record, bundle, and generated policy for the release commit
+are attached to the GitHub Release as assets, so every release ships with
+its own replayable gate decision. The workflow stays read-only
+(`contents: read` plus `checks: read`); publishing the release and
+attaching assets remain maintainer steps outside CI, per the permissions
+contract.
+
 ## GitHub Release Publication
 
 GitHub Releases should be published only after the release tag exists, the final commit CI is green, and the local public-surface check passes.

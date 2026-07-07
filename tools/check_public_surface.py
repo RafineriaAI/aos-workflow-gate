@@ -198,6 +198,9 @@ REQUIRED_SNIPPETS = {
         ),
         "## Phase 2 Release Boundary",
         "Advisory mode must stay the default",
+        "## Self-Gated Releases",
+        "A failed release gate means the GitHub Release must\nnot be published",
+        "attached to the GitHub Release as assets",
     ],
     "ROADMAP.md": [
         "## Phase 0: public bootstrap",
