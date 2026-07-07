@@ -211,6 +211,7 @@ collector and the Action are GitHub-specific by design.
 - [Comparison](docs/COMPARISON.md) maps what branch protection, OPA/conftest, in-toto attestations, and the gate each answer — a capability matrix, not a ranking.
 - [One-pager](docs/ONE_PAGER.md) is the sendable summary: problem, product, proof, engagement paths.
 - [Guided pilot](docs/GUIDED_PILOT.md) defines the paid assisted path and the design-partner variant.
+- [Funnel](docs/FUNNEL.md) maps the no-contact path from discovery to scoping — a human enters exactly once, and only on request.
 - [Marketplace listing](docs/MARKETPLACE_LISTING.md) holds the paste-ready listing copy and status.
 - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
 - [Green, but incomplete](docs/case-studies/green-but-incomplete.md) shows a fully green dashboard hiding a control that never ran — and the gate recording it as a named, replayable `WARN`.

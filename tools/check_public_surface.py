@@ -68,6 +68,14 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
         "commits neither side",
         "guided-pilot-scoping.yml",
+        "aos-self-test.yml",
+        "Copy workflow",
+    ],
+    "docs/FUNNEL.md": [
+        "A human enters exactly once",
+        "## Where a human is required",
+        "no telemetry reporting you were ever here",
+        "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/COMPARISON.md": [
         "**not a ranking**",

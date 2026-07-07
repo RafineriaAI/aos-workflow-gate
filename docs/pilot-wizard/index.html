@@ -63,6 +63,12 @@ analytics, no network calls.</p>
 <label><input type="radio" name="slow" value="no" checked> No</label>
 </fieldset>
 
+<fieldset><legend>7. Required check names (optional)</legend>
+<label>Exact check-run names to mark required, comma-separated:
+<input type="text" id="reqnames" style="width:100%"
+  placeholder='e.g. ci / validate, build'></label>
+</fieldset>
+
 <button type="button" class="primary" onclick="assess()">Assess readiness</button>
 </form>
 
@@ -70,9 +76,13 @@ analytics, no network calls.</p>
 <div class="verdict" id="verdict"></div>
 <p>Draft Decision-Gap Report (edit freely; it prefills the scoping form):</p>
 <textarea id="report"></textarea>
+<p>Your ready-to-commit workflow (save as
+<code>.github/workflows/aos-self-test.yml</code>):</p>
+<textarea id="workflow" style="min-height:18rem"></textarea>
 <p>
 <button type="button" class="primary" id="open">Open prefilled scoping form</button>
-<button type="button" onclick="copyReport()">Copy report</button>
+<button type="button" onclick="copyText('report')">Copy report</button>
+<button type="button" onclick="copyText('workflow')">Copy workflow</button>
 <span class="muted" id="copied"></span>
 </p>
 <p class="muted">Submitting the form commits neither side. Guided pilot and
@@ -113,6 +123,24 @@ function assess(){
     +"\n\nDesired outcome: replayable, tamper-evident gate decisions with an explicit policy we own.";
   document.getElementById("verdict").textContent=verdict;
   document.getElementById("report").value=report;
+  var names=(document.getElementById("reqnames").value||"")
+    .split(",").map(function(s){return s.trim();})
+    .filter(function(s){return s&&s.indexOf('"')===-1;});
+  var wf="name: AOS Self-Test\n\non:\n  pull_request:\n\npermissions:\n"
+    +"  contents: read\n  checks: read\n\njobs:\n  self-test:\n"
+    +"    runs-on: ubuntu-latest\n    steps:\n"
+    +"      # Pinned from actions/setup-python@v6 on 2026-07-03.\n"
+    +"      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1\n"
+    +"        with:\n          python-version: \"3.11\"\n"
+    +"      - name: AOS self-test (advisory)\n"
+    +"        uses: RafineriaAI/aos-workflow-gate@v0.14.0\n"
+    +"        with:\n"
+    +(names.length
+      ?"          required-checks: \""+names.join(", ")+"\"\n"
+      :"          # add required-checks: \"exact check name\" to enable BLOCK\n")
+    +(slow==="yes"?"          wait-for-checks: \"120\"\n":"")
+    +"          upload-artifact: \"true\"\n";
+  document.getElementById("workflow").value=wf;
   document.getElementById("result").style.display="block";
   document.getElementById("open").onclick=function(){
     var u="https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml"
@@ -123,8 +151,8 @@ function assess(){
     window.open(u,"_blank","noopener");
   };
 }
-function copyReport(){
-  navigator.clipboard.writeText(document.getElementById("report").value).then(function(){
+function copyText(id){
+  navigator.clipboard.writeText(document.getElementById(id).value).then(function(){
     document.getElementById("copied").textContent="copied";
     setTimeout(function(){document.getElementById("copied").textContent="";},1500);
   });
