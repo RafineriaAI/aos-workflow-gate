@@ -69,6 +69,13 @@ REQUIRED_SNIPPETS = {
         "commits neither side",
         "guided-pilot-scoping.yml",
     ],
+    "docs/VALUE_METRICS.md": [
+        "counted, not estimated",
+        "## What we deliberately do not compute",
+        "No return-on-investment figure",
+        "will not invent",
+        "UNSIGNED_NOT_OFFICIAL",
+    ],
     "docs/case-studies/green-but-incomplete.md": [
         "skipped **by design**",
         "shows visibility, not a vulnerability",

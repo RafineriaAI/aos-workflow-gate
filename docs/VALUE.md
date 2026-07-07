@@ -22,6 +22,9 @@ reaches.
 
 ## Measured, not promised
 
+The full measured set, with method and the friction proxy, lives in
+[VALUE_METRICS.md](VALUE_METRICS.md).
+
 From the committed real-repository case study
 ([60-second version](case-studies/aos-kernel-release-surface-replay.md)):
 ~360 ms to first verdict (cold start), 5 real signals gated with a policy
