@@ -45,9 +45,9 @@
   "policies": [
     "policies/default.yml",
     "policies/aos-kernel-release-surface.yml",
-    "policies/packs/minimal-pr-gate.yml",
-    "policies/packs/release-candidate.yml",
-    "policies/packs/agent-review-advisory.yml"
+    "aos_workflow_gate/packs/minimal-pr-gate.yml",
+    "aos_workflow_gate/packs/release-candidate.yml",
+    "aos_workflow_gate/packs/agent-review-advisory.yml"
   ],
   "tools": [
     "tools/__init__.py",
@@ -69,6 +69,7 @@
     "tests/test_resilience.py",
     "tests/test_zero_trust.py",
     "tests/test_adapters.py",
-    "tests/test_fixtures_replay.py"
+    "tests/test_fixtures_replay.py",
+    "tests/test_run.py"
   ]
 }
