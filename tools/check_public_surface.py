@@ -69,6 +69,13 @@ REQUIRED_SNIPPETS = {
         "commits neither side",
         "guided-pilot-scoping.yml",
     ],
+    "docs/COMPARISON.md": [
+        "**not a ranking**",
+        "different tools answer different\nquestions",
+        "## Complementary by design",
+        "no competitor tool was benchmarked or scored",
+        "no superiority, security, or compliance claim",
+    ],
     "docs/VALUE_METRICS.md": [
         "counted, not estimated",
         "## What we deliberately do not compute",
@@ -206,6 +213,8 @@ UNSUPPORTED_POSITIVE_CLAIMS = [
     re.compile(r"\bproduction-grade\b", re.IGNORECASE),
     re.compile(r"\bzero-risk\b", re.IGNORECASE),
     re.compile(r"\brisk-free\b", re.IGNORECASE),
+    re.compile(r"\bsuperior to\b", re.IGNORECASE),
+    re.compile(r"\boutperforms?\b", re.IGNORECASE),
     re.compile(r"\bprovides compliance certification\b", re.IGNORECASE),
     re.compile(r"\bcertifies compliance\b", re.IGNORECASE),
     re.compile(r"\bproves (?:the )?repository is secure\b", re.IGNORECASE),
