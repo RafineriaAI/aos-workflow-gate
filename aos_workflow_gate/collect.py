@@ -270,6 +270,7 @@ def build_bundle(
     exclude: list[str] | None = None,
     required: list[str] | None = None,
     collection: dict[str, Any] | None = None,
+    extra_sources: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Build a draft-0 signal bundle from raw check-run objects.
 
@@ -315,6 +316,18 @@ def build_bundle(
                 "digest": canonical.digest(identity),
             }
         )
+
+    for extra in extra_sources or []:
+        extra_id = extra.get("id")
+        if any(source["id"] == extra_id for source in sources):
+            raise InputError(
+                f"adapter source id {extra_id!r} collides with a collected "
+                "check run; pass an explicit id"
+            )
+        merged = dict(extra)
+        merged["required"] = extra_id in required_names
+        sources.append(merged)
+    sources.sort(key=lambda source: str(source.get("id")))
 
     subject: dict[str, Any] = {"repository": repository, "sha": sha}
     if ref:

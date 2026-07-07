@@ -11,6 +11,8 @@
     "docs/STANDARDS_COMPATIBILITY.md",
     "docs/DECISION_PREDICATE.md",
     "docs/CI_INTEGRATIONS.md",
+    "docs/ADAPTERS.md",
+    "docs/POLICY_PACKS.md",
     "docs/TRUST.md",
     "docs/BUYER_FAQ.md",
     "docs/SECURITY_READINESS.md",
@@ -32,11 +34,20 @@
     "examples/github-pr-signal-bundle.json",
     "examples/gate-decision.json",
     "examples/aos-kernel-signal-bundle.json",
-    "examples/aos-kernel-gate-decision.json"
+    "examples/aos-kernel-gate-decision.json",
+    "examples/green-but-incomplete-bundle.json",
+    "examples/green-but-incomplete-policy.json",
+    "examples/green-but-incomplete-record.json",
+    "examples/pr-evidence-bundle.json",
+    "examples/pr-evidence-policy.json",
+    "examples/pr-evidence-record.json"
   ],
   "policies": [
     "policies/default.yml",
-    "policies/aos-kernel-release-surface.yml"
+    "policies/aos-kernel-release-surface.yml",
+    "policies/packs/minimal-pr-gate.yml",
+    "policies/packs/release-candidate.yml",
+    "policies/packs/agent-review-advisory.yml"
   ],
   "tools": [
     "tools/__init__.py",
@@ -56,6 +67,8 @@
     "tests/test_export.py",
     "tests/test_security_hardening.py",
     "tests/test_resilience.py",
-    "tests/test_zero_trust.py"
+    "tests/test_zero_trust.py",
+    "tests/test_adapters.py",
+    "tests/test_fixtures_replay.py"
   ]
 }
