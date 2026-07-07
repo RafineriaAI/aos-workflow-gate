@@ -71,6 +71,20 @@ REQUIRED_SNIPPETS = {
         "aos-self-test.yml",
         "Copy workflow",
     ],
+    "docs/PILOT_PACKAGE.md": [
+        "file by file",
+        "can replay\nwithout us",
+        "## Handover checklist",
+        "nothing\n      is retained on our side",
+        "not a security audit",
+        "UNSIGNED_NOT_OFFICIAL",
+    ],
+    "docs/templates/PILOT_REPORT_TEMPLATE.md": [
+        "counted, not estimated",
+        "everything keeps working\nwithout RafineriaAI",
+        "makes no security-audit, compliance, or ROI claim",
+        "UNSIGNED_NOT_OFFICIAL",
+    ],
     "docs/FUNNEL.md": [
         "human enters exactly once",
         "## Where a human is required",
