@@ -208,6 +208,7 @@ collector and the Action are GitHub-specific by design.
 - [User FAQ](docs/USER_FAQ.md) answers first-run questions and maps every failure symptom to its meaning and fix.
 - [Value](docs/VALUE.md) states what the gate is worth, only as far as the evidence reaches.
 - [Value metrics](docs/VALUE_METRICS.md) counts operational friction from the committed case studies — no ROI arithmetic, by design.
+- [Comparison](docs/COMPARISON.md) maps what branch protection, OPA/conftest, in-toto attestations, and the gate each answer — a capability matrix, not a ranking.
 - [One-pager](docs/ONE_PAGER.md) is the sendable summary: problem, product, proof, engagement paths.
 - [Guided pilot](docs/GUIDED_PILOT.md) defines the paid assisted path and the design-partner variant.
 - [Marketplace listing](docs/MARKETPLACE_LISTING.md) holds the paste-ready listing copy and status.
