@@ -111,6 +111,17 @@ REQUIRED_SNIPPETS = {
         "AOS Verdict Seal",
         "guided-pilot-scoping.yml",
     ],
+    "docs/ADAPTERS.md": [
+        "mechanical, never judgmental",
+        "Interpretation stays in the\npolicy",
+        "not as a verdict",
+        "do not verify the authenticity",
+    ],
+    "docs/POLICY_PACKS.md": [
+        "copy one, rename the `policy_id`",
+        "packs encode structure, not judgment",
+        "mode: blocking",
+    ],
     "docs/CI_INTEGRATIONS.md": [
         "platform-neutral",
         "GitHub Enterprise Server",

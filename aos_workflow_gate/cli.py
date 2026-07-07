@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 from . import canonical
+from .adapters import sarif_source, scorecard_source
 from .collect import (
     DEFAULT_API_URL,
     Budget,
@@ -138,6 +139,19 @@ def _build_parser() -> argparse.ArgumentParser:
         default=[],
         help="collected check name to mark required in the generated "
         "policy (repeatable)",
+    )
+    collect_parser.add_argument(
+        "--sarif",
+        action="append",
+        default=[],
+        metavar="PATH",
+        help="add a SARIF 2.1.0 file as a mechanical source (repeatable); "
+        "mapping contract in docs/ADAPTERS.md",
+    )
+    collect_parser.add_argument(
+        "--scorecard",
+        metavar="PATH",
+        help="add an OpenSSF Scorecard JSON report as a presence source",
     )
     collect_parser.add_argument(
         "--out", required=True, help="write the signal bundle here"
@@ -259,6 +273,9 @@ def _cmd_collect(args: argparse.Namespace) -> int:
             "missing",
             file=sys.stderr,
         )
+    extra_sources = [sarif_source(Path(p)) for p in args.sarif]
+    if args.scorecard:
+        extra_sources.append(scorecard_source(Path(args.scorecard)))
     bundle = build_bundle(
         runs,
         repository=repository,
@@ -272,6 +289,7 @@ def _cmd_collect(args: argparse.Namespace) -> int:
         exclude=args.exclude,
         required=args.require,
         collection=collection,
+        extra_sources=extra_sources,
     )
     _write_json(safe_output_path(args.out, workspace=workspace_boundary()), bundle)
     print(f"collected {len(bundle['sources'])} completed check run(s)")

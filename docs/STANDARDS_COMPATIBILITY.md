@@ -6,7 +6,7 @@ This document defines the intended compatibility surface for industry standards.
 
 ## Current status
 
-Phase 1 implements the local `evaluate` and `verify` CLI with deterministic replay; Phase 2 implements the advisory GitHub Action around the same evaluation; Phase 3 has started with a read-only GitHub check-runs collector; the unsigned in-toto Statement export is implemented (pulled forward from Phase 4). The repository does not yet implement SARIF or Scorecard adapters, signed evidence issued by RafineriaAI, provenance generation, SBOM export, SARIF upload, or compliance automation.
+Phase 1 implements the local `evaluate` and `verify` CLI with deterministic replay; Phase 2 implements the advisory GitHub Action around the same evaluation; Phase 3 has the read-only GitHub check-runs collector plus the SARIF and Scorecard file adapters; the unsigned in-toto Statement export is implemented (pulled forward from Phase 4). The repository does not yet implement signed evidence issued by RafineriaAI, provenance generation, SBOM export, SARIF upload, or compliance automation.
 
 Any early output remains `UNSIGNED_NOT_OFFICIAL` until signing, publication, and verification controls exist.
 
@@ -25,8 +25,8 @@ Any early output remains `UNSIGNED_NOT_OFFICIAL` until signing, publication, and
 | Standard or ecosystem format | Intended role | Early boundary |
 | --- | --- | --- |
 | GitHub Checks and pull request metadata | Input signals for required checks, review state, subject identity, and commit identity. | Read-only collection first; no claim that GitHub state is complete or tamper-proof. |
-| SARIF 2.1.0 | Input signal for code scanning summaries, rule ids, severities, locations, and tool identity. | Consume or summarize scanner output; do not present the gate decision itself as a SARIF finding. |
-| OpenSSF Scorecard | Advisory supply-chain health signal. | Use as one heuristic input; never as a single final authority. |
+| SARIF 2.1.0 | Implemented: `collect --sarif` reduces a SARIF file to a mechanical source (fixed level-to-status mapping, digest over the identity subset; `docs/ADAPTERS.md`). | The gate consumes and summarizes scanner output; it does not present its decision as a SARIF finding and does not verify file authenticity. |
+| OpenSSF Scorecard | Implemented as a presence-and-integrity adapter (`collect --scorecard`): the score travels as data, not as a verdict. | Never a single final authority; score thresholds are deliberately not adapter logic. |
 | SPDX | Future SBOM presence, license, package, and security metadata signal. | Do not generate or certify SBOMs in early releases. Preserve SBOM identity and digest if supplied. |
 | CycloneDX | Future SBOM, VEX, formulation, declaration, or supply-chain metadata signal. | Do not claim CycloneDX conformance until a concrete export or validation path exists. |
 | in-toto attestations | Statement (v1) export is implemented: `export` wraps a verified decision record as the predicate and binds it to the gated commit (`gitCommit` digest). Operators may sign it with their own keys. | The exported Statement is unsigned and unofficial; do not call it an attestation until it is signed. |

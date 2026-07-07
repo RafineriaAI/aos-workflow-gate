@@ -1,0 +1,18 @@
+schema_version: draft-0
+policy_id: agent-review-advisory
+mode: advisory
+verification_status: UNSIGNED_NOT_OFFICIAL
+subject:
+  require_repository: true
+  require_sha: true
+rules:
+  missing_required_source: BLOCK
+  failed_required_source: BLOCK
+  malformed_input: BLOCK
+  advisory_warning: WARN
+required_sources:
+  - ci
+  - agent.review
+advisory_sources:
+  - scanner.sarif
+  - scorecard
