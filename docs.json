@@ -47,7 +47,10 @@
     "examples/green-but-incomplete-record.json",
     "examples/pr-evidence-bundle.json",
     "examples/pr-evidence-policy.json",
-    "examples/pr-evidence-record.json"
+    "examples/pr-evidence-record.json",
+    "examples/check-pr-bundle.json",
+    "examples/check-pr-policy.json",
+    "examples/check-pr-record.json"
   ],
   "policies": [
     "policies/default.yml",
@@ -78,7 +81,8 @@
     "tests/test_zero_trust.py",
     "tests/test_adapters.py",
     "tests/test_fixtures_replay.py",
-    "tests/test_run.py"
+    "tests/test_run.py",
+    "tests/test_check_pr.py"
   ],
   "assets": [
     "docs/assets/banner.png"

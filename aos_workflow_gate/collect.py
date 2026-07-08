@@ -98,8 +98,8 @@ def _is_retryable(error: HTTPError) -> bool:
 
 def _request_json(
     url: str, headers: dict[str, str], *, timeout: float, budget: Budget
-) -> dict[str, Any]:
-    """GET a JSON document with bounded retries.
+) -> Any:
+    """GET a JSON document (object or array) with bounded retries.
 
     Retries transient failures (timeouts, network errors, 429, rate-limited
     403, 5xx) with capped backoff honoring ``Retry-After``. Other HTTP
@@ -113,8 +113,8 @@ def _request_json(
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 payload = json.load(response)
-            if not isinstance(payload, dict):
-                raise InputError("API response is not a JSON object")
+            if not isinstance(payload, (dict, list)):
+                raise InputError("API response is not a JSON container")
             return payload
         except HTTPError as exc:
             last_error = exc
@@ -185,6 +185,8 @@ def fetch_check_runs(
             f"?per_page={_PER_PAGE}&page={page}"
         )
         payload = _request_json(url, headers, timeout=timeout, budget=budget)
+        if not isinstance(payload, dict):
+            raise InputError("check-runs API response is not a JSON object")
         page_runs = payload.get("check_runs")
         if not isinstance(page_runs, list):
             raise InputError(
@@ -345,7 +347,10 @@ def build_bundle(
 
 
 def build_generated_policy(
-    bundle: dict[str, Any], *, required: list[str] | None = None
+    bundle: dict[str, Any],
+    *,
+    required: list[str] | None = None,
+    allow_missing_required: bool = False,
 ) -> dict[str, Any]:
     """Build an explicit advisory policy covering every collected source.
 
@@ -356,12 +361,13 @@ def build_generated_policy(
     """
     source_ids = [source["id"] for source in bundle.get("sources", [])]
     required_ids = list(required or [])
-    for required_id in required_ids:
-        if required_id not in source_ids:
-            raise InputError(
-                f"required check {required_id!r} was not collected; "
-                "it is either missing, still running, or excluded"
-            )
+    if not allow_missing_required:
+        for required_id in required_ids:
+            if required_id not in source_ids:
+                raise InputError(
+                    f"required check {required_id!r} was not collected; "
+                    "it is either missing, still running, or excluded"
+                )
     return {
         "schema_version": "draft-0",
         "policy_id": GENERATED_POLICY_ID,

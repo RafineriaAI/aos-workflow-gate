@@ -51,7 +51,7 @@ exists, run the platform-neutral core on an explicitly provided bundle:
 gate:
   image: python:3.12-slim
   script:
-    - pip install --quiet "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.14.0"
+    - pip install --quiet "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.15.0"
     - aos-workflow-gate evaluate
         --input signal-bundle.json
         --policy policy.yml
@@ -69,7 +69,7 @@ in-toto subject with that URL verbatim.
 ## Jenkins or any shell
 
 ```bash
-python3 -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.14.0"
+python3 -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.15.0"
 aos-workflow-gate evaluate --input bundle.json --policy policy.yml --out record.json
 aos-workflow-gate summarize --input record.json > gate-summary.md
 ```

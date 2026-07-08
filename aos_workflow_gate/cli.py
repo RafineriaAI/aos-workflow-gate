@@ -22,6 +22,15 @@ from typing import Any
 
 from . import canonical
 from .adapters import sarif_source, scorecard_source
+from .checkpr import (
+    counterfactual_blockers,
+    fetch_branch_rules,
+    fetch_pr,
+    parse_pr_url,
+    required_checks_from_rules,
+    rules_digest,
+    rules_summary_source,
+)
 from .collect import (
     DEFAULT_API_URL,
     Budget,
@@ -57,6 +66,8 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_export(args)
         if args.command == "run":
             return _cmd_run(args)
+        if args.command == "check-pr":
+            return _cmd_check_pr(args)
     except InputError as exc:
         print(f"error: {exc}", file=sys.stderr)
         print(
@@ -112,6 +123,43 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--version", action="version", version=__version__)
     subparsers = parser.add_subparsers(dest="command")
+
+    checkpr_parser = subparsers.add_parser(
+        "check-pr",
+        help="instant merge-protection check for a GitHub PR URL "
+        "(read-only observer)",
+    )
+    checkpr_parser.add_argument(
+        "pr_url", help="https://github.com/OWNER/REPO/pull/N (GHES too)"
+    )
+    checkpr_parser.add_argument(
+        "--mode", choices=["advisory", "enforce"], default="advisory",
+        help="enforce makes a BLOCK verdict exit 1 (default: advisory)",
+    )
+    checkpr_parser.add_argument(
+        "--wait-seconds", type=float, default=0.0,
+        help="poll until the rules' required checks complete (default 0)",
+    )
+    checkpr_parser.add_argument(
+        "--poll-interval", type=float, default=10.0,
+        help="seconds between polls (default 10)",
+    )
+    checkpr_parser.add_argument(
+        "--out", default="gate-decision.json",
+        help="decision record path (default: gate-decision.json)",
+    )
+    checkpr_parser.add_argument(
+        "--bundle-out", default=".aos-gate/bundle.json",
+        help="where to write the collected bundle",
+    )
+    checkpr_parser.add_argument(
+        "--policy-out", default=".aos-gate/policy.json",
+        help="where to write the generated policy",
+    )
+    checkpr_parser.add_argument(
+        "--token-env", default="GITHUB_TOKEN",
+        help="env var holding the API token (default GITHUB_TOKEN)",
+    )
 
     run_parser = subparsers.add_parser(
         "run",
@@ -608,6 +656,112 @@ def _cmd_run(args: argparse.Namespace) -> int:
     print()
     sys.stdout.write(text)
     if (enforce or policy.mode == "blocking") and decision.verdict == BLOCK:
+        return 1
+    return 0
+
+
+def _cmd_check_pr(args: argparse.Namespace) -> int:
+    """Instant merge-protection check: PR URL in, decision record out."""
+    coords = parse_pr_url(args.pr_url)
+    token = os.environ.get(args.token_env) if args.token_env else None
+    budget = Budget()
+    workspace = workspace_boundary()
+
+    pr = fetch_pr(
+        coords["api_url"], coords["slug"], coords["number"],
+        token=token, budget=budget,
+    )
+    rules = fetch_branch_rules(
+        coords["api_url"], coords["slug"], pr["base_ref"],
+        token=token, budget=budget,
+    )
+    controls = required_checks_from_rules(rules)
+    required_ids = [control["context"] for control in controls]
+
+    runs, truncated, incomplete, waited = wait_for_required(
+        coords["repository"], pr["head_sha"], required_ids,
+        token=token, api_url=coords["api_url"],
+        wait_seconds=args.wait_seconds, poll_interval=args.poll_interval,
+        budget=budget,
+    )
+    status = "complete"
+    if truncated:
+        status = "truncated"
+    elif incomplete:
+        status = "wait_timeout"
+    collection: dict[str, Any] = {
+        "status": status,
+        "api_calls": budget.api_calls,
+        "waited_seconds": round(waited, 1),
+        "rules_digest": rules_digest(rules),
+        "required_controls": controls,
+    }
+    if incomplete:
+        collection["incomplete_required"] = incomplete
+    bundle = build_bundle(
+        runs,
+        repository=coords["repository"],
+        sha=pr["head_sha"],
+        ref=f"refs/pull/{coords['number']}/head",
+        pull_request=coords["number"],
+        required=required_ids,
+        collection=collection,
+        extra_sources=[rules_summary_source(rules)],
+    )
+    would_block = counterfactual_blockers(bundle["sources"])
+    if would_block:
+        bundle["collection"]["counterfactual_blockers"] = would_block
+    _write_json(safe_output_path(args.bundle_out, workspace=workspace), bundle)
+
+    policy = build_generated_policy(
+        bundle, required=required_ids, allow_missing_required=True
+    )
+    policy_path = safe_output_path(args.policy_out, workspace=workspace)
+    _write_json(policy_path, policy)
+    loaded = load_policy(policy_path)
+
+    decision = evaluate(bundle, loaded)
+    enforce = args.mode == "enforce"
+    record = build_record(
+        decision,
+        policy=loaded,
+        input_bundle_digest=canonical.digest(bundle),
+        can_block=enforce,
+    )
+    out_path = safe_output_path(args.out, workspace=workspace)
+    if out_path.parent != Path(""):
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(
+        json.dumps(record, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+    print(f"{decision.verdict}  {decision.summary}")
+    print(f"record: {args.out}")
+    print(
+        f"Merge protection: {len(required_ids)} required status check(s) "
+        f"enforced by active branch rules on '{pr['base_ref']}'."
+    )
+    if not required_ids:
+        print(
+            "Effect: nothing in the branch rules blocks this merge on "
+            "status checks; the record is evidence, not enforcement."
+        )
+    if would_block:
+        print(
+            "Counterfactual: would BLOCK if required: "
+            + ", ".join(would_block)
+        )
+    print(
+        "Note: this check is a read-only observer of status-check rules; "
+        "reviews and other rule types are summarized in 'branch.rules' "
+        "but not evaluated."
+    )
+    print()
+    text, _ = render_markdown(record)
+    sys.stdout.write(text)
+    if enforce and decision.verdict == BLOCK:
         return 1
     return 0
 
