@@ -51,6 +51,18 @@ aos-workflow-gate verify \
   --bundle examples/github-pr-signal-bundle.json
 ```
 
+Instant merge-protection check for any pull request URL — a read-only
+observer that fetches the head SHA, the base branch's active rules, and
+the head's check runs, then evaluates a policy generated from the rules'
+required status checks (missing required checks fail closed to `BLOCK`;
+failing non-required checks are listed as counterfactual blockers; the
+bundle's `rules_digest` makes protection drift between two records
+detectable):
+
+```bash
+aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
+```
+
 Render a record as Markdown (the same summary the GitHub Action posts):
 
 ```bash
@@ -99,7 +111,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.14.0
+        uses: RafineriaAI/aos-workflow-gate@v0.15.0
         with:
           required-checks: "ci / validate"
 ```
@@ -142,7 +154,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.14.0
+    uses: RafineriaAI/aos-workflow-gate@v0.15.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

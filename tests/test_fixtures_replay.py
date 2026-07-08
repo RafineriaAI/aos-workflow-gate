@@ -40,6 +40,11 @@ FIXTURES = [
         "examples/pr-evidence-policy.json",
         "examples/pr-evidence-record.json",
     ),
+    (
+        "examples/check-pr-bundle.json",
+        "examples/check-pr-policy.json",
+        "examples/check-pr-record.json",
+    ),
 ]
 
 

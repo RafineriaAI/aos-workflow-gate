@@ -55,8 +55,10 @@ Status: in progress. Implemented: the zero-config GitHub check-runs
 collector (GHES supported via `GITHUB_API_URL`/`--api-url`), the SARIF
 2.1.0 file adapter and the Scorecard presence adapter (mechanical
 contracts in `docs/ADAPTERS.md`), and three starter policy packs shipped
-in the package (`aos_workflow_gate/packs/`, `docs/POLICY_PACKS.md`). A GitLab pipeline-jobs
-collector and a GitLab CI/CD Catalog component remain planned.
+in the package (`aos_workflow_gate/packs/`, `docs/POLICY_PACKS.md`). The instant merge-protection check (`check-pr <PR URL>`)
+evaluates a policy generated from the base branch's active rules. A
+GitLab pipeline-jobs collector and a GitLab CI/CD Catalog component
+remain planned.
 
 Goal: provide signal adapters and reusable policy profiles without hiding
 the policy.

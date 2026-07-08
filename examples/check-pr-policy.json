@@ -1,0 +1,25 @@
+{
+  "advisory_sources": [
+    "AOS Workflow Gate Self / advisory",
+    "AOS Workflow Gate Self / no-checkout",
+    "AOS Workflow Gate Self / zero-config",
+    "branch.rules"
+  ],
+  "mode": "advisory",
+  "policy_id": "collected-advisory",
+  "required_sources": [
+    "AOS Workflow Gate CI / validate"
+  ],
+  "rules": {
+    "advisory_warning": "WARN",
+    "failed_required_source": "BLOCK",
+    "malformed_input": "BLOCK",
+    "missing_required_source": "BLOCK"
+  },
+  "schema_version": "draft-0",
+  "subject": {
+    "require_repository": true,
+    "require_sha": true
+  },
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

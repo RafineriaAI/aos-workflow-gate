@@ -1,0 +1,75 @@
+{
+  "collection": {
+    "api_calls": 3,
+    "counterfactual_blockers": [
+      "AOS Workflow Gate Self / no-checkout"
+    ],
+    "required_controls": [
+      {
+        "context": "AOS Workflow Gate CI / validate",
+        "integration_id": 15368
+      }
+    ],
+    "rules_digest": "sha256:40239c8927648aaf3f9bdc3edae3932f107dd6c16a819931a1f4e305ee10778e",
+    "status": "complete",
+    "waited_seconds": 0.0
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:a4f8662e6d8c43462d2d85242ce4cb3e854008c0fa4001b294a11d334c1c68ed",
+      "id": "AOS Workflow Gate CI / validate",
+      "kind": "github_check",
+      "observed_at": "2026-07-07T16:03:56Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 85667214682 concluded success."
+    },
+    {
+      "digest": "sha256:7ad97973880bd47c6fd1b8571bed10ed3bc8642a3a124e5fb94ef107cef0e8c2",
+      "id": "AOS Workflow Gate Self / advisory",
+      "kind": "github_check",
+      "observed_at": "2026-07-07T16:03:47Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 85667214700 concluded success."
+    },
+    {
+      "digest": "sha256:e7231252eaa7ffcfe076dee4bdbb19bd9b509db901c55e84266c69e8be63ccaa",
+      "id": "AOS Workflow Gate Self / no-checkout",
+      "kind": "github_check",
+      "observed_at": "2026-07-07T16:03:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 85667215989 concluded skipped."
+    },
+    {
+      "digest": "sha256:69b4475be34f940f87303780010d89762915104155d7640f1a8ce4b1f2739862",
+      "id": "AOS Workflow Gate Self / zero-config",
+      "kind": "github_check",
+      "observed_at": "2026-07-07T16:03:49Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 85667214748 concluded success."
+    },
+    {
+      "digest": "sha256:40239c8927648aaf3f9bdc3edae3932f107dd6c16a819931a1f4e305ee10778e",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: deletionx1, non_fast_forwardx1, pull_requestx1, required_status_checksx1; 1 required status check(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": 32,
+    "ref": "refs/pull/32/head",
+    "repository": "RafineriaAI/aos-workflow-gate",
+    "sha": "89901ac54cbbe74b7dd47491a9ed0ee5bba09f6f"
+  }
+}
