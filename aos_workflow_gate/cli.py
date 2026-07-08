@@ -25,11 +25,15 @@ from .adapters import sarif_source, scorecard_source
 from .checkpr import (
     counterfactual_blockers,
     fetch_branch_rules,
+    fetch_commit_statuses,
     fetch_pr,
     parse_pr_url,
+    pending_required,
     required_checks_from_rules,
     rules_digest,
     rules_summary_source,
+    status_sources,
+    strict_policy_from_rules,
 )
 from .collect import (
     DEFAULT_API_URL,
@@ -684,6 +688,17 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         wait_seconds=args.wait_seconds, poll_interval=args.poll_interval,
         budget=budget,
     )
+    statuses = fetch_commit_statuses(
+        coords["api_url"], coords["slug"], pr["head_sha"],
+        token=token, budget=budget,
+    )
+    run_names = {
+        run.get("name") for run in runs if isinstance(run.get("name"), str)
+    }
+    status_srcs, skipped_contexts = status_sources(
+        statuses, exclude_contexts={str(n) for n in run_names}
+    )
+    still_running = pending_required(runs, status_srcs, required_ids)
     status = "complete"
     if truncated:
         status = "truncated"
@@ -695,9 +710,20 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         "waited_seconds": round(waited, 1),
         "rules_digest": rules_digest(rules),
         "required_controls": controls,
+        "strict_up_to_date_required": strict_policy_from_rules(rules),
+        "pr": {
+            "state": pr["state"],
+            "merged": pr["merged"],
+            "draft": pr["draft"],
+            "from_fork": pr["from_fork"],
+        },
     }
     if incomplete:
         collection["incomplete_required"] = incomplete
+    if still_running:
+        collection["pending_required"] = still_running
+    if skipped_contexts:
+        collection["duplicate_status_contexts"] = skipped_contexts
     bundle = build_bundle(
         runs,
         repository=coords["repository"],
@@ -706,7 +732,7 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         pull_request=coords["number"],
         required=required_ids,
         collection=collection,
-        extra_sources=[rules_summary_source(rules)],
+        extra_sources=[rules_summary_source(rules)] + status_srcs,
     )
     would_block = counterfactual_blockers(bundle["sources"])
     if would_block:
@@ -748,6 +774,31 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
             "Effect: nothing in the branch rules blocks this merge on "
             "status checks; the record is evidence, not enforcement."
         )
+    if pr["merged"] or pr["state"] == "closed":
+        print(
+            "Retrospective: this pull request is "
+            + ("merged" if pr["merged"] else "closed")
+            + "; the rules observed are CURRENT state, not merge-time "
+            "state (compare rules_digest across records to detect drift)."
+        )
+    if pr["draft"]:
+        print("Draft PR: checks may be intentionally deferred.")
+    if pr["from_fork"]:
+        print(
+            "Fork PR: some checks may not run for forks by repository "
+            "policy."
+        )
+    if collection.get("strict_up_to_date_required"):
+        print(
+            "Strict rules: GitHub additionally requires the branch to be "
+            "up to date with the base; this verdict is head-SHA-scoped "
+            "and does not check that."
+        )
+    if still_running:
+        print(
+            "Still running (fails closed as missing until finished; use "
+            "--wait-seconds): " + ", ".join(still_running)
+        )
     if would_block:
         print(
             "Counterfactual: would BLOCK if required: "
@@ -756,7 +807,8 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
     print(
         "Note: this check is a read-only observer of status-check rules; "
         "reviews and other rule types are summarized in 'branch.rules' "
-        "but not evaluated."
+        "but not evaluated, and rule bypass actors are not observable "
+        "from the public API."
     )
     print()
     text, _ = render_markdown(record)

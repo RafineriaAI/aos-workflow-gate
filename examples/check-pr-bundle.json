@@ -1,17 +1,24 @@
 {
   "collection": {
-    "api_calls": 3,
+    "api_calls": 4,
     "counterfactual_blockers": [
       "AOS Workflow Gate Self / no-checkout"
     ],
+    "pr": {
+      "draft": false,
+      "from_fork": false,
+      "merged": true,
+      "state": "closed"
+    },
     "required_controls": [
       {
         "context": "AOS Workflow Gate CI / validate",
         "integration_id": 15368
       }
     ],
-    "rules_digest": "sha256:40239c8927648aaf3f9bdc3edae3932f107dd6c16a819931a1f4e305ee10778e",
+    "rules_digest": "sha256:2023584a5b1319271912c9e54953d1e3e59bccb4b358627ed4c080a40fa9d334",
     "status": "complete",
+    "strict_up_to_date_required": false,
     "waited_seconds": 0.0
   },
   "schema_version": "draft-0",
@@ -57,7 +64,7 @@
       "summary": "GitHub check run 85667214748 concluded success."
     },
     {
-      "digest": "sha256:40239c8927648aaf3f9bdc3edae3932f107dd6c16a819931a1f4e305ee10778e",
+      "digest": "sha256:2023584a5b1319271912c9e54953d1e3e59bccb4b358627ed4c080a40fa9d334",
       "id": "branch.rules",
       "kind": "branch_rules_summary",
       "required": false,

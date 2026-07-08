@@ -75,7 +75,82 @@ def fetch_pr(
     base_ref = base.get("ref")
     if not isinstance(sha, str) or not isinstance(base_ref, str):
         raise InputError("pull request API response has no head sha/base ref")
-    return {"head_sha": sha, "base_ref": base_ref, "state": payload.get("state")}
+    head_repo = (head.get("repo") or {}).get("full_name")
+    base_repo = (base.get("repo") or {}).get("full_name")
+    return {
+        "head_sha": sha,
+        "base_ref": base_ref,
+        "state": payload.get("state"),
+        "merged": bool(payload.get("merged")),
+        "draft": bool(payload.get("draft")),
+        "from_fork": bool(head_repo and base_repo and head_repo != base_repo),
+    }
+
+
+def fetch_commit_statuses(
+    api_url: str, slug: str, sha: str, *, token: str | None, budget: Budget
+) -> list[dict[str, Any]]:
+    """Fetch legacy commit statuses (Status API) for a commit.
+
+    Required status checks can be satisfied by legacy statuses, not only
+    check runs; ignoring them would fail-closed a context that GitHub
+    itself considers green.
+    """
+    headers = {"Accept": "application/vnd.github+json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    payload = _request_json(
+        f"{api_url}/repos/{slug}/commits/{sha}/status",
+        headers,
+        timeout=30.0,
+        budget=budget,
+    )
+    if not isinstance(payload, dict):
+        raise InputError("commit status API response is not a JSON object")
+    statuses = payload.get("statuses")
+    return [s for s in statuses if isinstance(s, dict)] if isinstance(
+        statuses, list
+    ) else []
+
+
+_STATUS_STATE_MAP = {"success": "success", "failure": "failure",
+                     "error": "failure", "pending": "pending"}
+
+
+def status_sources(
+    statuses: list[dict[str, Any]], *, exclude_contexts: set[str]
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """Reduce legacy statuses to sources; check-run names take precedence.
+
+    Returns the sources plus the contexts skipped because a check run with
+    the same name already exists (GitHub shares one context namespace).
+    """
+    sources: list[dict[str, Any]] = []
+    skipped: list[str] = []
+    seen: set[str] = set()
+    for status in statuses:
+        context = status.get("context")
+        if not isinstance(context, str) or not context or context in seen:
+            continue
+        seen.add(context)
+        if context in exclude_contexts:
+            skipped.append(context)
+            continue
+        raw_state = str(status.get("state", "unknown")).lower()
+        state = _STATUS_STATE_MAP.get(raw_state, raw_state)
+        identity = {"context": context, "state": raw_state}
+        sources.append(
+            {
+                "id": context,
+                "kind": "commit_status",
+                "signal_source": "github_status_api",
+                "status": state,
+                "required": False,
+                "summary": f"Legacy commit status '{context}' is {raw_state}.",
+                "digest": canonical.digest(identity),
+            }
+        )
+    return sources, sorted(skipped)
 
 
 def fetch_branch_rules(
@@ -115,6 +190,22 @@ def required_checks_from_rules(
     return [controls[key] for key in sorted(controls)]
 
 
+def strict_policy_from_rules(rules: list[dict[str, Any]]) -> bool:
+    """Whether the rules require the branch to be up to date (strict).
+
+    The gate's verdict is head-SHA-scoped; when strict is on, GitHub
+    additionally requires the branch to be current — surfaced so the
+    record cannot be over-read.
+    """
+    for rule in rules:
+        if rule.get("type") != "required_status_checks":
+            continue
+        params = rule.get("parameters") or {}
+        if bool(params.get("strict_required_status_checks_policy")):
+            return True
+    return False
+
+
 def rules_digest(rules: list[dict[str, Any]]) -> str:
     """Canonical digest of the protection surface (drift primitive)."""
     identity = {
@@ -122,6 +213,7 @@ def rules_digest(rules: list[dict[str, Any]]) -> str:
             str(rule.get("type")) for rule in rules if rule.get("type")
         ),
         "required_status_checks": required_checks_from_rules(rules),
+        "strict": strict_policy_from_rules(rules),
     }
     return canonical.digest(identity)
 
@@ -148,6 +240,32 @@ def rules_summary_source(rules: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def pending_required(
+    raw_runs: list[dict[str, Any]],
+    status_srcs: list[dict[str, Any]],
+    required_ids: list[str],
+) -> list[str]:
+    """Required contexts that exist but have not finished.
+
+    Distinguishes "still running" from "absent": both fail closed to
+    BLOCK, but the record and the operator hint should not conflate them.
+    """
+    required = set(required_ids)
+    pending: set[str] = set()
+    for run in raw_runs:
+        name = run.get("name")
+        if (
+            isinstance(name, str)
+            and name in required
+            and run.get("status") != "completed"
+        ):
+            pending.add(name)
+    for source in status_srcs:
+        if source.get("id") in required and source.get("status") == "pending":
+            pending.add(str(source.get("id")))
+    return sorted(pending)
+
+
 def counterfactual_blockers(
     sources: list[dict[str, Any]],
 ) -> list[str]:
@@ -157,7 +275,7 @@ def counterfactual_blockers(
         str(source.get("id"))
         for source in sources
         if isinstance(source, dict)
-        and source.get("kind") == "github_check"
+        and source.get("kind") in ("github_check", "commit_status")
         and not source.get("required")
         and str(source.get("status", "")).lower() != "success"
     )
