@@ -17,7 +17,7 @@ from aos_workflow_gate.errors import InputError
 
 SHA = "b" * 40
 
-RULES = [
+RULES: list[dict[str, Any]] = [
     {"type": "deletion"},
     {"type": "pull_request", "parameters": {}},
     {
