@@ -179,6 +179,16 @@ REQUIRED_SNIPPETS = {
         "no plugin runtime",
         "a\nsource can never mark itself required",
     ],
+    "docs/AGENT_ACTION.md": [
+        "evidence a policy can require, never an approval",
+        "## Validation states",
+        "integrity, then\nbinding, then freshness, then duplication",
+        "No execution authority",
+        "No semantic approval claim",
+        "No global duplicate or replay protection",
+        "staleness is **not evaluated** and the summary says so",
+        "policy decides what any state means",
+    ],
     "docs/SOURCE_CONTRACT.md": [
         "no plugin runtime",
         "Adapter-defined, non-enum",

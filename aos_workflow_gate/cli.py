@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 from importlib import resources
 from pathlib import Path
@@ -24,6 +25,15 @@ from typing import Any
 
 from . import canonical
 from .adapters import sarif_source, scorecard_source
+from .agent_action import (
+    BOUNDED_DUPLICATE,
+    VALID,
+    action_source,
+    classify_action,
+    compute_digests,
+    fetch_branch_head,
+    load_action_document,
+)
 from .checkpr import (
     counterfactual_blockers,
     fetch_branch_rules,
@@ -80,6 +90,8 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_preflight(args)
         if args.command == "import":
             return _cmd_import(args)
+        if args.command == "agent-action":
+            return _cmd_agent_action(args)
     except InputError as exc:
         print(f"error: {exc}", file=sys.stderr)
         print(
@@ -434,6 +446,52 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     import_parser.add_argument(
         "--out", required=True, help="write the merged bundle here"
+    )
+
+    agent_parser = subparsers.add_parser(
+        "agent-action",
+        help="validate agent-action-v0 documents into source-v0 sources "
+        "(valid/stale/tampered/subject_mismatch/bounded_duplicate)",
+    )
+    agent_parser.add_argument(
+        "--input",
+        action="append",
+        required=True,
+        default=[],
+        metavar="DOC.json",
+        help="agent action document (repeatable)",
+    )
+    agent_parser.add_argument(
+        "--bundle",
+        help="bundle for subject binding and bounded duplicate scope; "
+        "with --out the sources are merged into it",
+    )
+    agent_parser.add_argument(
+        "--live", action="store_true",
+        help="staleness check against the live branch head",
+    )
+    agent_parser.add_argument(
+        "--branch",
+        help="branch for --live (default: the document's snapshot.branch)",
+    )
+    agent_parser.add_argument(
+        "--pinned-base",
+        help="staleness check against this pinned base SHA instead of "
+        "the live head",
+    )
+    agent_parser.add_argument(
+        "--out",
+        help="write the merged bundle (with --bundle) or the sources "
+        "JSON; default prints sources to stdout",
+    )
+    agent_parser.add_argument(
+        "--token-env", default="GITHUB_TOKEN",
+        help="env var holding the API token for --live",
+    )
+    agent_parser.add_argument(
+        "--api-url",
+        help="GitHub API base URL for --live (default: GITHUB_API_URL "
+        "env or https://api.github.com)",
     )
 
     evaluate_parser = subparsers.add_parser(
@@ -998,6 +1056,151 @@ def _cmd_import(args: argparse.Namespace) -> int:
         f"imported {len(imported)} source(s) under the source-v0 contract"
     )
     print(f"bundle: {args.out}")
+    return 0
+
+
+def _cmd_agent_action(args: argparse.Namespace) -> int:
+    """Validate agent action documents into source-v0 sources.
+
+    The adapter has no execution authority and makes no semantic
+    approval claim: a 'success' status asserts structural integrity and
+    binding only. Duplicate detection is bounded to this invocation and
+    the given bundle — never global.
+    """
+    if args.live and args.pinned_base:
+        raise InputError("use either --live or --pinned-base, not both")
+    if args.pinned_base is not None and not re.match(
+        r"^[0-9a-f]{40}$", args.pinned_base
+    ):
+        raise InputError("--pinned-base must be a 40-char lowercase hex SHA")
+
+    docs = [load_action_document(Path(path)) for path in args.input]
+
+    bundle: dict[str, Any] | None = None
+    bundle_subject: dict[str, Any] | None = None
+    existing_ids: set[str] = set()
+    agent_ids: set[str] = set()
+    if args.bundle:
+        loaded = _load_json(args.bundle)
+        if not isinstance(loaded, dict) or not isinstance(
+            loaded.get("sources"), list
+        ):
+            raise InputError(f"{args.bundle} is not a signal bundle")
+        bundle = loaded
+        subject = bundle.get("subject")
+        bundle_subject = subject if isinstance(subject, dict) else None
+        for source in bundle["sources"]:
+            if not isinstance(source, dict):
+                continue
+            existing_ids.add(str(source.get("id")))
+            if source.get("kind") == "agent_action":
+                agent_ids.add(str(source.get("id")))
+
+    mode = "live" if args.live else ("pinned" if args.pinned_base else "none")
+    token = os.environ.get(args.token_env) if args.token_env else None
+    api_url = (
+        args.api_url or os.environ.get("GITHUB_API_URL") or DEFAULT_API_URL
+    )
+    budget = Budget()
+    head_cache: dict[tuple[str, str], str] = {}
+
+    sources: list[dict[str, Any]] = []
+    seen_digests: set[str] = set()
+    first_id_of: dict[str, str] = {}
+    for doc in docs:
+        observed_base: str | None = None
+        if args.pinned_base:
+            observed_base = args.pinned_base
+        elif args.live:
+            snapshot = doc.get("snapshot")
+            branch = args.branch or (
+                snapshot.get("branch") if isinstance(snapshot, dict) else None
+            )
+            if not isinstance(branch, str) or not branch:
+                raise InputError(
+                    "--live needs --branch (or snapshot.branch in the "
+                    "document)"
+                )
+            key = (doc["repository"], branch)
+            if key not in head_cache:
+                head_cache[key] = fetch_branch_head(
+                    doc["repository"], branch,
+                    token=token, api_url=api_url, budget=budget,
+                )
+            observed_base = head_cache[key]
+
+        computed = compute_digests(doc)
+        base_id = f"agent.action.{computed['action'][7:19]}"
+        state, explanation = classify_action(
+            doc,
+            bundle_subject=bundle_subject,
+            observed_base=observed_base,
+            validation_mode=mode,
+            seen_action_digests=seen_digests,
+            duplicate_of=first_id_of.get(computed["action"]),
+        )
+        if state == VALID and base_id in agent_ids:
+            state = BOUNDED_DUPLICATE
+            explanation = (
+                "Agent action bounded duplicate: same action digest as "
+                f"bundle source '{base_id}' (bounded scope; no global "
+                "duplicate or replay protection exists)."
+            )
+        source_id = base_id
+        if state == BOUNDED_DUPLICATE:
+            ordinal = 2
+            taken = existing_ids | {s["id"] for s in sources}
+            while f"{base_id}.{ordinal}" in taken:
+                ordinal += 1
+            source_id = f"{base_id}.{ordinal}"
+        elif base_id in existing_ids or any(
+            s["id"] == base_id for s in sources
+        ):
+            raise InputError(
+                f"source id {base_id!r} collides with a non-duplicate "
+                "existing source"
+            )
+        sources.append(
+            action_source(
+                doc, state, explanation,
+                validation_mode=mode, source_id=source_id,
+            )
+        )
+        seen_digests.add(computed["action"])
+        first_id_of.setdefault(computed["action"], base_id)
+
+    if bundle is not None and args.out:
+        bundle["sources"].extend(sources)
+        bundle["sources"].sort(key=lambda source: str(source.get("id")))
+        collection = bundle.setdefault("collection", {})
+        if isinstance(collection, dict):
+            added = sorted(source["id"] for source in sources)
+            prior = collection.get("imported_sources")
+            if isinstance(prior, list):
+                added = sorted(set(prior) | set(added))
+            collection["imported_sources"] = added
+        _write_json(
+            safe_output_path(args.out, workspace=workspace_boundary()), bundle
+        )
+        print(f"bundle: {args.out}")
+    else:
+        text = json.dumps(
+            sources, indent=2, ensure_ascii=False, sort_keys=True
+        ) + "\n"
+        if args.out:
+            out_path = safe_output_path(
+                args.out, workspace=workspace_boundary()
+            )
+            if out_path.parent != Path(""):
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+            out_path.write_text(text, encoding="utf-8", newline="\n")
+            print(f"sources: {args.out}")
+        else:
+            sys.stdout.write(text)
+    for source in sources:
+        print(
+            f"{source['id']}: {source['status']}", file=sys.stderr
+        )
     return 0
 
 
