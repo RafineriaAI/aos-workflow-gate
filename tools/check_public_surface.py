@@ -121,9 +121,19 @@ REQUIRED_SNIPPETS = {
     ],
     "docs/USER_FAQ.md": [
         "## Failure taxonomy",
+        "## Exit codes by command",
         "Never treat it as a policy decision",
         "aos-workflow-gate verify --input gate-decision.json",
         "wait-for-checks",
+    ],
+    "docs/PREFLIGHT.md": [
+        "No permission is assumed without probing",
+        "Preflight produces **no verdict**",
+        "## Diagnostic code registry",
+        "a code never changes meaning across versions",
+        "AOS-PERM-003",
+        "## Exit codes",
+        "Degraded",
     ],
     "docs/SECURITY_READINESS.md": [
         "## Private-repo data model",

@@ -6,6 +6,8 @@ policy) from the GitHub check-runs API for one commit.
 ``verify`` recomputes a record's digests to detect tampering or a mismatched
 source bundle. ``summarize`` renders a record as Markdown for maintainers.
 ``export`` wraps a verified record in an unsigned in-toto Statement.
+``preflight`` probes capabilities read-only and reports stable diagnostic
+codes — readiness, never a verdict.
 In advisory mode the process exit code is always 0; only a policy in blocking
 mode (or ``--enforce``) makes a ``BLOCK`` verdict fail.
 """
@@ -50,6 +52,7 @@ from .evidence import build_record, verify_record
 from .export import build_statement
 from .paths import safe_output_path, workspace_boundary
 from .policy import load_policy
+from .preflight import render_report, run_preflight
 from .summarize import render_markdown
 from .version import __version__
 
@@ -72,6 +75,8 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_run(args)
         if args.command == "check-pr":
             return _cmd_check_pr(args)
+        if args.command == "preflight":
+            return _cmd_preflight(args)
     except InputError as exc:
         print(f"error: {exc}", file=sys.stderr)
         print(
@@ -163,6 +168,53 @@ def _build_parser() -> argparse.ArgumentParser:
     checkpr_parser.add_argument(
         "--token-env", default="GITHUB_TOKEN",
         help="env var holding the API token (default GITHUB_TOKEN)",
+    )
+
+    preflight_parser = subparsers.add_parser(
+        "preflight",
+        help="read-only capability probes: what the token, environment, "
+        "and target actually allow (diagnostic readiness, never a "
+        "verdict)",
+    )
+    preflight_parser.add_argument(
+        "--pr", help="https://github.com/OWNER/REPO/pull/N to probe"
+    )
+    preflight_parser.add_argument(
+        "--repository", help="owner/repo to probe"
+    )
+    preflight_parser.add_argument(
+        "--sha", help="commit to probe check runs and statuses on "
+        "(default: PR head or the default branch)",
+    )
+    preflight_parser.add_argument(
+        "--branch", help="branch to probe rules on (default: PR base or "
+        "the default branch)",
+    )
+    preflight_parser.add_argument(
+        "--github-context",
+        action="store_true",
+        help="probe the current GitHub Actions workflow context "
+        "(workflow-scoped readiness report)",
+    )
+    preflight_parser.add_argument(
+        "--json", action="store_true",
+        help="print the full JSON report instead of the findings view",
+    )
+    preflight_parser.add_argument(
+        "--verbose", action="store_true",
+        help="also list every probe, not only the findings",
+    )
+    preflight_parser.add_argument(
+        "--out", help="also write the JSON report to this path"
+    )
+    preflight_parser.add_argument(
+        "--token-env", default="GITHUB_TOKEN",
+        help="env var holding the API token (default GITHUB_TOKEN)",
+    )
+    preflight_parser.add_argument(
+        "--api-url",
+        help="GitHub API base URL (default: GITHUB_API_URL env or "
+        "https://api.github.com)",
     )
 
     run_parser = subparsers.add_parser(
@@ -816,6 +868,34 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
     if enforce and decision.verdict == BLOCK:
         return 1
     return 0
+
+
+def _cmd_preflight(args: argparse.Namespace) -> int:
+    """Diagnostic readiness probes; exit 0 ready, 1 degraded, 2 no probe.
+
+    Exit 1 here means "a probed capability is unavailable" — a readiness
+    statement, never a policy verdict (this command produces none).
+    """
+    token = os.environ.get(args.token_env) if args.token_env else None
+    report = run_preflight(
+        pr_url=args.pr,
+        repository=args.repository,
+        sha=args.sha,
+        branch=args.branch,
+        github_context=args.github_context,
+        token=token,
+        api_url=args.api_url,
+    )
+    if args.out:
+        _write_json(
+            safe_output_path(args.out, workspace=workspace_boundary()), report
+        )
+    if args.json:
+        text = json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True)
+        sys.stdout.write(text + "\n")
+    else:
+        sys.stdout.write(render_report(report, verbose=args.verbose))
+    return 0 if report["ready"] else 1
 
 
 def _check_context_integrity(bundle: Any, *, require_match: bool) -> None:
