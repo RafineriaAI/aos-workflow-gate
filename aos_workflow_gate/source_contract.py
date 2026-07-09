@@ -47,7 +47,7 @@ _DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _REQUIRED_FIELDS = ("id", "kind", "status", "digest")
 _OPTIONAL_STR_FIELDS = ("summary", "signal_source", "observed_at")
 _KNOWN_FIELDS = frozenset(
-    _REQUIRED_FIELDS + _OPTIONAL_STR_FIELDS + ("contract",)
+    _REQUIRED_FIELDS + _OPTIONAL_STR_FIELDS + ("contract", "identity")
 )
 
 
@@ -67,6 +67,50 @@ def source_digest(identity: dict[str, Any]) -> str:
             "(identity-completeness invariant)"
         )
     return canonical.digest(identity)
+
+
+def contract_violation(item: dict[str, Any]) -> str | None:
+    """Return the contract-level violation in a source, if any.
+
+    The single validation path for contract rules: ``import`` raises the
+    violation as a hard, path-addressed error, and ``evaluate`` folds the
+    same text into a fail-closed ``malformed_input`` reason — the two
+    entrances cannot drift apart. Covered rules: the contract value, the
+    policy-owned ``required`` ban, and — whenever an ``identity`` object
+    is present, on any schema — identity binding: the identity must be a
+    mapping, contain a ``status`` equal to the source's status, and
+    recompute to the declared digest.
+    """
+    contract = item.get("contract")
+    if contract is not None and contract != SOURCE_CONTRACT_VERSION:
+        return f"declares unknown contract {contract!r}"
+    if contract == SOURCE_CONTRACT_VERSION and "required" in item:
+        return (
+            "carries a 'required' field, but the source-v0 contract has "
+            "none: required/advisory classification is policy-owned"
+        )
+    identity = item.get("identity")
+    if identity is not None:
+        if not isinstance(identity, dict):
+            return "field 'identity' must be a mapping"
+        if "status" not in identity:
+            return (
+                "identity omits 'status' (identity-completeness invariant)"
+            )
+        if identity.get("status") != item.get("status"):
+            return (
+                f"status {item.get('status')!r} does not match the "
+                f"identity's status {identity.get('status')!r}"
+            )
+        declared = item.get("digest")
+        if isinstance(declared, str) and declared:
+            recomputed = canonical.digest(identity)
+            if recomputed != declared:
+                return (
+                    "digest does not recompute from the attached "
+                    "identity (identity binding violated)"
+                )
+    return None
 
 
 def validate_source_v0(item: Any, *, where: str = "source") -> dict[str, Any]:
@@ -117,6 +161,9 @@ def validate_source_v0(item: Any, *, where: str = "source") -> dict[str, Any]:
         )
     normalized = dict(item)
     normalized["contract"] = SOURCE_CONTRACT_VERSION
+    violation = contract_violation(normalized)
+    if violation is not None:
+        raise InputError(f"{where}: {violation}")
     return normalized
 
 

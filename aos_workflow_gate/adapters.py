@@ -96,6 +96,7 @@ def sarif_source(path: Path, source_id: str | None = None) -> dict[str, Any]:
             f"SARIF: {counts['error']} error(s), {counts['warning']} "
             f"warning(s), {counts['note']} note(s) from {tool_name}."
         ),
+        "identity": identity,
         "digest": source_digest(identity),
     }
 
@@ -119,5 +120,6 @@ def scorecard_source(path: Path, source_id: str | None = None) -> dict[str, Any]
             f"OpenSSF Scorecard aggregate score {score}/10 across "
             f"{check_count} check(s); presence-and-integrity signal only."
         ),
+        "identity": identity,
         "digest": source_digest(identity),
     }

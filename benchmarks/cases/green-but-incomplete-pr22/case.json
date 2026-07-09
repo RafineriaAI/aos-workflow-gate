@@ -23,6 +23,7 @@
     "repository": "RafineriaAI/aos-workflow-gate"
   },
   "baseline": {
+    "declared_by": "operator",
     "github_merge_ready": true,
     "note": "GitHub baseline: dashboard fully green, PR merge-ready. The gate records a named WARN: the no-checkout control never ran on this head (skipped), which no green dashboard surfaces. The gap is invisible to the baseline and explicit in the record.",
     "required_check": "AOS Workflow Gate CI / validate",
@@ -54,6 +55,7 @@
   ],
   "classification": "real_gap_warn",
   "contract": "benchmark-case-v0",
+  "provenance": "retrospective_real_history",
   "task": {
     "declared_at": "2026-07-05T12:15:00Z",
     "description": "PR #22 - Commercial kit: VALUE, ONE_PAGER, MARKETPLACE_LISTING, pilot assisted path, feedback loop, README CTA, design-partner variant, 60-second case study, docs index update"

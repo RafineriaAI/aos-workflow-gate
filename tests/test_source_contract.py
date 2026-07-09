@@ -83,6 +83,58 @@ def test_validate_source_v0_rejects_required_field() -> None:
         validate_source_v0(dict(_ext_source(), required=True))
 
 
+def test_identity_binding_recomputed_on_import_path() -> None:
+    identity = _identity("warning")
+    bound = dict(_ext_source(), identity=identity)
+    assert validate_source_v0(bound)["identity"] == identity
+
+    wrong_digest = dict(bound, digest="sha256:" + "0" * 64)
+    with pytest.raises(InputError, match="identity binding violated"):
+        validate_source_v0(wrong_digest)
+
+    lying_status = dict(bound, status="success")
+    with pytest.raises(InputError, match="does not match the"):
+        validate_source_v0(lying_status)
+
+    incomplete = dict(
+        _ext_source(), identity={"tool": "ext", "findings": 2}
+    )
+    with pytest.raises(InputError, match="identity-completeness"):
+        validate_source_v0(incomplete)
+
+
+def test_identity_binding_fails_closed_in_evaluate() -> None:
+    tampered = dict(
+        _ext_source(), identity=dict(_identity("warning"), findings=999)
+    )
+    bundle = {
+        "schema_version": "draft-0",
+        "subject": {"repository": "o/r", "sha": SHA},
+        "sources": [tampered],
+    }
+    decision = evaluate(bundle, _policy(required=[], advisory=["ext.scan"]))
+    assert decision.verdict == "BLOCK"
+    assert any(
+        r.rule == "malformed_input" and "identity binding" in r.detail
+        for r in decision.reasons
+    )
+
+
+def test_golden_digest_vectors_replay() -> None:
+    from pathlib import Path
+
+    vectors_path = (
+        Path(__file__).resolve().parents[1]
+        / "examples" / "digest-vectors.json"
+    )
+    doc = json.loads(vectors_path.read_text(encoding="utf-8"))
+    assert doc["vectors"], "golden vector file must not be empty"
+    for vector in doc["vectors"]:
+        assert canonical.digest(vector["value"]) == vector["digest"], (
+            vector["value"]
+        )
+
+
 def test_record_required_flags_are_policy_owned() -> None:
     # the bundle lies: required source claims false, advisory claims true
     bundle = {

@@ -148,6 +148,7 @@ def status_sources(
                 "status": state,
                 "required": False,
                 "summary": f"Legacy commit status '{context}' is {raw_state}.",
+                "identity": identity,
                 "digest": source_digest(identity),
             }
         )

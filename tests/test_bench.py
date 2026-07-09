@@ -164,6 +164,54 @@ def test_patch_mutation_fails_binding(tmp_path: Path) -> None:
     assert "patch_digest_binding" in report["failed"]
 
 
+def test_policy_swap_fails_policy_binding(tmp_path: Path) -> None:
+    case_dir = _write_case(tmp_path)
+    policy_path = case_dir / "policy.json"
+    policy = json.loads(policy_path.read_text(encoding="utf-8"))
+    policy["required_sources"] = []
+    policy["advisory_sources"] = ["ci"]
+    policy_path.write_text(json.dumps(policy), encoding="utf-8")
+    report = verify_case(case_dir)
+    assert "policy_binding" in report["failed"]
+    # the swapped policy also changes the derived decision
+    assert "semantic_replay" in report["failed"]
+
+
+def test_doctored_record_fails_semantic_replay(tmp_path: Path) -> None:
+    from aos_workflow_gate import canonical as canonical_module
+
+    case_dir = _write_case(tmp_path)
+    record_path = case_dir / "gate-decision.json"
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    record["verdict"] = "BLOCK"
+    record["summary"] = "Gate BLOCK: doctored."
+    payload = {k: v for k, v in record.items() if k != "record_digest"}
+    record["record_digest"] = canonical_module.digest(payload)
+    record_path.write_text(json.dumps(record), encoding="utf-8")
+
+    case_path = case_dir / "case.json"
+    case = json.loads(case_path.read_text(encoding="utf-8"))
+    case["bindings"]["record_digest"] = record["record_digest"]
+    case_path.write_text(json.dumps(case), encoding="utf-8")
+
+    report = verify_case(case_dir)
+    # self-digest and bundle binding hold, but the decision does not
+    # re-derive from the committed inputs
+    assert "record_integrity" in report["verified"]
+    assert "offline_replay" in report["verified"]
+    assert "semantic_replay" in report["failed"]
+
+
+def test_declared_baseline_is_reported_unverifiable(tmp_path: Path) -> None:
+    case_dir = _write_case(
+        tmp_path,
+        baseline={"github_merge_ready": True, "declared_by": "operator"},
+    )
+    report = verify_case(case_dir)
+    assert "github_baseline" in report["unverifiable"]
+    assert report["ok"] is True
+
+
 def test_bundle_swap_fails_offline_replay(tmp_path: Path) -> None:
     case_dir = _write_case(tmp_path)
     bundle_path = case_dir / "bundle.json"

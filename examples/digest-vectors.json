@@ -1,0 +1,76 @@
+{
+  "canonicalization": {
+    "encoding": "UTF-8",
+    "ensure_ascii": false,
+    "hash": "sha256, lowercase hex, prefixed with 'sha256:'",
+    "separators": [
+      ",",
+      ":"
+    ],
+    "sort_keys": true
+  },
+  "description": "Golden digest vectors for the normative canonicalization: UTF-8 bytes of json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':')), hashed with SHA-256 and prefixed 'sha256:'. Any implementation that reproduces every vector below canonicalizes compatibly.",
+  "vectors": [
+    {
+      "digest": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "value": {}
+    },
+    {
+      "digest": "sha256:912d0c07da7bdb22cdae025b96da26d01523aaab7362edb28544e3949deb369d",
+      "value": {
+        "status": "success"
+      }
+    },
+    {
+      "digest": "sha256:087e44ed138472a81a4a0f8ae84e8f358d0d957d27f51123952aa88c007b1f9f",
+      "value": {
+        "a": [
+          true,
+          false,
+          null
+        ],
+        "b": 1
+      }
+    },
+    {
+      "digest": "sha256:0cd4c672971cae172d0b19be38ced9dbd009c55e72009e3a6dfedfa36e0861a3",
+      "value": {
+        "unicode": "zażółć 😀"
+      }
+    },
+    {
+      "digest": "sha256:36b81b8987cd2f5c17aaa45645c2834a0344a7293be343271dc3fa830a70dacd",
+      "value": {
+        "nested": {
+          "x": 1,
+          "y": 2
+        },
+        "num": 3
+      }
+    },
+    {
+      "digest": "sha256:27e7d93d746bec04ac88a76c230a0b70eae11a8b8b8dd056572b29c9983b2b65",
+      "value": {
+        "context": "ci / validate",
+        "state": "success",
+        "status": "success"
+      }
+    },
+    {
+      "digest": "sha256:100e95befce5c34a8927f2359d07d340222625dd67a32ea9c96031c7f9b5f74a",
+      "value": "plain string"
+    },
+    {
+      "digest": "sha256:73475cb40a568e8da8a045ced110137e159f890ac4da883b6b17dc651b3a8049",
+      "value": 42
+    },
+    {
+      "digest": "sha256:a615eeaee21de5179de080de8c3052c8da901138406ba71c38c032845f7d54f4",
+      "value": [
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

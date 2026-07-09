@@ -39,18 +39,21 @@ base state yields the same digest.
 
 ## Validation states
 
-Structural validation failures (missing fields, malformed SHAs) are
-hard, path-addressed errors. A structurally sound document is
-classified into exactly one state, with precedence **integrity, then
-binding, then freshness, then duplication**:
+Structural validation failures (missing fields, malformed SHAs, a
+subject repository different from the document repository —
+cross-repository and fork flows are out of scope for v0) are hard,
+path-addressed errors. A structurally sound document is classified into
+exactly one state, with precedence **integrity, then binding, then
+freshness failure, then duplication, then unknown freshness**:
 
 | State | Source status | Meaning |
 | --- | --- | --- |
-| `valid` | `success` | Intact, bound, fresh (under the chosen mode), not duplicated in scope. |
+| `valid` | `success` | Intact, bound, verified fresh under the chosen mode, not duplicated in scope. |
 | `tampered` | `tampered` | A claimed digest does not match the recomputed canonical digest. |
 | `subject_mismatch` | `subject_mismatch` | The document's subject does not match the bundle's subject. |
 | `stale` | `stale` | `base_sha` is not the observed head (live or pinned check): the action was prepared against a state that has moved. |
 | `bounded_duplicate` | `bounded_duplicate` | Same action digest already seen within this bundle or invocation. |
+| `freshness_unverified` | `freshness_unverified` | No live or pinned base was provided, so staleness was not evaluated — `valid` is not claimed, and required sources fail closed. |
 
 `valid` maps to `success` — a fixed mechanical mapping (like the SARIF
 level mapping), so a policy can *require* a valid agent action. Every
@@ -63,8 +66,10 @@ ones. Each source's summary carries the state-specific explanation.
   head via the API (one budgeted call per repository/branch).
 - `--pinned-base SHA` compares against an operator-pinned base — fully
   offline and reproducible.
-- With neither, staleness is **not evaluated** and the summary says so
-  explicitly; nothing is silently assumed fresh.
+- With neither, staleness is **not evaluated** and the state is
+  `freshness_unverified` — the status itself carries the limitation, so
+  nothing is silently assumed fresh and a required agent action cannot
+  pass without a freshness mode.
 
 ## Boundaries
 

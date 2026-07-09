@@ -49,6 +49,13 @@ disclosure, and hiding them would be the actual failure.
 - `record_integrity` and `offline_replay` — the decision record
   self-verifies, is bound to the case, and replays against the
   committed bundle with no network.
+- `policy_binding` — the shipped policy artifact digests to the
+  record's policy digest: the case cannot ship a different policy than
+  the decision used.
+- `semantic_replay` — **true offline semantic replay**: the committed
+  bundle and policy are re-evaluated and the derived verdict, reasons,
+  inputs, and subject must equal the committed record (the generator
+  version is deliberately excluded so records replay across releases).
 - `subject_binding` — the decision subject equals the action's
   declared subject.
 - `git_ancestry` (with `--live`) — the compare API confirms the subject
@@ -61,6 +68,9 @@ disclosure, and hiding them would be the actual failure.
   rests on the attestation, not on cryptography.
 - `patch_authorship` — **no patch-authorship claim**: the harness
   verifies bytes against the binding, never who or what produced them.
+- `github_baseline` — when a case declares a GitHub baseline
+  (merge-ready state), it is operator-declared from historical platform
+  state and not mechanically re-verifiable offline.
 - `operator_attestation` — recorded prose; **no cryptographic
   authorship claim** is made or implied.
 

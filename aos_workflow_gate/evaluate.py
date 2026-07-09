@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from .policy import Policy
+from .source_contract import contract_violation
 
 PASS = "PASS"
 WARN = "WARN"
@@ -273,16 +274,12 @@ def _normalize_source(
     if not _is_nonempty_str(status):
         reject(f"source '{source_id}' is missing a string status")
         return None
-    contract = item.get("contract")
-    if contract is not None and contract != "source-v0":
-        reject(f"source '{source_id}' declares unknown contract {contract!r}")
-        return None
-    if contract == "source-v0" and "required" in item:
-        reject(
-            f"source '{source_id}' carries a 'required' field, but the "
-            "source-v0 contract has none: required/advisory "
-            "classification is policy-owned"
-        )
+    # single validation path with `import`: the same contract rules
+    # (contract value, policy-owned required ban, identity binding and
+    # status-identity consistency) fail closed here instead of raising
+    violation = contract_violation(item)
+    if violation is not None:
+        reject(f"source '{source_id}' {violation}")
         return None
     # required/advisory classification is policy-owned: the record's
     # required flag is derived from the policy, never trusted from the

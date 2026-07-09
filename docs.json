@@ -55,7 +55,8 @@
     "examples/pr-evidence-record.json",
     "examples/check-pr-bundle.json",
     "examples/check-pr-policy.json",
-    "examples/check-pr-record.json"
+    "examples/check-pr-record.json",
+    "examples/digest-vectors.json"
   ],
   "benchmarks": [
     "benchmarks/cases/agent-pr36-preflight/case.json",
