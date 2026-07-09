@@ -4,10 +4,10 @@
     "tool": "aos-workflow-gate",
     "version": "0.21.0"
   },
-  "input_bundle_digest": "sha256:a06a19c633c11a343a622b96fa201ddcbd1b88176565ac93e6ee2fd7c29a973d",
+  "input_bundle_digest": "sha256:ad1d6b10d54fcbd513f665e3dc0c2e398f265a0586debc68b3d38279875d04a4",
   "inputs": [
     {
-      "digest": "sha256:4f795677b35cfb95384e670191110f5b43647064032ca01c548fbc531bcd41aa",
+      "digest": "sha256:467740c7bfafbfc42c82fcb0abcb922d7f836ff2c93848a41669dc0ff22b86df",
       "id": "AOS Workflow Gate CI / validate",
       "kind": "github_check",
       "required": true,
@@ -15,36 +15,36 @@
       "status": "success"
     },
     {
-      "digest": "sha256:9b859876180f974a9973f92f60716329eb1a5bcd2da7f0cc33932ead0071a168",
+      "digest": "sha256:8ca29d458af2da25534d112fa02b6b5b2191693e3d8918c235c8cf9d6893abbc",
       "id": "AOS Workflow Gate Self / advisory",
       "kind": "github_check",
-      "required": false,
+      "required": true,
       "signal_source": "github_check_runs_api",
       "status": "success"
     },
     {
-      "digest": "sha256:b3eac2fc3ce61718a6c91de7f6e2ae319b0964399fe2f7df532c3a382c9cef8e",
+      "digest": "sha256:c074d7530c73117e1f4d584f01299c352b702fc006ebfeafe0e7cb6039717b27",
       "id": "AOS Workflow Gate Self / zero-config",
       "kind": "github_check",
-      "required": false,
+      "required": true,
       "signal_source": "github_check_runs_api",
       "status": "success"
     }
   ],
   "policy": {
-    "digest": "sha256:91b6374ac5cbff06c473af050fac34929b1c20bf19ba1d6a64e1c05de96c8fad",
+    "digest": "sha256:abf27fc1ddcb83c4c9078bdbc77b5bf605a98ab9ece0e64e886843acdd688f46",
     "mode": "advisory",
     "policy_id": "collected-advisory",
     "verification_status": "UNSIGNED_NOT_OFFICIAL"
   },
   "reasons": [],
-  "record_digest": "sha256:c772011e9f79412fad534a4ca7eb9f322a202a1b4b7c7ec63cef921333dc4bd2",
+  "record_digest": "sha256:7af0023ac2dd03cf1122cf9eeaa8272c9e594c3d4563000eb07dbd33770f3db6",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
-    "pull_request": 23,
-    "ref": "refs/pull/23/merge",
+    "pull_request": null,
+    "ref": null,
     "repository": "RafineriaAI/aos-workflow-gate",
-    "sha": "3f166868021884ab42f80fd4e018623a8755d610"
+    "sha": "72dbb0bffaf1f4bf469f8832de361691725c987a"
   },
   "summary": "Gate PASS: all required checks satisfied; no advisory warnings.",
   "verdict": "PASS",

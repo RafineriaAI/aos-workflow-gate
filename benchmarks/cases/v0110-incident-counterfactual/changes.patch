@@ -1,0 +1,380 @@
+diff --git a/README.md b/README.md
+index 3b2f565..77c1f6e 100644
+--- a/README.md
++++ b/README.md
+@@ -92,7 +92,7 @@ jobs:
+         with:
+           python-version: "3.11"
+       - name: AOS self-test (advisory)
+-        uses: RafineriaAI/aos-workflow-gate@v0.10.0
++        uses: RafineriaAI/aos-workflow-gate@v0.11.0
+         with:
+           required-checks: "ci / validate"
+ ```
+@@ -128,7 +128,7 @@ steps:
+       python-version: "3.11"
+   - name: Run gate (advisory)
+     id: gate
+-    uses: RafineriaAI/aos-workflow-gate@v0.10.0
++    uses: RafineriaAI/aos-workflow-gate@v0.11.0
+     with:
+       input: examples/github-pr-signal-bundle.json
+   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
+@@ -179,6 +179,7 @@ collector and the Action are GitHub-specific by design.
+ - [Trust](docs/TRUST.md) shows how to verify every claim yourself: read-only permissions, no telemetry, zero dependencies, tamper evidence, offline replay.
+ - [Buyer FAQ](docs/BUYER_FAQ.md) answers security reviewers: data flows, permissions, free vs paid, vendor risk, platform coverage.
+ - [Security readiness](docs/SECURITY_READINESS.md) documents the private-repo data model and implemented input hardening, each with a negative test.
++- [User FAQ](docs/USER_FAQ.md) answers first-run questions and maps every failure symptom to its meaning and fix.
+ - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
+ - [Roadmap](ROADMAP.md) defines the phased plan.
+ - [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.
+diff --git a/action.yml b/action.yml
+index 4a37c8d..74324ef 100644
+--- a/action.yml
++++ b/action.yml
+@@ -125,6 +125,18 @@ runs:
+         if [ -f "$GATE_OUT" ]; then
+           python3 -m aos_workflow_gate summarize --input "$GATE_OUT" \
+             >> "$GITHUB_STEP_SUMMARY" || true
++          if [ -f .aos-gate/bundle.json ]; then
++            python3 -c "
++import json
++c = json.load(open('.aos-gate/bundle.json')).get('collection', {})
++status = c.get('status', 'unknown')
++line = f\"Collection: {status}\"
++if c.get('incomplete_required'):
++    names = ', '.join(str(n) for n in c['incomplete_required'])
++    line += f' - still running when the wait ended: {names}'
++print(line)
++" >> "$GITHUB_STEP_SUMMARY" || true
++          fi
+           required_count=$(python3 -c "import json,os;print(sum(1 for i in json.load(open(os.environ['GATE_OUT'])).get('inputs',[]) if i.get('required')))")
+           {
+             echo ""
+@@ -137,6 +149,13 @@ runs:
+               echo "Need help extending this gate across repositories or" \
+                 "platforms? [Request guided-pilot scoping](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)."
+             fi
++            echo ""
++            echo "Reproduce locally (download the uploaded artifacts first):"
++            echo '```bash'
++            echo "pip install \"git+https://github.com/RafineriaAI/aos-workflow-gate@${GITHUB_ACTION_REF:-main}\""
++            echo "aos-workflow-gate verify --input gate-decision.json --bundle bundle.json"
++            echo "aos-workflow-gate summarize --input gate-decision.json"
++            echo '```'
+           } >> "$GITHUB_STEP_SUMMARY"
+           {
+             echo "verdict=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['verdict'])")"
+diff --git a/aos_workflow_gate/summarize.py b/aos_workflow_gate/summarize.py
+index 986e00d..3ff7e80 100644
+--- a/aos_workflow_gate/summarize.py
++++ b/aos_workflow_gate/summarize.py
+@@ -56,7 +56,11 @@ def render_markdown(record: Any) -> tuple[str, bool]:
+     lines: list[str] = [f"## Gate decision: {verdict}", ""]
+     summary = record.get("summary")
+     if isinstance(summary, str) and summary:
+-        lines += [_escape(summary), ""]
++        lines.append(f"**What happened:** {_escape(summary)}")
++    lines.append(
++        f"**Can block this job:** {'yes' if record.get('can_block') else 'no'}"
++    )
++    lines += [f"**Next:** {_next_step(record, intact)}", ""]
+     if not intact:
+         lines += [
+             "> **Warning:** record content does not match its self-digest. "
+@@ -76,9 +80,6 @@ def render_markdown(record: Any) -> tuple[str, bool]:
+     )
+     lines.append(f"| Record digest | {_code(record.get('record_digest', '-'))} |")
+     lines.append(f"| Record self-check | {'OK' if intact else 'FAILED'} |")
+-    lines.append(
+-        f"| Can block this job | {'yes' if record.get('can_block') else 'no'} |"
+-    )
+     lines.append(
+         "| Verification status | "
+         f"{_escape(record.get('verification_status', '-'))} |"
+@@ -146,6 +147,18 @@ def _coverage_lines(inputs: list[Any]) -> list[str]:
+             "check cannot make this gate BLOCK. The record is evidence, "
+             "not enforcement."
+         )
++        candidate_ids = ", ".join(
++            str(source.get("id", ""))
++            .replace('"', "")
++            .replace("`", "'")
++            .replace("\n", " ")
++            for source in sources[:5]
++        )
++        if candidate_ids:
++            lines.append(
++                "- Suggestion: start with your detected checks, then trim: "
++                f'`required-checks: "{candidate_ids}"`'
++            )
+     else:
+         required_ids = ", ".join(
+             _code(source.get("id", "-")) for source in required
+@@ -155,6 +168,38 @@ def _coverage_lines(inputs: list[Any]) -> list[str]:
+     return lines
+ 
+ 
++def _next_step(record: dict[str, Any], intact: bool) -> str:
++    """One adaptive sentence telling the reader what to fix next."""
++    if not intact:
++        return (
++            "do not act on this record; regenerate it from the source "
++            "bundle and investigate the mutation"
++        )
++    verdict = record.get("verdict")
++    reasons = record.get("reasons")
++    if verdict in ("BLOCK", "WARN") and isinstance(reasons, list):
++        for reason in reasons:
++            if isinstance(reason, dict):
++                hint = REPAIR_HINTS.get(str(reason.get("rule")))
++                if hint:
++                    return hint
++    inputs = record.get("inputs")
++    sources = [s for s in inputs if isinstance(s, dict)] if isinstance(
++        inputs, list
++    ) else []
++    if sources and not any(s.get("required") for s in sources):
++        return (
++            "define required checks so the gate can BLOCK "
++            "(see the suggestion under Coverage)"
++        )
++    if not record.get("can_block"):
++        return (
++            'set enforce: "true" (or a blocking policy) so a BLOCK '
++            "verdict fails the job"
++        )
++    return "nothing — the gate is enforcing and green"
++
++
+ _ESCAPE_CHARS = "\\`*_[]<>|"
+ 
+ 
+diff --git a/aos_workflow_gate/version.py b/aos_workflow_gate/version.py
+index a90d64c..788bff3 100644
+--- a/aos_workflow_gate/version.py
++++ b/aos_workflow_gate/version.py
+@@ -2,4 +2,4 @@
+ 
+ from __future__ import annotations
+ 
+-__version__ = "0.10.0"
++__version__ = "0.11.0"
+diff --git a/docs.json b/docs.json
+index f588b20..1fd4d87 100644
+--- a/docs.json
++++ b/docs.json
+@@ -14,6 +14,7 @@
+     "docs/TRUST.md",
+     "docs/BUYER_FAQ.md",
+     "docs/SECURITY_READINESS.md",
++    "docs/USER_FAQ.md",
+     "docs/case-studies/aos-kernel-release-surface-replay.md",
+     "docs/RELEASE_GOVERNANCE.md",
+     "ROADMAP.md",
+diff --git a/docs/CI_INTEGRATIONS.md b/docs/CI_INTEGRATIONS.md
+index e57953e..da7281e 100644
+--- a/docs/CI_INTEGRATIONS.md
++++ b/docs/CI_INTEGRATIONS.md
+@@ -51,7 +51,7 @@ exists, run the platform-neutral core on an explicitly provided bundle:
+ gate:
+   image: python:3.12-slim
+   script:
+-    - pip install --quiet "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.10.0"
++    - pip install --quiet "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.11.0"
+     - aos-workflow-gate evaluate
+         --input signal-bundle.json
+         --policy policy.yml
+@@ -69,7 +69,7 @@ in-toto subject with that URL verbatim.
+ ## Jenkins or any shell
+ 
+ ```bash
+-python3 -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.10.0"
++python3 -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.11.0"
+ aos-workflow-gate evaluate --input bundle.json --policy policy.yml --out record.json
+ aos-workflow-gate summarize --input record.json > gate-summary.md
+ ```
+diff --git a/docs/USER_FAQ.md b/docs/USER_FAQ.md
+new file mode 100644
+index 0000000..26c6fce
+--- /dev/null
++++ b/docs/USER_FAQ.md
+@@ -0,0 +1,55 @@
++# User FAQ
++
++First-run answers for operators. Buyer and security-reviewer questions live
++in [BUYER_FAQ.md](BUYER_FAQ.md); verification steps in [TRUST.md](TRUST.md).
++
++**Why did my first run say WARN or show few signals?**
++Self-Test Mode collects only *completed* check runs, and on a fresh push
++your other checks may still be running. Set `wait-for-checks: "120"` with
++`required-checks` so the gate polls until the checks that matter have
++finished. The gate never waits for "everything" — its own job would never
++complete while waiting.
++
++**Why does the summary say the gate "cannot BLOCK yet"?**
++Two switches control blocking. `required-checks` decides *what* can block
++(a missing or failed required check makes the verdict `BLOCK`), and
++`enforce: "true"` decides whether a `BLOCK` verdict *fails the job*. The
++summary's Coverage section suggests a starting `required-checks` value
++from your detected checks.
++
++**How do I see and keep the evidence?**
++The decision record is written to the path in the `record` output
++(Self-Test Mode also writes the bundle and generated policy to
++`.aos-gate/`). Upload them as artifacts to keep them; on private
++repositories treat the record with the same sensitivity as your check
++names.
++
++**How do I reproduce a decision locally?**
++Download the artifacts, then:
++
++```bash
++pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.11.0"
++aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
++aos-workflow-gate summarize --input gate-decision.json
++```
++
++`verify` prints `OK` when the record matches its self-digest and the
++bundle; `TAMPERED` means the file changed since the gate wrote it.
++
++## Failure taxonomy
++
++| Symptom | Meaning | Fix |
++| --- | --- | --- |
++| Exit 0, verdict `PASS` | Policy satisfied. | Nothing. |
++| Exit 0, verdict `WARN` | Advisory source not successful; warnings never block. | Review the named source's own report; follow the hint under Reasons. |
++| Exit 0, verdict `BLOCK` | Policy would block, but nothing enforces it. | Set `enforce: "true"` (or a blocking policy) if you want the job to fail. |
++| Exit 1 after `evaluate` | Policy `BLOCK` under enforcement. | Follow the hints under Reasons: fix or re-run the failed required check, or correct the check name. |
++| Exit 1 after `verify` | Record or bundle changed since it was written. | Regenerate from source; investigate the mutation. |
++| Exit 2 | Operational error — malformed input, API failure after retries, budget exhausted, policy-digest or context mismatch. No verdict was produced. | Read the error message; it names the operational cause. Never treat it as a policy decision. |
++| `missing_required_source` reason | No completed check run with that exact name. | Check the exact name (it must match the check run name), or add `wait-for-checks` so slow checks can finish. |
++| Collection status `wait_timeout` | Wait budget ended with required checks still running. | Raise `wait-for-checks`, or accept the fail-closed `BLOCK`. |
++| Collection status `truncated` | More check runs existed than the page budget collected. | Raise limits via CLI flags; uncollected required checks fail closed. |
++
++**Does PASS mean my code is safe?**
++No. `PASS` means your explicit policy was satisfied by the collected
++signals — nothing more. See [SCOPE.md](SCOPE.md) for the claim boundary.
+diff --git a/examples/aos-kernel-gate-decision.json b/examples/aos-kernel-gate-decision.json
+index 1274454..a6e317e 100644
+--- a/examples/aos-kernel-gate-decision.json
++++ b/examples/aos-kernel-gate-decision.json
+@@ -2,7 +2,7 @@
+   "can_block": false,
+   "generator": {
+     "tool": "aos-workflow-gate",
+-    "version": "0.10.0"
++    "version": "0.11.0"
+   },
+   "input_bundle_digest": "sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22",
+   "inputs": [
+@@ -54,7 +54,7 @@
+     "verification_status": "UNSIGNED_NOT_OFFICIAL"
+   },
+   "reasons": [],
+-  "record_digest": "sha256:efed6349cafd64b14383f0dedf3f996f7db908376057d3878bc02d8439057b31",
++  "record_digest": "sha256:0b97133a8fa17988331aaccbcbbfcdb11a0886fa0b8bb983244fc2d74a8bd31f",
+   "schema_version": "aos-workflow-gate-decision/v0",
+   "subject": {
+     "pull_request": null,
+diff --git a/examples/gate-decision.json b/examples/gate-decision.json
+index 93caed0..bd9be29 100644
+--- a/examples/gate-decision.json
++++ b/examples/gate-decision.json
+@@ -2,7 +2,7 @@
+   "can_block": false,
+   "generator": {
+     "tool": "aos-workflow-gate",
+-    "version": "0.10.0"
++    "version": "0.11.0"
+   },
+   "input_bundle_digest": "sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19",
+   "inputs": [
+@@ -45,7 +45,7 @@
+       "source_id": "scanner.sarif"
+     }
+   ],
+-  "record_digest": "sha256:28d4c57723e48adb5d344fe538f04303b7cb7b9c37745f0821c9ebfe4e669b8b",
++  "record_digest": "sha256:8b28fbda08fc67356f9202f06dcc6951d403cedb6b2239426a390bffc3a20420",
+   "schema_version": "aos-workflow-gate-decision/v0",
+   "subject": {
+     "pull_request": 42,
+diff --git a/pyproject.toml b/pyproject.toml
+index 0247e94..b43ed23 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
+ 
+ [project]
+ name = "aos-workflow-gate"
+-version = "0.10.0"
++version = "0.11.0"
+ description = "Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals."
+ readme = "README.md"
+ requires-python = ">=3.11"
+diff --git a/tests/test_summarize.py b/tests/test_summarize.py
+index e40b56d..72162ce 100644
+--- a/tests/test_summarize.py
++++ b/tests/test_summarize.py
+@@ -6,6 +6,7 @@
+ 
+ import pytest
+ 
++from aos_workflow_gate import canonical
+ from aos_workflow_gate.cli import main
+ from aos_workflow_gate.errors import InputError
+ from aos_workflow_gate.summarize import render_markdown
+@@ -36,6 +37,28 @@ def test_render_markdown_covers_decision_fields() -> None:
+         assert source["id"] in text
+ 
+ 
++def test_render_markdown_top_block() -> None:
++    record = _record()
++    text, _ = render_markdown(record)
++    assert "**What happened:**" in text
++    assert "**Can block this job:** no" in text
++    assert "**Next:**" in text
++    assert "advisory findings warn but never block" in text
++
++
++def test_next_step_adapts_to_decision_gap() -> None:
++    record = _record()
++    record["verdict"] = "PASS"
++    record["reasons"] = []
++    for source in record["inputs"]:
++        source["required"] = False
++    payload = {k: v for k, v in record.items() if k != "record_digest"}
++    record["record_digest"] = canonical.digest(payload)
++    text, _ = render_markdown(record)
++    assert "**Next:** define required checks" in text
++    assert 'required-checks: "' in text
++
++
+ def test_render_markdown_adds_repair_hints() -> None:
+     record = _record()
+     text, _ = render_markdown(record)
+diff --git a/tools/check_public_surface.py b/tools/check_public_surface.py
+index 3ac665f..f58608e 100644
+--- a/tools/check_public_surface.py
++++ b/tools/check_public_surface.py
+@@ -37,6 +37,12 @@
+         "docs/BUYER_FAQ.md",
+         ".github/workflows/aos-workflow-gate-self.yml",
+     ],
++    "docs/USER_FAQ.md": [
++        "## Failure taxonomy",
++        "Never treat it as a policy decision",
++        "aos-workflow-gate verify --input gate-decision.json",
++        "wait-for-checks",
++    ],
+     "docs/SECURITY_READINESS.md": [
+         "## Private-repo data model",
+         "no security-audit claim is made",
+@@ -328,6 +334,7 @@ def check_action_surface() -> None:
+         "must not contain control characters",
+         "AOS_GATE_WORKSPACE: ${{ github.workspace }}",
+         "wait-for-checks",
++        "Reproduce locally",
+     )
+     for snippet in required_action_snippets:
+         if snippet not in action:

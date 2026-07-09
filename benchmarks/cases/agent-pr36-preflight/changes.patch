@@ -1,0 +1,1516 @@
+diff --git a/.gitignore b/.gitignore
+index 70c8899..43e02bf 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -23,3 +23,5 @@ dist/
+ Thumbs.db
+ .idea/
+ .vscode/
++.tmp/
++.aos-gate/
+diff --git a/README.md b/README.md
+index 65e4dae..8a57ec7 100644
+--- a/README.md
++++ b/README.md
+@@ -63,6 +63,15 @@ detectable):
+ aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
+ ```
+ 
++Before the first gate run, probe what your token, environment, and
++target actually allow — read-only, with stable diagnostic codes and
++remediation, and no verdict
++(see [docs/PREFLIGHT.md](docs/PREFLIGHT.md)):
++
++```bash
++aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
++```
++
+ Render a record as Markdown (the same summary the GitHub Action posts):
+ 
+ ```bash
+@@ -111,7 +120,7 @@ jobs:
+         with:
+           python-version: "3.11"
+       - name: AOS self-test (advisory)
+-        uses: RafineriaAI/aos-workflow-gate@v0.16.0
++        uses: RafineriaAI/aos-workflow-gate@v0.17.0
+         with:
+           required-checks: "ci / validate"
+ ```
+@@ -154,7 +163,7 @@ steps:
+       python-version: "3.11"
+   - name: Run gate (advisory)
+     id: gate
+-    uses: RafineriaAI/aos-workflow-gate@v0.16.0
++    uses: RafineriaAI/aos-workflow-gate@v0.17.0
+     with:
+       input: examples/github-pr-signal-bundle.json
+   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
+@@ -225,6 +234,7 @@ collector and the Action are GitHub-specific by design.
+ - [Buyer FAQ](docs/BUYER_FAQ.md) answers security reviewers: data flows, permissions, free vs paid, vendor risk, platform coverage.
+ - [Security readiness](docs/SECURITY_READINESS.md) documents the private-repo data model and implemented input hardening, each with a negative test.
+ - [User FAQ](docs/USER_FAQ.md) answers first-run questions and maps every failure symptom to its meaning and fix.
++- [Preflight diagnostics](docs/PREFLIGHT.md) documents the read-only capability probes, the stable diagnostic code registry, and preflight's exit semantics.
+ - [Value](docs/VALUE.md) states what the gate is worth, only as far as the evidence reaches.
+ - [Value metrics](docs/VALUE_METRICS.md) counts operational friction from the committed case studies — no ROI arithmetic, by design.
+ - [Comparison](docs/COMPARISON.md) maps what branch protection, OPA/conftest, in-toto attestations, and the gate each answer — a capability matrix, not a ranking.
+diff --git a/aos_workflow_gate/cli.py b/aos_workflow_gate/cli.py
+index 97f9a4c..df5bc3b 100644
+--- a/aos_workflow_gate/cli.py
++++ b/aos_workflow_gate/cli.py
+@@ -6,6 +6,8 @@
+ ``verify`` recomputes a record's digests to detect tampering or a mismatched
+ source bundle. ``summarize`` renders a record as Markdown for maintainers.
+ ``export`` wraps a verified record in an unsigned in-toto Statement.
++``preflight`` probes capabilities read-only and reports stable diagnostic
++codes — readiness, never a verdict.
+ In advisory mode the process exit code is always 0; only a policy in blocking
+ mode (or ``--enforce``) makes a ``BLOCK`` verdict fail.
+ """
+@@ -50,6 +52,7 @@
+ from .export import build_statement
+ from .paths import safe_output_path, workspace_boundary
+ from .policy import load_policy
++from .preflight import render_report, run_preflight
+ from .summarize import render_markdown
+ from .version import __version__
+ 
+@@ -72,6 +75,8 @@ def main(argv: list[str] | None = None) -> int:
+             return _cmd_run(args)
+         if args.command == "check-pr":
+             return _cmd_check_pr(args)
++        if args.command == "preflight":
++            return _cmd_preflight(args)
+     except InputError as exc:
+         print(f"error: {exc}", file=sys.stderr)
+         print(
+@@ -165,6 +170,53 @@ def _build_parser() -> argparse.ArgumentParser:
+         help="env var holding the API token (default GITHUB_TOKEN)",
+     )
+ 
++    preflight_parser = subparsers.add_parser(
++        "preflight",
++        help="read-only capability probes: what the token, environment, "
++        "and target actually allow (diagnostic readiness, never a "
++        "verdict)",
++    )
++    preflight_parser.add_argument(
++        "--pr", help="https://github.com/OWNER/REPO/pull/N to probe"
++    )
++    preflight_parser.add_argument(
++        "--repository", help="owner/repo to probe"
++    )
++    preflight_parser.add_argument(
++        "--sha", help="commit to probe check runs and statuses on "
++        "(default: PR head or the default branch)",
++    )
++    preflight_parser.add_argument(
++        "--branch", help="branch to probe rules on (default: PR base or "
++        "the default branch)",
++    )
++    preflight_parser.add_argument(
++        "--github-context",
++        action="store_true",
++        help="probe the current GitHub Actions workflow context "
++        "(workflow-scoped readiness report)",
++    )
++    preflight_parser.add_argument(
++        "--json", action="store_true",
++        help="print the full JSON report instead of the findings view",
++    )
++    preflight_parser.add_argument(
++        "--verbose", action="store_true",
++        help="also list every probe, not only the findings",
++    )
++    preflight_parser.add_argument(
++        "--out", help="also write the JSON report to this path"
++    )
++    preflight_parser.add_argument(
++        "--token-env", default="GITHUB_TOKEN",
++        help="env var holding the API token (default GITHUB_TOKEN)",
++    )
++    preflight_parser.add_argument(
++        "--api-url",
++        help="GitHub API base URL (default: GITHUB_API_URL env or "
++        "https://api.github.com)",
++    )
++
+     run_parser = subparsers.add_parser(
+         "run",
+         help="collect, evaluate, and summarize in one command",
+@@ -818,6 +870,34 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
+     return 0
+ 
+ 
++def _cmd_preflight(args: argparse.Namespace) -> int:
++    """Diagnostic readiness probes; exit 0 ready, 1 degraded, 2 no probe.
++
++    Exit 1 here means "a probed capability is unavailable" — a readiness
++    statement, never a policy verdict (this command produces none).
++    """
++    token = os.environ.get(args.token_env) if args.token_env else None
++    report = run_preflight(
++        pr_url=args.pr,
++        repository=args.repository,
++        sha=args.sha,
++        branch=args.branch,
++        github_context=args.github_context,
++        token=token,
++        api_url=args.api_url,
++    )
++    if args.out:
++        _write_json(
++            safe_output_path(args.out, workspace=workspace_boundary()), report
++        )
++    if args.json:
++        text = json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True)
++        sys.stdout.write(text + "\n")
++    else:
++        sys.stdout.write(render_report(report, verbose=args.verbose))
++    return 0 if report["ready"] else 1
++
++
+ def _check_context_integrity(bundle: Any, *, require_match: bool) -> None:
+     """Zero-trust checks binding the bundle to its execution context.
+ 
+diff --git a/aos_workflow_gate/preflight.py b/aos_workflow_gate/preflight.py
+new file mode 100644
+index 0000000..79f0ac8
+--- /dev/null
++++ b/aos_workflow_gate/preflight.py
+@@ -0,0 +1,635 @@
++"""Read-only preflight diagnostics for gate capabilities.
++
++``preflight`` probes what the current token, environment, and target
++actually allow — repository metadata, pull request access, check runs,
++commit statuses, and active branch rules — and reports stable diagnostic
++codes with remediation. Nothing is assumed about token permissions:
++every capability is probed empirically and classified from the observed
++HTTP behavior, because permission models differ between the workflow
++``GITHUB_TOKEN``, fine-grained tokens, classic tokens, and GHES versions.
++
++The output is a diagnostic readiness report, never a policy verdict:
++exit 0 means every probed capability responded, exit 1 means at least
++one probed capability is unavailable (each one is named with a stable
++code), exit 2 means the probe run itself could not complete.
++
++Diagnostic codes are stable: a code never changes meaning across
++versions. The registry lives in docs/PREFLIGHT.md.
++"""
++
++from __future__ import annotations
++
++import json
++import os
++import sys
++import urllib.request
++from typing import Any
++from urllib.error import HTTPError, URLError
++from urllib.parse import quote
++
++from .checkpr import parse_pr_url, required_checks_from_rules
++from .collect import (
++    API_TIMEOUT_SECONDS,
++    DEFAULT_API_URL,
++    Budget,
++    github_context_snapshot,
++    resolve_github_context,
++    validate_api_url,
++)
++from .errors import InputError
++from .paths import WORKSPACE_ENV
++from .version import __version__
++
++REPORT_SCHEMA_VERSION = "preflight-report-v0"
++LOW_RATE_LIMIT_REMAINING = 20
++
++_TAXONOMY = {
++    "ENV": "environment",
++    "PERM": "permission",
++    "FEAT": "feature",
++    "CTX": "context",
++}
++
++_SEVERITY_ORDER = {"error": 0, "warn": 1, "info": 2}
++
++# Likely causes shown as remediation for an observed HTTP 403. These are
++# suggestions derived from common token models, not assumptions the probe
++# relies on: the classification itself comes only from the response.
++_FORBIDDEN_HINTS = {
++    "check_runs": (
++        "the token cannot read check runs; a workflow `permissions:` "
++        "block commonly needs `checks: read`, a fine-grained token needs "
++        "Checks read access — verify against your token type"
++    ),
++    "commit_statuses": (
++        "the token cannot read commit statuses; contents/commit read "
++        "access is commonly required — verify against your token type"
++    ),
++    "branch_rules": (
++        "the token cannot read branch rules; repository metadata read "
++        "access is commonly required — verify against your token type"
++    ),
++    "pull_request": (
++        "the token cannot read this pull request; pull request read "
++        "access is commonly required — verify against your token type"
++    ),
++    "repository": (
++        "the token cannot read this repository; repository read access "
++        "is commonly required — verify against your token type"
++    ),
++}
++
++
++def _finding(
++    code: str,
++    capability: str,
++    observed: str,
++    remediation: str,
++    severity: str,
++) -> dict[str, Any]:
++    prefix = code.split("-")[1]
++    return {
++        "code": code,
++        "taxonomy": _TAXONOMY[prefix],
++        "severity": severity,
++        "capability": capability,
++        "observed": observed,
++        "remediation": remediation,
++    }
++
++
++def classify_response(
++    capability: str, http_status: int, *, rate_limited: bool
++) -> dict[str, Any] | None:
++    """Classify a probe's HTTP response into a finding, if any.
++
++    Only the observed response is used — no permission model is assumed.
++    2xx responses produce no finding here; feature-level observations
++    (a capability that works but is unused) are added by the caller.
++    """
++    if 200 <= http_status < 300:
++        return None
++    if http_status == 401:
++        return _finding(
++            "AOS-PERM-001",
++            capability,
++            f"HTTP 401 while probing {capability}",
++            "the API rejected the credentials; the token is invalid, "
++            "expired, or malformed — replace it and re-run preflight",
++            "error",
++        )
++    if rate_limited:
++        return _finding(
++            "AOS-PERM-004",
++            capability,
++            f"HTTP {http_status} rate-limited while probing {capability}",
++            "the rate limit is exhausted, so capability cannot be "
++            "determined now; wait for the limit window to reset, or "
++            "authenticate to get a higher limit",
++            "error",
++        )
++    if http_status == 403:
++        return _finding(
++            "AOS-PERM-002",
++            capability,
++            f"HTTP 403 while probing {capability}",
++            _FORBIDDEN_HINTS.get(
++                capability,
++                "the API denied access to this capability — verify the "
++                "token's access against your token type",
++            ),
++            "error",
++        )
++    if http_status == 404:
++        return _finding(
++            "AOS-PERM-003",
++            capability,
++            f"HTTP 404 while probing {capability}",
++            "the resource does not exist, or it exists but the token "
++            "cannot see it (the API reports both identically); check "
++            "the target spelling first, then the token's repository "
++            "access",
++            "error",
++        )
++    return _finding(
++        "AOS-ENV-002",
++        capability,
++        f"HTTP {http_status} while probing {capability}",
++        "unexpected API response; if it persists, the endpoint may be "
++        "unavailable on this server version",
++        "error",
++    )
++
++
++def _probe_get(
++    url: str,
++    headers: dict[str, str],
++    *,
++    budget: Budget,
++    timeout: float = API_TIMEOUT_SECONDS,
++) -> tuple[int, Any, bool, str | None]:
++    """One diagnostic GET: (http_status, payload, rate_limited, error).
++
++    A single attempt, deliberately without retries — preflight reports
++    what the environment does right now. ``http_status`` 0 means the
++    request never reached the API (network failure); ``error`` then
++    carries the cause.
++    """
++    budget.take_call()
++    request = urllib.request.Request(url, headers=headers)
++    try:
++        with urllib.request.urlopen(request, timeout=timeout) as response:
++            try:
++                payload = json.load(response)
++            except (json.JSONDecodeError, ValueError):
++                payload = None
++            status = getattr(response, "status", None)
++            return (status if isinstance(status, int) else 200), payload, False, None
++    except HTTPError as exc:
++        rate_limited = exc.code == 429 or (
++            exc.code == 403
++            and exc.headers is not None
++            and (
++                exc.headers.get("X-RateLimit-Remaining") == "0"
++                or bool(exc.headers.get("Retry-After"))
++            )
++        )
++        return exc.code, None, rate_limited, None
++    except (URLError, OSError) as exc:
++        return 0, None, False, str(exc)
++
++
++def _slug_of(repository: str) -> str:
++    parts = repository.rstrip("/").rsplit("/", 2)
++    return "/".join(parts[-2:]) if len(parts) >= 2 else repository
++
++
++def run_preflight(
++    *,
++    pr_url: str | None = None,
++    repository: str | None = None,
++    sha: str | None = None,
++    branch: str | None = None,
++    github_context: bool = False,
++    token: str | None = None,
++    api_url: str | None = None,
++    budget: Budget | None = None,
++) -> dict[str, Any]:
++    """Probe the environment and target; return the readiness report.
++
++    Probes run in dependency order; when a prerequisite fails (network
++    unreachable, credentials rejected, repository unavailable) the
++    dependent probes are recorded as skipped instead of repeating the
++    same failure five times.
++    """
++    budget = budget or Budget()
++    probes: list[dict[str, Any]] = []
++    findings: list[dict[str, Any]] = []
++
++    def probe(capability: str, endpoint: str, status: str, **observed: Any) -> None:
++        probes.append(
++            {
++                "capability": capability,
++                "endpoint": endpoint,
++                "status": status,
++                "observed": dict(observed),
++            }
++        )
++
++    # -- runtime and context (no network) --------------------------------
++    probe(
++        "runtime",
++        "(local)",
++        "available",
++        python=".".join(str(part) for part in sys.version_info[:3]),
++    )
++
++    workspace_raw = os.environ.get(WORKSPACE_ENV)
++    if workspace_raw and workspace_raw.strip():
++        if os.path.isdir(workspace_raw):
++            probe("workspace", "(local)", "available", path_configured=True)
++        else:
++            probe("workspace", "(local)", "unavailable", path_configured=True)
++            findings.append(
++                _finding(
++                    "AOS-ENV-003",
++                    "workspace",
++                    f"{WORKSPACE_ENV} is set but is not an existing "
++                    "directory",
++                    "point the variable at the job workspace directory, "
++                    "or unset it for unbounded local output paths",
++                    "error",
++                )
++            )
++    else:
++        probe("workspace", "(local)", "skipped", path_configured=False)
++
++    pull_number: int | None = None
++    slug: str | None = None
++    resolved_api: str | None = None
++
++    if pr_url:
++        coords = parse_pr_url(pr_url)
++        slug = coords["slug"]
++        resolved_api = coords["api_url"]
++        pull_number = coords["number"]
++    elif repository:
++        slug = _slug_of(repository)
++        if "/" not in slug:
++            raise InputError(
++                f"--repository must be owner/repo, got {repository!r}"
++            )
++    elif github_context:
++        if os.environ.get("GITHUB_ACTIONS") != "true":
++            findings.append(
++                _finding(
++                    "AOS-CTX-002",
++                    "actions_context",
++                    "GITHUB_ACTIONS is not 'true'; this is not a GitHub "
++                    "Actions runtime",
++                    "run with --pr or --repository outside workflows; "
++                    "--github-context is for workflow-scoped probing",
++                    "info",
++                )
++            )
++        try:
++            context = resolve_github_context()
++            slug = _slug_of(str(context["repository"]))
++            sha = sha or (
++                context["sha"] if isinstance(context["sha"], str) else None
++            )
++            probe(
++                "actions_context",
++                "(env)",
++                "available",
++                snapshot_keys=sorted(github_context_snapshot()),
++            )
++        except InputError as exc:
++            probe("actions_context", "(env)", "unavailable")
++            findings.append(
++                _finding(
++                    "AOS-CTX-001",
++                    "actions_context",
++                    f"GitHub Actions context incomplete: {exc}",
++                    "the identity variables GitHub Actions sets "
++                    "(GITHUB_REPOSITORY, GITHUB_SHA) are missing or "
++                    "unusable; do not unset them in workflow steps",
++                    "error",
++                )
++            )
++    else:
++        raise InputError(
++            "preflight needs --pr, --repository, or --github-context"
++        )
++
++    if token is None:
++        findings.append(
++            _finding(
++                "AOS-ENV-001",
++                "credentials",
++                "no API token available; probing anonymously",
++                "anonymous probing works for public repositories at a "
++                "low rate limit; set the token env var (default "
++                "GITHUB_TOKEN) to probe what your real credentials can "
++                "do",
++                "info",
++            )
++        )
++
++    report: dict[str, Any] = {
++        "schema_version": REPORT_SCHEMA_VERSION,
++        "generator": {"name": "aos-workflow-gate", "version": __version__},
++        "scope": "workflow" if github_context else "operator",
++        "target": {
++            "repository": slug,
++            "pull_request": pull_number,
++            "sha": sha,
++            "branch": branch,
++        },
++        "token_present": token is not None,
++        "boundary": (
++            "diagnostic readiness report: it states which capabilities "
++            "responded to read-only probes, nothing about code quality, "
++            "security, or any policy outcome"
++        ),
++    }
++
++    if slug is None:
++        report.update(
++            {"api_url": None, "probes": probes, "findings": findings}
++        )
++        report["ready"] = not _has_errors(findings)
++        return report
++
++    resolved_api = validate_api_url(
++        resolved_api
++        or api_url
++        or os.environ.get("GITHUB_API_URL")
++        or DEFAULT_API_URL
++    )
++    report["api_url"] = resolved_api
++    headers = {"Accept": "application/vnd.github+json"}
++    if token:
++        headers["Authorization"] = f"Bearer {token}"
++
++    # -- network probes, dependency-ordered ------------------------------
++    halt_reason: str | None = None
++
++    def network_probe(
++        capability: str, path: str
++    ) -> tuple[int, Any] | None:
++        nonlocal halt_reason
++        if halt_reason:
++            probe(capability, path, "skipped", skipped_reason=halt_reason)
++            return None
++        code, payload, rate_limited, error = _probe_get(
++            f"{resolved_api}{path}", headers, budget=budget
++        )
++        if error is not None:
++            probe(capability, path, "unavailable", network_error=error)
++            findings.append(
++                _finding(
++                    "AOS-ENV-002",
++                    capability,
++                    f"API unreachable while probing {capability}: {error}",
++                    "the API endpoint could not be reached at all; check "
++                    "network egress, proxy configuration, and the "
++                    "--api-url value",
++                    "error",
++                )
++            )
++            halt_reason = "API unreachable"
++            return None
++        finding = classify_response(
++            capability, code, rate_limited=rate_limited
++        )
++        if finding is not None:
++            probe(capability, path, "unavailable", http_status=code)
++            findings.append(finding)
++            if finding["code"] in ("AOS-PERM-001", "AOS-PERM-004"):
++                halt_reason = (
++                    "credentials rejected"
++                    if finding["code"] == "AOS-PERM-001"
++                    else "rate limited"
++                )
++            return None
++        probe(capability, path, "available", http_status=code)
++        return code, payload
++
++    rate = network_probe("rate_limit", "/rate_limit")
++    if rate is not None:
++        _, payload = rate
++        remaining = None
++        if isinstance(payload, dict):
++            core = (payload.get("resources") or {}).get("core") or {}
++            remaining = core.get("remaining")
++        if isinstance(remaining, int):
++            probes[-1]["observed"]["rate_limit_remaining"] = remaining
++            if remaining < LOW_RATE_LIMIT_REMAINING:
++                findings.append(
++                    _finding(
++                        "AOS-ENV-004",
++                        "rate_limit",
++                        f"only {remaining} API requests remain in the "
++                        "current rate-limit window",
++                        "collection may exhaust the window mid-run; wait "
++                        "for the reset, or authenticate for a higher "
++                        "limit",
++                        "warn",
++                    )
++                )
++
++    default_branch: str | None = None
++    repo = network_probe("repository", f"/repos/{slug}")
++    if repo is not None:
++        _, payload = repo
++        if isinstance(payload, dict):
++            value = payload.get("default_branch")
++            default_branch = value if isinstance(value, str) else None
++            probes[-1]["observed"]["private"] = bool(payload.get("private"))
++    elif halt_reason is None:
++        halt_reason = "repository unavailable"
++
++    if pull_number is not None:
++        pull = network_probe(
++            "pull_request", f"/repos/{slug}/pulls/{pull_number}"
++        )
++        if pull is not None:
++            _, payload = pull
++            if isinstance(payload, dict):
++                head = payload.get("head") or {}
++                base = payload.get("base") or {}
++                head_sha = head.get("sha")
++                base_ref = base.get("ref")
++                if sha is None and isinstance(head_sha, str):
++                    sha = head_sha
++                if branch is None and isinstance(base_ref, str):
++                    branch = base_ref
++
++    ref = sha or default_branch
++    if ref is None:
++        probe(
++            "check_runs",
++            f"/repos/{slug}/commits/{{ref}}/check-runs",
++            "skipped",
++            skipped_reason="no commit or default branch resolved",
++        )
++        probe(
++            "commit_statuses",
++            f"/repos/{slug}/commits/{{ref}}/status",
++            "skipped",
++            skipped_reason="no commit or default branch resolved",
++        )
++    else:
++        quoted_ref = quote(ref, safe="")
++        checks = network_probe(
++            "check_runs",
++            f"/repos/{slug}/commits/{quoted_ref}/check-runs?per_page=1",
++        )
++        if checks is not None:
++            _, payload = checks
++            total = (
++                payload.get("total_count")
++                if isinstance(payload, dict)
++                else None
++            )
++            if isinstance(total, int):
++                probes[-1]["observed"]["check_runs_total"] = total
++                if total == 0:
++                    findings.append(
++                        _finding(
++                            "AOS-FEAT-001",
++                            "check_runs",
++                            "the Checks API is readable but reports zero "
++                            "check runs for the probed commit",
++                            "if check runs were expected, confirm CI ran "
++                            "for this commit; CI systems using the legacy "
++                            "Status API report under commit statuses "
++                            "instead",
++                            "info",
++                        )
++                    )
++        statuses = network_probe(
++            "commit_statuses", f"/repos/{slug}/commits/{quoted_ref}/status"
++        )
++        if statuses is not None:
++            _, payload = statuses
++            listed = (
++                payload.get("statuses") if isinstance(payload, dict) else None
++            )
++            if isinstance(listed, list):
++                probes[-1]["observed"]["statuses_total"] = len(listed)
++                if not listed:
++                    findings.append(
++                        _finding(
++                            "AOS-FEAT-003",
++                            "commit_statuses",
++                            "no legacy commit statuses on the probed "
++                            "commit",
++                            "informational only; CI reporting through "
++                            "check runs does not use the legacy Status "
++                            "API",
++                            "info",
++                        )
++                    )
++
++    rules_branch = branch or default_branch
++    if rules_branch is None:
++        probe(
++            "branch_rules",
++            f"/repos/{slug}/rules/branches/{{branch}}",
++            "skipped",
++            skipped_reason="no branch resolved",
++        )
++    else:
++        quoted_branch = quote(rules_branch, safe="")
++        rules_result = network_probe(
++            "branch_rules", f"/repos/{slug}/rules/branches/{quoted_branch}"
++        )
++        if rules_result is not None:
++            _, payload = rules_result
++            rules = payload if isinstance(payload, list) else []
++            rules = [rule for rule in rules if isinstance(rule, dict)]
++            required = required_checks_from_rules(rules)
++            probes[-1]["observed"]["active_rules"] = len(rules)
++            probes[-1]["observed"]["required_status_checks"] = len(required)
++            report["target"]["branch"] = rules_branch
++            if not required:
++                findings.append(
++                    _finding(
++                        "AOS-FEAT-002",
++                        "branch_rules",
++                        f"no required status checks are active on "
++                        f"'{rules_branch}'",
++                        "no check outcome is enforced on this branch by "
++                        "rules; if enforcement is intended, add required "
++                        "status checks to a branch ruleset",
++                        "info",
++                    )
++                )
++
++    report["target"]["sha"] = sha
++    report["api_calls"] = budget.api_calls
++    report["probes"] = probes
++    report["findings"] = sorted(
++        findings, key=lambda f: (_SEVERITY_ORDER[f["severity"]], f["code"])
++    )
++    report["ready"] = not _has_errors(findings)
++    return report
++
++
++def _has_errors(findings: list[dict[str, Any]]) -> bool:
++    return any(f["severity"] == "error" for f in findings)
++
++
++def render_report(report: dict[str, Any], *, verbose: bool = False) -> str:
++    """Human-readable rendering with progressive disclosure.
++
++    The default view is the summary line plus findings only; ``verbose``
++    adds one line per probe. Verdict words are deliberately absent — this
++    report never carries a policy decision.
++    """
++    probes = report.get("probes", [])
++    findings = report.get("findings", [])
++    probed = [p for p in probes if p["status"] != "skipped"]
++    unavailable = [p for p in probed if p["status"] == "unavailable"]
++    lines = [
++        "preflight: "
++        + ("ready" if report.get("ready") else "degraded")
++        + f" — {len(unavailable)} of {len(probed)} probed capabilities "
++        "unavailable"
++    ]
++    target = report.get("target") or {}
++    parts = [str(target.get("repository") or "(no repository)")]
++    if target.get("pull_request") is not None:
++        parts.append(f"pull {target['pull_request']}")
++    if target.get("sha"):
++        parts.append(f"commit {str(target['sha'])[:12]}")
++    lines.append(f"target: {' '.join(parts)}  [scope: {report.get('scope')}]")
++    if report.get("api_url"):
++        lines.append(f"api: {report['api_url']}")
++    if findings:
++        lines.append("")
++    for finding in findings:
++        lines.append(
++            f"{finding['code']} [{finding['taxonomy']}] "
++            f"{finding['capability']}: {finding['observed']}"
++        )
++        lines.append(f"  remediation: {finding['remediation']}")
++    if verbose and probes:
++        lines.append("")
++        lines.append("probes:")
++        for entry in probes:
++            observed = entry.get("observed") or {}
++            detail = ", ".join(f"{k}={v}" for k, v in sorted(observed.items()))
++            lines.append(
++                f"  {entry['capability']}: {entry['status']}"
++                + (f" ({detail})" if detail else "")
++            )
++    lines.append("")
++    lines.append(
++        "Note: diagnostic readiness report — observed capability only, "
++        "never a policy decision; no permission is assumed without "
++        "probing (docs/PREFLIGHT.md has the code registry)."
++    )
++    return "\n".join(lines) + "\n"
+diff --git a/aos_workflow_gate/version.py b/aos_workflow_gate/version.py
+index 888553c..250cd1e 100644
+--- a/aos_workflow_gate/version.py
++++ b/aos_workflow_gate/version.py
+@@ -2,4 +2,4 @@
+ 
+ from __future__ import annotations
+ 
+-__version__ = "0.16.0"
++__version__ = "0.17.0"
+diff --git a/docs.json b/docs.json
+index 377ba0c..a445d0f 100644
+--- a/docs.json
++++ b/docs.json
+@@ -17,6 +17,7 @@
+     "docs/BUYER_FAQ.md",
+     "docs/SECURITY_READINESS.md",
+     "docs/USER_FAQ.md",
++    "docs/PREFLIGHT.md",
+     "docs/VALUE.md",
+     "docs/VALUE_METRICS.md",
+     "docs/COMPARISON.md",
+@@ -82,7 +83,8 @@
+     "tests/test_adapters.py",
+     "tests/test_fixtures_replay.py",
+     "tests/test_run.py",
+-    "tests/test_check_pr.py"
++    "tests/test_check_pr.py",
++    "tests/test_preflight.py"
+   ],
+   "assets": [
+     "docs/assets/banner.png"
+diff --git a/docs/CI_INTEGRATIONS.md b/docs/CI_INTEGRATIONS.md
+index f0bec98..de2d321 100644
+--- a/docs/CI_INTEGRATIONS.md
++++ b/docs/CI_INTEGRATIONS.md
+@@ -51,7 +51,7 @@ exists, run the platform-neutral core on an explicitly provided bundle:
+ gate:
+   image: python:3.12-slim
+   script:
+-    - pip install --quiet "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.16.0"
++    - pip install --quiet "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.17.0"
+     - aos-workflow-gate evaluate
+         --input signal-bundle.json
+         --policy policy.yml
+@@ -69,7 +69,7 @@ in-toto subject with that URL verbatim.
+ ## Jenkins or any shell
+ 
+ ```bash
+-python3 -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.16.0"
++python3 -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.17.0"
+ aos-workflow-gate evaluate --input bundle.json --policy policy.yml --out record.json
+ aos-workflow-gate summarize --input record.json > gate-summary.md
+ ```
+diff --git a/docs/ONE_PAGER.md b/docs/ONE_PAGER.md
+index 80ca25b..bd6a902 100644
+--- a/docs/ONE_PAGER.md
++++ b/docs/ONE_PAGER.md
+@@ -22,7 +22,7 @@ natively; GitLab CI and Jenkins via the platform-neutral CLI.
+ ## How it works (60 seconds)
+ 
+ 1. Add the action — no checkout, no config
+-   (`uses: RafineriaAI/aos-workflow-gate@v0.16.0`).
++   (`uses: RafineriaAI/aos-workflow-gate@v0.17.0`).
+ 2. The job summary answers: what happened, can this gate block, what to
+    fix next.
+ 3. Name your `required-checks` and set `enforce: "true"` when ready —
+diff --git a/docs/PREFLIGHT.md b/docs/PREFLIGHT.md
+new file mode 100644
+index 0000000..8fe33d0
+--- /dev/null
++++ b/docs/PREFLIGHT.md
+@@ -0,0 +1,103 @@
++# Preflight Diagnostics
++
++`aos-workflow-gate preflight` answers one question before anything gates
++anything: **what can this token, environment, and target actually do?**
++It probes the GitHub API read-only — repository metadata, pull request
++access, check runs, commit statuses, and active branch rules — plus the
++local runtime and GitHub Actions context, and reports stable diagnostic
++codes with remediation.
++
++No permission is assumed without probing: permission models differ
++between the workflow `GITHUB_TOKEN`, fine-grained tokens, classic
++tokens, and GHES versions, so every capability is classified from the
++observed HTTP behavior, never from what a token "should" have.
++
++Preflight produces **no verdict**. It never prints a gate decision and
++its report carries no policy outcome — it states which read-only probes
++responded, nothing about code quality or security.
++
++## Usage
++
++```bash
++# probe a pull request end to end (rules, checks, statuses)
++aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
++
++# probe a repository (uses the default branch)
++aos-workflow-gate preflight --repository OWNER/REPO
++
++# workflow-scoped readiness report: what THIS workflow's token can do
++aos-workflow-gate preflight --github-context --json
++```
++
++Progressive disclosure: the default view is one summary line plus the
++findings; `--verbose` adds one line per probe; `--json` prints the full
++machine-readable report (`preflight-report-v0`); `--out PATH` writes it
++to a file.
++
++## Exit codes
++
++Preflight has its own exit semantics, documented here and in the
++[USER_FAQ exit-code table](USER_FAQ.md#exit-codes-by-command):
++
++| Exit | Meaning |
++| --- | --- |
++| 0 | Ready — every probed capability responded. |
++| 1 | Degraded — at least one probed capability is unavailable; each one is named with a stable code. Not a policy verdict. |
++| 2 | The probe run itself could not complete (bad arguments, no target, invalid API URL). |
++
++Probes run in dependency order: when a prerequisite fails (network
++unreachable, credentials rejected, repository unavailable), dependent
++probes are recorded as `skipped` instead of repeating the same failure.
++
++## Diagnostic code registry
++
++Codes are **stable**: a code never changes meaning across versions. New
++codes may be added; existing ones are never repurposed. The taxonomy
++prefix states where the problem lives.
++
++### `AOS-ENV-*` — environment
++
++| Code | Severity | Meaning | Remediation direction |
++| --- | --- | --- | --- |
++| `AOS-ENV-001` | info | No API token available; probing anonymously. | Works for public repositories at a low rate limit; set the token env var to probe your real credentials. |
++| `AOS-ENV-002` | error | The API could not be reached (network failure or unexpected response). | Check network egress, proxy configuration, and `--api-url`. |
++| `AOS-ENV-003` | error | `AOS_GATE_WORKSPACE` is set but is not an existing directory. | Point it at the job workspace, or unset it for unbounded local paths. |
++| `AOS-ENV-004` | warn | Rate-limit window nearly exhausted. | Wait for the reset or authenticate for a higher limit. |
++
++### `AOS-PERM-*` — permission
++
++| Code | Severity | Meaning | Remediation direction |
++| --- | --- | --- | --- |
++| `AOS-PERM-001` | error | Credentials rejected (HTTP 401). | Replace the invalid, expired, or malformed token. |
++| `AOS-PERM-002` | error | Capability forbidden (HTTP 403, not rate-limited). | The finding names the capability and the *likely* cause for common token types — verify against yours; nothing is assumed. |
++| `AOS-PERM-003` | error | Resource not found **or hidden** (HTTP 404). | The API reports "does not exist" and "no access" identically; check spelling first, then token repository access. |
++| `AOS-PERM-004` | error | Rate limited — capability cannot be determined now. | Wait for the window reset, or authenticate. |
++
++### `AOS-FEAT-*` — feature (capability works, target does not use it)
++
++| Code | Severity | Meaning |
++| --- | --- | --- |
++| `AOS-FEAT-001` | info | Checks API readable, but zero check runs on the probed commit. |
++| `AOS-FEAT-002` | info | No required status checks active on the probed branch — no check outcome is enforced there by rules. |
++| `AOS-FEAT-003` | info | No legacy commit statuses on the probed commit (informational). |
++
++### `AOS-CTX-*` — GitHub Actions context
++
++| Code | Severity | Meaning |
++| --- | --- | --- |
++| `AOS-CTX-001` | error | Actions context incomplete: the identity variables GitHub sets are missing or unusable. |
++| `AOS-CTX-002` | info | `--github-context` requested outside a GitHub Actions runtime. |
++
++## Readiness definition
++
++`ready: true` (exit 0) means no `error`-severity finding exists. `info`
++and `warn` findings never degrade readiness — they are disclosure, not
++failure. The JSON report lists every probe with its observed HTTP
++status, so the classification is checkable against the raw evidence.
++
++## Relation to the gate
++
++A degraded preflight predicts the operational errors (exit 2) the gate
++would hit mid-collection, and `AOS-FEAT-002` names the adoption gap the
++gate exists to close. Preflight itself changes nothing, gates nothing,
++and claims nothing beyond the probes' observed responses.
+diff --git a/docs/USER_FAQ.md b/docs/USER_FAQ.md
+index 4d209eb..c710c2a 100644
+--- a/docs/USER_FAQ.md
++++ b/docs/USER_FAQ.md
+@@ -28,7 +28,7 @@ names.
+ Download the artifacts, then:
+ 
+ ```bash
+-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.16.0"
++pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.17.0"
+ aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
+ aos-workflow-gate summarize --input gate-decision.json
+ ```
+@@ -36,6 +36,25 @@ aos-workflow-gate summarize --input gate-decision.json
+ `verify` prints `OK` when the record matches its self-digest and the
+ bundle; `TAMPERED` means the file changed since the gate wrote it.
+ 
++## Exit codes by command
++
++Exit codes are stable but command-scoped — the same number answers a
++different question per command:
++
++| Command | 0 | 1 | 2 |
++| --- | --- | --- | --- |
++| `evaluate` / `run` / `check-pr` | Verdict produced; nothing enforced a failure. | Policy `BLOCK` under enforcement. | Operational error; no verdict was produced. |
++| `verify` | Record intact. | Record or bundle tampered. | Operational error. |
++| `preflight` | Ready — every probed capability responded. | Degraded readiness — a probed capability is unavailable (named by a stable code; **not** a policy verdict). | The probe run itself could not complete. |
++
++Before the first gate run, `preflight` names what the token and target
++can actually do (see [PREFLIGHT.md](PREFLIGHT.md) for the diagnostic
++code registry):
++
++```bash
++aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
++```
++
+ ## Failure taxonomy
+ 
+ | Symptom | Meaning | Fix |
+diff --git a/docs/index.html b/docs/index.html
+index a8baa57..8afa35a 100644
+--- a/docs/index.html
++++ b/docs/index.html
+@@ -48,7 +48,7 @@ <h1>AOS Workflow Gate</h1>
+   - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+     with:
+       python-version: "3.11"
+-  - uses: RafineriaAI/aos-workflow-gate@v0.16.0</code></pre>
++  - uses: RafineriaAI/aos-workflow-gate@v0.17.0</code></pre>
+ 
+ <p>
+ <a class="btn" href="https://github.com/RafineriaAI/aos-workflow-gate">Repository &amp; docs</a>
+diff --git a/docs/pilot-wizard/index.html b/docs/pilot-wizard/index.html
+index 7a18615..27ca13c 100644
+--- a/docs/pilot-wizard/index.html
++++ b/docs/pilot-wizard/index.html
+@@ -141,7 +141,7 @@ <h1>AOS Pilot Readiness — 2 minutes</h1>
+     +"      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1\n"
+     +"        with:\n          python-version: \"3.11\"\n"
+     +"      - name: AOS self-test (advisory)\n"
+-    +"        uses: RafineriaAI/aos-workflow-gate@v0.16.0\n"
++    +"        uses: RafineriaAI/aos-workflow-gate@v0.17.0\n"
+     +"        with:\n"
+     +(names.length
+       ?"          required-checks: \""+names.join(", ")+"\"\n"
+diff --git a/examples/aos-kernel-gate-decision.json b/examples/aos-kernel-gate-decision.json
+index 221d6f7..6ea5e80 100644
+--- a/examples/aos-kernel-gate-decision.json
++++ b/examples/aos-kernel-gate-decision.json
+@@ -2,7 +2,7 @@
+   "can_block": false,
+   "generator": {
+     "tool": "aos-workflow-gate",
+-    "version": "0.16.0"
++    "version": "0.17.0"
+   },
+   "input_bundle_digest": "sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22",
+   "inputs": [
+@@ -54,7 +54,7 @@
+     "verification_status": "UNSIGNED_NOT_OFFICIAL"
+   },
+   "reasons": [],
+-  "record_digest": "sha256:1049e2ff1b80a865e511442682e40b528d54c2757acb7f9274b38dcd6afc4d94",
++  "record_digest": "sha256:dccdae182cf4ab99bd3a62df4dd6cf364ef8e08c46983773f1b0cd085a9f533f",
+   "schema_version": "aos-workflow-gate-decision/v0",
+   "subject": {
+     "pull_request": null,
+diff --git a/examples/check-pr-record.json b/examples/check-pr-record.json
+index d227281..2a72550 100644
+--- a/examples/check-pr-record.json
++++ b/examples/check-pr-record.json
+@@ -2,7 +2,7 @@
+   "can_block": false,
+   "generator": {
+     "tool": "aos-workflow-gate",
+-    "version": "0.16.0"
++    "version": "0.17.0"
+   },
+   "input_bundle_digest": "sha256:b6c60a32a3fab0158f40794b5a3d025c3e805d85241e8ab550f9ea05ab509a84",
+   "inputs": [
+@@ -61,7 +61,7 @@
+       "source_id": "AOS Workflow Gate Self / no-checkout"
+     }
+   ],
+-  "record_digest": "sha256:82e04ffc9f749bcb51abe016b842524b61722cb1c60618cae4803d9be8416be1",
++  "record_digest": "sha256:b6d4315eeeda90ec3cf9f82cd401df31829d5226a808258eac151671cd85bb69",
+   "schema_version": "aos-workflow-gate-decision/v0",
+   "subject": {
+     "pull_request": 32,
+diff --git a/examples/gate-decision.json b/examples/gate-decision.json
+index 6199f0e..aa1eaad 100644
+--- a/examples/gate-decision.json
++++ b/examples/gate-decision.json
+@@ -2,7 +2,7 @@
+   "can_block": false,
+   "generator": {
+     "tool": "aos-workflow-gate",
+-    "version": "0.16.0"
++    "version": "0.17.0"
+   },
+   "input_bundle_digest": "sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19",
+   "inputs": [
+@@ -45,7 +45,7 @@
+       "source_id": "scanner.sarif"
+     }
+   ],
+-  "record_digest": "sha256:27b77f1d8cd8599548160d996eb90aea111be00927e437a0432eba8f2c3bb736",
++  "record_digest": "sha256:a6cf22fe04b0f52c2422ec9bcb923720c1fb617496b1b24a447191617e3fc9e9",
+   "schema_version": "aos-workflow-gate-decision/v0",
+   "subject": {
+     "pull_request": 42,
+diff --git a/examples/green-but-incomplete-record.json b/examples/green-but-incomplete-record.json
+index 44a9e02..108f2e9 100644
+--- a/examples/green-but-incomplete-record.json
++++ b/examples/green-but-incomplete-record.json
+@@ -2,7 +2,7 @@
+   "can_block": false,
+   "generator": {
+     "tool": "aos-workflow-gate",
+-    "version": "0.16.0"
++    "version": "0.17.0"
+   },
+   "input_bundle_digest": "sha256:54949f798a0dbd4e64765c515b0ae828dbc61fb6ed4c9ceb66e174ecc61bfc7f",
+   "inputs": [
+@@ -53,7 +53,7 @@
+       "source_id": "AOS Workflow Gate Self / no-checkout"
+     }
+   ],
+-  "record_digest": "sha256:f9d4404cba74d6d498de015956efdfb1ae97ff57f181ea52f252e35bf396f647",
++  "record_digest": "sha256:afbb34c850d7f6f107d01bf417f925f9b861c9f4bf72d5b2ff9f916f5a2e9bd3",
+   "schema_version": "aos-workflow-gate-decision/v0",
+   "subject": {
+     "pull_request": 22,
+diff --git a/examples/pr-evidence-record.json b/examples/pr-evidence-record.json
+index dd416d0..b4edb89 100644
+--- a/examples/pr-evidence-record.json
++++ b/examples/pr-evidence-record.json
+@@ -2,7 +2,7 @@
+   "can_block": false,
+   "generator": {
+     "tool": "aos-workflow-gate",
+-    "version": "0.16.0"
++    "version": "0.17.0"
+   },
+   "input_bundle_digest": "sha256:a06a19c633c11a343a622b96fa201ddcbd1b88176565ac93e6ee2fd7c29a973d",
+   "inputs": [
+@@ -38,7 +38,7 @@
+     "verification_status": "UNSIGNED_NOT_OFFICIAL"
+   },
+   "reasons": [],
+-  "record_digest": "sha256:338a05ee5ec494fd6fe3252d5e2786c19fb6c1e5884dbda30e39be440f6430fc",
++  "record_digest": "sha256:42bef864666acc88f60432a275f07b3dce49115645b436312d7f4f241adf0451",
+   "schema_version": "aos-workflow-gate-decision/v0",
+   "subject": {
+     "pull_request": 23,
+diff --git a/pyproject.toml b/pyproject.toml
+index bc0b67a..f452435 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
+ 
+ [project]
+ name = "aos-workflow-gate"
+-version = "0.16.0"
++version = "0.17.0"
+ description = "Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals."
+ readme = "README.md"
+ requires-python = ">=3.11"
+diff --git a/tests/test_preflight.py b/tests/test_preflight.py
+new file mode 100644
+index 0000000..6e612bb
+--- /dev/null
++++ b/tests/test_preflight.py
+@@ -0,0 +1,305 @@
++from __future__ import annotations
++
++import io
++import json
++from email.message import Message
++from pathlib import Path
++from typing import Any
++from urllib.error import HTTPError, URLError
++
++import pytest
++
++from aos_workflow_gate import cli
++from aos_workflow_gate.preflight import classify_response, run_preflight
++
++SHA = "c" * 40
++PR_URL = "https://github.com/octo/repo/pull/7"
++
++
++class _FakeResponse:
++    def __init__(self, payload: Any) -> None:
++        self._payload = payload
++
++    def __enter__(self) -> _FakeResponse:
++        return self
++
++    def __exit__(self, *args: object) -> None:
++        return None
++
++    def read(self) -> bytes:
++        return json.dumps(self._payload).encode("utf-8")
++
++
++def _headers(pairs: dict[str, str] | None = None) -> Message:
++    message = Message()
++    for key, value in (pairs or {}).items():
++        message[key] = value
++    return message
++
++
++def _serve(spec: Any, url: str) -> _FakeResponse:
++    if isinstance(spec, int):
++        raise HTTPError(url, spec, f"HTTP {spec}", _headers(), io.BytesIO(b""))
++    if isinstance(spec, tuple):
++        code, headers = spec
++        raise HTTPError(
++            url, code, f"HTTP {code}", _headers(headers), io.BytesIO(b"")
++        )
++    if spec == "network":
++        raise URLError("connection refused")
++    return _FakeResponse(spec)
++
++
++def _routes(**overrides: Any) -> dict[str, Any]:
++    routes: dict[str, Any] = {
++        "/rate_limit": {"resources": {"core": {"remaining": 4000}}},
++        "repo": {"default_branch": "main", "private": False},
++        "/pulls/": {"head": {"sha": SHA}, "base": {"ref": "main"}},
++        "/check-runs": {"total_count": 2, "check_runs": []},
++        "/status": {
++            "state": "success",
++            "statuses": [{"context": "ci", "state": "success"}],
++        },
++        "/rules/branches/": [
++            {
++                "type": "required_status_checks",
++                "parameters": {
++                    "required_status_checks": [{"context": "ci"}]
++                },
++            }
++        ],
++    }
++    routes.update(overrides)
++    return routes
++
++
++def _install(monkeypatch: pytest.MonkeyPatch, routes: dict[str, Any]) -> None:
++    from aos_workflow_gate import preflight as preflight_module
++
++    def opener(request: Any, timeout: float | None = None) -> _FakeResponse:
++        url = request.full_url
++        for key in (
++            "/rate_limit",
++            "/pulls/",
++            "/check-runs",
++            "/rules/branches/",
++            "/status",
++        ):
++            if key in url:
++                return _serve(routes[key], url)
++        return _serve(routes["repo"], url)
++
++    monkeypatch.setattr(
++        preflight_module.urllib.request, "urlopen", opener
++    )
++    monkeypatch.delenv("GITHUB_TOKEN", raising=False)
++    monkeypatch.delenv("AOS_GATE_WORKSPACE", raising=False)
++    monkeypatch.delenv("GITHUB_API_URL", raising=False)
++
++
++def test_classify_response_matrix() -> None:
++    assert classify_response("repository", 200, rate_limited=False) is None
++    cases = {
++        401: "AOS-PERM-001",
++        403: "AOS-PERM-002",
++        404: "AOS-PERM-003",
++        500: "AOS-ENV-002",
++    }
++    for status, code in cases.items():
++        finding = classify_response("check_runs", status, rate_limited=False)
++        assert finding is not None and finding["code"] == code
++        assert finding["severity"] == "error"
++    limited = classify_response("check_runs", 403, rate_limited=True)
++    assert limited is not None and limited["code"] == "AOS-PERM-004"
++    taxonomy = classify_response("check_runs", 403, rate_limited=False)
++    assert taxonomy is not None and taxonomy["taxonomy"] == "permission"
++
++
++def test_preflight_ready_end_to_end(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(monkeypatch, _routes())
++    assert cli.main(["preflight", "--pr", PR_URL, "--json"]) == 0
++    report = json.loads(capsys.readouterr().out)
++    assert report["schema_version"] == "preflight-report-v0"
++    assert report["ready"] is True
++    assert report["scope"] == "operator"
++    assert report["target"]["repository"] == "octo/repo"
++    assert report["target"]["pull_request"] == 7
++    by_cap = {p["capability"]: p for p in report["probes"]}
++    for capability in (
++        "rate_limit",
++        "repository",
++        "pull_request",
++        "check_runs",
++        "commit_statuses",
++        "branch_rules",
++    ):
++        assert by_cap[capability]["status"] == "available"
++    assert by_cap["branch_rules"]["observed"]["required_status_checks"] == 1
++    # no token -> informational ENV-001, which must not degrade readiness
++    codes = {f["code"] for f in report["findings"]}
++    assert "AOS-ENV-001" in codes
++
++
++def test_preflight_degraded_on_forbidden_checks(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(monkeypatch, _routes(**{"/check-runs": 403}))
++    assert cli.main(["preflight", "--pr", PR_URL]) == 1
++    out = capsys.readouterr().out
++    assert "degraded" in out
++    assert "AOS-PERM-002" in out
++    assert "checks: read" in out
++    assert "remediation:" in out
++
++
++def test_preflight_output_carries_no_verdict(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(monkeypatch, _routes(**{"/check-runs": 403, "/status": 404}))
++    cli.main(["preflight", "--pr", PR_URL, "--verbose"])
++    out = capsys.readouterr().out
++    for verdict in ("PASS", "WARN", "BLOCK"):
++        assert verdict not in out
++
++
++def test_preflight_feature_findings(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(
++        monkeypatch,
++        _routes(
++            **{
++                "/check-runs": {"total_count": 0, "check_runs": []},
++                "/status": {"state": "pending", "statuses": []},
++                "/rules/branches/": [],
++            }
++        ),
++    )
++    assert cli.main(["preflight", "--pr", PR_URL, "--json"]) == 0
++    report = json.loads(capsys.readouterr().out)
++    codes = {f["code"] for f in report["findings"]}
++    assert {"AOS-FEAT-001", "AOS-FEAT-002", "AOS-FEAT-003"} <= codes
++    assert report["ready"] is True
++    for finding in report["findings"]:
++        if finding["code"].startswith("AOS-FEAT"):
++            assert finding["taxonomy"] == "feature"
++            assert finding["severity"] == "info"
++
++
++def test_preflight_credentials_rejected_halts_probing(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(monkeypatch, _routes(**{"/rate_limit": 401}))
++    assert cli.main(["preflight", "--pr", PR_URL, "--json"]) == 1
++    report = json.loads(capsys.readouterr().out)
++    codes = [f["code"] for f in report["findings"]]
++    assert codes.count("AOS-PERM-001") == 1  # named once, not per probe
++    by_cap = {p["capability"]: p for p in report["probes"]}
++    assert by_cap["repository"]["status"] == "skipped"
++    assert by_cap["check_runs"]["status"] == "skipped"
++
++
++def test_preflight_network_unreachable(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(monkeypatch, _routes(**{"/rate_limit": "network"}))
++    assert cli.main(["preflight", "--pr", PR_URL, "--json"]) == 1
++    report = json.loads(capsys.readouterr().out)
++    codes = {f["code"] for f in report["findings"]}
++    assert "AOS-ENV-002" in codes
++    by_cap = {p["capability"]: p for p in report["probes"]}
++    assert by_cap["branch_rules"]["status"] == "skipped"
++
++
++def test_preflight_low_rate_limit_warns_but_stays_ready(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(
++        monkeypatch,
++        _routes(**{"/rate_limit": {"resources": {"core": {"remaining": 3}}}}),
++    )
++    assert cli.main(["preflight", "--pr", PR_URL, "--json"]) == 0
++    report = json.loads(capsys.readouterr().out)
++    warned = [f for f in report["findings"] if f["code"] == "AOS-ENV-004"]
++    assert warned and warned[0]["severity"] == "warn"
++    assert report["ready"] is True
++
++
++def test_preflight_workspace_boundary_invalid(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(monkeypatch, _routes())
++    monkeypatch.setenv("AOS_GATE_WORKSPACE", "Z:/does/not/exist-xyz")
++    assert cli.main(["preflight", "--pr", PR_URL, "--json"]) == 1
++    report = json.loads(capsys.readouterr().out)
++    assert any(f["code"] == "AOS-ENV-003" for f in report["findings"])
++
++
++def test_preflight_context_incomplete(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(monkeypatch, _routes())
++    monkeypatch.setenv("GITHUB_ACTIONS", "true")
++    monkeypatch.delenv("GITHUB_REPOSITORY", raising=False)
++    monkeypatch.delenv("GITHUB_SHA", raising=False)
++    assert cli.main(["preflight", "--github-context", "--json"]) == 1
++    report = json.loads(capsys.readouterr().out)
++    findings = {f["code"]: f for f in report["findings"]}
++    assert "AOS-CTX-001" in findings
++    assert findings["AOS-CTX-001"]["taxonomy"] == "context"
++
++
++def test_preflight_workflow_scope_resolves_context(
++    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
++) -> None:
++    _install(monkeypatch, _routes())
++    monkeypatch.setenv("GITHUB_ACTIONS", "true")
++    monkeypatch.setenv("GITHUB_REPOSITORY", "octo/repo")
++    monkeypatch.setenv("GITHUB_SHA", SHA)
++    monkeypatch.delenv("GITHUB_SERVER_URL", raising=False)
++    monkeypatch.delenv("GITHUB_EVENT_PATH", raising=False)
++    assert cli.main(["preflight", "--github-context", "--json"]) == 0
++    report = json.loads(capsys.readouterr().out)
++    assert report["scope"] == "workflow"
++    assert report["target"]["repository"] == "octo/repo"
++    assert report["target"]["sha"] == SHA
++
++
++def test_preflight_without_target_is_operational_error(
++    capsys: pytest.CaptureFixture[str],
++) -> None:
++    assert cli.main(["preflight"]) == 2
++    err = capsys.readouterr().err
++    assert "--github-context" in err
++
++
++def test_token_never_leaks_into_report_or_output(
++    tmp_path: Path,
++    monkeypatch: pytest.MonkeyPatch,
++    capsys: pytest.CaptureFixture[str],
++) -> None:
++    _install(monkeypatch, _routes())
++    secret = "ghs_PREFLIGHTSECRETSECRET"
++    monkeypatch.setenv("GITHUB_TOKEN", secret)
++    out = tmp_path / "preflight.json"
++    assert (
++        cli.main(["preflight", "--pr", PR_URL, "--json", "--out", str(out)])
++        == 0
++    )
++    captured = capsys.readouterr()
++    report_text = out.read_text(encoding="utf-8")
++    for artifact in (report_text, captured.out, captured.err):
++        assert secret not in artifact
++    report = json.loads(report_text)
++    assert report["token_present"] is True
++    codes = {f["code"] for f in report["findings"]}
++    assert "AOS-ENV-001" not in codes
++
++
++def test_run_preflight_direct_requires_target() -> None:
++    from aos_workflow_gate.errors import InputError
++
++    with pytest.raises(InputError):
++        run_preflight()
+diff --git a/tools/check_public_surface.py b/tools/check_public_surface.py
+index b80ea13..219a3eb 100644
+--- a/tools/check_public_surface.py
++++ b/tools/check_public_surface.py
+@@ -121,10 +121,20 @@
+     ],
+     "docs/USER_FAQ.md": [
+         "## Failure taxonomy",
++        "## Exit codes by command",
+         "Never treat it as a policy decision",
+         "aos-workflow-gate verify --input gate-decision.json",
+         "wait-for-checks",
+     ],
++    "docs/PREFLIGHT.md": [
++        "No permission is assumed without probing",
++        "Preflight produces **no verdict**",
++        "## Diagnostic code registry",
++        "a code never changes meaning across versions",
++        "AOS-PERM-003",
++        "## Exit codes",
++        "Degraded",
++    ],
+     "docs/SECURITY_READINESS.md": [
+         "## Private-repo data model",
+         "no security-audit claim is made",

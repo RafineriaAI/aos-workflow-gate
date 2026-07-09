@@ -1,0 +1,29 @@
+{
+  "action": {
+    "parameters": {
+      "pull_request": 20,
+      "released_as": "v0.11.0"
+    },
+    "type": "merged_pull_request"
+  },
+  "agent": {
+    "name": "Claude Code",
+    "operated_by": "maintainer",
+    "vendor": "Anthropic"
+  },
+  "base_sha": "c746d2f39071335513212199c8054c954b366992",
+  "contract": "agent-action-v0",
+  "intent": {
+    "declared_by": "maintainer punch-list",
+    "task": "PR #20 - First-run UX: adaptive next steps, suggested required-checks, repair hints, failure taxonomy, local reproduce command, USER_FAQ"
+  },
+  "repository": "RafineriaAI/aos-workflow-gate",
+  "snapshot": {
+    "branch": "main",
+    "head_sha": "c746d2f39071335513212199c8054c954b366992"
+  },
+  "subject": {
+    "repository": "RafineriaAI/aos-workflow-gate",
+    "sha": "f8c6517bef32e68d3150d2954cc4c445b6fb1642"
+  }
+}

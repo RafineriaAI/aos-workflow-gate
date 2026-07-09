@@ -35,6 +35,7 @@
     "docs/case-studies/aos-kernel-release-surface-replay.md",
     "docs/case-studies/green-but-incomplete.md",
     "docs/RELEASE_GOVERNANCE.md",
+    "benchmarks/README.md",
     "ROADMAP.md",
     "SECURITY.md",
     "CONTRIBUTING.md",
@@ -55,6 +56,26 @@
     "examples/check-pr-bundle.json",
     "examples/check-pr-policy.json",
     "examples/check-pr-record.json"
+  ],
+  "benchmarks": [
+    "benchmarks/cases/agent-pr36-preflight/case.json",
+    "benchmarks/cases/agent-pr36-preflight/action.json",
+    "benchmarks/cases/agent-pr36-preflight/changes.patch",
+    "benchmarks/cases/agent-pr36-preflight/bundle.json",
+    "benchmarks/cases/agent-pr36-preflight/policy.json",
+    "benchmarks/cases/agent-pr36-preflight/gate-decision.json",
+    "benchmarks/cases/green-but-incomplete-pr22/case.json",
+    "benchmarks/cases/green-but-incomplete-pr22/action.json",
+    "benchmarks/cases/green-but-incomplete-pr22/changes.patch",
+    "benchmarks/cases/green-but-incomplete-pr22/bundle.json",
+    "benchmarks/cases/green-but-incomplete-pr22/policy.json",
+    "benchmarks/cases/green-but-incomplete-pr22/gate-decision.json",
+    "benchmarks/cases/v0110-incident-counterfactual/case.json",
+    "benchmarks/cases/v0110-incident-counterfactual/action.json",
+    "benchmarks/cases/v0110-incident-counterfactual/changes.patch",
+    "benchmarks/cases/v0110-incident-counterfactual/bundle.json",
+    "benchmarks/cases/v0110-incident-counterfactual/policy.json",
+    "benchmarks/cases/v0110-incident-counterfactual/gate-decision.json"
   ],
   "policies": [
     "policies/default.yml",
@@ -90,7 +111,8 @@
     "tests/test_preflight.py",
     "tests/test_source_contract.py",
     "tests/test_agent_action.py",
-    "tests/test_bench.py"
+    "tests/test_bench.py",
+    "tests/test_benchmark_cases.py"
   ],
   "assets": [
     "docs/assets/banner.png"

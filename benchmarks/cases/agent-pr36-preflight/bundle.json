@@ -1,0 +1,44 @@
+{
+  "collection": {
+    "api_calls": 1,
+    "status": "complete",
+    "waited_seconds": 0.0
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:467740c7bfafbfc42c82fcb0abcb922d7f836ff2c93848a41669dc0ff22b86df",
+      "id": "AOS Workflow Gate CI / validate",
+      "kind": "github_check",
+      "observed_at": "2026-07-09T18:11:55Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 86193723730 concluded success."
+    },
+    {
+      "digest": "sha256:8ca29d458af2da25534d112fa02b6b5b2191693e3d8918c235c8cf9d6893abbc",
+      "id": "AOS Workflow Gate Self / advisory",
+      "kind": "github_check",
+      "observed_at": "2026-07-09T18:11:47Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 86193723858 concluded success."
+    },
+    {
+      "digest": "sha256:c074d7530c73117e1f4d584f01299c352b702fc006ebfeafe0e7cb6039717b27",
+      "id": "AOS Workflow Gate Self / zero-config",
+      "kind": "github_check",
+      "observed_at": "2026-07-09T18:11:46Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 86193723856 concluded success."
+    }
+  ],
+  "subject": {
+    "repository": "RafineriaAI/aos-workflow-gate",
+    "sha": "72dbb0bffaf1f4bf469f8832de361691725c987a"
+  }
+}

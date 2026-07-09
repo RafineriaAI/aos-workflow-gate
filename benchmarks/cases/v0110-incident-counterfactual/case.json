@@ -1,0 +1,60 @@
+{
+  "acceptance_criteria": [
+    "first-run summary answers: what happened, can it block, what to fix next",
+    "failure taxonomy documented in USER_FAQ",
+    "required status check green on the merge commit"
+  ],
+  "artifacts": {
+    "action": "action.json",
+    "bundle": "bundle.json",
+    "patch": "changes.patch",
+    "policy": "policy.json",
+    "record": "gate-decision.json"
+  },
+  "attestation": {
+    "declared_at": "2026-07-09T19:19:00Z",
+    "operator": "RafineriaAI maintainer",
+    "statement": "Reconstructed from public GitHub metadata: pull request and commit timestamps, and check runs persisted by the GitHub API for the exact commits. The evidence bundle was collected from the live Checks API at case-assembly time; the agent-action document was written at case assembly to describe the historical action; the task declaration time is approximated from the maintainer's session log. No timestamps or signals were fabricated. The agent that authored the change is Claude Code (Anthropic), operated by the maintainer."
+  },
+  "base_state": {
+    "base_sha": "c746d2f39071335513212199c8054c954b366992",
+    "branch": "main",
+    "repository": "RafineriaAI/aos-workflow-gate"
+  },
+  "baseline": {
+    "github_merge_ready": true,
+    "note": "The real v0.11.0 incident: the change broke action.yml, both self-test jobs concluded failure on the merge commit, yet the only required check (validate) was green, so GitHub reported merge-ready and the release shipped broken. Counterfactual policy (real signals, retrospective required-check choice): requiring the self-test turns this exact commit into a named BLOCK.",
+    "required_check": "AOS Workflow Gate CI / validate",
+    "required_check_state": "success"
+  },
+  "bindings": {
+    "action_digest": "sha256:9dfca2a0609a0d918712ba2c818b9f7f63784cbdabe93dcce17e625e0cab4ce0",
+    "patch_digest": "sha256:6febe9e0751de4a8ff8b0d9506d34c65af5a7f81fbb002c05fe0e0479c030051",
+    "record_digest": "sha256:ccf1da7455eb9a202c47356198ba7e9747a0266f8dd3d3968f2b9fb433816729"
+  },
+  "budget": {
+    "sessions": 1,
+    "wall_clock_hours": 3
+  },
+  "case_id": "v0110-incident-counterfactual",
+  "chronology": [
+    {
+      "at": "2026-07-05T07:30:00Z",
+      "event": "task_declared"
+    },
+    {
+      "at": "2026-07-05T07:50:04Z",
+      "event": "action_captured"
+    },
+    {
+      "at": "2026-07-09T19:19:00Z",
+      "event": "decision_evaluated"
+    }
+  ],
+  "classification": "controlled_counterfactual_block",
+  "contract": "benchmark-case-v0",
+  "task": {
+    "declared_at": "2026-07-05T07:30:00Z",
+    "description": "PR #20 - First-run UX: adaptive next steps, suggested required-checks, repair hints, failure taxonomy, local reproduce command, USER_FAQ"
+  }
+}
