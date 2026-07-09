@@ -179,6 +179,17 @@ REQUIRED_SNIPPETS = {
         "no plugin runtime",
         "a\nsource can never mark itself required",
     ],
+    "benchmarks/README.md": [
+        "no staged repositories, no\nfabricated signals, no synthetic scenarios",
+        "## Dogfooding boundary",
+        "Claude Code\n(Anthropic), operated by the maintainer",
+        "Nothing here generalizes beyond this\nrepository",
+        "controlled counterfactual on real history",
+        "counted, not estimated",
+        "a sample, not a study",
+        "ranks no\ntools and scores no competitors",
+        "UNSIGNED_NOT_OFFICIAL",
+    ],
     "docs/BENCHMARK_HARNESS.md": [
         "**it runs nothing**",
         "predeclared",
@@ -299,7 +310,9 @@ UNSUPPORTED_POSITIVE_CLAIMS = [
 
 CLAIM_SCAN_EXTRA_PATHS = ["action.yml", "SECURITY.md"]
 
-INDEX_SECTIONS = ("documents", "examples", "policies", "tools", "ci", "assets")
+INDEX_SECTIONS = (
+    "documents", "examples", "policies", "benchmarks", "tools", "ci", "assets",
+)
 
 
 def fail(message: str) -> None:

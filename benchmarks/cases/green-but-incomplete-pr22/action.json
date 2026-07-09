@@ -1,0 +1,29 @@
+{
+  "action": {
+    "parameters": {
+      "branch": "commercial-kit",
+      "pull_request": 22
+    },
+    "type": "authored_pull_request"
+  },
+  "agent": {
+    "name": "Claude Code",
+    "operated_by": "maintainer",
+    "vendor": "Anthropic"
+  },
+  "base_sha": "fa9fac71be20495527ab31fe24586cd937dc08f0",
+  "contract": "agent-action-v0",
+  "intent": {
+    "declared_by": "maintainer punch-list",
+    "task": "PR #22 - Commercial kit: VALUE, ONE_PAGER, MARKETPLACE_LISTING, pilot assisted path, feedback loop, README CTA, design-partner variant, 60-second case study, docs index update"
+  },
+  "repository": "RafineriaAI/aos-workflow-gate",
+  "snapshot": {
+    "branch": "main",
+    "head_sha": "fa9fac71be20495527ab31fe24586cd937dc08f0"
+  },
+  "subject": {
+    "repository": "RafineriaAI/aos-workflow-gate",
+    "sha": "9c064fc8c95d21453d553dc81e9a935ccfa54630"
+  }
+}

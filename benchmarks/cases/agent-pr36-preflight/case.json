@@ -1,0 +1,63 @@
+{
+  "acceptance_criteria": [
+    "read-only capability probes for repository, PR, checks, statuses, rules",
+    "stable diagnostic codes with a documented taxonomy and remediation",
+    "JSON and human-readable output with progressive disclosure",
+    "stable exit codes 0/1/2 documented per command",
+    "the preflight command produces no gate verdict",
+    "required CI check green on the pull request head"
+  ],
+  "artifacts": {
+    "action": "action.json",
+    "bundle": "bundle.json",
+    "patch": "changes.patch",
+    "policy": "policy.json",
+    "record": "gate-decision.json"
+  },
+  "attestation": {
+    "declared_at": "2026-07-09T19:19:00Z",
+    "operator": "RafineriaAI maintainer",
+    "statement": "Reconstructed from public GitHub metadata: pull request and commit timestamps, and check runs persisted by the GitHub API for the exact commits. The evidence bundle was collected from the live Checks API at case-assembly time; the agent-action document was written at case assembly to describe the historical action; the task declaration time is approximated from the maintainer's session log. No timestamps or signals were fabricated. The agent that authored the change is Claude Code (Anthropic), operated by the maintainer."
+  },
+  "base_state": {
+    "base_sha": "19ed4146c71f5ee733a120612d404cb0b6c02210",
+    "branch": "main",
+    "repository": "RafineriaAI/aos-workflow-gate"
+  },
+  "baseline": {
+    "github_merge_ready": true,
+    "note": "GitHub baseline and the gate agree: every required and advisory signal on the head is green (the no-checkout job is excluded as skipped-by-design on pull requests). Control case: agreement, no false alarm.",
+    "required_check": "AOS Workflow Gate CI / validate",
+    "required_check_state": "success"
+  },
+  "bindings": {
+    "action_digest": "sha256:858df1c606575380e9d277cfcb179942080d618b53a9a5e2ef2659e4c7ae8ef7",
+    "patch_digest": "sha256:ff8425e6ef7d5a61929587b65ccdbb0f32971e180ba473f521ddf3195be9f840",
+    "record_digest": "sha256:7af0023ac2dd03cf1122cf9eeaa8272c9e594c3d4563000eb07dbd33770f3db6"
+  },
+  "budget": {
+    "sessions": 1,
+    "wall_clock_hours": 4
+  },
+  "case_id": "agent-pr36-preflight",
+  "chronology": [
+    {
+      "at": "2026-07-09T17:40:00Z",
+      "event": "task_declared"
+    },
+    {
+      "at": "2026-07-09T18:09:27Z",
+      "event": "action_captured"
+    },
+    {
+      "at": "2026-07-09T19:19:00Z",
+      "event": "decision_evaluated"
+    }
+  ],
+  "classification": "real_pass_control",
+  "contract": "benchmark-case-v0",
+  "task": {
+    "declared_at": "2026-07-09T17:40:00Z",
+    "description": "PR #36 - Preflight Diagnostics: read-only capability probes across repository, pull request, checks, commit statuses and active rules; stable diagnostic codes with environment/permission/feature/context taxonomy; actionable remediation; JSON and human-readable output; exit codes 0/1/2; no gate verdict"
+  }
+}

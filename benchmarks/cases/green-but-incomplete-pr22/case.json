@@ -1,0 +1,61 @@
+{
+  "acceptance_criteria": [
+    "value narrative and one-pager land in docs",
+    "contactless pilot scoping path documented",
+    "README call-to-action present",
+    "required CI check green on the pull request head"
+  ],
+  "artifacts": {
+    "action": "action.json",
+    "bundle": "bundle.json",
+    "patch": "changes.patch",
+    "policy": "policy.json",
+    "record": "gate-decision.json"
+  },
+  "attestation": {
+    "declared_at": "2026-07-09T19:19:00Z",
+    "operator": "RafineriaAI maintainer",
+    "statement": "Reconstructed from public GitHub metadata: pull request and commit timestamps, and check runs persisted by the GitHub API for the exact commits. The evidence bundle was collected from the live Checks API at case-assembly time; the agent-action document was written at case assembly to describe the historical action; the task declaration time is approximated from the maintainer's session log. No timestamps or signals were fabricated. The agent that authored the change is Claude Code (Anthropic), operated by the maintainer."
+  },
+  "base_state": {
+    "base_sha": "fa9fac71be20495527ab31fe24586cd937dc08f0",
+    "branch": "main",
+    "repository": "RafineriaAI/aos-workflow-gate"
+  },
+  "baseline": {
+    "github_merge_ready": true,
+    "note": "GitHub baseline: dashboard fully green, PR merge-ready. The gate records a named WARN: the no-checkout control never ran on this head (skipped), which no green dashboard surfaces. The gap is invisible to the baseline and explicit in the record.",
+    "required_check": "AOS Workflow Gate CI / validate",
+    "required_check_state": "success"
+  },
+  "bindings": {
+    "action_digest": "sha256:9b79cc80b62e239cb518bd72cc8d32b445c1d41c582b27b2951a691b3b48a10c",
+    "patch_digest": "sha256:3856b0fc25e0f73ba7a031fef62da694781d56066eb125c402fea994975c9b62",
+    "record_digest": "sha256:b9548de3e85d4476479f28a6016eb0d5a733b750bb04cd19ffeae74b17316fcf"
+  },
+  "budget": {
+    "sessions": 1,
+    "wall_clock_hours": 3
+  },
+  "case_id": "green-but-incomplete-pr22",
+  "chronology": [
+    {
+      "at": "2026-07-05T12:15:00Z",
+      "event": "task_declared"
+    },
+    {
+      "at": "2026-07-05T12:29:53Z",
+      "event": "action_captured"
+    },
+    {
+      "at": "2026-07-09T19:19:00Z",
+      "event": "decision_evaluated"
+    }
+  ],
+  "classification": "real_gap_warn",
+  "contract": "benchmark-case-v0",
+  "task": {
+    "declared_at": "2026-07-05T12:15:00Z",
+    "description": "PR #22 - Commercial kit: VALUE, ONE_PAGER, MARKETPLACE_LISTING, pilot assisted path, feedback loop, README CTA, design-partner variant, 60-second case study, docs index update"
+  }
+}
