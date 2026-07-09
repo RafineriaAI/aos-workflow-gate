@@ -24,8 +24,8 @@ from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 
-from . import canonical
 from .errors import InputError
+from .source_contract import source_digest
 
 DEFAULT_API_URL = "https://api.github.com"
 GENERATED_POLICY_ID = "collected-advisory"
@@ -315,7 +315,7 @@ def build_bundle(
                 "observed_at": run.get("completed_at"),
                 "summary": f"GitHub check run {run.get('id')} "
                 f"concluded {conclusion}.",
-                "digest": canonical.digest(identity),
+                "digest": source_digest(identity),
             }
         )
 

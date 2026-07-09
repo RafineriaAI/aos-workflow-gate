@@ -115,7 +115,10 @@ def evaluate(bundle: Any, policy: Policy) -> Decision:
         return _build(Subject(None, None, None, None), policy, malformed, [])
 
     subject = _normalize_subject(bundle, policy, malformed)
-    sources = _normalize_sources(bundle, malformed_severity, malformed)
+    sources = _normalize_sources(
+        bundle, malformed_severity, malformed,
+        required_ids=frozenset(policy.required_sources),
+    )
 
     if malformed or sources is None:
         inputs = [s.as_input() for s in sources] if sources else []
@@ -213,7 +216,11 @@ def _normalize_subject(
 
 
 def _normalize_sources(
-    bundle: dict[str, Any], malformed_severity: str, malformed: list[Reason]
+    bundle: dict[str, Any],
+    malformed_severity: str,
+    malformed: list[Reason],
+    *,
+    required_ids: frozenset[str],
 ) -> list[Source] | None:
     raw_sources = bundle.get("sources")
     if not isinstance(raw_sources, list):
@@ -227,7 +234,9 @@ def _normalize_sources(
     sources: list[Source] = []
     seen: set[str] = set()
     for position, item in enumerate(raw_sources):
-        source = _normalize_source(item, position, malformed_severity, malformed, seen)
+        source = _normalize_source(
+            item, position, malformed_severity, malformed, seen, required_ids
+        )
         if source is None:
             return None
         sources.append(source)
@@ -240,6 +249,7 @@ def _normalize_source(
     malformed_severity: str,
     malformed: list[Reason],
     seen: set[str],
+    required_ids: frozenset[str],
 ) -> Source | None:
     def reject(detail: str) -> None:
         malformed.append(Reason("malformed_input", malformed_severity, None, detail))
@@ -263,10 +273,26 @@ def _normalize_source(
     if not _is_nonempty_str(status):
         reject(f"source '{source_id}' is missing a string status")
         return None
-    required = item.get("required", False)
-    if not isinstance(required, bool):
+    contract = item.get("contract")
+    if contract is not None and contract != "source-v0":
+        reject(f"source '{source_id}' declares unknown contract {contract!r}")
+        return None
+    if contract == "source-v0" and "required" in item:
+        reject(
+            f"source '{source_id}' carries a 'required' field, but the "
+            "source-v0 contract has none: required/advisory "
+            "classification is policy-owned"
+        )
+        return None
+    # required/advisory classification is policy-owned: the record's
+    # required flag is derived from the policy, never trusted from the
+    # bundle. A legacy draft-0 'required' display field is still
+    # type-checked, then ignored.
+    legacy_required = item.get("required", False)
+    if not isinstance(legacy_required, bool):
         reject(f"source '{source_id}' field 'required' must be a boolean")
         return None
+    required = source_id in required_ids
     digest = item.get("digest")
     if digest is not None and not isinstance(digest, str):
         reject(f"source '{source_id}' field 'digest' must be a string")

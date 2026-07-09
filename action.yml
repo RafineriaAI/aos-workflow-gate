@@ -188,4 +188,8 @@ runs:
         path: |
           ${{ inputs.out }}
           .aos-gate/
+        # .aos-gate/ is a dot-directory: without this flag the upload
+        # silently skips it and the replay path ships without its bundle
+        # and policy.
+        include-hidden-files: "true"
         if-no-files-found: warn

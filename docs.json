@@ -12,6 +12,7 @@
     "docs/DECISION_PREDICATE.md",
     "docs/CI_INTEGRATIONS.md",
     "docs/ADAPTERS.md",
+    "docs/SOURCE_CONTRACT.md",
     "docs/POLICY_PACKS.md",
     "docs/TRUST.md",
     "docs/BUYER_FAQ.md",
@@ -84,7 +85,8 @@
     "tests/test_fixtures_replay.py",
     "tests/test_run.py",
     "tests/test_check_pr.py",
-    "tests/test_preflight.py"
+    "tests/test_preflight.py",
+    "tests/test_source_contract.py"
   ],
   "assets": [
     "docs/assets/banner.png"

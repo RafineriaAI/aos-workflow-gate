@@ -21,8 +21,8 @@ import re
 from pathlib import Path
 from typing import Any
 
-from . import canonical
 from .errors import InputError
+from .source_contract import source_digest
 
 
 def _load_json_file(path: Path, what: str) -> dict[str, Any]:
@@ -84,6 +84,7 @@ def sarif_source(path: Path, source_id: str | None = None) -> dict[str, Any]:
         "error_count": counts["error"],
         "warning_count": counts["warning"],
         "note_count": counts["note"],
+        "status": status,
     }
     return {
         "id": source_id or f"sarif.{_slug(tool_name)}",
@@ -95,7 +96,7 @@ def sarif_source(path: Path, source_id: str | None = None) -> dict[str, Any]:
             f"SARIF: {counts['error']} error(s), {counts['warning']} "
             f"warning(s), {counts['note']} note(s) from {tool_name}."
         ),
-        "digest": canonical.digest(identity),
+        "digest": source_digest(identity),
     }
 
 
@@ -107,7 +108,7 @@ def scorecard_source(path: Path, source_id: str | None = None) -> dict[str, Any]
     if not isinstance(score, (int, float)):
         raise InputError(f"Scorecard report {path} has no numeric 'score'")
     check_count = len(checks) if isinstance(checks, list) else 0
-    identity = {"score": score, "checks": check_count}
+    identity = {"score": score, "checks": check_count, "status": "success"}
     return {
         "id": source_id or "scorecard",
         "kind": "scorecard_summary",
@@ -118,5 +119,5 @@ def scorecard_source(path: Path, source_id: str | None = None) -> dict[str, Any]
             f"OpenSSF Scorecard aggregate score {score}/10 across "
             f"{check_count} check(s); presence-and-integrity signal only."
         ),
-        "digest": canonical.digest(identity),
+        "digest": source_digest(identity),
     }
