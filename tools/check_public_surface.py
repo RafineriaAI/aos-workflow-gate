@@ -176,6 +176,19 @@ REQUIRED_SNIPPETS = {
         "Interpretation stays in the\npolicy",
         "not as a verdict",
         "do not verify the authenticity",
+        "no plugin runtime",
+        "a\nsource can never mark itself required",
+    ],
+    "docs/SOURCE_CONTRACT.md": [
+        "no plugin runtime",
+        "Adapter-defined, non-enum",
+        "an observation, never a verdict",
+        "no `required` field",
+        "policy-owned",
+        "### Identity-completeness invariant",
+        "A signal must not be able to\npromote itself",
+        "historical records are never rewritten",
+        "not authenticity",
     ],
     "docs/POLICY_PACKS.md": [
         "copy one, rename the `policy_id`",
@@ -451,6 +464,7 @@ def check_action_surface() -> None:
         "Reproduce locally",
         "Replay path:",
         "name: aos-gate-evidence",
+        'include-hidden-files: "true"',
         "uses: actions/upload-artifact@"
         "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
     )

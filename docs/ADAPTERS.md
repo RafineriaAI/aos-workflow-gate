@@ -22,7 +22,9 @@ Mapping contract:
 | no results | `success` |
 
 The source id defaults to `sarif.<tool-name>`; the digest covers
-`{tool, version, error_count, warning_count, note_count}`; the counts are
+`{tool, version, error_count, warning_count, note_count, status}` per
+the identity-completeness invariant
+([SOURCE_CONTRACT.md](SOURCE_CONTRACT.md)); the counts are
 repeated in the human summary. The gate does not read rules, locations, or
 severities beyond the level — scanners keep their own report as the
 authority on findings.
@@ -34,11 +36,22 @@ parses; the aggregate score and check count travel in the summary and
 digest **as data, not as a verdict**. Score thresholds are a policy-layer
 concern and are deliberately not implemented in the adapter.
 
+## External adapters (`source-v0`)
+
+Adapters outside this package emit plain JSON validating against the
+versioned [source contract](SOURCE_CONTRACT.md) and enter a bundle via
+`aos-workflow-gate import` (file or stdin). The gate never loads
+third-party code — no plugin runtime. All adapters, built-in and
+external, follow the same identity-completeness invariant: the digest
+identity contains the status and every decision-relevant observation.
+
 ## Collisions and required flags
 
 Adapter source ids must not collide with collected check-run names (pass
 an explicit id if they do). Names listed in `--require` mark adapter
-sources required exactly like check runs.
+sources required exactly like check runs; the decision record's
+required flags are derived from the policy at evaluation time — a
+source can never mark itself required.
 
 ## Boundary
 

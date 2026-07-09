@@ -53,6 +53,7 @@ from .export import build_statement
 from .paths import safe_output_path, workspace_boundary
 from .policy import load_policy
 from .preflight import render_report, run_preflight
+from .source_contract import load_external_sources
 from .summarize import render_markdown
 from .version import __version__
 
@@ -77,6 +78,8 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_check_pr(args)
         if args.command == "preflight":
             return _cmd_preflight(args)
+        if args.command == "import":
+            return _cmd_import(args)
     except InputError as exc:
         print(f"error: {exc}", file=sys.stderr)
         print(
@@ -397,6 +400,40 @@ def _build_parser() -> argparse.ArgumentParser:
         "--policy-out",
         help="also write an explicit advisory policy covering every "
         "collected source",
+    )
+
+    import_parser = subparsers.add_parser(
+        "import",
+        help="validate external source-v0 sources (file or stdin) and "
+        "merge them into a signal bundle",
+    )
+    import_parser.add_argument(
+        "--source",
+        action="append",
+        required=True,
+        default=[],
+        metavar="PATH_OR_-",
+        help="source-v0 JSON document: one source object or a list; "
+        "'-' reads stdin (repeatable; stdin at most once)",
+    )
+    import_parser.add_argument(
+        "--input", help="existing signal bundle to extend"
+    )
+    import_parser.add_argument(
+        "--repository", help="subject owner/repo when creating a fresh bundle"
+    )
+    import_parser.add_argument(
+        "--sha", help="subject commit SHA when creating a fresh bundle"
+    )
+    import_parser.add_argument(
+        "--ref", help="optional subject ref for a fresh bundle"
+    )
+    import_parser.add_argument(
+        "--pull-request", type=int,
+        help="optional subject pull request for a fresh bundle",
+    )
+    import_parser.add_argument(
+        "--out", required=True, help="write the merged bundle here"
     )
 
     evaluate_parser = subparsers.add_parser(
@@ -896,6 +933,72 @@ def _cmd_preflight(args: argparse.Namespace) -> int:
     else:
         sys.stdout.write(render_report(report, verbose=args.verbose))
     return 0 if report["ready"] else 1
+
+
+def _cmd_import(args: argparse.Namespace) -> int:
+    """Merge validated external source-v0 sources into a bundle.
+
+    Validation is strict with path-addressed errors (operator-invoked
+    tooling); the sources carry no ``required`` field — classification
+    stays policy-owned at evaluation time.
+    """
+    if args.source.count("-") > 1:
+        raise InputError("'-' (stdin) may be used at most once")
+    imported: list[dict[str, Any]] = []
+    for spec in args.source:
+        imported.extend(load_external_sources(spec))
+
+    if args.input:
+        bundle = _load_json(args.input)
+        if not isinstance(bundle, dict) or not isinstance(
+            bundle.get("sources"), list
+        ):
+            raise InputError(f"{args.input} is not a signal bundle")
+    else:
+        if not args.repository or not args.sha:
+            raise InputError("import needs --input, or --repository and --sha")
+        subject: dict[str, Any] = {
+            "repository": args.repository, "sha": args.sha,
+        }
+        if args.ref:
+            subject["ref"] = args.ref
+        if args.pull_request is not None:
+            subject["pull_request"] = args.pull_request
+        bundle = {
+            "schema_version": "draft-0",
+            "subject": subject,
+            "sources": [],
+        }
+
+    existing_ids = {
+        source.get("id")
+        for source in bundle["sources"]
+        if isinstance(source, dict)
+    }
+    for source in imported:
+        if source["id"] in existing_ids:
+            raise InputError(
+                f"imported source id {source['id']!r} collides with an "
+                "existing source; pass a distinct id"
+            )
+        existing_ids.add(source["id"])
+        bundle["sources"].append(source)
+    bundle["sources"].sort(key=lambda source: str(source.get("id")))
+
+    collection = bundle.setdefault("collection", {})
+    if isinstance(collection, dict):
+        imported_ids = sorted(source["id"] for source in imported)
+        prior = collection.get("imported_sources")
+        if isinstance(prior, list):
+            imported_ids = sorted(set(prior) | set(imported_ids))
+        collection["imported_sources"] = imported_ids
+
+    _write_json(safe_output_path(args.out, workspace=workspace_boundary()), bundle)
+    print(
+        f"imported {len(imported)} source(s) under the source-v0 contract"
+    )
+    print(f"bundle: {args.out}")
+    return 0
 
 
 def _check_context_integrity(bundle: Any, *, require_match: bool) -> None:

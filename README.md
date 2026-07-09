@@ -120,7 +120,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.17.0
+        uses: RafineriaAI/aos-workflow-gate@v0.18.0
         with:
           required-checks: "ci / validate"
 ```
@@ -163,7 +163,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.17.0
+    uses: RafineriaAI/aos-workflow-gate@v0.18.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
@@ -229,6 +229,7 @@ collector and the Action are GitHub-specific by design.
 - [Decision record predicate](docs/DECISION_PREDICATE.md) defines the in-toto Statement export and operator-key signing recipe.
 - [CI integrations](docs/CI_INTEGRATIONS.md) covers GitHub Enterprise Server, GitLab CI, and generic shell usage.
 - [Adapters](docs/ADAPTERS.md) defines the mechanical SARIF and Scorecard mapping contracts.
+- [Source contract](docs/SOURCE_CONTRACT.md) defines the versioned `source-v0` contract for external adapters: identity-completeness invariant, policy-owned classification, import via file or stdin, no plugin runtime.
 - [Policy packs](docs/POLICY_PACKS.md) documents the starter policies under `policies/packs/`.
 - [Trust](docs/TRUST.md) shows how to verify every claim yourself: read-only permissions, no telemetry, zero dependencies, tamper evidence, offline replay.
 - [Buyer FAQ](docs/BUYER_FAQ.md) answers security reviewers: data flows, permissions, free vs paid, vendor risk, platform coverage.

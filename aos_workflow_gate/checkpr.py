@@ -25,6 +25,7 @@ from urllib.parse import urlparse
 from . import canonical
 from .collect import Budget, _request_json, validate_api_url
 from .errors import InputError
+from .source_contract import source_digest
 
 _PR_PATH = re.compile(r"^/([^/]+)/([^/]+)/pull/(\d+)(?:/.*)?$")
 
@@ -138,7 +139,7 @@ def status_sources(
             continue
         raw_state = str(status.get("state", "unknown")).lower()
         state = _STATUS_STATE_MAP.get(raw_state, raw_state)
-        identity = {"context": context, "state": raw_state}
+        identity = {"context": context, "state": raw_state, "status": state}
         sources.append(
             {
                 "id": context,
@@ -147,7 +148,7 @@ def status_sources(
                 "status": state,
                 "required": False,
                 "summary": f"Legacy commit status '{context}' is {raw_state}.",
-                "digest": canonical.digest(identity),
+                "digest": source_digest(identity),
             }
         )
     return sources, sorted(skipped)
