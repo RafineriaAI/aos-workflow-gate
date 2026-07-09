@@ -17,6 +17,7 @@
     "docs/BUYER_FAQ.md",
     "docs/SECURITY_READINESS.md",
     "docs/USER_FAQ.md",
+    "docs/PREFLIGHT.md",
     "docs/VALUE.md",
     "docs/VALUE_METRICS.md",
     "docs/COMPARISON.md",
@@ -82,7 +83,8 @@
     "tests/test_adapters.py",
     "tests/test_fixtures_replay.py",
     "tests/test_run.py",
-    "tests/test_check_pr.py"
+    "tests/test_check_pr.py",
+    "tests/test_preflight.py"
   ],
   "assets": [
     "docs/assets/banner.png"

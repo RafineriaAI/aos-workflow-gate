@@ -63,6 +63,15 @@ detectable):
 aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
 ```
 
+Before the first gate run, probe what your token, environment, and
+target actually allow — read-only, with stable diagnostic codes and
+remediation, and no verdict
+(see [docs/PREFLIGHT.md](docs/PREFLIGHT.md)):
+
+```bash
+aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
+```
+
 Render a record as Markdown (the same summary the GitHub Action posts):
 
 ```bash
@@ -111,7 +120,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.16.0
+        uses: RafineriaAI/aos-workflow-gate@v0.17.0
         with:
           required-checks: "ci / validate"
 ```
@@ -154,7 +163,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.16.0
+    uses: RafineriaAI/aos-workflow-gate@v0.17.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
@@ -225,6 +234,7 @@ collector and the Action are GitHub-specific by design.
 - [Buyer FAQ](docs/BUYER_FAQ.md) answers security reviewers: data flows, permissions, free vs paid, vendor risk, platform coverage.
 - [Security readiness](docs/SECURITY_READINESS.md) documents the private-repo data model and implemented input hardening, each with a negative test.
 - [User FAQ](docs/USER_FAQ.md) answers first-run questions and maps every failure symptom to its meaning and fix.
+- [Preflight diagnostics](docs/PREFLIGHT.md) documents the read-only capability probes, the stable diagnostic code registry, and preflight's exit semantics.
 - [Value](docs/VALUE.md) states what the gate is worth, only as far as the evidence reaches.
 - [Value metrics](docs/VALUE_METRICS.md) counts operational friction from the committed case studies — no ROI arithmetic, by design.
 - [Comparison](docs/COMPARISON.md) maps what branch protection, OPA/conftest, in-toto attestations, and the gate each answer — a capability matrix, not a ranking.

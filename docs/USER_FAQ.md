@@ -28,13 +28,32 @@ names.
 Download the artifacts, then:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.16.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.17.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json
 ```
 
 `verify` prints `OK` when the record matches its self-digest and the
 bundle; `TAMPERED` means the file changed since the gate wrote it.
+
+## Exit codes by command
+
+Exit codes are stable but command-scoped — the same number answers a
+different question per command:
+
+| Command | 0 | 1 | 2 |
+| --- | --- | --- | --- |
+| `evaluate` / `run` / `check-pr` | Verdict produced; nothing enforced a failure. | Policy `BLOCK` under enforcement. | Operational error; no verdict was produced. |
+| `verify` | Record intact. | Record or bundle tampered. | Operational error. |
+| `preflight` | Ready — every probed capability responded. | Degraded readiness — a probed capability is unavailable (named by a stable code; **not** a policy verdict). | The probe run itself could not complete. |
+
+Before the first gate run, `preflight` names what the token and target
+can actually do (see [PREFLIGHT.md](PREFLIGHT.md) for the diagnostic
+code registry):
+
+```bash
+aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
+```
 
 ## Failure taxonomy
 

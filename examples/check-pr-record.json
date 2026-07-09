@@ -2,7 +2,7 @@
   "can_block": false,
   "generator": {
     "tool": "aos-workflow-gate",
-    "version": "0.16.0"
+    "version": "0.17.0"
   },
   "input_bundle_digest": "sha256:b6c60a32a3fab0158f40794b5a3d025c3e805d85241e8ab550f9ea05ab509a84",
   "inputs": [
@@ -61,7 +61,7 @@
       "source_id": "AOS Workflow Gate Self / no-checkout"
     }
   ],
-  "record_digest": "sha256:82e04ffc9f749bcb51abe016b842524b61722cb1c60618cae4803d9be8416be1",
+  "record_digest": "sha256:b6d4315eeeda90ec3cf9f82cd401df31829d5226a808258eac151671cd85bb69",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 32,
