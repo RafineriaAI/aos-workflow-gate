@@ -14,6 +14,7 @@
     "docs/ADAPTERS.md",
     "docs/SOURCE_CONTRACT.md",
     "docs/AGENT_ACTION.md",
+    "docs/BENCHMARK_HARNESS.md",
     "docs/POLICY_PACKS.md",
     "docs/TRUST.md",
     "docs/BUYER_FAQ.md",
@@ -88,7 +89,8 @@
     "tests/test_check_pr.py",
     "tests/test_preflight.py",
     "tests/test_source_contract.py",
-    "tests/test_agent_action.py"
+    "tests/test_agent_action.py",
+    "tests/test_bench.py"
   ],
   "assets": [
     "docs/assets/banner.png"

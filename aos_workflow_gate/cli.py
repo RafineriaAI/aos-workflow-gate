@@ -34,6 +34,7 @@ from .agent_action import (
     fetch_branch_head,
     load_action_document,
 )
+from .bench import render_bench_report, verify_case
 from .checkpr import (
     counterfactual_blockers,
     fetch_branch_rules,
@@ -92,6 +93,8 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_import(args)
         if args.command == "agent-action":
             return _cmd_agent_action(args)
+        if args.command == "bench-verify":
+            return _cmd_bench_verify(args)
     except InputError as exc:
         print(f"error: {exc}", file=sys.stderr)
         print(
@@ -489,6 +492,38 @@ def _build_parser() -> argparse.ArgumentParser:
         help="env var holding the API token for --live",
     )
     agent_parser.add_argument(
+        "--api-url",
+        help="GitHub API base URL for --live (default: GITHUB_API_URL "
+        "env or https://api.github.com)",
+    )
+
+    bench_parser = subparsers.add_parser(
+        "bench-verify",
+        help="validate and replay a recorded benchmark case directory "
+        "(runs nothing; verified vs unverifiable stated per check)",
+    )
+    bench_parser.add_argument(
+        "--case",
+        action="append",
+        required=True,
+        default=[],
+        metavar="DIR",
+        help="benchmark case directory containing case.json (repeatable)",
+    )
+    bench_parser.add_argument(
+        "--live", action="store_true",
+        help="enable the Git ancestry probe via the compare API "
+        "(otherwise ancestry is reported unverifiable)",
+    )
+    bench_parser.add_argument(
+        "--json", action="store_true",
+        help="print the JSON report(s) instead of the human view",
+    )
+    bench_parser.add_argument(
+        "--token-env", default="GITHUB_TOKEN",
+        help="env var holding the API token for --live",
+    )
+    bench_parser.add_argument(
         "--api-url",
         help="GitHub API base URL for --live (default: GITHUB_API_URL "
         "env or https://api.github.com)",
@@ -1202,6 +1237,33 @@ def _cmd_agent_action(args: argparse.Namespace) -> int:
             f"{source['id']}: {source['status']}", file=sys.stderr
         )
     return 0
+
+
+def _cmd_bench_verify(args: argparse.Namespace) -> int:
+    """Verify recorded benchmark cases; exit 1 when any check fails.
+
+    Unverifiable checks never fail the run — they are disclosure. The
+    harness runs no agent, applies no patch, and executes no command.
+    """
+    token = os.environ.get(args.token_env) if args.token_env else None
+    api_url = (
+        args.api_url or os.environ.get("GITHUB_API_URL") or DEFAULT_API_URL
+    )
+    reports = []
+    for case_dir in args.case:
+        reports.append(
+            verify_case(
+                Path(case_dir), live=args.live, token=token, api_url=api_url
+            )
+        )
+    if args.json:
+        payload: Any = reports[0] if len(reports) == 1 else reports
+        text = json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=True)
+        sys.stdout.write(text + "\n")
+    else:
+        for report in reports:
+            sys.stdout.write(render_bench_report(report))
+    return 0 if all(report["ok"] for report in reports) else 1
 
 
 def _check_context_integrity(bundle: Any, *, require_match: bool) -> None:
