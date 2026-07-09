@@ -179,6 +179,16 @@ REQUIRED_SNIPPETS = {
         "no plugin runtime",
         "a\nsource can never mark itself required",
     ],
+    "docs/BENCHMARK_HARNESS.md": [
+        "**it runs nothing**",
+        "predeclared",
+        "written before the run, not after the fact",
+        "## Checks and the verified vs unverifiable boundary",
+        "no patch-authorship claim",
+        "no cryptographic\n  authorship claim",
+        "no arbitrary command execution",
+        "does not mean the agent's change was\ngood, safe, or approved",
+    ],
     "docs/AGENT_ACTION.md": [
         "evidence a policy can require, never an approval",
         "## Validation states",
