@@ -46,6 +46,7 @@ from .checkpr import (
     strict_policy_from_rules,
 )
 from .collect import Budget, wait_for_required
+from .errors import InputError
 
 SATISFIED = "satisfied"
 FAILED = "failed"
@@ -65,6 +66,8 @@ def classify_control(
     control: dict[str, Any],
     runs: list[dict[str, Any]],
     statuses: list[dict[str, Any]],
+    *,
+    statuses_readable: bool = True,
 ) -> dict[str, Any]:
     """Classify one required control against observed runs and statuses.
 
@@ -147,6 +150,11 @@ def classify_control(
         if bound_app is not None and named_statuses and not imposters:
             observed["legacy_status_cannot_prove_app"] = True
         return {**control, "state": UNVERIFIABLE, "observed": observed}
+    if bound_app is None and not statuses_readable:
+        # the stream that could have satisfied this control was not
+        # readable: unknown is stated as unverifiable, never as absent
+        observed["statuses_stream"] = "unreadable"
+        return {**control, "state": UNVERIFIABLE, "observed": observed}
     return {**control, "state": MISSING, "observed": observed}
 
 
@@ -204,13 +212,25 @@ def requirement_snapshot(
         wait_seconds=wait_seconds, poll_interval=poll_interval,
         budget=budget,
     )
-    statuses = fetch_commit_statuses(
-        api_url, slug, sha, token=token, budget=budget
-    )
+    statuses_unverifiable: str | None = None
+    try:
+        statuses = fetch_commit_statuses(
+            api_url, slug, sha, token=token, budget=budget
+        )
+    except InputError as exc:
+        # the legacy status stream is non-essential: degrade instead of
+        # aborting (can_continue: yes); affected unbound controls are
+        # classified unverifiable, never silently missing
+        statuses = []
+        statuses_unverifiable = str(exc)
     classified = [
-        classify_control(control, runs, statuses) for control in controls
+        classify_control(
+            control, runs, statuses,
+            statuses_readable=statuses_unverifiable is None,
+        )
+        for control in controls
     ]
-    return {
+    snapshot: dict[str, Any] = {
         "sha": sha,
         "branch": branch,
         "rules": rules,
@@ -225,6 +245,9 @@ def requirement_snapshot(
         "incomplete_required": incomplete,
         "waited_seconds": waited,
     }
+    if statuses_unverifiable is not None:
+        snapshot["statuses_unverifiable"] = statuses_unverifiable
+    return snapshot
 
 
 def requirement_evidence(

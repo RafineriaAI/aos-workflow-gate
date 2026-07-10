@@ -921,6 +921,10 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         collection["pending_required"] = still_running
     if unverifiable:
         collection["unverifiable_required"] = unverifiable
+    if snapshot.get("statuses_unverifiable"):
+        collection["statuses_unverifiable"] = snapshot[
+            "statuses_unverifiable"
+        ]
     if skipped_contexts:
         collection["duplicate_status_contexts"] = skipped_contexts
     bundle = build_bundle(
@@ -1000,9 +1004,15 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         )
     if unverifiable:
         print(
-            "Unverifiable (a same-named observation exists but cannot "
-            "be shown to satisfy the app-bound requirement; fails "
-            "closed as missing): " + ", ".join(unverifiable)
+            "Unverifiable (cannot be shown to satisfy the requirement — "
+            "app-bound requirement identity mismatch or unreadable "
+            "stream; fails closed as missing): " + ", ".join(unverifiable)
+        )
+    if snapshot.get("statuses_unverifiable"):
+        print(
+            "Degraded (can_continue: yes): legacy commit statuses could "
+            "not be read and are recorded as unverifiable evidence in "
+            "the bundle collection."
         )
     if would_block:
         print(

@@ -67,6 +67,7 @@ def fetch_pr(
         headers,
         timeout=30.0,
         budget=budget,
+        capability="pull_request",
     )
     if not isinstance(payload, dict):
         raise InputError("pull request API response is not a JSON object")
@@ -105,6 +106,7 @@ def fetch_commit_statuses(
         headers,
         timeout=30.0,
         budget=budget,
+        capability="commit_statuses",
     )
     if not isinstance(payload, dict):
         raise InputError("commit status API response is not a JSON object")
@@ -163,7 +165,10 @@ def fetch_branch_rules(
     if token:
         headers["Authorization"] = f"Bearer {token}"
     url = f"{api_url}/repos/{slug}/rules/branches/{branch}"
-    payload = _request_json(url, headers, timeout=30.0, budget=budget)
+    payload = _request_json(
+        url, headers, timeout=30.0, budget=budget,
+        capability="branch_rules",
+    )
     rules = payload if isinstance(payload, list) else payload.get("rules")
     if not isinstance(rules, list):
         return []

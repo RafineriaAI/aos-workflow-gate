@@ -203,6 +203,7 @@ def fetch_branch_head(
         headers,
         timeout=30.0,
         budget=budget,
+        capability="branch_head",
     )
     if not isinstance(payload, dict):
         raise InputError("branch API response is not a JSON object")

@@ -13,7 +13,7 @@
 | Policy | `aos-kernel-release-surface` (advisory) |
 | Policy digest | `sha256:813550b195c3248805ce605835670dbb59a922af792989ce721e7633be87adcf` |
 | Input bundle digest | `sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22` |
-| Record digest | `sha256:b9ed5bc2e09251cecb0efb84ad64c2a26f7eb6bcda057f5cb7758e8b8b71099a` |
+| Record digest | `sha256:3b0e4264687685d0cff3024a137f52bde5c0e3ee813393a1332e9f5394659dce` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 

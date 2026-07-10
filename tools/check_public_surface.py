@@ -134,6 +134,11 @@ REQUIRED_SNIPPETS = {
         "AOS-PERM-003",
         "## Exit codes",
         "Degraded",
+        "## Automatic preflight in collection",
+        "**no duplicate API call**",
+        "`can_continue: no`",
+        "`can_continue: yes`",
+        "failing closed, never silently missing",
     ],
     "docs/SECURITY_READINESS.md": [
         "## Private-repo data model",
