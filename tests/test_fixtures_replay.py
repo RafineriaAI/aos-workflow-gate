@@ -45,6 +45,11 @@ FIXTURES = [
         "examples/check-pr-policy.json",
         "examples/check-pr-record.json",
     ),
+    (
+        "examples/zero-required-bundle.json",
+        "examples/zero-required-policy.json",
+        "examples/zero-required-record.json",
+    ),
 ]
 
 
@@ -71,7 +76,34 @@ def test_expected_verdicts() -> None:
     verdicts = {
         "examples/green-but-incomplete-record.json": "WARN",
         "examples/pr-evidence-record.json": "PASS",
+        "examples/zero-required-record.json": "WARN",
     }
     for path, expected in verdicts.items():
         record = json.loads((ROOT / path).read_text(encoding="utf-8"))
         assert record["verdict"] == expected, path
+
+
+def test_zero_required_aha_case_shape() -> None:
+    """The main aha case: merge-ready on GitHub, zero required at the
+    gate, real failures visible only as advisory warnings."""
+    record = json.loads(
+        (ROOT / "examples/zero-required-record.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert record["verdict"] == "WARN"
+    assert record["can_block"] is False
+    assert all(not source["required"] for source in record["inputs"])
+    failures = {
+        reason["source_id"]
+        for reason in record["reasons"]
+        if "failure" in reason["detail"]
+    }
+    assert "AOS Workflow Gate Self / advisory" in failures
+    assert "AOS Workflow Gate Self / zero-config" in failures
+    policy = json.loads(
+        (ROOT / "examples/zero-required-policy.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert policy["required_sources"] == []

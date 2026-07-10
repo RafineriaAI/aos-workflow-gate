@@ -34,6 +34,7 @@
     "docs/MARKETPLACE_LISTING.md",
     "docs/case-studies/aos-kernel-release-surface-replay.md",
     "docs/case-studies/green-but-incomplete.md",
+    "docs/case-studies/zero-required-checks.md",
     "docs/RELEASE_GOVERNANCE.md",
     "benchmarks/README.md",
     "ROADMAP.md",
@@ -56,7 +57,10 @@
     "examples/check-pr-bundle.json",
     "examples/check-pr-policy.json",
     "examples/check-pr-record.json",
-    "examples/digest-vectors.json"
+    "examples/digest-vectors.json",
+    "examples/zero-required-bundle.json",
+    "examples/zero-required-policy.json",
+    "examples/zero-required-record.json"
   ],
   "benchmarks": [
     "benchmarks/cases/agent-pr36-preflight/case.json",

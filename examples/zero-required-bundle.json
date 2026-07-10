@@ -1,0 +1,90 @@
+{
+  "collection": {
+    "api_calls": 1,
+    "status": "complete",
+    "waited_seconds": 0.0
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:6efaaaa32d68ce38a60fafd4d220998e7219306e4412c0b82ff4e37340ba2745",
+      "id": "AOS Workflow Gate CI / validate",
+      "identity": {
+        "check_run_id": 85204465158,
+        "completed_at": "2026-07-05T07:50:41Z",
+        "conclusion": "success",
+        "head_sha": "f8c6517bef32e68d3150d2954cc4c445b6fb1642",
+        "name": "AOS Workflow Gate CI / validate",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-05T07:50:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 85204465158 concluded success."
+    },
+    {
+      "digest": "sha256:0617676ae44191f64d616c61c496be3ff73d86ca5ae3dacdb5bd800e22ccc290",
+      "id": "AOS Workflow Gate Self / advisory",
+      "identity": {
+        "check_run_id": 85204465101,
+        "completed_at": "2026-07-05T07:50:26Z",
+        "conclusion": "failure",
+        "head_sha": "f8c6517bef32e68d3150d2954cc4c445b6fb1642",
+        "name": "AOS Workflow Gate Self / advisory",
+        "run_status": "completed",
+        "status": "failure"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-05T07:50:26Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure",
+      "summary": "GitHub check run 85204465101 concluded failure."
+    },
+    {
+      "digest": "sha256:83f72abd6317c5abb5c07cee303241396d8181fcca65e6d194045acf7f58b1e7",
+      "id": "AOS Workflow Gate Self / no-checkout",
+      "identity": {
+        "check_run_id": 85204465401,
+        "completed_at": "2026-07-05T07:50:21Z",
+        "conclusion": "skipped",
+        "head_sha": "f8c6517bef32e68d3150d2954cc4c445b6fb1642",
+        "name": "AOS Workflow Gate Self / no-checkout",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-05T07:50:21Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 85204465401 concluded skipped."
+    },
+    {
+      "digest": "sha256:675aaf91a4cf8e6cfdecb767d6993744e57190a5ab8a987812db79b814f4daa8",
+      "id": "AOS Workflow Gate Self / zero-config",
+      "identity": {
+        "check_run_id": 85204465094,
+        "completed_at": "2026-07-05T07:50:30Z",
+        "conclusion": "failure",
+        "head_sha": "f8c6517bef32e68d3150d2954cc4c445b6fb1642",
+        "name": "AOS Workflow Gate Self / zero-config",
+        "run_status": "completed",
+        "status": "failure"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-05T07:50:30Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure",
+      "summary": "GitHub check run 85204465094 concluded failure."
+    }
+  ],
+  "subject": {
+    "repository": "RafineriaAI/aos-workflow-gate",
+    "sha": "f8c6517bef32e68d3150d2954cc4c445b6fb1642"
+  }
+}

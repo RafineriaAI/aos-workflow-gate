@@ -20,6 +20,7 @@ CASES = (
     "green-but-incomplete-record",
     "pr-evidence-record",
     "check-pr-record",
+    "zero-required-record",
 )
 
 

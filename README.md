@@ -91,6 +91,20 @@ cosign sign-blob --yes gate-statement.json \
 
 The draft input and policy files are [examples/github-pr-signal-bundle.json](examples/github-pr-signal-bundle.json) and [policies/default.yml](policies/default.yml).
 
+## Public proof
+
+Every verdict the gate can produce is committed to this repository as
+real, replayable evidence — `PASS`
+([examples/pr-evidence-record.json](examples/pr-evidence-record.json)),
+`WARN`
+([examples/zero-required-record.json](examples/zero-required-record.json)
+— the [main aha case](docs/case-studies/zero-required-checks.md):
+GitHub permits the merge while zero checks are required at the gate),
+and `BLOCK`
+([the v0.11.0 incident counterfactual](benchmarks/cases/v0110-incident-counterfactual/)).
+Each triple replays offline with `verify` and is re-replayed by the
+test suite on every CI run.
+
 ## GitHub Action
 
 Self-Test Mode (zero-config) — an advisory self-test of your pipeline,
@@ -120,7 +134,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.26.0
+        uses: RafineriaAI/aos-workflow-gate@v0.27.0
         with:
           required-checks: "ci / validate"
 ```
@@ -163,7 +177,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.26.0
+    uses: RafineriaAI/aos-workflow-gate@v0.27.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
@@ -249,6 +263,7 @@ collector and the Action are GitHub-specific by design.
 - [Marketplace listing](docs/MARKETPLACE_LISTING.md) holds the paste-ready listing copy and status.
 - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
 - [Green, but incomplete](docs/case-studies/green-but-incomplete.md) shows a fully green dashboard hiding a control that never ran — and the gate recording it as a named, replayable `WARN`.
+- [Merge-ready with zero enforced evidence](docs/case-studies/zero-required-checks.md) is the main aha case: GitHub permits the merge while zero checks are required at the gate, and the default first run answers `WARN` with the decision gap and both real failures named — replayable from committed files.
 - [Roadmap](ROADMAP.md) defines the phased plan.
 - [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.
 - [Draft signal bundle](examples/github-pr-signal-bundle.json) and [draft policy](policies/default.yml) make the first use case concrete.
