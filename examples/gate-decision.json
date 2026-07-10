@@ -2,7 +2,7 @@
   "can_block": false,
   "generator": {
     "tool": "aos-workflow-gate",
-    "version": "0.22.0"
+    "version": "0.23.0"
   },
   "input_bundle_digest": "sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19",
   "inputs": [
@@ -45,7 +45,7 @@
       "source_id": "scanner.sarif"
     }
   ],
-  "record_digest": "sha256:2507d789dbec9d72c52064b20bb7339af4ffb3703ddb7f1a9872ce27d595581f",
+  "record_digest": "sha256:ee9410cad5c38eec6ec533e2e349eb1b16f1995ab191748badcf36ca37a35287",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 42,

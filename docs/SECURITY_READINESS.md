@@ -85,6 +85,16 @@ rejection.
 
 ## Zero-trust signalling
 
+- **App-bound requirement identity.** `check-pr` builds on a shared,
+  SHA-pinned requirement snapshot: when the branch rules bind a required
+  check to a specific app (`integration_id`), only a check run reporting
+  that app id can satisfy it. A same-named run from another app — or a
+  legacy commit status, which carries no app identity — is classified
+  `unverifiable`, excluded from the bundleable sources, and fails closed
+  as missing. Requirement states
+  (`satisfied`/`failed`/`missing`/`pending`/`unverifiable`) are recorded
+  as evidence in the bundle's `collection.requirements`. Scope: required
+  status checks only, deliberately not full merge-readiness.
 - **Policy-digest guard.** `evaluate --policy-digest sha256:<hex>` pins the
   expected policy; a swapped or edited policy file is an operational error
   (exit 2) before any verdict is computed.

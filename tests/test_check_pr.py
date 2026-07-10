@@ -128,8 +128,10 @@ def test_strict_and_pending_required() -> None:
     ]
 
 
-def _run(name: str, conclusion: str) -> dict[str, Any]:
-    return {
+def _run(
+    name: str, conclusion: str, app_id: int | None = 15368
+) -> dict[str, Any]:
+    run: dict[str, Any] = {
         "id": 1,
         "name": name,
         "head_sha": SHA,
@@ -137,6 +139,9 @@ def _run(name: str, conclusion: str) -> dict[str, Any]:
         "conclusion": conclusion,
         "completed_at": "2026-07-05T00:00:00Z",
     }
+    if app_id is not None:
+        run["app"] = {"id": app_id}
+    return run
 
 
 class _FakeResponse:
@@ -212,10 +217,51 @@ def test_check_pr_end_to_end_block_on_missing_required(
         "state": "open", "merged": False, "draft": False, "from_fork": False
     }
     assert bundle["collection"]["strict_up_to_date_required"] is False
+    requirements = {
+        req["context"]: req["state"]
+        for req in bundle["collection"]["requirements"]
+    }
+    assert requirements == {"ci / validate": "satisfied", "build": "missing"}
     ids = {s["id"]: s for s in bundle["sources"]}
     assert ids["legacy/gate"]["kind"] == "commit_status"
     assert "Merge protection: 2 required status check(s)" in out
     assert "read-only observer" in out
+
+
+def test_check_pr_imposter_app_fails_closed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    from aos_workflow_gate import collect as collect_module
+
+    # 'ci / validate' is bound to app 15368; this run comes from app 666
+    runs = [
+        _run("ci / validate", "success", app_id=666),
+        _run("build", "success"),
+    ]
+    monkeypatch.setattr(
+        collect_module.urllib.request, "urlopen", _fake_urlopen(runs)
+    )
+    monkeypatch.chdir(tmp_path)
+    assert cli.main(["check-pr", "https://github.com/octo/repo/pull/42"]) == 0
+    out = capsys.readouterr().out
+    record = json.loads((tmp_path / "gate-decision.json").read_text("utf-8"))
+    assert record["verdict"] == "BLOCK"
+    reasons = {(r["rule"], r["source_id"]) for r in record["reasons"]}
+    assert ("missing_required_source", "ci / validate") in reasons
+    bundle = json.loads(
+        (tmp_path / ".aos-gate" / "bundle.json").read_text("utf-8")
+    )
+    assert bundle["collection"]["unverifiable_required"] == ["ci / validate"]
+    requirements = {
+        req["context"]: req["state"]
+        for req in bundle["collection"]["requirements"]
+    }
+    assert requirements["ci / validate"] == "unverifiable"
+    # the imposter run must not appear as a bundled source
+    assert "ci / validate" not in {s["id"] for s in bundle["sources"]}
+    assert "Unverifiable" in out
+    assert "app-bound requirement" in out
 
 
 def test_check_pr_enforce_exit_code(

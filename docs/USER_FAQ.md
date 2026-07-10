@@ -28,7 +28,7 @@ names.
 Download the artifacts, then:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.22.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.23.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json
 ```
@@ -68,6 +68,7 @@ aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
 | `missing_required_source` reason | No completed check run with that exact name. | Check the exact name (it must match the check run name), or add `wait-for-checks` so slow checks can finish. |
 | Collection status `wait_timeout` | Wait budget ended with required checks still running. | Raise `wait-for-checks`, or accept the fail-closed `BLOCK`. |
 | Collection status `truncated` | More check runs existed than the page budget collected. | Raise limits via CLI flags; uncollected required checks fail closed. |
+| Collection `unverifiable_required` (check-pr) | A same-named observation exists, but it cannot be shown to satisfy the app-bound requirement (different or unidentifiable app; legacy statuses carry no app identity). | Make the required app report the check, or unbind the requirement in the branch rules; the control fails closed as missing until then. |
 
 **Does PASS mean my code is safe?**
 No. `PASS` means your explicit policy was satisfied by the collected

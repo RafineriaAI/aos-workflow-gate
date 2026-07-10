@@ -38,16 +38,10 @@ from .agent_action import (
 from .bench import render_bench_report, verify_case
 from .checkpr import (
     counterfactual_blockers,
-    fetch_branch_rules,
-    fetch_commit_statuses,
     fetch_pr,
     parse_pr_url,
-    pending_required,
-    required_checks_from_rules,
-    rules_digest,
     rules_summary_source,
     status_sources,
-    strict_policy_from_rules,
 )
 from .collect import (
     DEFAULT_API_URL,
@@ -65,6 +59,12 @@ from .export import build_statement
 from .paths import safe_output_path, workspace_boundary
 from .policy import load_policy
 from .preflight import render_report, run_preflight
+from .requirements import (
+    PENDING,
+    UNVERIFIABLE,
+    requirement_evidence,
+    requirement_snapshot,
+)
 from .source_contract import load_external_sources
 from .summarize import render_markdown
 from .version import __version__
@@ -858,42 +858,56 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         coords["api_url"], coords["slug"], coords["number"],
         token=token, budget=budget,
     )
-    rules = fetch_branch_rules(
-        coords["api_url"], coords["slug"], pr["base_ref"],
-        token=token, budget=budget,
-    )
-    controls = required_checks_from_rules(rules)
-    required_ids = [control["context"] for control in controls]
-
-    runs, truncated, incomplete, waited = wait_for_required(
-        coords["repository"], pr["head_sha"], required_ids,
-        token=token, api_url=coords["api_url"],
-        wait_seconds=args.wait_seconds, poll_interval=args.poll_interval,
+    snapshot = requirement_snapshot(
+        api_url=coords["api_url"],
+        slug=coords["slug"],
+        repository=coords["repository"],
+        sha=pr["head_sha"],
+        branch=pr["base_ref"],
+        token=token,
         budget=budget,
+        wait_seconds=args.wait_seconds,
+        poll_interval=args.poll_interval,
     )
-    statuses = fetch_commit_statuses(
-        coords["api_url"], coords["slug"], pr["head_sha"],
-        token=token, budget=budget,
-    )
+    rules = snapshot["rules"]
+    controls = snapshot["controls"]
+    required_ids = snapshot["required_ids"]
+    runs = snapshot["qualifying_runs"]
+    incomplete = snapshot["incomplete_required"]
+
     run_names = {
         run.get("name") for run in runs if isinstance(run.get("name"), str)
     }
     status_srcs, skipped_contexts = status_sources(
-        statuses, exclude_contexts={str(n) for n in run_names}
+        snapshot["statuses"], exclude_contexts={str(n) for n in run_names}
     )
-    still_running = pending_required(runs, status_srcs, required_ids)
+    still_running = sorted(
+        control["context"] for control in controls
+        if control["state"] == PENDING
+    )
+    unverifiable = sorted(
+        control["context"] for control in controls
+        if control["state"] == UNVERIFIABLE
+    )
     status = "complete"
-    if truncated:
+    if snapshot["truncated"]:
         status = "truncated"
     elif incomplete:
         status = "wait_timeout"
     collection: dict[str, Any] = {
         "status": status,
         "api_calls": budget.api_calls,
-        "waited_seconds": round(waited, 1),
-        "rules_digest": rules_digest(rules),
-        "required_controls": controls,
-        "strict_up_to_date_required": strict_policy_from_rules(rules),
+        "waited_seconds": round(snapshot["waited_seconds"], 1),
+        "rules_digest": snapshot["rules_digest"],
+        "required_controls": [
+            {
+                "context": control["context"],
+                "integration_id": control.get("integration_id"),
+            }
+            for control in controls
+        ],
+        "requirements": requirement_evidence(controls),
+        "strict_up_to_date_required": snapshot["strict_up_to_date_required"],
         "pr": {
             "state": pr["state"],
             "merged": pr["merged"],
@@ -905,6 +919,8 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         collection["incomplete_required"] = incomplete
     if still_running:
         collection["pending_required"] = still_running
+    if unverifiable:
+        collection["unverifiable_required"] = unverifiable
     if skipped_contexts:
         collection["duplicate_status_contexts"] = skipped_contexts
     bundle = build_bundle(
@@ -982,16 +998,22 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
             "Still running (fails closed as missing until finished; use "
             "--wait-seconds): " + ", ".join(still_running)
         )
+    if unverifiable:
+        print(
+            "Unverifiable (a same-named observation exists but cannot "
+            "be shown to satisfy the app-bound requirement; fails "
+            "closed as missing): " + ", ".join(unverifiable)
+        )
     if would_block:
         print(
             "Counterfactual: would BLOCK if required: "
             + ", ".join(would_block)
         )
     print(
-        "Note: this check is a read-only observer of status-check rules; "
-        "reviews and other rule types are summarized in 'branch.rules' "
-        "but not evaluated, and rule bypass actors are not observable "
-        "from the public API."
+        "Note: this check is a read-only observer of status-check rules "
+        "and not a full merge-readiness assessment; reviews and other "
+        "rule types are summarized in 'branch.rules' but not evaluated, "
+        "and rule bypass actors are not observable from the public API."
     )
     print()
     text, _ = render_markdown(record)
