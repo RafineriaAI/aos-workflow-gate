@@ -113,7 +113,8 @@
     "tests/test_source_contract.py",
     "tests/test_agent_action.py",
     "tests/test_bench.py",
-    "tests/test_benchmark_cases.py"
+    "tests/test_benchmark_cases.py",
+    "tests/test_requirements.py"
   ],
   "assets": [
     "docs/assets/banner.png"

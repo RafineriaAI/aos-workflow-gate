@@ -145,6 +145,8 @@ REQUIRED_SNIPPETS = {
         "30-second",
         "fails closed",
         "## Zero-trust signalling",
+        "App-bound requirement identity",
+        "deliberately not full merge-readiness",
         "Strict token demarcation",
         "Permissions contract",
         "zero-trust signalling adds no signing, no provenance",
