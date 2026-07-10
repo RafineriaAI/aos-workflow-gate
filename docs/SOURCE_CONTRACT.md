@@ -99,16 +99,17 @@ those bytes, prefixed `sha256:`. In Python:
 
 ```python
 json.dumps(value, ensure_ascii=False, sort_keys=True,
-           separators=(",", ":")).encode("utf-8")
+           separators=(",", ":"), allow_nan=False).encode("utf-8")
 ```
 
 Committed **golden digest vectors** in
 [examples/digest-vectors.json](../examples/digest-vectors.json) are
 replayed by the test suite on every CI run; an implementation in any
-language that reproduces every vector canonicalizes compatibly. Use
-strings, integers, booleans, null, and containers of those in identity
-objects; float formatting is implementation-sensitive, so exact values
-belong in strings.
+language that reproduces every vector canonicalizes compatibly.
+allow_nan=False excludes non-finite numbers from the canonical JSON domain.
+Identity objects accept strings, integers, booleans, null, and containers
+of those; floats are rejected at every nesting depth because their textual
+form is implementation-sensitive. Encode exact numeric values as strings.
 
 ## Tamper detection and offline replay
 

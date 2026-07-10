@@ -51,6 +51,59 @@ _KNOWN_FIELDS = frozenset(
 )
 
 
+_NO_EXPECTED_STATUS = object()
+
+
+def _identity_value_violation(
+    value: Any, *, where: str = "identity"
+) -> str | None:
+    """Return why an identity value is outside the deterministic JSON domain."""
+    if isinstance(value, float):
+        return (
+            f"{where}: floats are not allowed in source identity; "
+            "encode exact numeric values as strings"
+        )
+    if value is None or isinstance(value, (str, bool, int)):
+        return None
+    if isinstance(value, list):
+        for position, item in enumerate(value):
+            violation = _identity_value_violation(
+                item, where=f"{where}[{position}]"
+            )
+            if violation is not None:
+                return violation
+        return None
+    if isinstance(value, dict):
+        if any(not isinstance(key, str) for key in value):
+            return f"{where}: object keys must be strings"
+        for key in sorted(value):
+            violation = _identity_value_violation(
+                value[key], where=f"{where}.{key}"
+            )
+            if violation is not None:
+                return violation
+        return None
+    return f"{where}: unsupported JSON value type {type(value).__name__!r}"
+
+
+def _identity_violation(
+    identity: Any, *, expected_status: Any = _NO_EXPECTED_STATUS
+) -> str | None:
+    if not isinstance(identity, dict):
+        return "identity must be a mapping"
+    if "status" not in identity:
+        return "identity omits 'status' (identity-completeness invariant)"
+    if (
+        expected_status is not _NO_EXPECTED_STATUS
+        and identity.get("status") != expected_status
+    ):
+        return (
+            f"status {expected_status!r} does not match the "
+            f"identity's status {identity.get('status')!r}"
+        )
+    return _identity_value_violation(identity)
+
+
 def source_digest(identity: dict[str, Any]) -> str:
     """Digest an adapter identity object under the completeness invariant.
 
@@ -59,27 +112,18 @@ def source_digest(identity: dict[str, Any]) -> str:
     half (include every decision-relevant observation) is the adapter
     author's obligation, stated in docs/SOURCE_CONTRACT.md.
     """
-    if not isinstance(identity, dict):
-        raise InputError("source identity must be a mapping")
-    if "status" not in identity:
-        raise InputError(
-            "source identity must contain the 'status' it justifies "
-            "(identity-completeness invariant)"
-        )
+    violation = _identity_violation(identity)
+    if violation is not None:
+        raise InputError(f"source {violation}")
     return canonical.digest(identity)
 
 
 def contract_violation(item: dict[str, Any]) -> str | None:
     """Return the contract-level violation in a source, if any.
 
-    The single validation path for contract rules: ``import`` raises the
-    violation as a hard, path-addressed error, and ``evaluate`` folds the
-    same text into a fail-closed ``malformed_input`` reason — the two
-    entrances cannot drift apart. Covered rules: the contract value, the
-    policy-owned ``required`` ban, and — whenever an ``identity`` object
-    is present, on any schema — identity binding: the identity must be a
-    mapping, contain a ``status`` equal to the source's status, and
-    recompute to the declared digest.
+    This helper preserves contract-version and identity-binding checks for
+    legacy bundle sources. Explicit source-v0 inputs use the complete
+    validate_source_v0 path in both import and evaluate.
     """
     contract = item.get("contract")
     if contract is not None and contract != SOURCE_CONTRACT_VERSION:
@@ -91,17 +135,11 @@ def contract_violation(item: dict[str, Any]) -> str | None:
         )
     identity = item.get("identity")
     if identity is not None:
-        if not isinstance(identity, dict):
-            return "field 'identity' must be a mapping"
-        if "status" not in identity:
-            return (
-                "identity omits 'status' (identity-completeness invariant)"
-            )
-        if identity.get("status") != item.get("status"):
-            return (
-                f"status {item.get('status')!r} does not match the "
-                f"identity's status {identity.get('status')!r}"
-            )
+        violation = _identity_violation(
+            identity, expected_status=item.get("status")
+        )
+        if violation is not None:
+            return violation
         declared = item.get("digest")
         if isinstance(declared, str) and declared:
             recomputed = canonical.digest(identity)
@@ -118,8 +156,9 @@ def validate_source_v0(item: Any, *, where: str = "source") -> dict[str, Any]:
 
     Errors are precise and path-addressed (``where`` names the position,
     e.g. ``sources[2]``) so an integrator can fix the exact field. This
-    is the strict path for operator-invoked imports; untrusted bundles
-    evaluated later still fail closed instead of raising.
+    is the single complete source-v0 validator. Operator-invoked imports
+    propagate its errors; evaluation catches the same errors and records
+    them as fail-closed malformed_input reasons.
     """
     if not isinstance(item, dict):
         raise InputError(f"{where}: must be a JSON object")

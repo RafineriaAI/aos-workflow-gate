@@ -64,9 +64,16 @@ def test_scorecard_presence_source(tmp_path: Path) -> None:
     assert source["status"] == "success"
     assert "7.5/10" in source["summary"]
     assert "not as a verdict" not in source["summary"]
+    assert source["identity"]["score"] == "7.5"
 
     path.write_text(json.dumps({"checks": []}), encoding="utf-8")
     with pytest.raises(InputError, match="score"):
+        scorecard_source(path)
+
+    path.write_text(
+        "{\"score\": NaN, \"checks\": []}", encoding="utf-8"
+    )
+    with pytest.raises(InputError, match="finite"):
         scorecard_source(path)
 
 
