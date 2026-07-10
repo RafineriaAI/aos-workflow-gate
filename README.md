@@ -120,7 +120,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.25.0
+        uses: RafineriaAI/aos-workflow-gate@v0.26.0
         with:
           required-checks: "ci / validate"
 ```
@@ -163,7 +163,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.25.0
+    uses: RafineriaAI/aos-workflow-gate@v0.26.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

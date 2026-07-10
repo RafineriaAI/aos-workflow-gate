@@ -28,13 +28,20 @@ names.
 Download the artifacts, then:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.25.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.26.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json
 ```
 
 `verify` prints `OK` when the record matches its self-digest and the
 bundle; `TAMPERED` means the file changed since the gate wrote it.
+
+**Can I get a shareable evidence page?**
+`summarize --input gate-decision.json --html --out evidence.html`
+renders a deterministic, self-contained static HTML view of the record
+(no scripts, no external assets, no timestamps — the same record always
+renders to the same bytes). It is the same diagnosis as the Markdown
+summary, only a different view.
 
 ## Exit codes by command
 
