@@ -113,6 +113,14 @@ REQUIRED_SNIPPETS = {
         "will not invent",
         "UNSIGNED_NOT_OFFICIAL",
     ],
+    "docs/case-studies/zero-required-checks.md": [
+        "GitHub permits\nthe merge while zero checks are required at the gate",
+        "the state every fresh adopter starts in",
+        "zero required\nsources",
+        "shows visibility, not a vulnerability",
+        "makes no security claim",
+        "UNSIGNED_NOT_OFFICIAL",
+    ],
     "docs/case-studies/green-but-incomplete.md": [
         "skipped **by design**",
         "shows visibility, not a vulnerability",
