@@ -197,6 +197,7 @@ def fetch_compare_status(
         headers,
         timeout=30.0,
         budget=budget,
+        capability="compare",
     )
     if not isinstance(payload, dict) or not isinstance(
         payload.get("status"), str

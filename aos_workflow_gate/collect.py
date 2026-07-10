@@ -27,6 +27,7 @@ from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 
+from .diagnostics import describe_failure
 from .errors import InputError
 from .source_contract import source_digest
 
@@ -100,7 +101,12 @@ def _is_retryable(error: HTTPError) -> bool:
 
 
 def _request_json(
-    url: str, headers: dict[str, str], *, timeout: float, budget: Budget
+    url: str,
+    headers: dict[str, str],
+    *,
+    timeout: float,
+    budget: Budget,
+    capability: str = "github_api",
 ) -> Any:
     """GET a JSON document (object or array) with bounded retries.
 
@@ -108,6 +114,11 @@ def _request_json(
     403, 5xx) with capped backoff honoring ``Retry-After``. Other HTTP
     errors fail immediately. All failures raise :class:`InputError`, which
     exits 2 — an operational error, never a policy BLOCK.
+
+    Automatic preflight: the final failed response is classified into the
+    stable diagnostic taxonomy (docs/PREFLIGHT.md) and the error carries
+    the code, the named capability, and the remediation — no duplicate
+    API call is made for the diagnosis.
     """
     last_error: Exception | None = None
     for attempt in range(budget.max_attempts):
@@ -129,9 +140,19 @@ def _request_json(
             if attempt + 1 >= budget.max_attempts:
                 break
             budget.sleep(_BACKOFF_SECONDS[min(attempt, 2)])
+    diagnosis = None
+    if isinstance(last_error, HTTPError):
+        rate_limited = last_error.code == 429 or (
+            last_error.code == 403 and _is_retryable(last_error)
+        )
+        diagnosis = describe_failure(
+            capability, last_error.code, rate_limited=rate_limited
+        )
     raise InputError(
         f"API request failed after {budget.max_attempts} attempt(s): "
-        f"{last_error} (operational error, not a policy verdict)"
+        f"{last_error}"
+        + (f"; {diagnosis}" if diagnosis else "")
+        + " (can_continue: no; operational error, not a policy verdict)"
     ) from last_error
 
 
@@ -187,7 +208,10 @@ def fetch_check_runs(
             f"{api_url}/repos/{repo_slug}/commits/{sha}/check-runs"
             f"?per_page={_PER_PAGE}&page={page}"
         )
-        payload = _request_json(url, headers, timeout=timeout, budget=budget)
+        payload = _request_json(
+            url, headers, timeout=timeout, budget=budget,
+            capability="check_runs",
+        )
         if not isinstance(payload, dict):
             raise InputError("check-runs API response is not a JSON object")
         page_runs = payload.get("check_runs")

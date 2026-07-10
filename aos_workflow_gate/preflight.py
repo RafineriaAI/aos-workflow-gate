@@ -36,129 +36,18 @@ from .collect import (
     resolve_github_context,
     validate_api_url,
 )
+from .diagnostics import classify_response
+from .diagnostics import finding as make_finding
 from .errors import InputError
 from .paths import WORKSPACE_ENV
 from .version import __version__
 
+__all__ = ["classify_response", "render_report", "run_preflight"]
+
 REPORT_SCHEMA_VERSION = "preflight-report-v0"
 LOW_RATE_LIMIT_REMAINING = 20
 
-_TAXONOMY = {
-    "ENV": "environment",
-    "PERM": "permission",
-    "FEAT": "feature",
-    "CTX": "context",
-}
-
 _SEVERITY_ORDER = {"error": 0, "warn": 1, "info": 2}
-
-# Likely causes shown as remediation for an observed HTTP 403. These are
-# suggestions derived from common token models, not assumptions the probe
-# relies on: the classification itself comes only from the response.
-_FORBIDDEN_HINTS = {
-    "check_runs": (
-        "the token cannot read check runs; a workflow `permissions:` "
-        "block commonly needs `checks: read`, a fine-grained token needs "
-        "Checks read access — verify against your token type"
-    ),
-    "commit_statuses": (
-        "the token cannot read commit statuses; contents/commit read "
-        "access is commonly required — verify against your token type"
-    ),
-    "branch_rules": (
-        "the token cannot read branch rules; repository metadata read "
-        "access is commonly required — verify against your token type"
-    ),
-    "pull_request": (
-        "the token cannot read this pull request; pull request read "
-        "access is commonly required — verify against your token type"
-    ),
-    "repository": (
-        "the token cannot read this repository; repository read access "
-        "is commonly required — verify against your token type"
-    ),
-}
-
-
-def _finding(
-    code: str,
-    capability: str,
-    observed: str,
-    remediation: str,
-    severity: str,
-) -> dict[str, Any]:
-    prefix = code.split("-")[1]
-    return {
-        "code": code,
-        "taxonomy": _TAXONOMY[prefix],
-        "severity": severity,
-        "capability": capability,
-        "observed": observed,
-        "remediation": remediation,
-    }
-
-
-def classify_response(
-    capability: str, http_status: int, *, rate_limited: bool
-) -> dict[str, Any] | None:
-    """Classify a probe's HTTP response into a finding, if any.
-
-    Only the observed response is used — no permission model is assumed.
-    2xx responses produce no finding here; feature-level observations
-    (a capability that works but is unused) are added by the caller.
-    """
-    if 200 <= http_status < 300:
-        return None
-    if http_status == 401:
-        return _finding(
-            "AOS-PERM-001",
-            capability,
-            f"HTTP 401 while probing {capability}",
-            "the API rejected the credentials; the token is invalid, "
-            "expired, or malformed — replace it and re-run preflight",
-            "error",
-        )
-    if rate_limited:
-        return _finding(
-            "AOS-PERM-004",
-            capability,
-            f"HTTP {http_status} rate-limited while probing {capability}",
-            "the rate limit is exhausted, so capability cannot be "
-            "determined now; wait for the limit window to reset, or "
-            "authenticate to get a higher limit",
-            "error",
-        )
-    if http_status == 403:
-        return _finding(
-            "AOS-PERM-002",
-            capability,
-            f"HTTP 403 while probing {capability}",
-            _FORBIDDEN_HINTS.get(
-                capability,
-                "the API denied access to this capability — verify the "
-                "token's access against your token type",
-            ),
-            "error",
-        )
-    if http_status == 404:
-        return _finding(
-            "AOS-PERM-003",
-            capability,
-            f"HTTP 404 while probing {capability}",
-            "the resource does not exist, or it exists but the token "
-            "cannot see it (the API reports both identically); check "
-            "the target spelling first, then the token's repository "
-            "access",
-            "error",
-        )
-    return _finding(
-        "AOS-ENV-002",
-        capability,
-        f"HTTP {http_status} while probing {capability}",
-        "unexpected API response; if it persists, the endpoint may be "
-        "unavailable on this server version",
-        "error",
-    )
 
 
 def _probe_get(
@@ -251,7 +140,7 @@ def run_preflight(
         else:
             probe("workspace", "(local)", "unavailable", path_configured=True)
             findings.append(
-                _finding(
+                make_finding(
                     "AOS-ENV-003",
                     "workspace",
                     f"{WORKSPACE_ENV} is set but is not an existing "
@@ -282,7 +171,7 @@ def run_preflight(
     elif github_context:
         if os.environ.get("GITHUB_ACTIONS") != "true":
             findings.append(
-                _finding(
+                make_finding(
                     "AOS-CTX-002",
                     "actions_context",
                     "GITHUB_ACTIONS is not 'true'; this is not a GitHub "
@@ -307,7 +196,7 @@ def run_preflight(
         except InputError as exc:
             probe("actions_context", "(env)", "unavailable")
             findings.append(
-                _finding(
+                make_finding(
                     "AOS-CTX-001",
                     "actions_context",
                     f"GitHub Actions context incomplete: {exc}",
@@ -324,7 +213,7 @@ def run_preflight(
 
     if token is None:
         findings.append(
-            _finding(
+            make_finding(
                 "AOS-ENV-001",
                 "credentials",
                 "no API token available; probing anonymously",
@@ -388,7 +277,7 @@ def run_preflight(
         if error is not None:
             probe(capability, path, "unavailable", network_error=error)
             findings.append(
-                _finding(
+                make_finding(
                     "AOS-ENV-002",
                     capability,
                     f"API unreachable while probing {capability}: {error}",
@@ -427,7 +316,7 @@ def run_preflight(
             probes[-1]["observed"]["rate_limit_remaining"] = remaining
             if remaining < LOW_RATE_LIMIT_REMAINING:
                 findings.append(
-                    _finding(
+                    make_finding(
                         "AOS-ENV-004",
                         "rate_limit",
                         f"only {remaining} API requests remain in the "
@@ -497,7 +386,7 @@ def run_preflight(
                 probes[-1]["observed"]["check_runs_total"] = total
                 if total == 0:
                     findings.append(
-                        _finding(
+                        make_finding(
                             "AOS-FEAT-001",
                             "check_runs",
                             "the Checks API is readable but reports zero "
@@ -521,7 +410,7 @@ def run_preflight(
                 probes[-1]["observed"]["statuses_total"] = len(listed)
                 if not listed:
                     findings.append(
-                        _finding(
+                        make_finding(
                             "AOS-FEAT-003",
                             "commit_statuses",
                             "no legacy commit statuses on the probed "
@@ -556,7 +445,7 @@ def run_preflight(
             report["target"]["branch"] = rules_branch
             if not required:
                 findings.append(
-                    _finding(
+                    make_finding(
                         "AOS-FEAT-002",
                         "branch_rules",
                         f"no required status checks are active on "

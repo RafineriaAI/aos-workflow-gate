@@ -88,6 +88,23 @@ prefix states where the problem lives.
 | `AOS-CTX-001` | error | Actions context incomplete: the identity variables GitHub sets are missing or unusable. |
 | `AOS-CTX-002` | info | `--github-context` requested outside a GitHub Actions runtime. |
 
+## Automatic preflight in collection
+
+The same taxonomy fires automatically when a collection request fails:
+the *failed response itself* is classified — **no duplicate API call**
+is made for the diagnosis — and the operational error carries the
+stable code, the named capability, and the remediation, plus explicit
+`can_continue` semantics:
+
+- **`can_continue: no`** — an essential stream (check runs, branch
+  rules, the pull request itself) failed; the command exits 2 with the
+  diagnosis. No verdict is produced.
+- **`can_continue: yes`** — a non-essential stream degraded (legacy
+  commit statuses in `check-pr`): the command continues, the failure is
+  recorded as evidence in the bundle's collection, and any required
+  control that only that stream could have satisfied is classified
+  `unverifiable` — failing closed, never silently missing.
+
 ## Readiness definition
 
 `ready: true` (exit 0) means no `error`-severity finding exists. `info`
