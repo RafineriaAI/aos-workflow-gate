@@ -36,12 +36,14 @@ REPAIR_HINTS = {
 }
 
 
-def render_markdown(record: Any) -> tuple[str, bool]:
-    """Render a decision record as Markdown.
+def diagnose(record: Any) -> dict[str, Any]:
+    """One shared diagnosis consumed by every renderer.
 
-    Returns the Markdown text and whether the record's self-digest check
-    passed. Raises :class:`InputError` when the value is not a decision
-    record at all.
+    Computes the verdict, integrity, signal counts, and the single
+    dominant next step from a decision record, so different views
+    (Markdown, HTML) cannot drift in what they say — only in how they
+    show it. Raises :class:`InputError` when the value is not a
+    decision record at all.
     """
     if not isinstance(record, dict):
         raise InputError("decision record must be a JSON object")
@@ -50,17 +52,75 @@ def render_markdown(record: Any) -> tuple[str, bool]:
         raise InputError("decision record has no valid verdict")
 
     intact = verify_record(record)
-    subject = _dict_field(record, "subject")
-    policy = _dict_field(record, "policy")
+    inputs = [
+        source for source in record.get("inputs", [])
+        if isinstance(source, dict)
+    ] if isinstance(record.get("inputs"), list) else []
+    reasons = [
+        reason for reason in record.get("reasons", [])
+        if isinstance(reason, dict)
+    ] if isinstance(record.get("reasons"), list) else []
+    required = [source for source in inputs if source.get("required")]
+    counts = {
+        "required_total": len(required),
+        "required_successful": sum(
+            1 for source in required
+            if str(source.get("status", "")).lower() == "success"
+        ),
+        "advisory_total": len(inputs) - len(required),
+        "advisory_warnings": sum(
+            1 for reason in reasons if reason.get("severity") == "WARN"
+        ),
+        "blocking_reasons": sum(
+            1 for reason in reasons if reason.get("severity") == "BLOCK"
+        ),
+    }
+    return {
+        "verdict": verdict,
+        "intact": intact,
+        "summary": record.get("summary"),
+        "can_block": bool(record.get("can_block")),
+        "counts": counts,
+        "next": _next_step(record, intact),
+        "subject": _dict_field(record, "subject"),
+        "policy": _dict_field(record, "policy"),
+        "reasons": reasons,
+        "inputs": inputs,
+        "record_digest": record.get("record_digest"),
+        "input_bundle_digest": record.get("input_bundle_digest"),
+        "verification_status": record.get("verification_status"),
+    }
+
+
+def render_markdown(record: Any) -> tuple[str, bool]:
+    """Render a decision record as Markdown.
+
+    Returns the Markdown text and whether the record's self-digest check
+    passed. Raises :class:`InputError` when the value is not a decision
+    record at all.
+    """
+    diag = diagnose(record)
+    verdict = diag["verdict"]
+    intact = diag["intact"]
+    subject = diag["subject"]
+    policy = diag["policy"]
+    counts = diag["counts"]
 
     lines: list[str] = [f"## Gate decision: {verdict}", ""]
-    summary = record.get("summary")
+    summary = diag["summary"]
     if isinstance(summary, str) and summary:
         lines.append(f"**What happened:** {_escape(summary)}")
     lines.append(
-        f"**Can block this job:** {'yes' if record.get('can_block') else 'no'}"
+        "**Signals:** "
+        f"{counts['required_total']} required "
+        f"({counts['required_successful']} successful) · "
+        f"{counts['advisory_total']} advisory "
+        f"({counts['advisory_warnings']} warning(s))"
     )
-    lines += [f"**Next:** {_next_step(record, intact)}", ""]
+    lines.append(
+        f"**Can block this job:** {'yes' if diag['can_block'] else 'no'}"
+    )
+    lines += [f"**Next:** {diag['next']}", ""]
     if not intact:
         lines += [
             "> **Warning:** record content does not match its self-digest. "

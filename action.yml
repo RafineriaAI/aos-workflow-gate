@@ -80,6 +80,11 @@ outputs:
   record-digest:
     description: Self-digest of the decision record.
     value: ${{ steps.evaluate.outputs.record-digest }}
+  can-block:
+    description: >-
+      Whether this evaluation, as configured, could fail the job on a
+      BLOCK verdict ("true"/"false").
+    value: ${{ steps.evaluate.outputs.can-block }}
 
 runs:
   using: "composite"
@@ -176,6 +181,7 @@ runs:
             echo "verdict=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['verdict'])")"
             echo "record=$GATE_OUT"
             echo "record-digest=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['record_digest'])")"
+            echo "can-block=$(python3 -c "import json,os;print(str(json.load(open(os.environ['GATE_OUT']))['can_block']).lower())")"
           } >> "$GITHUB_OUTPUT"
         fi
         exit "$rc"
