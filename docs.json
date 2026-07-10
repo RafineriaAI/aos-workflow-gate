@@ -116,7 +116,8 @@
     "tests/test_benchmark_cases.py",
     "tests/test_requirements.py",
     "tests/test_golden_summaries.py",
-    "tests/test_integrated_preflight.py"
+    "tests/test_integrated_preflight.py",
+    "tests/test_html_view.py"
   ],
   "assets": [
     "docs/assets/banner.png"

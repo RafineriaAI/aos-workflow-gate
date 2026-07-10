@@ -66,7 +66,7 @@ from .requirements import (
     requirement_snapshot,
 )
 from .source_contract import load_external_sources
-from .summarize import render_markdown
+from .summarize import render_html, render_markdown
 from .version import __version__
 
 
@@ -568,10 +568,20 @@ def _build_parser() -> argparse.ArgumentParser:
     )
 
     summarize_parser = subparsers.add_parser(
-        "summarize", help="render a decision record as Markdown"
+        "summarize",
+        help="render a decision record as Markdown or static HTML",
     )
     summarize_parser.add_argument(
         "--input", required=True, help="decision record JSON"
+    )
+    summarize_parser.add_argument(
+        "--html", action="store_true",
+        help="render a deterministic, self-contained static HTML "
+        "evidence view instead of Markdown (same diagnosis, different "
+        "view)",
+    )
+    summarize_parser.add_argument(
+        "--out", help="write the rendered view here instead of stdout"
     )
 
     export_parser = subparsers.add_parser(
@@ -1334,8 +1344,18 @@ def _check_context_integrity(bundle: Any, *, require_match: bool) -> None:
 
 def _cmd_summarize(args: argparse.Namespace) -> int:
     record = _load_json(args.input)
-    text, intact = render_markdown(record)
-    sys.stdout.write(text)
+    if args.html:
+        text, intact = render_html(record)
+    else:
+        text, intact = render_markdown(record)
+    if args.out:
+        out_path = safe_output_path(args.out, workspace=workspace_boundary())
+        if out_path.parent != Path(""):
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(text, encoding="utf-8", newline="\n")
+        print(f"view: {args.out}")
+    else:
+        sys.stdout.write(text)
     return 0 if intact else 1
 
 

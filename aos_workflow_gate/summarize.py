@@ -1,13 +1,17 @@
-"""Markdown summary rendering for decision records.
+"""Markdown and static-HTML rendering for decision records.
 
 ``summarize`` turns a decision record into a compact Markdown block for
-maintainers, for example a GitHub Actions step summary. It re-checks the
-record's self-digest so a tampered record is visibly flagged instead of being
+maintainers (for example a GitHub Actions step summary) or, with
+``--html``, into a deterministic, self-contained static HTML evidence
+view. Both renderers consume the same :func:`diagnose` result, so they
+cannot drift in substance. Every view re-checks the record's
+self-digest so a tampered record is visibly flagged instead of being
 summarized as if it were trustworthy.
 """
 
 from __future__ import annotations
 
+import html as _html
 from typing import Any
 
 from .errors import InputError
@@ -258,6 +262,134 @@ def _next_step(record: dict[str, Any], intact: bool) -> str:
             "verdict fails the job"
         )
     return "nothing — the gate is enforcing and green"
+
+
+_HTML_STYLE = (
+    "body{font:15px/1.5 system-ui,sans-serif;max-width:46rem;"
+    "margin:2rem auto;padding:0 1rem;color:#1a1a1a}"
+    "table{border-collapse:collapse;width:100%;margin:.5rem 0}"
+    "td,th{border:1px solid #ccc;padding:.3rem .6rem;text-align:left;"
+    "font-size:.9rem}"
+    "code{font:.85rem/1.4 ui-monospace,monospace;word-break:break-all}"
+    ".verdict{display:inline-block;padding:.15rem .6rem;border-radius:6px;"
+    "font-weight:700}"
+    ".v-PASS{background:#d7f5dd}.v-WARN{background:#fdeec7}"
+    ".v-BLOCK{background:#fbd7d7}"
+    ".tampered{border:2px solid #b00;padding:.5rem .8rem;margin:.8rem 0;"
+    "font-weight:600}"
+    ".hint{color:#555;font-size:.85rem}"
+    "footer{margin-top:1.5rem;color:#777;font-size:.8rem}"
+)
+
+
+def _h(value: Any) -> str:
+    """HTML-escape an untrusted value rendered as text."""
+    return _html.escape(
+        str(value).replace("\r", " ").replace("\n", " "), quote=True
+    )
+
+
+def render_html(record: Any) -> tuple[str, bool]:
+    """Render a decision record as a deterministic static HTML page.
+
+    Built from the same :func:`diagnose` result as the Markdown summary,
+    so the two views cannot drift in substance. The page is
+    self-contained (inline CSS, no scripts, no external assets) and
+    contains no timestamps — the same record always renders to the same
+    bytes. This is a view over the existing record: no new command,
+    contract, or semantics.
+    """
+    diag = diagnose(record)
+    verdict = str(diag["verdict"])
+    counts = diag["counts"]
+    subject = diag["subject"]
+    policy = diag["policy"]
+
+    parts: list[str] = [
+        "<!doctype html>",
+        '<html lang="en"><head><meta charset="utf-8">',
+        f"<title>Gate decision: {_h(verdict)}</title>",
+        f"<style>{_HTML_STYLE}</style></head><body>",
+        f'<h1>Gate decision: <span class="verdict v-{_h(verdict)}">'
+        f"{_h(verdict)}</span></h1>",
+    ]
+    if not diag["intact"]:
+        parts.append(
+            '<p class="tampered">Record content does not match its '
+            "self-digest. Do not trust this record.</p>"
+        )
+    summary = diag["summary"]
+    if isinstance(summary, str) and summary:
+        parts.append(f"<p><strong>What happened:</strong> {_h(summary)}</p>")
+    parts.append(
+        "<p><strong>Signals:</strong> "
+        f"{counts['required_total']} required "
+        f"({counts['required_successful']} successful) · "
+        f"{counts['advisory_total']} advisory "
+        f"({counts['advisory_warnings']} warning(s))<br>"
+        "<strong>Can block this job:</strong> "
+        f"{'yes' if diag['can_block'] else 'no'}<br>"
+        f"<strong>Next:</strong> {_h(diag['next'])}</p>"
+    )
+
+    rows = [("Repository", subject.get("repository", "-"))]
+    if subject.get("ref"):
+        rows.append(("Ref", subject["ref"]))
+    rows.append(("Commit", subject.get("sha", "-")))
+    if subject.get("pull_request") is not None:
+        rows.append(("Pull request", f"#{subject['pull_request']}"))
+    rows += [
+        ("Policy", f"{policy.get('policy_id', '-')} ({policy.get('mode', '-')})"),
+        ("Policy digest", policy.get("digest", "-")),
+        ("Input bundle digest", diag["input_bundle_digest"] or "-"),
+        ("Record digest", diag["record_digest"] or "-"),
+        ("Record self-check", "OK" if diag["intact"] else "FAILED"),
+        ("Verification status", diag["verification_status"] or "-"),
+    ]
+    parts.append("<table>")
+    for label, value in rows:
+        parts.append(
+            f"<tr><th>{_h(label)}</th><td><code>{_h(value)}</code></td></tr>"
+        )
+    parts.append("</table>")
+
+    if diag["reasons"]:
+        parts.append("<h2>Reasons</h2><ul>")
+        for reason in diag["reasons"]:
+            line = (
+                f"{_h(reason.get('severity', '-'))} "
+                f"<code>{_h(reason.get('rule', '-'))}</code> "
+                f"{_h(reason.get('source_id') or '-')}: "
+                f"{_h(reason.get('detail', ''))}"
+            )
+            hint = REPAIR_HINTS.get(str(reason.get("rule")))
+            if hint:
+                line += f'<br><span class="hint">Hint: {_h(hint)}</span>'
+            parts.append(f"<li>{line}</li>")
+        parts.append("</ul>")
+
+    if diag["inputs"]:
+        parts.append(
+            "<h2>Inputs</h2><table><tr><th>Id</th><th>Kind</th>"
+            "<th>Required</th><th>Status</th></tr>"
+        )
+        for source in diag["inputs"]:
+            parts.append(
+                f"<tr><td>{_h(source.get('id', '-'))}</td>"
+                f"<td>{_h(source.get('kind', '-'))}</td>"
+                f"<td>{'yes' if source.get('required') else 'no'}</td>"
+                f"<td>{_h(source.get('status', '-'))}</td></tr>"
+            )
+        parts.append("</table>")
+
+    parts.append(
+        "<footer>Generated by aos-workflow-gate from the decision record "
+        "only; replay offline with <code>aos-workflow-gate verify</code>. "
+        "Decision records carry UNSIGNED_NOT_OFFICIAL status; no "
+        "production, compliance, or security-audit claim is made."
+        "</footer></body></html>"
+    )
+    return "\n".join(parts) + "\n", diag["intact"]
 
 
 _ESCAPE_CHARS = "\\`*_[]<>|"
