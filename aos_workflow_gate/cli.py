@@ -27,6 +27,7 @@ from . import canonical
 from .adapters import sarif_source, scorecard_source
 from .agent_action import (
     BOUNDED_DUPLICATE,
+    FRESHNESS_UNVERIFIED,
     VALID,
     action_source,
     classify_action,
@@ -1174,7 +1175,7 @@ def _cmd_agent_action(args: argparse.Namespace) -> int:
             seen_action_digests=seen_digests,
             duplicate_of=first_id_of.get(computed["action"]),
         )
-        if state == VALID and base_id in agent_ids:
+        if state in (VALID, FRESHNESS_UNVERIFIED) and base_id in agent_ids:
             state = BOUNDED_DUPLICATE
             explanation = (
                 "Agent action bounded duplicate: same action digest as "

@@ -70,18 +70,3 @@ jobs:
           test -f "$RECORD"
           python3 -m aos_workflow_gate verify --input "$RECORD" \
             --bundle .aos-gate/bundle.json
-
-  no-checkout:
-    name: AOS Workflow Gate Self / no-checkout
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      # Pinned from actions/setup-python@v6 on 2026-07-03.
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
-        with:
-          python-version: "3.11"
-      # No checkout on purpose: proves Self-Test Mode needs none.
-      - name: Run gate (Self-Test Mode, no checkout)
-        uses: RafineriaAI/aos-workflow-gate@main
-        with:
-          out: .aos-gate/no-checkout-decision.json

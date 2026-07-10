@@ -13,7 +13,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .errors import InputError
 from .policy import Policy
+from .source_contract import (
+    SOURCE_CONTRACT_VERSION,
+    contract_violation,
+    validate_source_v0,
+)
 
 PASS = "PASS"
 WARN = "WARN"
@@ -257,6 +263,15 @@ def _normalize_source(
     if not isinstance(item, dict):
         reject(f"source at position {position} must be an object")
         return None
+    is_source_v0 = item.get("contract") == SOURCE_CONTRACT_VERSION
+    if is_source_v0:
+        try:
+            item = validate_source_v0(
+                item, where=f"sources[{position}]"
+            )
+        except InputError as exc:
+            reject(str(exc))
+            return None
     source_id = item.get("id")
     if not _is_nonempty_str(source_id):
         reject(f"source at position {position} is missing a string id")
@@ -273,17 +288,13 @@ def _normalize_source(
     if not _is_nonempty_str(status):
         reject(f"source '{source_id}' is missing a string status")
         return None
-    contract = item.get("contract")
-    if contract is not None and contract != "source-v0":
-        reject(f"source '{source_id}' declares unknown contract {contract!r}")
-        return None
-    if contract == "source-v0" and "required" in item:
-        reject(
-            f"source '{source_id}' carries a 'required' field, but the "
-            "source-v0 contract has none: required/advisory "
-            "classification is policy-owned"
-        )
-        return None
+    if not is_source_v0:
+        # Legacy draft-0 sources retain compatibility validation. Explicit
+        # source-v0 inputs have already passed the complete import validator.
+        violation = contract_violation(item)
+        if violation is not None:
+            reject(f"source '{source_id}' {violation}")
+            return None
     # required/advisory classification is policy-owned: the record's
     # required flag is derived from the policy, never trusted from the
     # bundle. A legacy draft-0 'required' display field is still

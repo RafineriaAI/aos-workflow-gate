@@ -76,17 +76,18 @@ def test_digests_bind_intent_action_parameters_and_base() -> None:
     )
 
 
-def test_state_valid_and_explanations() -> None:
+def test_state_valid_and_freshness_unverified() -> None:
     state, explanation = classify_action(_doc())
-    assert state == "valid"
-    assert "staleness not evaluated" in explanation
-    assert "no semantic approval" in explanation.lower()
+    assert state == "freshness_unverified"
+    assert "was not evaluated" in explanation
+    assert "fails closed for required sources" in explanation
 
     state, explanation = classify_action(
         _doc(), observed_base=BASE, validation_mode="pinned"
     )
     assert state == "valid"
     assert "pinned staleness check passed" in explanation
+    assert "no semantic approval" in explanation.lower()
 
 
 def test_state_tampered_wins_over_everything() -> None:
@@ -133,9 +134,16 @@ def test_state_stale_and_bounded_duplicate() -> None:
 def test_cli_emits_source_v0_to_stdout(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
+    from aos_workflow_gate import canonical
+
     doc_path = tmp_path / "action.json"
     doc_path.write_text(json.dumps(_doc()), encoding="utf-8")
-    assert cli.main(["agent-action", "--input", str(doc_path)]) == 0
+    assert (
+        cli.main(
+            ["agent-action", "--input", str(doc_path), "--pinned-base", BASE]
+        )
+        == 0
+    )
     captured = capsys.readouterr()
     sources = json.loads(captured.out)
     assert len(sources) == 1
@@ -146,6 +154,27 @@ def test_cli_emits_source_v0_to_stdout(
     assert source["id"].startswith("agent.action.")
     assert "required" not in source
     assert ": success" in captured.err
+    # identity binding: attached, consistent, and recomputable
+    assert source["identity"]["status"] == source["status"]
+    assert source["identity"]["duplicate_scope"] == "invocation+bundle"
+    assert canonical.digest(source["identity"]) == source["digest"]
+
+
+def test_cli_without_freshness_mode_is_freshness_unverified(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    doc_path = tmp_path / "action.json"
+    doc_path.write_text(json.dumps(_doc()), encoding="utf-8")
+    assert cli.main(["agent-action", "--input", str(doc_path)]) == 0
+    sources = json.loads(capsys.readouterr().out)
+    assert sources[0]["status"] == "freshness_unverified"
+    assert "fails closed for required sources" in sources[0]["summary"]
+
+
+def test_repository_subject_consistency_is_structural() -> None:
+    doc = _doc(subject={"repository": "other/repo", "sha": HEAD})
+    with pytest.raises(InputError, match="out of scope"):
+        validate_action_document(doc, where="d")
 
 
 def test_cli_duplicate_within_invocation_and_bundle(
@@ -156,7 +185,7 @@ def test_cli_duplicate_within_invocation_and_bundle(
     assert (
         cli.main(
             ["agent-action", "--input", str(doc_path), "--input",
-             str(doc_path)]
+             str(doc_path), "--pinned-base", BASE]
         )
         == 0
     )
@@ -176,7 +205,7 @@ def test_cli_duplicate_within_invocation_and_bundle(
     assert (
         cli.main(
             ["agent-action", "--input", str(doc_path), "--bundle",
-             str(bundle_path), "--out", str(out)]
+             str(bundle_path), "--out", str(out), "--pinned-base", BASE]
         )
         == 0
     )
@@ -258,7 +287,9 @@ def test_agent_source_flows_through_policy(
 ) -> None:
     doc_path = tmp_path / "action.json"
     doc_path.write_text(json.dumps(_doc()), encoding="utf-8")
-    cli.main(["agent-action", "--input", str(doc_path)])
+    cli.main(
+        ["agent-action", "--input", str(doc_path), "--pinned-base", BASE]
+    )
     sources = json.loads(capsys.readouterr().out)
     source_id = sources[0]["id"]
 
@@ -299,16 +330,39 @@ def test_agent_source_flows_through_policy(
         == 0
     )
     assert json.loads(record.read_text("utf-8"))["verdict"] == "PASS"
+    capsys.readouterr()  # drain the evaluate output
 
-    # a stale one fails closed when required
-    stale = dict(sources[0], status="stale")
-    bundle["sources"] = [stale]
+    # an unverified-freshness one fails closed when required
+    cli.main(["agent-action", "--input", str(doc_path)])
+    unverified = json.loads(capsys.readouterr().out)
+    assert unverified[0]["status"] == "freshness_unverified"
+    bundle["sources"] = unverified
     bundle_path.write_text(json.dumps(bundle), encoding="utf-8")
     cli.main(
         ["evaluate", "--input", str(bundle_path), "--policy",
          str(_policy([source_id])), "--out", str(record)]
     )
-    assert json.loads(record.read_text("utf-8"))["verdict"] == "BLOCK"
+    blocked = json.loads(record.read_text("utf-8"))
+    assert blocked["verdict"] == "BLOCK"
+    assert any(
+        r["rule"] == "failed_required_source" for r in blocked["reasons"]
+    )
+
+    # a source whose status disagrees with its identity is malformed
+    lying = json.loads(json.dumps(sources[0]))
+    lying["status"] = "stale"  # identity still says success
+    bundle["sources"] = [lying]
+    bundle_path.write_text(json.dumps(bundle), encoding="utf-8")
+    cli.main(
+        ["evaluate", "--input", str(bundle_path), "--policy",
+         str(_policy([source_id])), "--out", str(record)]
+    )
+    malformed = json.loads(record.read_text("utf-8"))
+    assert malformed["verdict"] == "BLOCK"
+    assert any(
+        r["rule"] == "malformed_input" and "identity" in r["detail"]
+        for r in malformed["reasons"]
+    )
 
 
 def test_cli_rejects_conflicting_modes(tmp_path: Path) -> None:

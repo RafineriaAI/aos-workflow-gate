@@ -30,8 +30,10 @@ def test_all_committed_cases_verify_offline() -> None:
     for case_id in sorted(EXPECTED):
         report = verify_case(CASES / case_id)
         assert report["ok"] is True, (case_id, report["failed"])
-        assert "offline_replay" in report["verified"], case_id
-        assert "patch_authorship" in report["unverifiable"], case_id
+        for check in ("offline_replay", "policy_binding", "semantic_replay"):
+            assert check in report["verified"], (case_id, check)
+        for check in ("patch_authorship", "github_baseline"):
+            assert check in report["unverifiable"], (case_id, check)
 
 
 def test_verdict_spine_matches_the_public_claim() -> None:
@@ -87,7 +89,9 @@ def test_cases_declare_dogfooding_provenance() -> None:
             "real_gap_warn",
             "controlled_counterfactual_block",
         )
+        assert case["provenance"] == "retrospective_real_history"
         assert case["baseline"]["github_merge_ready"] is True
+        assert case["baseline"]["declared_by"] == "operator"
         assert "Claude Code" in case["attestation"]["statement"]
         action = json.loads(
             (CASES / case_id / "action.json").read_text(encoding="utf-8")

@@ -13,6 +13,7 @@ from aos_workflow_gate.errors import InputError
 from aos_workflow_gate.evaluate import evaluate
 from aos_workflow_gate.policy import Policy
 from aos_workflow_gate.source_contract import (
+    load_external_sources,
     source_digest,
     validate_source_v0,
 )
@@ -62,6 +63,121 @@ def test_source_digest_enforces_identity_completeness() -> None:
         source_digest("not a mapping")  # type: ignore[arg-type]
 
 
+@pytest.mark.parametrize(
+    "value",
+    [float("nan"), float("inf"), float("-inf")],
+    ids=["nan", "positive-infinity", "negative-infinity"],
+)
+def test_canonical_json_rejects_non_finite_floats(value: float) -> None:
+    with pytest.raises(ValueError, match="Out of range float values"):
+        canonical.canonical_json_bytes({"value": value})
+
+
+@pytest.mark.parametrize(
+    "identity",
+    [
+        {"status": "success", "score": 1.25},
+        {"status": "success", "scores": [1.25]},
+        {"status": "success", "result": {"score": 1.25}},
+        {"status": "success", "score": float("nan")},
+        {"status": "success", "score": float("inf")},
+        {"status": "success", "score": float("-inf")},
+    ],
+    ids=[
+        "direct-float",
+        "list-float",
+        "nested-float",
+        "nan",
+        "positive-infinity",
+        "negative-infinity",
+    ],
+)
+def test_identity_float_rejected_by_import_and_evaluate(
+    identity: dict[str, Any], tmp_path: Path
+) -> None:
+    with pytest.raises(InputError, match="floats are not allowed"):
+        source_digest(identity)
+
+    source = dict(
+        _ext_source(status="success"),
+        identity=identity,
+        digest="sha256:" + "0" * 64,
+    )
+    source_path = tmp_path / "source.json"
+    source_path.write_text(json.dumps(source), encoding="utf-8")
+
+    with pytest.raises(InputError, match="floats are not allowed"):
+        load_external_sources(str(source_path))
+
+    bundle = {
+        "schema_version": "draft-0",
+        "subject": {"repository": "o/r", "sha": SHA},
+        "sources": [source],
+    }
+    decision = evaluate(bundle, _policy(required=["ext.scan"], advisory=[]))
+    assert decision.verdict == "BLOCK"
+    assert any(
+        reason.rule == "malformed_input"
+        and "floats are not allowed" in reason.detail
+        for reason in decision.reasons
+    )
+
+
+@pytest.mark.parametrize(
+    ("changes", "expected"),
+    [
+        ({"digest": "not-a-digest"}, "digest"),
+        ({"summary": 42}, "summary"),
+        ({"verdict": "PASS"}, "unknown field"),
+    ],
+    ids=["malformed-digest", "optional-type", "unknown-field"],
+)
+def test_source_v0_validation_error_is_shared_by_import_and_evaluate(
+    changes: dict[str, Any], expected: str, tmp_path: Path
+) -> None:
+    source = dict(_ext_source(status="success"), **changes)
+    source_path = tmp_path / "source.json"
+    source_path.write_text(json.dumps(source), encoding="utf-8")
+
+    with pytest.raises(InputError) as imported:
+        load_external_sources(str(source_path))
+    assert expected in str(imported.value)
+
+    bundle = {
+        "schema_version": "draft-0",
+        "subject": {"repository": "o/r", "sha": SHA},
+        "sources": [source],
+    }
+    decision = evaluate(bundle, _policy(required=["ext.scan"], advisory=[]))
+    assert decision.verdict == "BLOCK"
+    reason = next(
+        reason
+        for reason in decision.reasons
+        if reason.rule == "malformed_input"
+    )
+    assert reason.detail == str(imported.value).replace(
+        str(source_path), "sources[0]", 1
+    )
+
+
+def test_legacy_draft_0_source_remains_compatible() -> None:
+    source = {
+        "id": "legacy.scan",
+        "kind": "legacy",
+        "status": "success",
+        "digest": "legacy-digest",
+        "required": True,
+        "legacy_note": "retained",
+    }
+    bundle = {
+        "schema_version": "draft-0",
+        "subject": {"repository": "o/r", "sha": SHA},
+        "sources": [source],
+    }
+    decision = evaluate(bundle, _policy(required=["legacy.scan"], advisory=[]))
+    assert decision.verdict == "PASS"
+
+
 def test_validate_source_v0_precise_errors() -> None:
     good = validate_source_v0(_ext_source())
     assert good["contract"] == "source-v0"
@@ -81,6 +197,58 @@ def test_validate_source_v0_precise_errors() -> None:
 def test_validate_source_v0_rejects_required_field() -> None:
     with pytest.raises(InputError, match="policy-owned"):
         validate_source_v0(dict(_ext_source(), required=True))
+
+
+def test_identity_binding_recomputed_on_import_path() -> None:
+    identity = _identity("warning")
+    bound = dict(_ext_source(), identity=identity)
+    assert validate_source_v0(bound)["identity"] == identity
+
+    wrong_digest = dict(bound, digest="sha256:" + "0" * 64)
+    with pytest.raises(InputError, match="identity binding violated"):
+        validate_source_v0(wrong_digest)
+
+    lying_status = dict(bound, status="success")
+    with pytest.raises(InputError, match="does not match the"):
+        validate_source_v0(lying_status)
+
+    incomplete = dict(
+        _ext_source(), identity={"tool": "ext", "findings": 2}
+    )
+    with pytest.raises(InputError, match="identity-completeness"):
+        validate_source_v0(incomplete)
+
+
+def test_identity_binding_fails_closed_in_evaluate() -> None:
+    tampered = dict(
+        _ext_source(), identity=dict(_identity("warning"), findings=999)
+    )
+    bundle = {
+        "schema_version": "draft-0",
+        "subject": {"repository": "o/r", "sha": SHA},
+        "sources": [tampered],
+    }
+    decision = evaluate(bundle, _policy(required=[], advisory=["ext.scan"]))
+    assert decision.verdict == "BLOCK"
+    assert any(
+        r.rule == "malformed_input" and "identity binding" in r.detail
+        for r in decision.reasons
+    )
+
+
+def test_golden_digest_vectors_replay() -> None:
+    from pathlib import Path
+
+    vectors_path = (
+        Path(__file__).resolve().parents[1]
+        / "examples" / "digest-vectors.json"
+    )
+    doc = json.loads(vectors_path.read_text(encoding="utf-8"))
+    assert doc["vectors"], "golden vector file must not be empty"
+    for vector in doc["vectors"]:
+        assert canonical.digest(vector["value"]) == vector["digest"], (
+            vector["value"]
+        )
 
 
 def test_record_required_flags_are_policy_owned() -> None:
@@ -298,5 +466,5 @@ def test_builtin_adapters_satisfy_identity_completeness(
     )
     scorecard = scorecard_source(score_path)
     assert scorecard["digest"] == canonical.digest(
-        {"score": 9.0, "checks": 1, "status": "success"}
+        {"score": "9.0", "checks": 1, "status": "success"}
     )

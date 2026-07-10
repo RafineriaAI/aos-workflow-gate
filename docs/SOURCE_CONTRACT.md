@@ -41,7 +41,8 @@ A `source-v0` source is a JSON object:
 | `id` | yes | Stable, unique name; the policy references it verbatim. |
 | `kind` | yes | Your adapter's type label (e.g. `sarif_summary`). |
 | `status` | yes | **Adapter-defined, non-enum**: any non-empty string. Exactly `success` passes downstream; every other value is preserved verbatim and interpreted by the policy. A status is an observation, never a verdict. |
-| `digest` | yes | `sha256:<64 lowercase hex>` over the canonical JSON (sorted keys, no whitespace) of your identity object — see the invariant below. |
+| `digest` | yes | `sha256:<64 lowercase hex>` over the canonical JSON of your identity object — see the invariant and the normative canonicalization below. |
+| `identity` | no (recommended) | The identity object itself. When present, the gate **recomputes the digest and verifies it**, and checks that `identity.status` equals the source `status` — in both `import` (hard error) and `evaluate` (fails closed as malformed input), through one shared validation path. Without it the digest is an opaque commitment only you can check. |
 | `contract` | no | `source-v0` (assumed when absent; anything else is rejected). |
 | `summary` | no | One human sentence. |
 | `signal_source` | no | Provenance label (e.g. `my_scanner_file`). |
@@ -88,14 +89,39 @@ maps statuses to `PASS`/`WARN`/`BLOCK` only through the explicit policy
 (required vs advisory, and the policy's rule severities). Your adapter
 must never pre-judge — emit what you observed and let the policy decide.
 
+### Normative canonicalization
+
+The canonical form of a JSON value is exactly: the UTF-8 bytes of
+serializing it with **sorted keys**, separators `","` and `":"` (no
+insignificant whitespace), and non-ASCII characters kept verbatim
+(`ensure_ascii: false`); the digest is the lowercase-hex SHA-256 of
+those bytes, prefixed `sha256:`. In Python:
+
+```python
+json.dumps(value, ensure_ascii=False, sort_keys=True,
+           separators=(",", ":"), allow_nan=False).encode("utf-8")
+```
+
+Committed **golden digest vectors** in
+[examples/digest-vectors.json](../examples/digest-vectors.json) are
+replayed by the test suite on every CI run; an implementation in any
+language that reproduces every vector canonicalizes compatibly.
+allow_nan=False excludes non-finite numbers from the canonical JSON domain.
+Identity objects accept strings, integers, booleans, null, and containers
+of those; floats are rejected at every nesting depth because their textual
+form is implementation-sensitive. Encode exact numeric values as strings.
+
 ## Tamper detection and offline replay
 
 Imported sources participate in the same evidence chain as collected
 ones: the bundle is anchored by the record's `input_bundle_digest`, the
 record self-verifies via `record_digest`, and `verify --input record
---bundle bundle` replays offline. Your source's own `digest` lets anyone
-holding your identity object re-derive and compare it — the gate treats
-it as an opaque commitment.
+--bundle bundle` replays offline. When your source carries its
+`identity`, the gate recomputes and verifies the digest and the
+status-identity consistency itself; without it, the `digest` is an
+opaque commitment that only holders of the identity object can check.
+The built-in adapters attach their identity objects, so collected
+bundles are self-verifying end to end.
 
 ## Migration from draft-0
 

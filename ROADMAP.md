@@ -70,6 +70,21 @@ Candidate packs:
 - AI-agent review governance.
 - Scanner-aware advisory gate.
 
+## MVP scope lock (v0.22)
+
+Status: locked. The MVP command and contract surface — `preflight`,
+`collect`, `import`, `agent-action`, `evaluate`, `run`, `check-pr`,
+`verify`, `summarize`, `export`, `bench-verify`, with the `source-v0`,
+`agent-action-v0`, and `benchmark-case-v0` contracts and the
+retrospective real-history governance benchmark — is complete and
+frozen for the pilot phase. Until a pilot or design-partner engagement
+produces a concrete requirement, changes are limited to hardening,
+correctness fixes, documentation, and claim-boundary corrections: no
+new commands, contracts, or integrations. The gate is pilot-ready in
+the only sense this repository claims: every advertised behavior is
+implemented, tested, replayable offline, and bounded by an explicit
+claim boundary.
+
 ## Phase 4: evidence hardening
 
 Status: partially pulled forward. The unsigned in-toto Statement export

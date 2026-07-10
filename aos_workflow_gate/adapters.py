@@ -17,6 +17,7 @@ summary and digest as data, not as a verdict.
 from __future__ import annotations
 
 import json
+import math
 import re
 from pathlib import Path
 from typing import Any
@@ -96,6 +97,7 @@ def sarif_source(path: Path, source_id: str | None = None) -> dict[str, Any]:
             f"SARIF: {counts['error']} error(s), {counts['warning']} "
             f"warning(s), {counts['note']} note(s) from {tool_name}."
         ),
+        "identity": identity,
         "digest": source_digest(identity),
     }
 
@@ -105,10 +107,12 @@ def scorecard_source(path: Path, source_id: str | None = None) -> dict[str, Any]
     payload = _load_json_file(path, "Scorecard report")
     score = payload.get("score")
     checks = payload.get("checks")
-    if not isinstance(score, (int, float)):
+    if isinstance(score, bool) or not isinstance(score, (int, float)):
         raise InputError(f"Scorecard report {path} has no numeric 'score'")
+    if isinstance(score, float) and not math.isfinite(score):
+        raise InputError(f"Scorecard report {path} has no finite numeric 'score'")
     check_count = len(checks) if isinstance(checks, list) else 0
-    identity = {"score": score, "checks": check_count, "status": "success"}
+    identity = {"score": str(score), "checks": check_count, "status": "success"}
     return {
         "id": source_id or "scorecard",
         "kind": "scorecard_summary",
@@ -119,5 +123,6 @@ def scorecard_source(path: Path, source_id: str | None = None) -> dict[str, Any]
             f"OpenSSF Scorecard aggregate score {score}/10 across "
             f"{check_count} check(s); presence-and-integrity signal only."
         ),
+        "identity": identity,
         "digest": source_digest(identity),
     }

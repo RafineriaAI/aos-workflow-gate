@@ -27,7 +27,9 @@ Contract principles:
 
 State precedence when several conditions hold: integrity first
 (``tampered``), then binding (``subject_mismatch``), then freshness
-(``stale``), then duplication (``bounded_duplicate``).
+failure (``stale``), then duplication (``bounded_duplicate``), then
+unknown freshness (``freshness_unverified`` — no live or pinned base
+was provided, so ``valid`` must not be claimed).
 """
 
 from __future__ import annotations
@@ -57,6 +59,9 @@ STALE = "stale"
 TAMPERED = "tampered"
 SUBJECT_MISMATCH = "subject_mismatch"
 BOUNDED_DUPLICATE = "bounded_duplicate"
+FRESHNESS_UNVERIFIED = "freshness_unverified"
+
+DUPLICATE_SCOPE = "invocation+bundle"
 
 
 def _require_str(doc: dict[str, Any], field: str, where: str) -> str:
@@ -101,6 +106,12 @@ def validate_action_document(doc: Any, *, where: str = "document") -> dict[str, 
         raise InputError(f"{where}.subject: must be a mapping")
     _require_str(subject, "repository", f"{where}.subject")
     _require_sha(subject, "sha", f"{where}.subject")
+    if subject["repository"] != doc["repository"]:
+        raise InputError(
+            f"{where}.subject.repository: must equal the document's "
+            "repository (cross-repository and fork flows are out of "
+            "scope for agent-action-v0)"
+        )
 
     intent = doc.get("intent")
     if not isinstance(intent, dict):
@@ -214,9 +225,10 @@ def classify_action(
     """Classify a validated document into (state, explanation).
 
     Precedence: tampered, then subject_mismatch, then stale, then
-    bounded_duplicate, then valid. ``observed_base`` is the head SHA
-    the base is compared against (live branch head or pinned value);
-    ``validation_mode`` names how it was obtained for the explanation.
+    bounded_duplicate, then freshness_unverified, then valid.
+    ``observed_base`` is the head SHA the base is compared against
+    (live branch head or pinned value); when it is absent the document
+    cannot reach ``valid`` — unknown freshness is stated, not assumed.
     """
     computed = compute_digests(doc)
     claimed = doc.get("digests")
@@ -256,14 +268,17 @@ def classify_action(
                 "no global duplicate or replay protection exists)."
             )
 
-    freshness = (
-        "staleness not evaluated (no live or pinned base provided)"
-        if observed_base is None
-        else f"{validation_mode} staleness check passed"
-    )
+    if observed_base is None:
+        return FRESHNESS_UNVERIFIED, (
+            "Agent action freshness unverified: no live or pinned base "
+            "was provided, so staleness against the base state was not "
+            "evaluated. This fails closed for required sources; pass "
+            "--live or --pinned-base to verify freshness."
+        )
     return VALID, (
         f"Agent action valid: structurally intact, bound to "
-        f"{doc['repository']}@{doc['base_sha'][:12]}, {freshness}. "
+        f"{doc['repository']}@{doc['base_sha'][:12]}, "
+        f"{validation_mode} staleness check passed. "
         "Validity is structural and binding only — no semantic "
         "approval of the change is implied."
     )
@@ -294,6 +309,7 @@ def action_source(
         "base_sha": doc["base_sha"],
         "subject": doc["subject"],
         "validation_mode": validation_mode,
+        "duplicate_scope": DUPLICATE_SCOPE,
         "status": "success" if state == VALID else state,
     }
     return {
@@ -302,6 +318,7 @@ def action_source(
         "signal_source": "agent_action_adapter",
         "status": identity["status"],
         "summary": explanation,
+        "identity": identity,
         "digest": source_digest(identity),
         "contract": "source-v0",
     }

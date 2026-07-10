@@ -42,28 +42,36 @@ replayable record instead of a postmortem sentence.
 
 ## The measured claim — no more, no less
 
-Across the two gap cases, GitHub's baseline reported merge-ready while
-required-evidence gaps existed; the gate surfaced both, each as a named
-source in a replayable record (2 of 2 detected). On the clean control
-case the gate raised nothing (0 false alarms on 1 control). Three cases
-from one repository is a sample, not a study: the numbers above are
-counted, not estimated, and no claim is made beyond them.
+The two gap cases are different kinds of gap, and the distinction
+matters: `v0110-incident-counterfactual` is a **required-evidence gap**
+(a required control failed while the baseline said merge-ready —
+surfaced as `BLOCK`, 1 of 1 detected), and `green-but-incomplete-pr22`
+is an **advisory-visibility gap** (a non-required control silently never
+ran — surfaced as a named `WARN`, 1 of 1 detected; a WARN never blocks
+anything). On the clean control case the gate raised nothing (0 false
+alarms on 1 control). The GitHub merge-ready baseline in each case is
+**operator-declared** from historical platform state and marked as such
+by the harness — it is not mechanically re-verifiable offline. Three
+cases from one repository is a sample, not a study: the numbers above
+are counted, not estimated, and no claim is made beyond them.
 
 ## Predeclaration and honesty
 
 Each case declares its task, acceptance criteria, and budget, with the
 chronology `task_declared < action_captured < decision_evaluated`
 checked for internal consistency by the harness. Timestamp truth,
-patch authorship, and the operator attestation are explicitly
-**unverifiable** and reported as such — see the
-[harness boundary](../docs/BENCHMARK_HARNESS.md). The
-`agent-action-v0` documents were written at case assembly to describe
-the historical actions; the attestation in each `case.json` says so.
+patch authorship, the operator-declared GitHub baseline, and the
+operator attestation are explicitly **unverifiable** and reported as
+such — see the [harness boundary](../docs/BENCHMARK_HARNESS.md). This
+is a **retrospective real-history benchmark**: each case carries
+`provenance: retrospective_real_history`, and the `agent-action-v0`
+documents were written at case assembly to describe the historical
+actions; the attestation in each `case.json` says so.
 
 ## Replay it yourself (offline, self-service)
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.21.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.22.0"
 
 aos-workflow-gate bench-verify --case benchmarks/cases/v0110-incident-counterfactual
 aos-workflow-gate verify \

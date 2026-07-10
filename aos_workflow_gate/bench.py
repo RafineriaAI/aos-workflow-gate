@@ -37,7 +37,9 @@ from . import canonical
 from .agent_action import compute_digests, validate_action_document
 from .collect import DEFAULT_API_URL, Budget, _request_json, validate_api_url
 from .errors import InputError
+from .evaluate import evaluate
 from .evidence import verify_record
+from .policy import load_policy
 
 BENCH_CONTRACT = "benchmark-case-v0"
 REPORT_SCHEMA_VERSION = "bench-report-v0"
@@ -389,6 +391,8 @@ def verify_case(
                     "committed bundle",
                 )
             )
+        checks.append(_policy_binding(paths["policy"], record))
+        checks.append(_semantic_replay(bundle, paths["policy"], record))
         if action_ok and isinstance(record.get("subject"), dict):
             subject = record["subject"]
             doc_subject = action_doc["subject"]
@@ -456,6 +460,15 @@ def verify_case(
                 )
             )
 
+    if isinstance(case.get("baseline"), dict):
+        checks.append(
+            _check(
+                "github_baseline", UNVERIFIABLE,
+                "the GitHub baseline (merge-ready state) is "
+                "operator-declared from historical platform state; it "
+                "is not mechanically re-verifiable offline",
+            )
+        )
     checks.append(
         _check(
             "operator_attestation", UNVERIFIABLE,
@@ -465,6 +478,71 @@ def verify_case(
         )
     )
     return _report(case, checks)
+
+
+def _policy_binding(policy_path: Path, record: dict[str, Any]) -> dict[str, str]:
+    """The policy artifact must be the policy the record was built from."""
+    try:
+        policy = load_policy(policy_path)
+    except InputError as exc:
+        return _check("policy_binding", FAILED, f"policy artifact: {exc}")
+    recorded = record.get("policy")
+    recorded_digest = (
+        recorded.get("digest") if isinstance(recorded, dict) else None
+    )
+    if policy.digest == recorded_digest:
+        return _check(
+            "policy_binding", OK,
+            "the policy artifact's content digest matches the record's "
+            "policy digest",
+        )
+    return _check(
+        "policy_binding", FAILED,
+        "the policy artifact does not digest to the record's policy "
+        "digest; the case ships a different policy than the decision "
+        "used",
+    )
+
+
+def _semantic_replay(
+    bundle: Any, policy_path: Path, record: dict[str, Any]
+) -> dict[str, str]:
+    """True offline semantic replay: bundle + policy → evaluate → compare.
+
+    Digest checks prove the inputs are the recorded ones; this check
+    proves the recorded *decision* is what the current evaluator derives
+    from them. Compared fields: verdict, summary, reasons, inputs, and
+    subject — everything semantic; the generator version is deliberately
+    excluded so records replay across releases.
+    """
+    if bundle is None:
+        return _check(
+            "semantic_replay", FAILED, "bundle artifact is not valid JSON"
+        )
+    try:
+        policy = load_policy(policy_path)
+    except InputError as exc:
+        return _check("semantic_replay", FAILED, f"policy artifact: {exc}")
+    decision = evaluate(bundle, policy)
+    derived: dict[str, Any] = {
+        "verdict": decision.verdict,
+        "summary": decision.summary,
+        "reasons": [reason.as_dict() for reason in decision.reasons],
+        "inputs": decision.inputs,
+        "subject": decision.subject.as_dict(),
+    }
+    for field, value in derived.items():
+        if record.get(field) != value:
+            return _check(
+                "semantic_replay", FAILED,
+                f"re-evaluating the committed bundle and policy yields a "
+                f"different '{field}' than the committed record",
+            )
+    return _check(
+        "semantic_replay", OK,
+        "re-evaluating the committed bundle against the committed policy "
+        "reproduces the record's verdict, reasons, inputs, and subject",
+    )
 
 
 def _report(case: dict[str, Any], checks: list[dict[str, str]]) -> dict[str, Any]:

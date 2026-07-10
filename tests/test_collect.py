@@ -49,18 +49,23 @@ def test_build_bundle_skips_running_and_excluded_and_dedupes() -> None:
     assert bundle["sources"][0]["status"] == "failure"
 
 
-def test_build_bundle_digest_matches_case_study_recipe() -> None:
+def test_build_bundle_digest_matches_documented_recipe() -> None:
     run = _run("ci / validate", run_id=42)
     bundle = build_bundle([run], repository="owner/repo", sha=SHA)
     identity = {
         "check_run_id": 42,
         "name": "ci / validate",
         "head_sha": SHA,
-        "status": "completed",
+        "run_status": "completed",
         "conclusion": "success",
+        "status": "success",
         "completed_at": "2026-07-04T16:46:38Z",
     }
-    assert bundle["sources"][0]["digest"] == canonical.digest(identity)
+    source = bundle["sources"][0]
+    assert source["digest"] == canonical.digest(identity)
+    # identity binding: attached, consistent with the source status
+    assert source["identity"] == identity
+    assert source["identity"]["status"] == source["status"]
 
 
 def test_build_bundle_preserves_non_success_conclusions() -> None:

@@ -25,6 +25,7 @@
     "repository": "RafineriaAI/aos-workflow-gate"
   },
   "baseline": {
+    "declared_by": "operator",
     "github_merge_ready": true,
     "note": "GitHub baseline and the gate agree: every required and advisory signal on the head is green (the no-checkout job is excluded as skipped-by-design on pull requests). Control case: agreement, no false alarm.",
     "required_check": "AOS Workflow Gate CI / validate",
@@ -56,6 +57,7 @@
   ],
   "classification": "real_pass_control",
   "contract": "benchmark-case-v0",
+  "provenance": "retrospective_real_history",
   "task": {
     "declared_at": "2026-07-09T17:40:00Z",
     "description": "PR #36 - Preflight Diagnostics: read-only capability probes across repository, pull request, checks, commit statuses and active rules; stable diagnostic codes with environment/permission/feature/context taxonomy; actionable remediation; JSON and human-readable output; exit codes 0/1/2; no gate verdict"

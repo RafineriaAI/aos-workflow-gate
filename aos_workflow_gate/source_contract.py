@@ -47,8 +47,61 @@ _DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 _REQUIRED_FIELDS = ("id", "kind", "status", "digest")
 _OPTIONAL_STR_FIELDS = ("summary", "signal_source", "observed_at")
 _KNOWN_FIELDS = frozenset(
-    _REQUIRED_FIELDS + _OPTIONAL_STR_FIELDS + ("contract",)
+    _REQUIRED_FIELDS + _OPTIONAL_STR_FIELDS + ("contract", "identity")
 )
+
+
+_NO_EXPECTED_STATUS = object()
+
+
+def _identity_value_violation(
+    value: Any, *, where: str = "identity"
+) -> str | None:
+    """Return why an identity value is outside the deterministic JSON domain."""
+    if isinstance(value, float):
+        return (
+            f"{where}: floats are not allowed in source identity; "
+            "encode exact numeric values as strings"
+        )
+    if value is None or isinstance(value, (str, bool, int)):
+        return None
+    if isinstance(value, list):
+        for position, item in enumerate(value):
+            violation = _identity_value_violation(
+                item, where=f"{where}[{position}]"
+            )
+            if violation is not None:
+                return violation
+        return None
+    if isinstance(value, dict):
+        if any(not isinstance(key, str) for key in value):
+            return f"{where}: object keys must be strings"
+        for key in sorted(value):
+            violation = _identity_value_violation(
+                value[key], where=f"{where}.{key}"
+            )
+            if violation is not None:
+                return violation
+        return None
+    return f"{where}: unsupported JSON value type {type(value).__name__!r}"
+
+
+def _identity_violation(
+    identity: Any, *, expected_status: Any = _NO_EXPECTED_STATUS
+) -> str | None:
+    if not isinstance(identity, dict):
+        return "identity must be a mapping"
+    if "status" not in identity:
+        return "identity omits 'status' (identity-completeness invariant)"
+    if (
+        expected_status is not _NO_EXPECTED_STATUS
+        and identity.get("status") != expected_status
+    ):
+        return (
+            f"status {expected_status!r} does not match the "
+            f"identity's status {identity.get('status')!r}"
+        )
+    return _identity_value_violation(identity)
 
 
 def source_digest(identity: dict[str, Any]) -> str:
@@ -59,14 +112,43 @@ def source_digest(identity: dict[str, Any]) -> str:
     half (include every decision-relevant observation) is the adapter
     author's obligation, stated in docs/SOURCE_CONTRACT.md.
     """
-    if not isinstance(identity, dict):
-        raise InputError("source identity must be a mapping")
-    if "status" not in identity:
-        raise InputError(
-            "source identity must contain the 'status' it justifies "
-            "(identity-completeness invariant)"
-        )
+    violation = _identity_violation(identity)
+    if violation is not None:
+        raise InputError(f"source {violation}")
     return canonical.digest(identity)
+
+
+def contract_violation(item: dict[str, Any]) -> str | None:
+    """Return the contract-level violation in a source, if any.
+
+    This helper preserves contract-version and identity-binding checks for
+    legacy bundle sources. Explicit source-v0 inputs use the complete
+    validate_source_v0 path in both import and evaluate.
+    """
+    contract = item.get("contract")
+    if contract is not None and contract != SOURCE_CONTRACT_VERSION:
+        return f"declares unknown contract {contract!r}"
+    if contract == SOURCE_CONTRACT_VERSION and "required" in item:
+        return (
+            "carries a 'required' field, but the source-v0 contract has "
+            "none: required/advisory classification is policy-owned"
+        )
+    identity = item.get("identity")
+    if identity is not None:
+        violation = _identity_violation(
+            identity, expected_status=item.get("status")
+        )
+        if violation is not None:
+            return violation
+        declared = item.get("digest")
+        if isinstance(declared, str) and declared:
+            recomputed = canonical.digest(identity)
+            if recomputed != declared:
+                return (
+                    "digest does not recompute from the attached "
+                    "identity (identity binding violated)"
+                )
+    return None
 
 
 def validate_source_v0(item: Any, *, where: str = "source") -> dict[str, Any]:
@@ -74,8 +156,9 @@ def validate_source_v0(item: Any, *, where: str = "source") -> dict[str, Any]:
 
     Errors are precise and path-addressed (``where`` names the position,
     e.g. ``sources[2]``) so an integrator can fix the exact field. This
-    is the strict path for operator-invoked imports; untrusted bundles
-    evaluated later still fail closed instead of raising.
+    is the single complete source-v0 validator. Operator-invoked imports
+    propagate its errors; evaluation catches the same errors and records
+    them as fail-closed malformed_input reasons.
     """
     if not isinstance(item, dict):
         raise InputError(f"{where}: must be a JSON object")
@@ -117,6 +200,9 @@ def validate_source_v0(item: Any, *, where: str = "source") -> dict[str, Any]:
         )
     normalized = dict(item)
     normalized["contract"] = SOURCE_CONTRACT_VERSION
+    violation = contract_violation(normalized)
+    if violation is not None:
+        raise InputError(f"{where}: {violation}")
     return normalized
 
 

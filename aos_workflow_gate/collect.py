@@ -1,9 +1,12 @@
 """GitHub check-runs collector.
 
 ``collect`` builds a signal bundle from the GitHub check-runs API for one
-commit, using the same source-digest recipe as the committed case study:
-``sha256:`` over the canonical JSON of the check run's identity subset
-``{check_run_id, name, head_sha, status, conclusion, completed_at}``.
+commit. Each source digest is ``sha256:`` over the canonical JSON of the
+check run's identity ``{check_run_id, name, head_sha, run_status,
+conclusion, status, completed_at}``, where ``status`` is the source
+status (the conclusion) per the identity-completeness invariant; the
+identity object itself is attached to the source so the binding can be
+recomputed and verified by ``import`` and ``evaluate``.
 
 Only completed check runs are collected, so the workflow run that is
 currently executing the gate never gates itself. Conclusions are preserved
@@ -297,12 +300,14 @@ def build_bundle(
     for name in sorted(latest):
         run = latest[name]
         conclusion = run.get("conclusion")
+        source_status = conclusion if isinstance(conclusion, str) else "unknown"
         identity = {
             "check_run_id": run.get("id"),
             "name": name,
             "head_sha": run.get("head_sha"),
-            "status": run.get("status"),
+            "run_status": run.get("status"),
             "conclusion": conclusion,
+            "status": source_status,
             "completed_at": run.get("completed_at"),
         }
         sources.append(
@@ -310,11 +315,12 @@ def build_bundle(
                 "id": name,
                 "kind": "github_check",
                 "signal_source": "github_check_runs_api",
-                "status": conclusion if isinstance(conclusion, str) else "unknown",
+                "status": source_status,
                 "required": name in required_names,
                 "observed_at": run.get("completed_at"),
                 "summary": f"GitHub check run {run.get('id')} "
                 f"concluded {conclusion}.",
+                "identity": identity,
                 "digest": source_digest(identity),
             }
         )
