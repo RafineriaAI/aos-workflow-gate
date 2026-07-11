@@ -57,6 +57,7 @@ from .errors import InputError
 from .evaluate import BLOCK, evaluate
 from .evidence import build_record, observation_from_bundle, verify_record
 from .export import build_statement
+from .manifest import verifier_manifest_digest
 from .paths import safe_output_path, workspace_boundary
 from .policy import load_policy
 from .preflight import render_report, run_preflight
@@ -1757,10 +1758,51 @@ def _cmd_export(args: argparse.Namespace) -> int:
 def _cmd_verify(args: argparse.Namespace) -> int:
     record = _load_json(args.input)
     ok = verify_record(record)
+    bundle: Any = None
     if ok and args.bundle and isinstance(record, dict):
         bundle = _load_json(args.bundle)
         ok = record.get("input_bundle_digest") == canonical.digest(bundle)
     print("OK" if ok else "TAMPERED")
+    if ok and isinstance(record, dict):
+        # verifier artifact binding: disclosure, never a verdict —
+        # records replay across verifier versions, and substitution is
+        # detectable instead of silent
+        generator = record.get("generator")
+        recorded = (
+            generator.get("verifier_manifest_digest")
+            if isinstance(generator, dict)
+            else None
+        )
+        if isinstance(recorded, str):
+            current = verifier_manifest_digest()
+            if recorded == current:
+                print("verifier: same manifest as this installation")
+            else:
+                print(
+                    "verifier: DIFFERENT manifest — the record was "
+                    f"produced by {recorded[:23]}..., this installation "
+                    f"is {current[:23]}... (content address only; no "
+                    "signing or authorship claim)"
+                )
+        else:
+            print(
+                "verifier: record predates manifest binding "
+                "(pre-v0.33 record; digest replay remains valid)"
+            )
+        if isinstance(bundle, dict):
+            collection = bundle.get("collection")
+            context_digest = (
+                collection.get("context_digest")
+                if isinstance(collection, dict)
+                else None
+            )
+            if isinstance(context_digest, str):
+                print(
+                    "subject context: bound "
+                    f"({context_digest[:23]}...) via the bundle digest"
+                )
+            else:
+                print("subject context: not recorded in this bundle")
     return 0 if ok else 1
 
 

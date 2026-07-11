@@ -61,7 +61,13 @@
     "examples/digest-vectors.json",
     "examples/zero-required-bundle.json",
     "examples/zero-required-policy.json",
-    "examples/zero-required-record.json"
+    "examples/zero-required-record.json",
+    "tests/data/historical/v0.15-release-gate-decision.json",
+    "tests/data/historical/v0.15-release-gate-bundle.json",
+    "tests/data/historical/v0.15-release-gate-policy.json",
+    "tests/data/historical/v0.16-release-gate-decision.json",
+    "tests/data/historical/v0.16-release-gate-bundle.json",
+    "tests/data/historical/v0.16-release-gate-policy.json"
   ],
   "benchmarks": [
     "benchmarks/cases/agent-pr36-preflight/case.json",
@@ -140,7 +146,8 @@
     "tests/test_html_view.py",
     "tests/test_discovery.py",
     "tests/test_collection_consistency.py",
-    "tests/test_adversarial_corpus.py"
+    "tests/test_adversarial_corpus.py",
+    "tests/test_backward_compat.py"
   ],
   "assets": [
     "docs/assets/banner.png"

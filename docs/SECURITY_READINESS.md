@@ -99,6 +99,14 @@ rejection.
 
 ## Zero-trust signalling
 
+- **Verifier artifact binding.** Every record carries the content
+  address of the exact verifier that derived it (sha256 of every
+  packaged file, digested as one manifest). `verify` discloses
+  whether the current installation matches — verifier substitution
+  is detectable, never silent. Content addressing only: no signing,
+  no provenance, no authorship claim, and records replay across
+  verifier versions (digest replay is forever; semantic replay is
+  version-scoped with additive-rule divergence disclosed).
 - **App-bound requirement identity.** `check-pr` builds on a shared,
   SHA-pinned requirement snapshot: when the branch rules bind a required
   check to a specific app (`integration_id`), only a check run reporting
