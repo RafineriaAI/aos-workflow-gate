@@ -1,8 +1,10 @@
 ## Gate decision: WARN
 
 **What happened:** Gate WARN: required checks satisfied; 1 advisory warning(s).
+**Scope:** 1 required and policy-named advisory source(s) on owner/repo@0123456789ab; not full merge-readiness
+**Freshness:** not recorded (offline or pre-freshness bundle)
+**Effect:** advisory — recorded evidence only; a BLOCK verdict does not fail the job
 **Signals:** 1 required (1 successful) · 2 advisory (1 warning(s))
-**Can block this job:** no
 **Next:** advisory findings warn but never block; review the source's own report and decide
 
 | Field | Value |
@@ -18,7 +20,7 @@
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
-### Reasons
+### Top gaps
 
 - WARN `advisory_warning` scanner.sarif: advisory source status is 'warning'
   - Hint: advisory findings warn but never block; review the source's own report and decide

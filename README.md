@@ -61,9 +61,17 @@ failed means `BLOCK`), every other collected check is advisory. Set
 required checks are waited for; a wait that ends incomplete fails closed
 and is recorded in the bundle's collection status). The generated bundle
 and policy are written to `.aos-gate/` so the decision stays replayable.
+Workflows that never started are visible too: the gate reads the
+commit's check suites and workflow runs, and anything still queued or
+awaiting approval is recorded in the bundle instead of silently not
+existing.
 
-What the job page answers: the verdict (`PASS`, `WARN`, or
-`BLOCK`), the signal counts, and exactly one **Next** step. The
+What the job page answers, in under thirty seconds: the verdict
+(`PASS`, `WARN`, or `BLOCK`), the scope it covers (and expressly does
+not), the freshness of the observation, the effect (advisory or
+enforcing), the signal counts, at most three top gaps with one
+dominant problem, and exactly one **Next** step. An enforceably clean
+`PASS` is quiet — one screen, no tables. The
 step exposes outputs for downstream jobs: `verdict`, `diagnosis`,
 `next-action`, `can-block`, `record`, `record-digest`, and the
 state counters (`required-total`, `required-successful`,

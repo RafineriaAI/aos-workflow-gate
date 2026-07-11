@@ -11,7 +11,11 @@ import pytest
 
 from aos_workflow_gate import canonical
 from aos_workflow_gate.evaluate import evaluate
-from aos_workflow_gate.evidence import build_record, verify_record
+from aos_workflow_gate.evidence import (
+    build_record,
+    observation_from_bundle,
+    verify_record,
+)
 from aos_workflow_gate.policy import load_policy
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -67,6 +71,7 @@ def test_committed_record_replays(
         policy=policy,
         input_bundle_digest=canonical.digest(bundle),
         can_block=policy.mode == "blocking",
+        observation=observation_from_bundle(bundle),
     )
     assert fresh == committed
     assert verify_record(committed)

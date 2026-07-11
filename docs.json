@@ -80,7 +80,10 @@
     "benchmarks/cases/v0110-incident-counterfactual/changes.patch",
     "benchmarks/cases/v0110-incident-counterfactual/bundle.json",
     "benchmarks/cases/v0110-incident-counterfactual/policy.json",
-    "benchmarks/cases/v0110-incident-counterfactual/gate-decision.json"
+    "benchmarks/cases/v0110-incident-counterfactual/gate-decision.json",
+    "benchmarks/discovery/README.md",
+    "benchmarks/discovery/manifest.json",
+    "benchmarks/discovery/analysis.json"
   ],
   "policies": [
     "policies/default.yml",
@@ -91,7 +94,8 @@
   ],
   "tools": [
     "tools/__init__.py",
-    "tools/check_public_surface.py"
+    "tools/check_public_surface.py",
+    "tools/discovery.py"
   ],
   "ci": [
     "pyproject.toml",

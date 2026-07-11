@@ -39,6 +39,9 @@
       "status": "failure"
     }
   ],
+  "observation": {
+    "status": "complete"
+  },
   "policy": {
     "digest": "sha256:1ac10c8a010a4e3a9f62894184bfd9ba342626922ac4f6dd987f8ca6f0a06cb0",
     "mode": "advisory",
@@ -71,7 +74,7 @@
       "source_id": "AOS Workflow Gate Self / zero-config"
     }
   ],
-  "record_digest": "sha256:3b7a8f035d0b622f199c6c4533e1f0465fbdbaf78319ddd25d5699a7a65982ec",
+  "record_digest": "sha256:a963ef6f088a93f969ef33571069b42b0dc4b2f5a0fc14376fdc7408de0f7bf1",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": null,

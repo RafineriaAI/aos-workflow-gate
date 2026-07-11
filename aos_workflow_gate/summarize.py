@@ -125,6 +125,8 @@ def diagnose(record: Any) -> dict[str, Any]:
             for reason in reasons
         ),
     }
+    observation = _dict_field(record, "observation")
+    gaps = _rank_gaps(reasons)
     return {
         "verdict": verdict,
         "intact": intact,
@@ -132,6 +134,13 @@ def diagnose(record: Any) -> dict[str, Any]:
         "can_block": bool(record.get("can_block")),
         "counts": counts,
         "next": _next_step(record, intact),
+        "scope": _scope_statement(record, observation),
+        "freshness": _freshness_statement(observation),
+        "effect": _effect_statement(record),
+        "gaps": gaps[:3],
+        "gaps_total": len(gaps),
+        "dominant": _dominant_problem(gaps),
+        "observation": observation,
         "subject": _dict_field(record, "subject"),
         "policy": _dict_field(record, "policy"),
         "reasons": reasons,
@@ -140,6 +149,103 @@ def diagnose(record: Any) -> dict[str, Any]:
         "input_bundle_digest": record.get("input_bundle_digest"),
         "verification_status": record.get("verification_status"),
     }
+
+
+_GAP_RULE_RANK = {
+    "malformed_input": 0,
+    "missing_required_source": 1,
+    "failed_required_source": 1,
+    "incomplete_collection": 2,
+    "advisory_warning": 3,
+    "no_required_sources": 4,
+}
+_SEVERITY_RANK = {"BLOCK": 0, "WARN": 1, "PASS": 2}
+
+
+def _rank_gaps(reasons: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Every reason, ranked most-decision-relevant first.
+
+    Severity dominates (a blocking gap always outranks a warning), then
+    the rule's diagnostic priority, then the source id for a stable
+    order. The projection keeps the full count but shows at most three.
+    """
+    def key(reason: dict[str, Any]) -> tuple[int, int, str]:
+        return (
+            _SEVERITY_RANK.get(str(reason.get("severity")), 9),
+            _GAP_RULE_RANK.get(str(reason.get("rule")), 9),
+            str(reason.get("source_id") or ""),
+        )
+
+    return sorted(reasons, key=key)
+
+
+def _dominant_problem(gaps: list[dict[str, Any]]) -> str | None:
+    """One sentence naming the problem that decides this record."""
+    if not gaps:
+        return None
+    gap = gaps[0]
+    source = gap.get("source_id")
+    prefix = f"'{source}': " if source else ""
+    return f"{prefix}{gap.get('detail', gap.get('rule', 'unknown'))}"
+
+
+def _scope_statement(
+    record: dict[str, Any], observation: dict[str, Any]
+) -> str:
+    """What this verdict covers — and expressly what it does not."""
+    subject = _dict_field(record, "subject")
+    repository = subject.get("repository") or "unknown repository"
+    sha = str(subject.get("sha") or "")
+    target = f"{repository}@{sha[:12]}" if sha else str(repository)
+    inputs = record.get("inputs")
+    required = sum(
+        1
+        for source in inputs
+        if isinstance(source, dict) and source.get("required")
+    ) if isinstance(inputs, list) else 0
+    parts = [
+        f"{required} required and policy-named advisory source(s) on "
+        f"{target}"
+    ]
+    protection = observation.get("protection_source")
+    if isinstance(protection, str) and protection not in ("", "none"):
+        parts.append(f"requirements read from {protection}")
+    if observation.get("strict_up_to_date_required"):
+        parts.append(
+            "GitHub additionally requires the branch to be up to date "
+            "(not checked here)"
+        )
+    parts.append("not full merge-readiness")
+    return "; ".join(parts)
+
+
+def _freshness_statement(observation: dict[str, Any]) -> str:
+    """When and how completely the world was observed."""
+    observed_at = observation.get("observed_at")
+    status = observation.get("status")
+    if not isinstance(observed_at, str) or not observed_at:
+        if isinstance(status, str) and status:
+            return f"observation time not recorded; collection {status}"
+        return "not recorded (offline or pre-freshness bundle)"
+    text = f"observed {observed_at}"
+    if isinstance(status, str) and status:
+        text += f"; collection {status}"
+    visibility = observation.get("workflow_visibility")
+    if isinstance(visibility, dict):
+        not_started = visibility.get("not_started")
+        if isinstance(not_started, int) and not_started > 0:
+            text += f"; {not_started} workflow unit(s) had not started"
+    return text
+
+
+def _effect_statement(record: dict[str, Any]) -> str:
+    """What this verdict can actually do to the pipeline."""
+    if record.get("can_block"):
+        return "enforcing — a BLOCK verdict fails the calling job"
+    return (
+        "advisory — recorded evidence only; a BLOCK verdict does not "
+        "fail the job"
+    )
 
 
 def render_markdown(record: Any) -> tuple[str, bool]:
@@ -160,15 +266,15 @@ def render_markdown(record: Any) -> tuple[str, bool]:
     summary = diag["summary"]
     if isinstance(summary, str) and summary:
         lines.append(f"**What happened:** {_escape(summary)}")
+    lines.append(f"**Scope:** {_escape(diag['scope'])}")
+    lines.append(f"**Freshness:** {_escape(diag['freshness'])}")
+    lines.append(f"**Effect:** {_escape(diag['effect'])}")
     lines.append(
         "**Signals:** "
         f"{counts['required_total']} required "
         f"({counts['required_successful']} successful) · "
         f"{counts['advisory_total']} advisory "
         f"({counts['advisory_warnings']} warning(s))"
-    )
-    lines.append(
-        f"**Can block this job:** {'yes' if diag['can_block'] else 'no'}"
     )
     lines += [f"**Next:** {diag['next']}", ""]
     if not intact:
@@ -177,6 +283,24 @@ def render_markdown(record: Any) -> tuple[str, bool]:
             "Do not trust this record.",
             "",
         ]
+
+    # quiet PASS: an enforceably clean record needs no tables — the
+    # digests line keeps it verifiable, and the full detail stays in the
+    # record JSON and the HTML evidence view
+    if (
+        verdict == "PASS"
+        and intact
+        and not diag["reasons"]
+        and counts["required_total"] > 0
+    ):
+        lines += [
+            f"Record {_code(record.get('record_digest', '-'))} · "
+            f"bundle {_code(record.get('input_bundle_digest', '-'))} · "
+            "self-check OK · "
+            f"{_escape(record.get('verification_status', '-'))}",
+            "",
+        ]
+        return "\n".join(lines), intact
 
     lines += ["| Field | Value |", "| --- | --- |"]
     lines += _subject_rows(subject)
@@ -196,19 +320,28 @@ def render_markdown(record: Any) -> tuple[str, bool]:
     )
     lines.append("")
 
-    reasons = record.get("reasons")
-    if isinstance(reasons, list) and reasons:
-        lines += ["### Reasons", ""]
-        for reason in reasons:
-            if isinstance(reason, dict):
-                severity = _escape(reason.get("severity", "-"))
-                rule = reason.get("rule", "-")
-                source = _escape(reason.get("source_id") or "-")
-                detail = _escape(reason.get("detail", ""))
-                lines.append(f"- {severity} {_code(rule)} {source}: {detail}")
-                hint = REPAIR_HINTS.get(str(rule))
-                if hint:
-                    lines.append(f"  - Hint: {hint}")
+    if diag["dominant"] and diag["gaps_total"] > 1:
+        lines += [
+            f"**Dominant problem:** {_escape(diag['dominant'])}",
+            "",
+        ]
+    if diag["gaps"]:
+        lines += ["### Top gaps", ""]
+        for reason in diag["gaps"]:
+            severity = _escape(reason.get("severity", "-"))
+            rule = reason.get("rule", "-")
+            source = _escape(reason.get("source_id") or "-")
+            detail = _escape(reason.get("detail", ""))
+            lines.append(f"- {severity} {_code(rule)} {source}: {detail}")
+            hint = REPAIR_HINTS.get(str(rule))
+            if hint:
+                lines.append(f"  - Hint: {hint}")
+        remainder = diag["gaps_total"] - len(diag["gaps"])
+        if remainder > 0:
+            lines.append(
+                f"- …and {remainder} more reason(s) — every one is in "
+                "the record JSON and the HTML evidence view."
+            )
         lines.append("")
 
     inputs = record.get("inputs")
@@ -445,13 +578,14 @@ def render_html(
     if isinstance(summary, str) and summary:
         parts.append(f"<p><strong>What happened:</strong> {_h(summary)}</p>")
     parts.append(
-        "<p><strong>Signals:</strong> "
+        f"<p><strong>Scope:</strong> {_h(diag['scope'])}<br>"
+        f"<strong>Freshness:</strong> {_h(diag['freshness'])}<br>"
+        f"<strong>Effect:</strong> {_h(diag['effect'])}<br>"
+        "<strong>Signals:</strong> "
         f"{counts['required_total']} required "
         f"({counts['required_successful']} successful) · "
         f"{counts['advisory_total']} advisory "
         f"({counts['advisory_warnings']} warning(s))<br>"
-        "<strong>Can block this job:</strong> "
-        f"{'yes' if diag['can_block'] else 'no'}<br>"
         f"<strong>Next:</strong> {_h(diag['next'])}</p>"
     )
 

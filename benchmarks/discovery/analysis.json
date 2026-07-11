@@ -1,0 +1,4477 @@
+{
+  "boundary": "public metadata only: changed file paths, counts, timestamps, check conclusions, and workflow paths; no code, no diffs, no comment bodies are stored, and nothing from the observed repositories is executed",
+  "candidate_policies": {
+    "discovery_total": 70,
+    "green_but_not_exercised": {
+      "definition": "a merged PR whose head commit carries skipped or neutral check conclusions and no failure: the dashboard reads green while some evidence never ran",
+      "frequency": {
+        "firing": 39,
+        "of": 70
+      },
+      "negative_controls": [
+        {
+          "number": 10401,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10397,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10385,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10382,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10378,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10369,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10363,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10358,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10357,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10354,
+          "repo": "celery/celery"
+        }
+      ],
+      "negative_controls_total": 31,
+      "noise": {
+        "note": "skipped conclusions can be intentional (path filters); the policy is advisory visibility, not a defect claim"
+      },
+      "positive_cases": [
+        {
+          "number": 69754,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69730,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69725,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69717,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69708,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69707,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69691,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69690,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69686,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69684,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69682,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69674,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69671,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69669,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69664,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69663,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69662,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69656,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69651,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69650,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69649,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69648,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69647,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69643,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69637,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 38,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 36,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 35,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 34,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 32,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 31,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 30,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 28,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 27,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 26,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 25,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 24,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 23,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 22,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        }
+      ]
+    },
+    "holdout_total": 20,
+    "negative_results": {
+      "note": "kept deliberately: an unretrievable stream is a finding about evidence durability, not noise",
+      "unretrievable_streams": []
+    },
+    "verifier_change_independence": {
+      "definition": "a merged PR changes its own verification mechanism (workflow, test harness, or scanner config); evidence produced solely by the changed mechanism is not independent",
+      "frequency": {
+        "firing": 27,
+        "of": 70
+      },
+      "negative_controls": [
+        {
+          "number": 69754,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69725,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69717,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69708,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69707,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69691,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69686,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69684,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69664,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69663,
+          "repo": "apache/airflow"
+        }
+      ],
+      "negative_controls_total": 43,
+      "noise": {
+        "bot_authored_in_discovery": 8,
+        "routine_bump_count": 0,
+        "routine_bump_exclusions": []
+      },
+      "positive_cases": [
+        {
+          "number": 69730,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69690,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69682,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69674,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69671,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69669,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69662,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69651,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69643,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 10358,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 10349,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 51,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 49,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 48,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 47,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 46,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 43,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 42,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 41,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 38,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 36,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 35,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 34,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 30,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 26,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 25,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 24,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        }
+      ],
+      "positive_with_self_validating_runs": [
+        {
+          "number": 69671,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 69643,
+          "repo": "apache/airflow"
+        },
+        {
+          "number": 10349,
+          "repo": "celery/celery"
+        },
+        {
+          "number": 48,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 41,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        },
+        {
+          "number": 26,
+          "repo": "RafineriaAI/aos-workflow-gate"
+        }
+      ]
+    }
+  },
+  "captured_at": "2026-07-11T13:40:46Z",
+  "pulls": [
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 39,
+          "success": 25
+        },
+        "retrievable": true,
+        "total": 64
+      },
+      "chronology": {
+        "created_at": "2026-07-11T12:34:54Z",
+        "merged_at": "2026-07-11T12:41:24Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "60ff8f5fc05f1e7433f758f64617dab978a2bb4d",
+      "number": 69754,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "neutral": 1,
+          "skipped": 37,
+          "success": 27
+        },
+        "retrievable": true,
+        "total": 65
+      },
+      "chronology": {
+        "created_at": "2026-07-10T21:21:30Z",
+        "merged_at": "2026-07-11T12:28:17Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 1,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "3120d439e73ab494e0b36d719252f6fac09aa155",
+      "number": 69732,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "neutral": 1,
+          "skipped": 24,
+          "success": 70
+        },
+        "retrievable": true,
+        "total": 95
+      },
+      "chronology": {
+        "created_at": "2026-07-10T17:52:57Z",
+        "merged_at": "2026-07-11T05:02:36Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 2,
+        "total": 5,
+        "workflow": []
+      },
+      "head_sha": "2407d9cd5c76fcf6c00a32f74d74763f5148559a",
+      "number": 69730,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 39,
+          "success": 26
+        },
+        "retrievable": true,
+        "total": 65
+      },
+      "chronology": {
+        "created_at": "2026-07-10T17:52:19Z",
+        "merged_at": "2026-07-11T13:00:25Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 5,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 5,
+        "workflow": []
+      },
+      "head_sha": "2cf9d1d2d017341492b84af60a5f9e0e3904c6d5",
+      "number": 69729,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 47,
+          "success": 36
+        },
+        "retrievable": true,
+        "total": 83
+      },
+      "chronology": {
+        "created_at": "2026-07-10T16:58:37Z",
+        "merged_at": "2026-07-10T18:17:50Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 1,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "a60ba5931ba9c7cf1ab9209a8c7249a9850e1775",
+      "number": 69725,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 2,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 2
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 49,
+          "success": 38
+        },
+        "retrievable": true,
+        "total": 87
+      },
+      "chronology": {
+        "created_at": "2026-07-10T16:55:42Z",
+        "merged_at": "2026-07-10T18:17:38Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 1,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "8de772b5d47330ad4fefa16226a71203812ede89",
+      "number": 69718,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 49,
+          "success": 38
+        },
+        "retrievable": true,
+        "total": 87
+      },
+      "chronology": {
+        "created_at": "2026-07-10T16:55:23Z",
+        "merged_at": "2026-07-10T18:17:47Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 1,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "182f19eb831d48d1d90d9aaa68696f504dfc2808",
+      "number": 69717,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 49,
+          "success": 38
+        },
+        "retrievable": true,
+        "total": 87
+      },
+      "chronology": {
+        "created_at": "2026-07-10T13:56:31Z",
+        "merged_at": "2026-07-11T02:34:39Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "60b87234fc9e0d889dc50b2fb8c53724c88dcc10",
+      "number": 69708,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 47,
+          "success": 36
+        },
+        "retrievable": true,
+        "total": 83
+      },
+      "chronology": {
+        "created_at": "2026-07-10T13:56:01Z",
+        "merged_at": "2026-07-10T23:47:44Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "63f9525b387a9e1b8f59ca35633f390b4386ba79",
+      "number": 69707,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 2,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 2
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 49,
+          "success": 41
+        },
+        "retrievable": true,
+        "total": 90
+      },
+      "chronology": {
+        "created_at": "2026-07-10T06:05:24Z",
+        "merged_at": "2026-07-10T07:26:57Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "f6e0a10e1b3458699433d6be59d3ceafe85c3b4b",
+      "number": 69691,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 36,
+          "success": 36
+        },
+        "retrievable": true,
+        "total": 72
+      },
+      "chronology": {
+        "created_at": "2026-07-10T05:51:58Z",
+        "merged_at": "2026-07-10T16:24:33Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 4,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 1,
+        "total": 5,
+        "workflow": []
+      },
+      "head_sha": "be88220e6256f3e51d6e59a479b2f816dd40b60c",
+      "number": 69690,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 51,
+          "success": 38
+        },
+        "retrievable": true,
+        "total": 89
+      },
+      "chronology": {
+        "created_at": "2026-07-10T04:31:09Z",
+        "merged_at": "2026-07-10T05:53:46Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "bf68024064589081127afb054bee75ad6aa00e16",
+      "number": 69686,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "cancelled": 2,
+          "skipped": 63,
+          "success": 35
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-10T01:54:23Z",
+        "merged_at": "2026-07-10T03:08:35Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "c145ef2d88b175b33358e1ff299139e57cfa3891",
+      "number": 69684,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "neutral": 1,
+          "skipped": 26,
+          "success": 56
+        },
+        "retrievable": true,
+        "total": 83
+      },
+      "chronology": {
+        "created_at": "2026-07-10T00:09:38Z",
+        "merged_at": "2026-07-10T21:36:57Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 0,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 1,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "c6144cf4c66c2d3041d6483d5a57b88f1f8f5950",
+      "number": 69682,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "neutral": 1,
+          "skipped": 27,
+          "success": 55
+        },
+        "retrievable": true,
+        "total": 83
+      },
+      "chronology": {
+        "created_at": "2026-07-09T21:14:27Z",
+        "merged_at": "2026-07-10T15:58:57Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "0adfa5d2eedf1a82aed2ced093f267a8086a343a",
+      "number": 69677,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 11,
+          "success": 89
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-09T20:48:55Z",
+        "merged_at": "2026-07-11T02:04:30Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 1,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "ee286edcc86f0711726bf4fdf606bdaf89ec7da7",
+      "number": 69674,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 8,
+          "success": 92
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-09T19:58:41Z",
+        "merged_at": "2026-07-11T01:59:21Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 26,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 16,
+        "total": 46,
+        "workflow": [
+          ".github/workflows/additional-prod-image-tests.yml",
+          ".github/workflows/ci-amd.yml",
+          ".github/workflows/ci-arm.yml",
+          ".github/workflows/openlineage-e2e-compat-tests.yml"
+        ]
+      },
+      "head_sha": "8b6f0d938499e3cf562631b0e9cf8423b6deee42",
+      "number": 69671,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 5,
+        "retrievable": true,
+        "total": 6
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 1,
+        "self_validating_paths": [
+          ".github/workflows/ci-amd.yml"
+        ],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "neutral": 1,
+          "skipped": 23,
+          "success": 76
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-09T19:02:34Z",
+        "merged_at": "2026-07-10T02:56:00Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 10,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 6,
+        "total": 16,
+        "workflow": []
+      },
+      "head_sha": "e8b9e642f334145231ffde82555fe6e47d33770f",
+      "number": 69669,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 37,
+          "success": 39
+        },
+        "retrievable": true,
+        "total": 76
+      },
+      "chronology": {
+        "created_at": "2026-07-09T16:54:07Z",
+        "merged_at": "2026-07-10T12:54:09Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 1,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "55d2062bba07d2c396403e749382e76cf1d56de8",
+      "number": 69664,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 60,
+          "success": 40
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-09T16:02:37Z",
+        "merged_at": "2026-07-09T18:40:31Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 6,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 6,
+        "workflow": []
+      },
+      "head_sha": "a41a7a8fab9f7d8dd63e8de9bea75d556c09d42f",
+      "number": 69663,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "neutral": 1,
+          "skipped": 59,
+          "success": 40
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-09T15:32:57Z",
+        "merged_at": "2026-07-10T08:17:38Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 1,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "d548532a4459b516d58e5308d069ab4a6cf29db6",
+      "number": 69662,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "neutral": 1,
+          "skipped": 46,
+          "success": 37
+        },
+        "retrievable": true,
+        "total": 84
+      },
+      "chronology": {
+        "created_at": "2026-07-09T13:12:24Z",
+        "merged_at": "2026-07-09T14:36:57Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 24,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 24,
+        "workflow": []
+      },
+      "head_sha": "5f7c41d3e322c2cab5b766592eef22097c5fb2d8",
+      "number": 69656,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 2,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 2
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 11,
+          "success": 89
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-09T09:43:19Z",
+        "merged_at": "2026-07-09T20:20:09Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 5,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 2,
+        "total": 7,
+        "workflow": []
+      },
+      "head_sha": "84fd74c156e851ffa01ae1744bc0d2bb4cd94f48",
+      "number": 69651,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "cancelled": 4,
+          "skipped": 67,
+          "success": 29
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-09T07:46:26Z",
+        "merged_at": "2026-07-10T01:32:43Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 3,
+        "workflow": []
+      },
+      "head_sha": "801519a14abcff7acfb3ec64dbdc82ff8be40047",
+      "number": 69650,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "cancelled": 4,
+          "skipped": 67,
+          "success": 29
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-09T07:41:40Z",
+        "merged_at": "2026-07-10T01:33:38Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 4,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 4,
+        "workflow": []
+      },
+      "head_sha": "1d182df20c314257531e174e66dc05661851fc72",
+      "number": 69649,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 50,
+          "success": 37
+        },
+        "retrievable": true,
+        "total": 87
+      },
+      "chronology": {
+        "created_at": "2026-07-09T07:18:13Z",
+        "merged_at": "2026-07-09T07:56:59Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "bc4ee7764bfe6043497ba08c61e8b5dd62fb89c3",
+      "number": 69648,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 50,
+          "success": 37
+        },
+        "retrievable": true,
+        "total": 87
+      },
+      "chronology": {
+        "created_at": "2026-07-09T07:07:03Z",
+        "merged_at": "2026-07-09T12:37:42Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "7e1666dadb11cc4357ca554055fda406a6df5b72",
+      "number": 69647,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 7
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 11,
+          "success": 89
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-09T06:08:52Z",
+        "merged_at": "2026-07-09T12:38:00Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 4,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 5,
+        "workflow": [
+          ".github/workflows/java-sdk-release-verify.yml"
+        ]
+      },
+      "head_sha": "39dd0827f699a145e0a311c51002cdb99e8abb05",
+      "number": 69643,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 1,
+        "retrievable": true,
+        "total": 6
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 1,
+        "self_validating_paths": [
+          ".github/workflows/java-sdk-release-verify.yml"
+        ],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "neutral": 1,
+          "skipped": 49,
+          "success": 38
+        },
+        "retrievable": true,
+        "total": 88
+      },
+      "chronology": {
+        "created_at": "2026-07-09T04:19:43Z",
+        "merged_at": "2026-07-09T06:09:15Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "b0d13103e1c20416b7a1afa46fbcd307eed2526a",
+      "number": 69637,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "neutral": 1,
+          "skipped": 27,
+          "success": 55
+        },
+        "retrievable": true,
+        "total": 83
+      },
+      "chronology": {
+        "created_at": "2026-07-09T04:10:53Z",
+        "merged_at": "2026-07-10T15:47:17Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 3,
+        "workflow": []
+      },
+      "head_sha": "7076ab8951315deb2da0f1e7d78fa4b587d15fa4",
+      "number": 69636,
+      "repo": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-08T13:17:21Z",
+        "merged_at": "2026-07-08T14:54:45Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "fae77fe104cb336d085bb0345b7831161a8b817b",
+      "number": 10401,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-07-05T08:08:55Z",
+        "merged_at": "2026-07-05T10:24:57Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 3,
+        "workflow": []
+      },
+      "head_sha": "0e250efbadb41d537a89a4aa63ff08a86283a817",
+      "number": 10397,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 1
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-29T14:53:10Z",
+        "merged_at": "2026-07-05T13:13:29Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 3,
+        "workflow": []
+      },
+      "head_sha": "5af351c85ae6ce3c9bc4072c7f4d5b3c10ebeaab",
+      "number": 10385,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-28T07:22:24Z",
+        "merged_at": "2026-07-05T12:38:49Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "7a0c7a4aa3c8c47868a5124ecbb265bbc66dea3d",
+      "number": 10383,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-26T17:38:33Z",
+        "merged_at": "2026-06-27T11:27:51Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "e6b196c1c20c1e71c23b135986e8c498d2e4b491",
+      "number": 10382,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 1,
+        "retrievable": true,
+        "total": 2
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 4
+        },
+        "retrievable": true,
+        "total": 4
+      },
+      "chronology": {
+        "created_at": "2026-06-25T13:05:57Z",
+        "merged_at": "2026-07-08T15:57:13Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "35ca8c6acf239bba7618ca698ba7ab1cdd93bfa6",
+      "number": 10378,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-20T20:44:21Z",
+        "merged_at": "2026-06-27T09:42:02Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 6,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 6,
+        "workflow": []
+      },
+      "head_sha": "6441c26d381c2e09bc4676f3b89bc627786ac285",
+      "number": 10369,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 1,
+        "retrievable": true,
+        "total": 3
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-20T17:30:02Z",
+        "merged_at": "2026-06-24T15:07:50Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "98d8469e48e2a3ab7c65d19073d3ae2558c3b45b",
+      "number": 10368,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-20T00:32:17Z",
+        "merged_at": "2026-06-24T14:48:10Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "44e22c7173ac848bac14e3460357ef47ef80a7de",
+      "number": 10366,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 4,
+        "retrievable": true,
+        "total": 14
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-19T10:48:57Z",
+        "merged_at": "2026-07-06T15:24:18Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 4,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 4,
+        "workflow": []
+      },
+      "head_sha": "c5a365df5640f7d0b510e7178535d667fb9fb93e",
+      "number": 10363,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 7,
+        "retrievable": true,
+        "total": 8
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-18T22:12:41Z",
+        "merged_at": "2026-06-30T16:08:04Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 0,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 7,
+        "workflow": [
+          ".github/workflows/codeql-analysis.yml",
+          ".github/workflows/docker.yml",
+          ".github/workflows/integration-tests.yml",
+          ".github/workflows/linter.yml",
+          ".github/workflows/python-package.yml",
+          ".github/workflows/semgrep.yml",
+          ".github/workflows/smoke-tests.yml"
+        ]
+      },
+      "head_sha": "12ed9c9f92e8af28cc064705614949c604401718",
+      "number": 10362,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 1,
+        "retrievable": true,
+        "self_validating": 5,
+        "self_validating_paths": [
+          ".github/workflows/codeql-analysis.yml",
+          ".github/workflows/docker.yml",
+          ".github/workflows/linter.yml",
+          ".github/workflows/python-package.yml",
+          ".github/workflows/semgrep.yml"
+        ],
+        "total": 6
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-16T02:22:09Z",
+        "merged_at": "2026-07-01T04:36:29Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 1,
+        "total": 4,
+        "workflow": []
+      },
+      "head_sha": "ce687d7d2c4f063cbae55821b48d41fd76ff9574",
+      "number": 10358,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-13T04:26:10Z",
+        "merged_at": "2026-07-07T15:50:35Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 3,
+        "workflow": []
+      },
+      "head_sha": "2fde7c4d81e00a7a8d50cb0ed2acadd36352e7d9",
+      "number": 10357,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "failure": 2,
+          "success": 98
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-11T13:47:54Z",
+        "merged_at": "2026-06-11T14:47:36Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "dd5b8436ca56dee471731e85cb85c2e4da0c99ff",
+      "number": 10354,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-11T00:55:29Z",
+        "merged_at": "2026-06-14T08:51:14Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "82db539ba18078dbeba8c1f8fd325412656f9bc4",
+      "number": 10352,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 1,
+        "retrievable": true,
+        "total": 1
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-10T01:04:51Z",
+        "merged_at": "2026-06-10T01:29:01Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "ced24700cc230dd30be24120a7e4f4dcece1e849",
+      "number": 10350,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-08T22:13:00Z",
+        "merged_at": "2026-06-14T09:05:48Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 0,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": [
+          ".github/workflows/python-package.yml"
+        ]
+      },
+      "head_sha": "131ffab9fa2c2fe5ae5154d85c675c6cb13c03cc",
+      "number": 10349,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 1,
+        "self_validating_paths": [
+          ".github/workflows/python-package.yml"
+        ],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-08T17:02:17Z",
+        "merged_at": "2026-06-10T08:39:50Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "3fbed0a1c268c8bdd325c60f8587ea6b35d9b294",
+      "number": 10348,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-08T15:48:49Z",
+        "merged_at": "2026-06-10T11:31:18Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 1,
+        "total": 3,
+        "workflow": []
+      },
+      "head_sha": "daf517f3f4bdd682d02b9a5d389ebbae5c298f3c",
+      "number": 10346,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 26,
+        "retrievable": true,
+        "total": 39
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-08T14:26:36Z",
+        "merged_at": "2026-06-08T16:48:46Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "a29cd5c5afa4c9f28abe74df867b9343fde97be4",
+      "number": 10345,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 4
+        },
+        "retrievable": true,
+        "total": 4
+      },
+      "chronology": {
+        "created_at": "2026-06-06T22:49:16Z",
+        "merged_at": "2026-06-08T15:50:30Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "5187fc397e4ceafd3afe3fd01f4ad3344576f469",
+      "number": 10343,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 1
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 3,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 3
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-06-05T11:23:12Z",
+        "merged_at": "2026-06-10T11:13:14Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "275d9ecbf2629d8a4656c62621a75266eebf3baf",
+      "number": 10342,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 8,
+        "retrievable": true,
+        "total": 9
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-05-31T05:23:00Z",
+        "merged_at": "2026-06-03T07:20:55Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 3,
+        "workflow": []
+      },
+      "head_sha": "8a21532b7597d59266e8c1e6d48c7d5e680fe984",
+      "number": 10335,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 3,
+        "retrievable": true,
+        "total": 7
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 10,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 10
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {},
+        "retrievable": true,
+        "total": 0
+      },
+      "chronology": {
+        "created_at": "2026-05-29T14:53:31Z",
+        "merged_at": "2026-06-03T07:47:09Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "39e01c3aa991bf7dfaeb5ccafb8b4ec301d5a3cc",
+      "number": 10334,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 0,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 0
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-05-21T21:18:42Z",
+        "merged_at": "2026-06-08T16:46:50Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "64fdbaf682383e9d4cef8d61e43be561a9521b44",
+      "number": 10324,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 2,
+        "retrievable": true,
+        "total": 4
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {},
+        "retrievable": true,
+        "total": 0
+      },
+      "chronology": {
+        "created_at": "2026-05-21T11:22:16Z",
+        "merged_at": "2026-07-09T14:31:55Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 3,
+        "workflow": []
+      },
+      "head_sha": "cba0cc918fdd03a530a64f9c0a75263d1853e094",
+      "number": 10323,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 3,
+        "retrievable": true,
+        "total": 5
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 0,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 0
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-05-21T05:00:05Z",
+        "merged_at": "2026-05-25T05:31:20Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 3,
+        "workflow": []
+      },
+      "head_sha": "ce0704e9b32037c361f7277d0982a23cf09ea71c",
+      "number": 10321,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 8,
+        "retrievable": true,
+        "total": 10
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-05-15T15:29:03Z",
+        "merged_at": "2026-05-20T12:26:36Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 2,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 2,
+        "workflow": []
+      },
+      "head_sha": "74dae9977ce2f728ce3610cce5d6c10d72d9a33c",
+      "number": 10313,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 6,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 6
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {},
+        "retrievable": true,
+        "total": 0
+      },
+      "chronology": {
+        "created_at": "2026-05-13T16:19:58Z",
+        "merged_at": "2026-05-14T04:34:35Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "6ceb2deadfb8b6f10f18301e34929af2e908ca8c",
+      "number": 10309,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 0,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 0
+      }
+    },
+    {
+      "author": {
+        "bot": true
+      },
+      "checks": {
+        "conclusions": {
+          "success": 100
+        },
+        "retrievable": true,
+        "total": 100
+      },
+      "chronology": {
+        "created_at": "2026-05-07T22:19:08Z",
+        "merged_at": "2026-05-12T14:55:43Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 1,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 1,
+        "workflow": []
+      },
+      "head_sha": "8457a816e83ec9caadfff196d688ca44b4c5a355",
+      "number": 10306,
+      "repo": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 1
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 5,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 5
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-11T13:37:35Z",
+        "merged_at": "2026-07-11T13:42:01Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 8,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 15,
+        "total": 23,
+        "workflow": []
+      },
+      "head_sha": "0a05e1695f9c029fa8965df56974d417762c21c4",
+      "number": 51,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-11T13:26:55Z",
+        "merged_at": "2026-07-11T13:29:31Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 5,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 1,
+        "total": 6,
+        "workflow": []
+      },
+      "head_sha": "fca1792cced149e50275464c31abc00c351488fd",
+      "number": 50,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-11T13:10:58Z",
+        "merged_at": "2026-07-11T13:29:00Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 22,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 15,
+        "total": 37,
+        "workflow": []
+      },
+      "head_sha": "3654786784770357033f141940980e75ffd4fe60",
+      "number": 49,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-11T08:00:54Z",
+        "merged_at": "2026-07-11T08:01:24Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 19,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 14,
+        "total": 34,
+        "workflow": [
+          ".github/workflows/aos-workflow-gate-self.yml"
+        ]
+      },
+      "head_sha": "8e80b86e0c91270e9328e4ce27e60a6e79e5de63",
+      "number": 48,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 2,
+        "retrievable": true,
+        "self_validating": 2,
+        "self_validating_paths": [
+          ".github/workflows/aos-workflow-gate-self.yml"
+        ],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-11T07:52:56Z",
+        "merged_at": "2026-07-11T07:53:50Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 23,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 17,
+        "total": 40,
+        "workflow": []
+      },
+      "head_sha": "0699ad2ab1a0b19f949a63ce2722140f5c945acc",
+      "number": 47,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-10T20:54:48Z",
+        "merged_at": "2026-07-10T20:55:21Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 19,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 16,
+        "total": 35,
+        "workflow": []
+      },
+      "head_sha": "a56f2be70877f45c112c97ff1517d0a965c187e2",
+      "number": 46,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-10T20:48:54Z",
+        "merged_at": "2026-07-10T20:49:58Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 16,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 12,
+        "total": 28,
+        "workflow": []
+      },
+      "head_sha": "3f456833d9e97cd3fa598b48bd92071e3939931c",
+      "number": 45,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-10T20:42:31Z",
+        "merged_at": "2026-07-10T20:43:26Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 24,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 7,
+        "total": 31,
+        "workflow": []
+      },
+      "head_sha": "f1f9a2875c0094e5c2295f500f32af3ddf58c604",
+      "number": 44,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-10T20:31:13Z",
+        "merged_at": "2026-07-10T20:33:02Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 17,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 7,
+        "total": 24,
+        "workflow": []
+      },
+      "head_sha": "721e618cd665a82fa38264ddf38b6ed2dba91481",
+      "number": 43,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-10T20:21:42Z",
+        "merged_at": "2026-07-10T20:23:53Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 18,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 3,
+        "total": 21,
+        "workflow": []
+      },
+      "head_sha": "0f986577cab665bdf3f3ac2b0275750fc7dd1cd2",
+      "number": 42,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 6
+      },
+      "chronology": {
+        "created_at": "2026-07-09T19:58:25Z",
+        "merged_at": "2026-07-10T19:35:26Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 32,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 7,
+        "total": 41,
+        "workflow": [
+          ".github/workflows/aos-workflow-gate-no-checkout.yml",
+          ".github/workflows/aos-workflow-gate-self.yml"
+        ]
+      },
+      "head_sha": "3acfe519ebae4adb961d53c3671778bdbc55381b",
+      "number": 41,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 2,
+        "retrievable": true,
+        "self_validating": 2,
+        "self_validating_paths": [
+          ".github/workflows/aos-workflow-gate-self.yml"
+        ],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-09T19:24:04Z",
+        "merged_at": "2026-07-09T19:25:29Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 33,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 2,
+        "total": 35,
+        "workflow": []
+      },
+      "head_sha": "46259671f80369f7e3aaab1ed2fdc8aa2aa0d9ef",
+      "number": 40,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-09T19:05:37Z",
+        "merged_at": "2026-07-09T19:08:26Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 17,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 2,
+        "total": 19,
+        "workflow": []
+      },
+      "head_sha": "9b5f750876ac9d78241e6b320249b9c80e6d2ce3",
+      "number": 39,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-09T18:54:23Z",
+        "merged_at": "2026-07-09T18:56:25Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 17,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 2,
+        "total": 19,
+        "workflow": []
+      },
+      "head_sha": "f23e5721e1442ff14fef2a381ab7ceb4f156aca5",
+      "number": 38,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-09T18:38:04Z",
+        "merged_at": "2026-07-09T18:40:18Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 23,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 2,
+        "total": 25,
+        "workflow": []
+      },
+      "head_sha": "8ebeadc2a2c6c29af43e17c6833f67960a67ae13",
+      "number": 37,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-09T18:11:32Z",
+        "merged_at": "2026-07-09T18:13:40Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 18,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 2,
+        "total": 20,
+        "workflow": []
+      },
+      "head_sha": "72dbb0bffaf1f4bf469f8832de361691725c987a",
+      "number": 36,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-08T19:13:52Z",
+        "merged_at": "2026-07-08T19:15:39Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 15,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 2,
+        "total": 17,
+        "workflow": []
+      },
+      "head_sha": "6e025476e022d672d4800695c6dc27e15dff1c79",
+      "number": 35,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-08T18:52:26Z",
+        "merged_at": "2026-07-08T18:56:50Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 19,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 3,
+        "total": 22,
+        "workflow": []
+      },
+      "head_sha": "2bc35d1848ae381b5edf2aac55155034728801b8",
+      "number": 34,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T16:43:07Z",
+        "merged_at": "2026-07-07T16:45:46Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 6,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 6,
+        "workflow": []
+      },
+      "head_sha": "5d1281572bf9835f27099717d2fe8441a3d6bc4d",
+      "number": 33,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T16:03:31Z",
+        "merged_at": "2026-07-07T16:05:03Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 6,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 6,
+        "workflow": []
+      },
+      "head_sha": "89901ac54cbbe74b7dd47491a9ed0ee5bba09f6f",
+      "number": 32,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T00:53:51Z",
+        "merged_at": "2026-07-07T00:58:12Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 5,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 5,
+        "workflow": []
+      },
+      "head_sha": "18e6bbce38f117a15b27e14be1e557e0787a3c6b",
+      "number": 31,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T00:49:17Z",
+        "merged_at": "2026-07-07T00:51:05Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 3,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 4,
+        "workflow": [
+          ".github/workflows/aos-workflow-gate-release-gate.yml"
+        ]
+      },
+      "head_sha": "1d2f56a29624a7e6bb153843f5329695f399e7c3",
+      "number": 30,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T00:32:41Z",
+        "merged_at": "2026-07-07T00:34:14Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 4,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 4,
+        "workflow": []
+      },
+      "head_sha": "bba11504c8cd609e10ae626c0bd0729f41d7d47d",
+      "number": 29,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "holdout",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T00:29:20Z",
+        "merged_at": "2026-07-07T00:30:55Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 5,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 5,
+        "workflow": []
+      },
+      "head_sha": "2c613b14ccc0a89a20ac3bfd195f9f01191cc9a3",
+      "number": 28,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T00:24:34Z",
+        "merged_at": "2026-07-07T00:25:58Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 4,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 4,
+        "workflow": []
+      },
+      "head_sha": "d723d05b6c3e9702fc2b171806bdc0f61d841f43",
+      "number": 27,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T00:21:16Z",
+        "merged_at": "2026-07-07T00:22:39Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 11,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 1,
+        "total": 13,
+        "workflow": [
+          ".github/workflows/aos-workflow-gate-self.yml"
+        ]
+      },
+      "head_sha": "144c92526cd9235ec254d1ba77be45d21087b4d5",
+      "number": 26,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 2,
+        "retrievable": true,
+        "self_validating": 2,
+        "self_validating_paths": [
+          ".github/workflows/aos-workflow-gate-self.yml"
+        ],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T00:14:46Z",
+        "merged_at": "2026-07-07T00:16:35Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 16,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 2,
+        "total": 18,
+        "workflow": []
+      },
+      "head_sha": "85664d8cadc03b73e6febdb6446ef4d0188da7a5",
+      "number": 25,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-07T00:07:56Z",
+        "merged_at": "2026-07-07T00:09:47Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 26,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 3,
+        "total": 29,
+        "workflow": []
+      },
+      "head_sha": "2d38c13bbd80c80204e6c8b18b8d5d23718e6b20",
+      "number": 24,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-05T13:34:49Z",
+        "merged_at": "2026-07-05T13:36:59Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 11,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 11,
+        "workflow": []
+      },
+      "head_sha": "3f166868021884ab42f80fd4e018623a8755d610",
+      "number": 23,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    },
+    {
+      "author": {
+        "bot": false
+      },
+      "checks": {
+        "conclusions": {
+          "skipped": 2,
+          "success": 6
+        },
+        "retrievable": true,
+        "total": 8
+      },
+      "chronology": {
+        "created_at": "2026-07-05T12:30:03Z",
+        "merged_at": "2026-07-05T12:31:51Z"
+      },
+      "commits": {
+        "count": null
+      },
+      "files": {
+        "dependency_pins_count": 0,
+        "other_count": 10,
+        "retrievable": true,
+        "scanner_config": [],
+        "test_harness_count": 0,
+        "total": 10,
+        "workflow": []
+      },
+      "head_sha": "9c064fc8c95d21453d553dc81e9a935ccfa54630",
+      "number": 22,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "review_comments": {
+        "ci_related": 0,
+        "retrievable": true,
+        "total": 0
+      },
+      "split": "discovery",
+      "workflow_runs": {
+        "independent": 4,
+        "retrievable": true,
+        "self_validating": 0,
+        "self_validating_paths": [],
+        "total": 4
+      }
+    }
+  ],
+  "schema_version": "discovery-analysis-v0"
+}

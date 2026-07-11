@@ -1,8 +1,10 @@
 ## Gate decision: WARN
 
 **What happened:** Gate WARN: required checks satisfied; 1 advisory warning(s).
+**Scope:** 1 required and policy-named advisory source(s) on RafineriaAI/aos-workflow-gate@9c064fc8c95d; not full merge-readiness
+**Freshness:** observation time not recorded; collection complete
+**Effect:** advisory — recorded evidence only; a BLOCK verdict does not fail the job
 **Signals:** 1 required (1 successful) · 3 advisory (1 warning(s))
-**Can block this job:** no
 **Next:** advisory findings warn but never block; review the source's own report and decide
 
 | Field | Value |
@@ -14,11 +16,11 @@
 | Policy | `collected-advisory` (advisory) |
 | Policy digest | `sha256:307c1f8738f94d966f3911f67d927ac749182aa544390fa8928105ddbc8d6237` |
 | Input bundle digest | `sha256:54949f798a0dbd4e64765c515b0ae828dbc61fb6ed4c9ceb66e174ecc61bfc7f` |
-| Record digest | `sha256:89abcd74a773a88e941674e8da5c87cf52fdded608401d21e904432f09e17614` |
+| Record digest | `sha256:64bd5b6ae4d780960cd65a7cb203ff6b3d8aa36e4c2b837752f8d52a269ce107` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
-### Reasons
+### Top gaps
 
 - WARN `advisory_warning` AOS Workflow Gate Self / no-checkout: advisory source status is 'skipped'
   - Hint: advisory findings warn but never block; review the source's own report and decide
