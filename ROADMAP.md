@@ -85,6 +85,36 @@ the only sense this repository claims: every advertised behavior is
 implemented, tested, replayable offline, and bounded by an explicit
 claim boundary.
 
+## Pre-pilot correctness and trust program (v0.30+)
+
+Status: in progress. A maintainer-directed program executed inside the
+scope lock's own terms (hardening, correctness fixes, documentation,
+and claim-boundary work; no new commands or contracts):
+
+1. GitHub semantic, scope, and freshness correctness — dual-track
+   requirement states (`github_equivalent` next to the gate's evidence
+   state), rulesets and classic protection unioned, merge_group
+   subjects, `observed_at` freshness, and no PASS on an incomplete or
+   unknown collection.
+2. Workflow state and expected-run visibility — workflows that never
+   started become visible; `missing` is only ever relative to an
+   explicit expectation.
+3. Scope-aware low-noise decision output — one shared diagnosis
+   projection: scope, freshness, effect, at most three gaps, one
+   dominant problem, one next action; quiet PASS.
+4. Evidence-led pain discovery — a frozen, reproducible corpus of
+   public pull requests with discovery/holdout separation and recorded
+   negative results.
+5. Trusted verifier-change awareness — evidence generated solely by a
+   mechanism the same change modifies is flagged as not independent
+   (advisory by default; no model output in any verdict path).
+6. Automated contrast proof — replayable baseline-vs-gate case studies
+   generated from the corpus, without selecting only favorable results.
+7. Pre-release trust package — threat model, rollback, claim
+   boundaries, pinning, and a clean-room install proof.
+8. Internal red-team and pilot readiness gate — adversarial regression
+   matrix and an explicit GO/NO-GO readiness criterion.
+
 ## Phase 4: evidence hardening
 
 Status: partially pulled forward. The unsigned in-toto Statement export

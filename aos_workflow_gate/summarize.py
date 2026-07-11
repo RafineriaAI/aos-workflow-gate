@@ -46,6 +46,11 @@ REPAIR_HINTS = {
         "the signal bundle does not match schema draft-0; compare with "
         "examples/github-pr-signal-bundle.json"
     ),
+    "incomplete_collection": (
+        "the collection did not observe everything that may exist for "
+        "this commit; re-collect with a larger wait/API budget, or "
+        "accept the record as evidence of a bounded observation"
+    ),
 }
 
 

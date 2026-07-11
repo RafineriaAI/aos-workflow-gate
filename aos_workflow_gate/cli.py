@@ -48,6 +48,7 @@ from .collect import (
     Budget,
     build_bundle,
     build_generated_policy,
+    collection_timestamp,
     github_context_snapshot,
     resolve_github_context,
     wait_for_required,
@@ -651,6 +652,7 @@ def _cmd_collect(args: argparse.Namespace) -> int:
         status = "wait_timeout"
     collection: dict[str, Any] = {
         "status": status,
+        "observed_at": collection_timestamp(),
         "api_calls": budget.api_calls,
         "waited_seconds": round(waited, 1),
     }
@@ -789,9 +791,9 @@ def _cmd_run(args: argparse.Namespace) -> int:
             and not args.policy
             and not args.policy_pack
         ):
-            branch = os.environ.get("GITHUB_BASE_REF") or os.environ.get(
-                "GITHUB_REF_NAME"
-            )
+            # PR events: the base branch; merge_group events: the queue's
+            # base branch (never the ephemeral queue ref); push: the ref
+            branch = context.get("branch")
             if branch:
                 parts = repository.rstrip("/").rsplit("/", 2)
                 slug = (
@@ -857,6 +859,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
             status = "wait_timeout"
         collection: dict[str, Any] = {
             "status": status,
+            "observed_at": collection_timestamp(),
             "api_calls": budget.api_calls,
             "waited_seconds": round(waited, 1),
         }
@@ -867,6 +870,10 @@ def _cmd_run(args: argparse.Namespace) -> int:
                 discovered["controls"]
             )
             collection["rules_digest"] = discovered["rules_digest"]
+            collection["protection_digest"] = discovered[
+                "protection_digest"
+            ]
+            collection["github_baseline"] = discovered["github_baseline"]
             collection["protection_source"] = discovered[
                 "protection_source"
             ]
@@ -1023,9 +1030,13 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         status = "wait_timeout"
     collection: dict[str, Any] = {
         "status": status,
+        "observed_at": collection_timestamp(),
         "api_calls": budget.api_calls,
         "waited_seconds": round(snapshot["waited_seconds"], 1),
         "rules_digest": snapshot["rules_digest"],
+        "protection_digest": snapshot["protection_digest"],
+        "protection_source": snapshot["protection_source"],
+        "github_baseline": snapshot["github_baseline"],
         "required_controls": [
             {
                 "context": control["context"],
@@ -1097,8 +1108,22 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
     print(f"record: {args.out}")
     print(
         f"Merge protection: {len(required_ids)} required status check(s) "
-        f"enforced by active branch rules on '{pr['base_ref']}'."
+        f"enforced by {snapshot['protection_source']} on "
+        f"'{pr['base_ref']}'."
     )
+    baseline = snapshot["github_baseline"]
+    if baseline == "clear" and decision.verdict != "PASS":
+        print(
+            "GitHub baseline: every required status check would pass "
+            "under GitHub's own semantics (neutral and skipped count as "
+            "passing there); this gate grades the evidence instead — "
+            "the divergence is recorded per control in "
+            "collection.requirements."
+        )
+    elif baseline != "clear":
+        print(
+            f"GitHub baseline (status checks only): {baseline}."
+        )
     if not required_ids:
         print(
             "Effect: nothing in the branch rules blocks this merge on "

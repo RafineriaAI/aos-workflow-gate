@@ -410,6 +410,7 @@ def build_generated_policy(
             "malformed_input": "BLOCK",
             "advisory_warning": "WARN",
             "no_required_sources": "WARN",
+            "incomplete_collection": "WARN",
         },
         "required_sources": required_ids,
         "advisory_sources": [
@@ -418,11 +419,33 @@ def build_generated_policy(
     }
 
 
+_MERGE_QUEUE_REF_PREFIX = "gh-readonly-queue/"
+
+
+def _merge_queue_base(ref_name: str) -> str | None:
+    """Base branch encoded in a merge-queue ref name.
+
+    Merge queue refs look like ``gh-readonly-queue/<base>/pr-<n>-<sha>``;
+    the base branch may itself contain slashes, so the parse anchors on
+    the trailing ``/pr-`` segment.
+    """
+    if not ref_name.startswith(_MERGE_QUEUE_REF_PREFIX):
+        return None
+    remainder = ref_name[len(_MERGE_QUEUE_REF_PREFIX):]
+    base = remainder.rsplit("/pr-", 1)[0]
+    return base or None
+
+
 def resolve_github_context() -> dict[str, Any]:
     """Resolve subject identity from GitHub Actions environment variables.
 
-    For pull_request events the head commit is taken from the event payload,
-    because ``GITHUB_SHA`` points at an ephemeral merge commit there.
+    For pull_request events the head commit is taken from the event
+    payload, because ``GITHUB_SHA`` points at an ephemeral merge commit
+    there. For merge_group events the merge-group head is the commit the
+    queue's checks actually run on, and the base branch (whose rules
+    apply) comes from the merge group payload or the queue ref name —
+    never from ``GITHUB_REF_NAME`` verbatim, which names the ephemeral
+    queue ref.
     """
     repository = os.environ.get("GITHUB_REPOSITORY")
     if not repository:
@@ -432,7 +455,9 @@ def resolve_github_context() -> dict[str, Any]:
         repository = f"{server_url.rstrip('/')}/{repository}"
     sha = os.environ.get("GITHUB_SHA")
     ref = os.environ.get("GITHUB_REF")
+    event_name = os.environ.get("GITHUB_EVENT_NAME")
     pull_request: int | None = None
+    branch: str | None = os.environ.get("GITHUB_BASE_REF") or None
 
     event_path = os.environ.get("GITHUB_EVENT_PATH")
     if event_path and os.path.isfile(event_path):
@@ -448,6 +473,17 @@ def resolve_github_context() -> dict[str, Any]:
                 sha = head["sha"]
             if isinstance(pr.get("number"), int):
                 pull_request = pr["number"]
+        merge_group = event.get("merge_group")
+        if isinstance(merge_group, dict):
+            if isinstance(merge_group.get("head_sha"), str):
+                sha = merge_group["head_sha"]
+            base_ref = merge_group.get("base_ref")
+            if isinstance(base_ref, str) and base_ref:
+                branch = base_ref.removeprefix("refs/heads/")
+
+    ref_name = os.environ.get("GITHUB_REF_NAME") or ""
+    if branch is None:
+        branch = _merge_queue_base(ref_name) or (ref_name or None)
 
     if not sha:
         raise InputError("cannot resolve a commit SHA from the GitHub context")
@@ -456,12 +492,24 @@ def resolve_github_context() -> dict[str, Any]:
         "sha": sha,
         "ref": ref,
         "pull_request": pull_request,
+        "event_name": event_name,
+        "branch": branch,
     }
 
 
 def _completed_at(run: dict[str, Any]) -> str:
     value = run.get("completed_at")
     return value if isinstance(value, str) else ""
+
+
+def collection_timestamp() -> str:
+    """UTC timestamp of the observation, committed into the bundle.
+
+    Freshness is evidence: a decision record is a statement about what
+    was observable at this moment, and the moment itself must be part of
+    the digest-anchored bundle rather than folklore around it.
+    """
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 
 _CONTEXT_ENV_KEYS = (

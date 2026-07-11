@@ -281,10 +281,11 @@ def test_classic_protection_details_unavailable(
         "urlopen",
         lambda request, timeout=None: _FakeResponse({"protected": True}),
     )
-    protected, controls, details = fetch_classic_protection(
+    classic = fetch_classic_protection(
         "https://api.github.com", "octo/repo", "main",
         token=None, budget=Budget(),
     )
-    assert protected is True
-    assert controls == []
-    assert details is False
+    assert classic["protected"] is True
+    assert classic["controls"] == []
+    assert classic["details_available"] is False
+    assert classic["strict"] is False

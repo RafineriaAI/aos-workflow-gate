@@ -75,9 +75,13 @@ rejection.
   waits. A wait that ends incomplete is not an error: the missing required
   check fails closed, and the reason is recorded.
 - **Collection status is evidence.** The bundle carries a `collection`
-  object (status complete/truncated/wait_timeout, API calls used, seconds
-  waited, incomplete required checks); the record's `input_bundle_digest`
-  anchors it, so operational context is replay-verifiable.
+  object (status complete/truncated/wait_timeout, an `observed_at`
+  freshness timestamp, API calls used, seconds waited, incomplete
+  required checks); the record's `input_bundle_digest` anchors it, so
+  operational context is replay-verifiable. A collection that did not
+  end `complete` adds an `incomplete_collection` reason (WARN by
+  default, policy-tunable to BLOCK), so an incomplete or unknown
+  observation can never yield a plain `PASS`.
 - **`can_block` in the record.** Every decision record states whether the
   evaluation, as configured, could have failed the calling process on
   `BLOCK` — a reader can tell an enforcing gate from an advisory one

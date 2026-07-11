@@ -22,7 +22,7 @@ natively; GitLab CI and Jenkins via the platform-neutral CLI.
 ## How it works (60 seconds)
 
 1. Add the action — no checkout, no config
-   (`uses: RafineriaAI/aos-workflow-gate@v0.29.0`).
+   (`uses: RafineriaAI/aos-workflow-gate@v0.30.0`).
 2. The job summary answers: what happened, can this gate block, what to
    fix next.
 3. Name your `required-checks` and set `enforce: "true"` when ready —
