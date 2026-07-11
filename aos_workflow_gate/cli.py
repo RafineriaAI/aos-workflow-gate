@@ -69,6 +69,7 @@ from .requirements import (
 from .source_contract import load_external_sources
 from .summarize import render_html, render_markdown, verify_bindings
 from .version import __version__
+from .workflow_state import collect_workflow_visibility
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -893,6 +894,10 @@ def _cmd_run(args: argparse.Namespace) -> int:
             snapshot = github_context_snapshot()
             collection["context_snapshot"] = snapshot
             collection["context_digest"] = canonical.digest(snapshot)
+        collection["workflow_visibility"] = collect_workflow_visibility(
+            repository, sha, token=token, api_url=api_url, budget=budget
+        )
+        _print_workflow_visibility(collection["workflow_visibility"])
         extra_sources = [sarif_source(Path(p)) for p in args.sarif]
         if args.scorecard:
             extra_sources.append(scorecard_source(Path(args.scorecard)))
@@ -981,6 +986,35 @@ def _cmd_run(args: argparse.Namespace) -> int:
     return 0
 
 
+def _print_workflow_visibility(report: dict[str, Any]) -> None:
+    """One line, only when there is something the dashboard cannot show."""
+    if not report.get("available"):
+        print(
+            "Workflow visibility unavailable (recorded in the bundle): "
+            f"{report.get('unavailable', 'unknown reason')}"
+        )
+        return
+    not_started = report.get("not_started") or []
+    if not not_started:
+        return
+    awaiting = sum(
+        1 for unit in not_started if unit.get("state") == "action_required"
+    )
+    names = ", ".join(
+        str(
+            unit.get("workflow_name")
+            or unit.get("app_slug")
+            or unit.get("check_suite_id")
+        )
+        for unit in not_started[:3]
+    )
+    detail = f" ({awaiting} awaiting approval/action)" if awaiting else ""
+    print(
+        f"Workflow visibility: {len(not_started)} execution unit(s) on "
+        f"this commit have not started{detail}: {names}"
+    )
+
+
 def _cmd_check_pr(args: argparse.Namespace) -> int:
     """Instant merge-protection check: PR URL in, decision record out."""
     coords = parse_pr_url(args.pr_url)
@@ -1053,6 +1087,10 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
             "from_fork": pr["from_fork"],
         },
     }
+    collection["workflow_visibility"] = collect_workflow_visibility(
+        coords["repository"], pr["head_sha"],
+        token=token, api_url=coords["api_url"], budget=budget,
+    )
     if incomplete:
         collection["incomplete_required"] = incomplete
     if still_running:
@@ -1149,6 +1187,7 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
             "up to date with the base; this verdict is head-SHA-scoped "
             "and does not check that."
         )
+    _print_workflow_visibility(collection["workflow_visibility"])
     if still_running:
         print(
             "Still running (fails closed as missing until finished; use "

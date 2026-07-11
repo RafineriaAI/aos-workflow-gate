@@ -82,6 +82,16 @@ rejection.
   end `complete` adds an `incomplete_collection` reason (WARN by
   default, policy-tunable to BLOCK), so an incomplete or unknown
   observation can never yield a plain `PASS`.
+- **Expected-run visibility.** Decision flows (`run`, `check-pr`) also
+  read the commit's check suites and Actions workflow runs (two more
+  read-only GETs, same budget): a workflow that never started — queued,
+  or `action_required` awaiting approval — is recorded in
+  `collection.workflow_visibility` instead of staying invisible to the
+  check-runs stream. Units are keyed by check-suite id so nothing is
+  double counted; an unreadable stream degrades to `available: false`
+  with the reason recorded. Visibility never grades: `missing` exists
+  only relative to an explicit expectation (a branch-rule control or an
+  operator-named required check).
 - **`can_block` in the record.** Every decision record states whether the
   evaluation, as configured, could have failed the calling process on
   `BLOCK` — a reader can tell an enforcing gate from an advisory one
