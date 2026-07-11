@@ -149,7 +149,8 @@
     "tests/test_collection_consistency.py",
     "tests/test_adversarial_corpus.py",
     "tests/test_backward_compat.py",
-    "tests/test_evidence_integrity_policy.py"
+    "tests/test_evidence_integrity_policy.py",
+    "tests/test_remediation_coverage.py"
   ],
   "assets": [
     "docs/assets/banner.png"
