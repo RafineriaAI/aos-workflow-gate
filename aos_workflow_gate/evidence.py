@@ -44,6 +44,26 @@ def observation_from_bundle(bundle: Any) -> dict[str, Any] | None:
     ):
         if key in collection:
             observation[key] = collection[key]
+    verifier = collection.get("verifier_change")
+    if isinstance(verifier, dict):
+        compact_verifier: dict[str, Any] = {
+            "available": bool(verifier.get("analyzed"))
+        }
+        if verifier.get("analyzed"):
+            compact_verifier.update(
+                {
+                    "non_independent_sources": len(
+                        verifier.get("non_independent_sources") or []
+                    ),
+                    "routine_bump_excluded": bool(
+                        verifier.get("routine_bump_excluded")
+                    ),
+                    "acknowledged": bool(verifier.get("acknowledged")),
+                }
+            )
+        elif verifier.get("unavailable"):
+            compact_verifier["unavailable"] = str(verifier["unavailable"])
+        observation["verifier_change"] = compact_verifier
     visibility = collection.get("workflow_visibility")
     if isinstance(visibility, dict):
         compact: dict[str, Any] = {

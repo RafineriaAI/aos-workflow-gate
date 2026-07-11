@@ -158,22 +158,80 @@ def _collection_reasons(collection: Any, policy: Policy) -> list[Reason]:
     PASS. Bundles that record no collection at all make no completeness
     claim and are unaffected.
     """
-    if not isinstance(collection, dict) or "status" not in collection:
+    if not isinstance(collection, dict):
         return []
-    status = str(collection.get("status"))
-    if status == "complete":
+    reasons: list[Reason] = []
+    if "status" in collection:
+        status = str(collection.get("status"))
+        if status != "complete":
+            reasons.append(
+                Reason(
+                    "incomplete_collection",
+                    policy.rules.get("incomplete_collection", "WARN"),
+                    None,
+                    f"collection ended '{status}', not 'complete': "
+                    "signals that exist for this commit may be absent "
+                    "from the bundle, so a clean result cannot be read "
+                    "as a complete PASS",
+                )
+            )
+    reasons.extend(_verifier_change_reasons(collection, policy))
+    return reasons
+
+
+def _verifier_change_reasons(
+    collection: dict[str, Any], policy: Policy
+) -> list[Reason]:
+    """Translate verifier-change evidence into policy reasons.
+
+    Missing or incomplete analysis is itself policy-visible. Operator
+    acknowledgement remains evidence only and cannot suppress a reason.
+    """
+    analysis = collection.get("verifier_change")
+    if not isinstance(analysis, dict):
         return []
+    if not analysis.get("analyzed"):
+        detail = str(
+            analysis.get("unavailable")
+            or "verifier-change analysis did not complete"
+        )
+        return [
+            Reason(
+                "verifier_change_unavailable",
+                policy.rules.get("verifier_change_unavailable", "WARN"),
+                None,
+                f"verifier-change evidence is unavailable: {detail}; "
+                "a clean result cannot assert verifier independence",
+            )
+        ]
+    if analysis.get("routine_bump_excluded"):
+        return []
+
+    affected = analysis.get("non_independent_sources")
+    if not isinstance(affected, list) or not affected:
+        return []
+    shown = ", ".join(str(name) for name in affected[:3])
+    more = len(affected) - min(len(affected), 3)
+    acknowledgement = (
+        " An operator acknowledgement is recorded as evidence but does "
+        "not authorize or suppress this reason."
+        if analysis.get("acknowledged")
+        else ""
+    )
     return [
         Reason(
-            "incomplete_collection",
-            policy.rules.get("incomplete_collection", "WARN"),
+            "non_independent_evidence",
+            policy.rules.get("non_independent_evidence", "WARN"),
             None,
-            f"collection ended '{status}', not 'complete': signals that "
-            "exist for this commit may be absent from the bundle, so a "
-            "clean result cannot be read as a complete PASS",
+            f"{len(affected)} source(s) were produced by a workflow "
+            f"this change itself modifies ({shown}"
+            + (f", and {more} more" if more else "")
+            + "): the change grades itself with the grader it edited. "
+            "Require evidence from a verifier governed outside this "
+            "change."
+            + acknowledgement,
         )
     ]
-
 
 def _apply_rules(
     sources: list[Source],

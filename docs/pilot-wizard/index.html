@@ -135,7 +135,8 @@ function assess(){
     .split(",").map(function(s){return s.trim();})
     .filter(function(s){return s&&s.indexOf('"')===-1;});
   var wf="name: AOS Self-Test\n\non:\n  pull_request:\n\npermissions:\n"
-    +"  contents: read\n  checks: read\n\njobs:\n  self-test:\n"
+    +"  contents: read\n  checks: read\n  actions: read\n"
+    +"  pull-requests: read\n  statuses: read\n\njobs:\n  self-test:\n"
     +"    runs-on: ubuntu-latest\n    steps:\n"
     +"      # Pinned from actions/setup-python@v6 on 2026-07-03.\n"
     +"      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1\n"

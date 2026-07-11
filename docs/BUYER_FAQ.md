@@ -4,12 +4,12 @@ Short answers for security reviewers and buyers. Where a claim can be
 verified independently, [TRUST.md](TRUST.md) shows how.
 
 **What data leaves my environment?**
-None through the gate itself. Self-Test Mode calls your own GitHub host's
-check-runs API with your own workflow token; everything else runs locally
-in your runner. There is no telemetry.
+None through the gate itself. Self-Test Mode makes read-only calls to
+your configured GitHub host for repository, PR, checks, Actions, rules,
+and statuses data using your workflow token. There is no telemetry.
 
 **What permissions does it need?**
-`contents: read`, plus `checks: read` for Self-Test Mode. No write scopes.
+`contents: read`, `checks: read`, `actions: read`, `pull-requests: read`, and `statuses: read` for Self-Test Mode. No write scopes.
 Explicit-bundle mode needs no API access at all.
 
 **What is free and what is paid?**

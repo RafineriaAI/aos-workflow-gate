@@ -11,19 +11,27 @@ and the GitHub check-runs collector.
 Zero-config and explicit modes are documented in the [README](../README.md).
 
 Required token permissions: a workflow `permissions:` block sets every
-unlisted scope to `none`, so declare both scopes the gate needs:
+unlisted scope to `none`, so declare every read scope used by zero-config:
 
 ```yaml
 permissions:
   contents: read
   checks: read
+  actions: read
+  pull-requests: read
+  statuses: read
 ```
 
-- `contents: read` — checkout and repository access.
-- `checks: read` — zero-config mode reads the commit's check runs through
-  the workflow token (`github.token`). Public repositories are readable
-  without it, but declare it anyway so the same workflow works on private
-  repositories.
+- `contents: read` — repository and branch access.
+- `checks: read` — check runs and check suites.
+- `actions: read` — workflow-run visibility for the exact SHA.
+- `pull-requests: read` — PR metadata and the changed-file set.
+- `statuses: read` — legacy commit statuses.
+
+Public repositories may allow unauthenticated reads; private repositories
+require the declared scopes. Reading classic branch-protection details may
+still be unavailable to `GITHUB_TOKEN`; the gate records that surface as
+unverifiable instead of interpreting it as unprotected.
 
 Explicit-bundle mode does not call the API and needs only `contents: read`.
 No `write` scope of any kind is required; the gate is read-only by design.
@@ -36,9 +44,9 @@ The collector works against GHES out of the box:
   `GITHUB_SERVER_URL` environment variables are used automatically; the
   subject repository is recorded as the full project URL so evidence stays
   unambiguous across hosts.
-- The same `permissions:` block applies (`contents: read` plus
-  `checks: read` for zero-config mode); GHES repositories are typically
-  private, so `checks: read` is effectively mandatory there.
+- The same complete read-only `permissions:` block applies. GHES
+  repositories are typically private, so every listed scope is required
+  for full zero-config collection.
 - Outside workflows, pass `--api-url https://<ghes-host>/api/v3` to
   `collect`.
 

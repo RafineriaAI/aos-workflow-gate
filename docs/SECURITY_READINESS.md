@@ -109,6 +109,17 @@ rejection.
   (`satisfied`/`failed`/`missing`/`pending`/`unverifiable`) are recorded
   as evidence in the bundle's `collection.requirements`. Scope: required
   status checks only, deliberately not full merge-readiness.
+- **Trusted verifier-change awareness.** Version 0 makes one narrow,
+  mechanical determination: a check is non-independent when its
+  check-suite belongs to a workflow run whose exact workflow definition
+  path is changed by the same PR. Test cases, harness files, scanner
+  configuration, and policy paths are recorded but do not imply a
+  dependency. File enumeration is bound to stable head/base SHAs before
+  and after collection; truncation, permission failures, or head drift
+  produce a policy-visible `verifier_change_unavailable` reason. An
+  operator acknowledgement is evidence only and never suppresses the
+  reason. The rule is WARN by default and policy-tunable to BLOCK; no
+  model output participates in the verdict.
 - **Policy-digest guard.** `evaluate --policy-digest sha256:<hex>` pins the
   expected policy; a swapped or edited policy file is an operational error
   (exit 2) before any verdict is computed.
@@ -140,8 +151,9 @@ to identity and context; it does not certify them.
 
 ## Permissions posture
 
-`contents: read` plus `checks: read` for Self-Test Mode; no `write` scope
-of any kind. See [CI_INTEGRATIONS.md](CI_INTEGRATIONS.md) and
+`contents: read`, `checks: read`, `actions: read`,
+`pull-requests: read`, and `statuses: read` for Self-Test Mode; no
+`write` scope of any kind. See [CI_INTEGRATIONS.md](CI_INTEGRATIONS.md) and
 [TRUST.md](TRUST.md) for self-verification steps.
 
 ## Known limits

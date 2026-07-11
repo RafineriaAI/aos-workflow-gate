@@ -68,6 +68,16 @@ enough to detect without any model in the loop. Advisory-first is
 justified: 39% firing at BLOCK severity would be unusable noise; the
 6 self-validating cases are the sharp subset worth surfacing loudly.
 
+## Frozen-policy holdout validation
+
+The workflow-only policy was frozen before opening the 20-case holdout.
+It flagged 1/20: [`celery/celery#10362`](https://github.com/celery/celery/pull/10362),
+a Dependabot update of `actions/checkout` across seven workflows; 19/20
+were quiet. This validates deterministic behavior on unseen corpus
+members, not defect detection or market precision. The flagged case is
+a concrete alert-fatigue risk, so the rule remains advisory by default
+and no low-false-positive claim is made.
+
 ## Candidate policy 2: green-but-not-exercised
 
 **Definition.** A merged PR whose head commit carries `skipped` or

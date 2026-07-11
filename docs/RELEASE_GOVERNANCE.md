@@ -65,7 +65,8 @@ not be published.
 The decision record, bundle, and generated policy for the release commit
 are attached to the GitHub Release as assets, so every release ships with
 its own replayable gate decision. The workflow stays read-only
-(`contents: read` plus `checks: read`); publishing the release and
+(`contents: read`, `checks: read`, `actions: read`, and
+`statuses: read`); publishing the release and
 attaching assets remain maintainer steps outside CI, per the permissions
 contract.
 

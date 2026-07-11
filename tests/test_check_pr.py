@@ -165,7 +165,11 @@ def _fake_urlopen(runs: list[dict[str, Any]]):  # type: ignore[no-untyped-def]
             return _FakeResponse(
                 {
                     "head": {"sha": SHA, "repo": {"full_name": "octo/repo"}},
-                    "base": {"ref": "main", "repo": {"full_name": "octo/repo"}},
+                    "base": {
+                        "ref": "main",
+                        "sha": "b" * 40,
+                        "repo": {"full_name": "octo/repo"},
+                    },
                     "state": "open",
                     "merged": False,
                     "draft": False,

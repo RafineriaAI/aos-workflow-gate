@@ -33,16 +33,28 @@ _FORBIDDEN_HINTS = {
         "Checks read access — verify against your token type"
     ),
     "commit_statuses": (
-        "the token cannot read commit statuses; contents/commit read "
-        "access is commonly required — verify against your token type"
+        "the token cannot read commit statuses; a workflow `permissions:` "
+        "block commonly needs `statuses: read` — verify against your "
+        "token type"
     ),
     "branch_rules": (
         "the token cannot read branch rules; repository metadata read "
         "access is commonly required — verify against your token type"
     ),
     "pull_request": (
-        "the token cannot read this pull request; pull request read "
-        "access is commonly required — verify against your token type"
+        "the token cannot read this pull request; a workflow `permissions:` "
+        "block commonly needs `pull-requests: read` — verify against your "
+        "token type"
+    ),
+    "workflow_runs": (
+        "the token cannot read workflow runs; a workflow `permissions:` "
+        "block commonly needs `actions: read` — verify against your token "
+        "type"
+    ),
+    "check_suites": (
+        "the token cannot read check suites; a workflow `permissions:` "
+        "block commonly needs `checks: read` — verify against your token "
+        "type"
     ),
     "repository": (
         "the token cannot read this repository; repository read access "

@@ -68,8 +68,9 @@ from .requirements import (
 )
 from .source_contract import load_external_sources
 from .summarize import render_html, render_markdown, verify_bindings
+from .verifier_change import analyze_verifier_change, fetch_pr_files
 from .version import __version__
-from .workflow_state import collect_workflow_visibility
+from .workflow_state import collect_workflow_visibility, fetch_workflow_runs
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -189,6 +190,12 @@ def _build_parser() -> argparse.ArgumentParser:
     checkpr_parser.add_argument(
         "--token-env", default="GITHUB_TOKEN",
         help="env var holding the API token (default GITHUB_TOKEN)",
+    )
+    checkpr_parser.add_argument(
+        "--acknowledge-verifier-change",
+        metavar="REASON",
+        help="record an operator acknowledgement in evidence; it never "
+        "suppresses or changes the verifier-change verdict",
     )
 
     preflight_parser = subparsers.add_parser(
@@ -326,6 +333,12 @@ def _build_parser() -> argparse.ArgumentParser:
         "--api-url",
         help="GitHub API base URL (default: GITHUB_API_URL env or "
         "https://api.github.com)",
+    )
+    run_parser.add_argument(
+        "--acknowledge-verifier-change",
+        metavar="REASON",
+        help="record an operator acknowledgement in evidence; it never "
+        "suppresses or changes the verifier-change verdict",
     )
 
     collect_parser = subparsers.add_parser(
@@ -899,6 +912,24 @@ def _cmd_run(args: argparse.Namespace) -> int:
             repository, sha, token=token, api_url=api_url, budget=budget
         )
         _print_workflow_visibility(collection["workflow_visibility"])
+        pr_number = (
+            args.pull_request
+            if args.pull_request is not None
+            else context["pull_request"]
+        )
+        if pr_number is not None:
+            collection["verifier_change"] = _collect_verifier_change(
+                repository=repository,
+                sha=sha,
+                pr_number=pr_number,
+                check_runs=runs,
+                token=token,
+                api_url=api_url,
+                budget=budget,
+                acknowledged=args.acknowledge_verifier_change,
+                policy_path=args.policy,
+            )
+            _print_verifier_change(collection["verifier_change"])
         extra_sources = [sarif_source(Path(p)) for p in args.sarif]
         if args.scorecard:
             extra_sources.append(scorecard_source(Path(args.scorecard)))
@@ -987,6 +1018,149 @@ def _cmd_run(args: argparse.Namespace) -> int:
         return 1
     return 0
 
+
+def _verifier_change_unavailable(
+    *, repository: str, sha: str, pr_number: int, detail: str
+) -> dict[str, Any]:
+    return {
+        "analyzed": False,
+        "available": False,
+        "unavailable": detail,
+        "subject": {
+            "repository": repository,
+            "pull_request": pr_number,
+            "head_sha": sha,
+        },
+    }
+
+
+def _collect_verifier_change(
+    *,
+    repository: str,
+    sha: str,
+    pr_number: int,
+    check_runs: list[dict[str, Any]],
+    token: str | None,
+    api_url: str,
+    budget: Budget,
+    acknowledged: str | None,
+    policy_path: str | None = None,
+    expected_base_sha: str | None = None,
+) -> dict[str, Any]:
+    """Collect complete, SHA-bound facts for the mechanical analysis.
+
+    The PR metadata is read before and after file enumeration. A moving
+    head/base, an incomplete file list, or truncated workflow runs makes
+    this evidence unavailable; evaluation then emits a policy-visible
+    reason instead of silently accepting a clean result.
+    """
+    parts = repository.rstrip("/").rsplit("/", 2)
+    slug = "/".join(parts[-2:]) if len(parts) >= 2 else repository
+
+    def unavailable(detail: str) -> dict[str, Any]:
+        return _verifier_change_unavailable(
+            repository=repository,
+            sha=sha,
+            pr_number=pr_number,
+            detail=detail,
+        )
+
+    try:
+        before = fetch_pr(
+            api_url, slug, pr_number, token=token, budget=budget
+        )
+        if before["head_sha"] != sha:
+            return unavailable(
+                "pull request head changed before verifier analysis: "
+                f"expected {sha}, observed {before['head_sha']}"
+            )
+        if (
+            expected_base_sha is not None
+            and before["base_sha"] != expected_base_sha
+        ):
+            return unavailable(
+                "pull request base changed before verifier analysis: "
+                f"expected {expected_base_sha}, observed {before['base_sha']}"
+            )
+
+        changed_paths, files_truncated = fetch_pr_files(
+            api_url, slug, pr_number, token=token, budget=budget
+        )
+        if files_truncated:
+            return unavailable(
+                "pull request file enumeration reached GitHub's "
+                "3,000-file response ceiling"
+            )
+
+        workflow_runs, runs_truncated = fetch_workflow_runs(
+            repository, sha, token=token, api_url=api_url, budget=budget
+        )
+        if runs_truncated:
+            return unavailable(
+                "workflow-run enumeration was truncated for the head SHA"
+            )
+
+        after = fetch_pr(
+            api_url, slug, pr_number, token=token, budget=budget
+        )
+    except InputError as exc:
+        return unavailable(str(exc))
+
+    if (
+        before["head_sha"] != after["head_sha"]
+        or before["base_sha"] != after["base_sha"]
+    ):
+        return unavailable(
+            "pull request head/base changed during verifier analysis"
+        )
+
+    extra_policy = [Path(policy_path).as_posix()] if policy_path else None
+    analysis = analyze_verifier_change(
+        changed_paths,
+        workflow_runs,
+        check_runs,
+        bot_author=bool(before.get("author_bot")),
+        acknowledged=acknowledged,
+        extra_policy_paths=extra_policy,
+    )
+    analysis["available"] = True
+    analysis["complete"] = True
+    analysis["subject"] = {
+        "repository": repository,
+        "pull_request": pr_number,
+        "head_sha": before["head_sha"],
+        "base_sha": before["base_sha"],
+    }
+    return analysis
+
+
+def _print_verifier_change(analysis: dict[str, Any]) -> None:
+    if not analysis.get("analyzed"):
+        print(
+            "Verifier change: analysis unavailable; "
+            f"{analysis.get('unavailable', 'unknown reason')}. "
+            "The limitation is recorded and policy-visible."
+        )
+        return
+    affected = analysis.get("non_independent_sources") or []
+    if analysis.get("acknowledged"):
+        print(
+            "Verifier change: operator acknowledgement recorded; "
+            "it does not alter the verdict."
+        )
+    if analysis.get("routine_bump_excluded"):
+        print(
+            "Verifier change: routine dependency bump excluded "
+            "(recorded in the bundle)."
+        )
+        return
+    if affected:
+        shown = ", ".join(str(name) for name in affected[:3])
+        print(
+            f"Verifier change: {len(affected)} source(s) were produced "
+            f"by a workflow this change itself modifies: {shown}. "
+            "Advisory by default; see collection.verifier_change."
+        )
 
 def _print_workflow_visibility(report: dict[str, Any]) -> None:
     """One line, only when there is something the dashboard cannot show."""
@@ -1093,6 +1267,17 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         coords["repository"], pr["head_sha"],
         token=token, api_url=coords["api_url"], budget=budget,
     )
+    collection["verifier_change"] = _collect_verifier_change(
+        repository=coords["repository"],
+        sha=pr["head_sha"],
+        pr_number=coords["number"],
+        check_runs=snapshot["runs"],
+        token=token,
+        api_url=coords["api_url"],
+        budget=budget,
+        acknowledged=args.acknowledge_verifier_change,
+        expected_base_sha=pr["base_sha"],
+    )
     if incomplete:
         collection["incomplete_required"] = incomplete
     if still_running:
@@ -1191,6 +1376,7 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
             "and does not check that."
         )
     _print_workflow_visibility(collection["workflow_visibility"])
+    _print_verifier_change(collection["verifier_change"])
     if still_running:
         print(
             "Still running (fails closed as missing until finished; use "

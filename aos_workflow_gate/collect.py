@@ -411,6 +411,8 @@ def build_generated_policy(
             "advisory_warning": "WARN",
             "no_required_sources": "WARN",
             "incomplete_collection": "WARN",
+            "non_independent_evidence": "WARN",
+            "verifier_change_unavailable": "WARN",
         },
         "required_sources": required_ids,
         "advisory_sources": [

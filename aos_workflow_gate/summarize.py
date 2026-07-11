@@ -51,6 +51,15 @@ REPAIR_HINTS = {
         "this commit; re-collect with a larger wait/API budget, or "
         "accept the record as evidence of a bounded observation"
     ),
+    "non_independent_evidence": (
+        "the named checks were produced by a workflow this change "
+        "modifies; require evidence from a verifier governed outside "
+        "the change"
+    ),
+    "verifier_change_unavailable": (
+        "the verifier-change analysis was incomplete; grant the named "
+        "read permission, remove the collection error, and re-run"
+    ),
 }
 
 
@@ -155,9 +164,11 @@ _GAP_RULE_RANK = {
     "malformed_input": 0,
     "missing_required_source": 1,
     "failed_required_source": 1,
-    "incomplete_collection": 2,
-    "advisory_warning": 3,
-    "no_required_sources": 4,
+    "verifier_change_unavailable": 2,
+    "non_independent_evidence": 2,
+    "incomplete_collection": 3,
+    "advisory_warning": 4,
+    "no_required_sources": 5,
 }
 _SEVERITY_RANK = {"BLOCK": 0, "WARN": 1, "PASS": 2}
 

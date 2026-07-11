@@ -125,7 +125,11 @@ def _opener_with_broken_statuses(runs: list[dict[str, Any]]) -> Any:
             return _FakeResponse(
                 {
                     "head": {"sha": SHA, "repo": {"full_name": "octo/repo"}},
-                    "base": {"ref": "main", "repo": {"full_name": "octo/repo"}},
+                    "base": {
+                        "ref": "main",
+                        "sha": "b" * 40,
+                        "repo": {"full_name": "octo/repo"},
+                    },
                     "state": "open",
                     "merged": False,
                     "draft": False,
