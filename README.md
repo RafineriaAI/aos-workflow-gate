@@ -11,6 +11,107 @@ Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals.
 
 This repository is the workflow layer around `aos-kernel`. Its job is to make a pull request or release gate explainable and replayable: collect workflow signals, apply an explicit policy, and produce a `PASS`, `WARN`, or `BLOCK` decision with evidence.
 
+## Start here (two minutes, zero config)
+
+
+Self-Test Mode (zero-config) — an advisory self-test of your pipeline,
+without writing any bundle or policy. The action collects the completed
+check runs of the current commit, generates an explicit advisory policy
+over them, and writes a replayable decision record plus a Markdown summary
+to the job page. This is a complete workflow file — copy it as
+`.github/workflows/aos-self-test.yml`. No checkout is needed: Self-Test
+Mode reads check runs through the API and installs from the action itself:
+
+```yaml
+name: AOS Self-Test
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  checks: read
+
+jobs:
+  self-test:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned from actions/setup-python@v6 on 2026-07-03.
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.11"
+      - name: AOS self-test (advisory)
+        uses: RafineriaAI/aos-workflow-gate@v0.29.0
+```
+
+`checks: read` is needed because a `permissions:` block sets every unlisted
+scope to `none`, and zero-config mode reads the commit's check runs through
+the workflow token. Public repositories happen to work without it; private
+repositories do not.
+
+No `required-checks` input is needed: zero-config mode discovers the
+required status checks from your branch rules (classic branch
+protection included), enforces their app-bound identity, and waits
+briefly for them to stabilize. Name `required-checks` only to
+override the discovery; named checks become required (missing or
+failed means `BLOCK`), every other collected check is advisory. Set
+`wait-for-checks: "120"` to poll until the required checks complete (only
+required checks are waited for; a wait that ends incomplete fails closed
+and is recorded in the bundle's collection status). The generated bundle
+and policy are written to `.aos-gate/` so the decision stays replayable.
+
+What the job page answers: the verdict (`PASS`, `WARN`, or
+`BLOCK`), the signal counts, and exactly one **Next** step. The
+step exposes outputs for downstream jobs: `verdict`, `diagnosis`,
+`next-action`, `can-block`, `record`, `record-digest`, and the
+state counters (`required-total`, `required-successful`,
+`required-missing`, `required-pending`, `required-unverifiable`,
+`required-failed`, `advisory-warnings`).
+
+**First diagnosis.** Before the first gate run, probe what your token,
+environment, and target actually allow — read-only, with stable
+diagnostic codes and remediation, and no verdict
+(see [docs/PREFLIGHT.md](docs/PREFLIGHT.md)):
+
+```bash
+aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
+```
+
+**Your evidence.** The decision record, the collected bundle, the
+generated policy, and a static `evidence.html` view land in
+`.aos-gate/` and are uploaded as the `aos-gate-evidence` artifact
+by default. GitHub artifacts expire per repository settings —
+attach the files to a release for permanence (this repository
+gates and attaches its own release evidence that way).
+
+**Replay it.** Anyone holding the artifact can reproduce the
+decision offline:
+
+```bash
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.29.0"
+aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
+aos-workflow-gate summarize --input gate-decision.json --html --out evidence.html
+```
+
+**Enforce when ready.** Advisory mode never fails the job. When the
+record shows the gate you want, set `mode: "enforce"` — a `BLOCK`
+verdict then fails the step, on your terms.
+
+## Public proof
+
+Every verdict the gate can produce is committed to this repository as
+real, replayable evidence — `PASS`
+([examples/pr-evidence-record.json](examples/pr-evidence-record.json)),
+`WARN`
+([examples/zero-required-record.json](examples/zero-required-record.json)
+— the [main aha case](docs/case-studies/zero-required-checks.md):
+GitHub's required status checks permitted the merge while zero checks
+were required at the gate),
+and `BLOCK`
+([the v0.11.0 incident counterfactual](benchmarks/cases/v0110-incident-counterfactual/)).
+Each triple replays offline with `verify` and is re-replayed by the
+test suite on every CI run.
+
 ## Current status
 
 Phase 2: the local `evaluate` CLI and the advisory GitHub Action are implemented. Phase 3 has started: the zero-config GitHub check-runs collector is implemented, so the action can gate a pull request without any hand-written input. The gate turns collected signals plus an explicit policy into a deterministic `PASS`, `WARN`, or `BLOCK` decision record that is replayable and tamper-evident. SARIF and Scorecard file adapters and starter policy packs are implemented; the GitLab collector is planned next.
@@ -63,14 +164,6 @@ detectable):
 aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
 ```
 
-Before the first gate run, probe what your token, environment, and
-target actually allow — read-only, with stable diagnostic codes and
-remediation, and no verdict
-(see [docs/PREFLIGHT.md](docs/PREFLIGHT.md)):
-
-```bash
-aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
-```
 
 Render a record as Markdown (the same summary the GitHub Action posts):
 
@@ -91,75 +184,15 @@ cosign sign-blob --yes gate-statement.json \
 
 The draft input and policy files are [examples/github-pr-signal-bundle.json](examples/github-pr-signal-bundle.json) and [policies/default.yml](policies/default.yml).
 
-## Public proof
-
-Every verdict the gate can produce is committed to this repository as
-real, replayable evidence — `PASS`
-([examples/pr-evidence-record.json](examples/pr-evidence-record.json)),
-`WARN`
-([examples/zero-required-record.json](examples/zero-required-record.json)
-— the [main aha case](docs/case-studies/zero-required-checks.md):
-GitHub's required status checks permitted the merge while zero checks
-were required at the gate),
-and `BLOCK`
-([the v0.11.0 incident counterfactual](benchmarks/cases/v0110-incident-counterfactual/)).
-Each triple replays offline with `verify` and is re-replayed by the
-test suite on every CI run.
-
-## GitHub Action
-
-Self-Test Mode (zero-config) — an advisory self-test of your pipeline,
-without writing any bundle or policy. The action collects the completed
-check runs of the current commit, generates an explicit advisory policy
-over them, and writes a replayable decision record plus a Markdown summary
-to the job page. This is a complete workflow file — copy it as
-`.github/workflows/aos-self-test.yml`. No checkout is needed: Self-Test
-Mode reads check runs through the API and installs from the action itself:
-
-```yaml
-name: AOS Self-Test
-
-on:
-  pull_request:
-
-permissions:
-  contents: read
-  checks: read
-
-jobs:
-  self-test:
-    runs-on: ubuntu-latest
-    steps:
-      # Pinned from actions/setup-python@v6 on 2026-07-03.
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
-        with:
-          python-version: "3.11"
-      - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.28.0
-```
-
-`checks: read` is needed because a `permissions:` block sets every unlisted
-scope to `none`, and zero-config mode reads the commit's check runs through
-the workflow token. Public repositories happen to work without it; private
-repositories do not.
-
-No `required-checks` input is needed: zero-config mode discovers the
-required status checks from your branch rules (classic branch
-protection included), enforces their app-bound identity, and waits
-briefly for them to stabilize. Name `required-checks` only to
-override the discovery; named checks become required (missing or
-failed means `BLOCK`), every other collected check is advisory. Set
-`wait-for-checks: "120"` to poll until the required checks complete (only
-required checks are waited for; a wait that ends incomplete fails closed
-and is recorded in the bundle's collection status). The generated bundle
-and policy are written to `.aos-gate/` so the decision stays replayable.
+## GitHub Action: full control
 
 Further inputs: `mode: "enforce"` makes a `BLOCK` verdict fail the step
 (default `advisory` never fails the job); `policy-pack: minimal-pr-gate`
 selects a bundled starter policy (see
-[docs/POLICY_PACKS.md](docs/POLICY_PACKS.md)); `upload-artifact: "true"`
-uploads the record and `.aos-gate/` evidence as the `aos-gate-evidence`
-artifact, even when an enforced `BLOCK` fails the evaluate step.
+[docs/POLICY_PACKS.md](docs/POLICY_PACKS.md)); `upload-artifact` is
+`"true"` by default and uploads the record, the `.aos-gate/` evidence,
+and `evidence.html` as the `aos-gate-evidence` artifact, even when an
+enforced `BLOCK` fails the evaluate step (set `"false"` to skip).
 
 For full control, provide an explicit bundle and policy. The action is
 read-only, needs no repository secrets, writes a Markdown summary to the job
@@ -180,7 +213,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.28.0
+    uses: RafineriaAI/aos-workflow-gate@v0.29.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

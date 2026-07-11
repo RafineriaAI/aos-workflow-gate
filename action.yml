@@ -59,11 +59,14 @@ inputs:
     default: ""
   upload-artifact:
     description: >-
-      Set to "true" to upload the decision record and the .aos-gate/
-      evidence files as the "aos-gate-evidence" artifact (runs even when
-      an enforced BLOCK fails the evaluate step).
+      Upload the decision record, the .aos-gate/ evidence files, and the
+      static evidence.html as the "aos-gate-evidence" artifact (runs
+      even when an enforced BLOCK fails the evaluate step). Enabled by
+      default so first runs keep their evidence; set "false" to skip.
+      Artifacts expire per repository settings - attach the files to a
+      release for permanence.
     required: false
-    default: "false"
+    default: "true"
   enforce:
     description: >-
       Deprecated alias: "true" behaves like mode "enforce".
@@ -85,6 +88,35 @@ outputs:
       Whether this evaluation, as configured, could fail the job on a
       BLOCK verdict ("true"/"false").
     value: ${{ steps.evaluate.outputs.can-block }}
+  diagnosis:
+    description: One line - the verdict and what happened.
+    value: ${{ steps.evaluate.outputs.diagnosis }}
+  next-action:
+    description: The single dominant next step for the operator.
+    value: ${{ steps.evaluate.outputs.next-action }}
+  required-total:
+    description: Number of required sources in the policy.
+    value: ${{ steps.evaluate.outputs.required-total }}
+  required-successful:
+    description: Required sources that concluded success.
+    value: ${{ steps.evaluate.outputs.required-successful }}
+  required-missing:
+    description: Required sources absent from the bundle (state missing).
+    value: ${{ steps.evaluate.outputs.required-missing }}
+  required-pending:
+    description: Required sources still running when collected.
+    value: ${{ steps.evaluate.outputs.required-pending }}
+  required-unverifiable:
+    description: >-
+      Required sources that could not be shown to satisfy their
+      requirement (app-bound identity or unreadable stream).
+    value: ${{ steps.evaluate.outputs.required-unverifiable }}
+  required-failed:
+    description: Required sources that concluded non-success.
+    value: ${{ steps.evaluate.outputs.required-failed }}
+  advisory-warnings:
+    description: Advisory warnings in the decision.
+    value: ${{ steps.evaluate.outputs.advisory-warnings }}
 
 runs:
   using: "composite"
@@ -170,6 +202,10 @@ runs:
               "\`.aos-gate/bundle.json\`, policy \`.aos-gate/policy.json\`" \
               "(artifact \`aos-gate-evidence\` when upload-artifact is true)."
             echo ""
+            echo "Evidence view: \`.aos-gate/evidence.html\` (in the" \
+              "artifact). Artifacts expire per repository settings;" \
+              "attach the files to a release for permanence."
+            echo ""
             echo "Reproduce locally (download the uploaded artifacts first):"
             echo '```bash'
             echo "pip install \"git+https://github.com/RafineriaAI/aos-workflow-gate@${GITHUB_ACTION_REF:-main}\""
@@ -177,12 +213,18 @@ runs:
             echo "aos-workflow-gate summarize --input gate-decision.json"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+          if [ -f .aos-gate/bundle.json ] && [ -f .aos-gate/policy.json ]; then
+            python3 -m aos_workflow_gate summarize --input "$GATE_OUT" --html --bundle .aos-gate/bundle.json --policy .aos-gate/policy.json --out .aos-gate/evidence.html || true
+          else
+            mkdir -p .aos-gate && python3 -m aos_workflow_gate summarize --input "$GATE_OUT" --html --out .aos-gate/evidence.html || true
+          fi
           {
             echo "verdict=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['verdict'])")"
             echo "record=$GATE_OUT"
             echo "record-digest=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['record_digest'])")"
             echo "can-block=$(python3 -c "import json,os;print(str(json.load(open(os.environ['GATE_OUT']))['can_block']).lower())")"
           } >> "$GITHUB_OUTPUT"
+          python3 -c "import json,os;from aos_workflow_gate.summarize import diagnose;d=diagnose(json.load(open(os.environ['GATE_OUT'])));c=d['counts'];out=open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8');out.write('diagnosis='+str(d['verdict'])+': '+str(d['summary']).replace('\n',' ')+'\n');out.write('next-action='+str(d['next']).replace('\n',' ')+'\n');out.write('required-total=%d\nrequired-successful=%d\nrequired-missing=%d\nrequired-pending=%d\nrequired-unverifiable=%d\nrequired-failed=%d\nadvisory-warnings=%d\n'%(c['required_total'],c['required_successful'],c['required_missing'],c['required_pending'],c['required_unverifiable'],c['required_failed'],c['advisory_warnings']))" || true
         fi
         exit "$rc"
     # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

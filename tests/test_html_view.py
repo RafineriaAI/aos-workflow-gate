@@ -81,6 +81,45 @@ def test_html_flags_tampered_record() -> None:
     assert "Do not trust this record" in text
 
 
+def test_verify_bindings_and_cli_flags(tmp_path: Path) -> None:
+    from aos_workflow_gate.summarize import verify_bindings
+
+    record = _record()
+    bundle = json.loads(
+        (ROOT / "examples" / "github-pr-signal-bundle.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    policy_path = ROOT / "policies" / "default.yml"
+    bindings = verify_bindings(record, bundle=bundle, policy_path=policy_path)
+    assert bindings == {
+        "bundle_binding": "OK",
+        "policy_binding": "OK",
+        "semantic_replay": "OK",
+    }
+    text, _ = render_html(record, bindings)
+    assert "Semantic replay" in text and "Policy binding" in text
+
+    # a swapped bundle fails the binding and the exit code
+    other = dict(bundle, subject=dict(bundle["subject"], sha="9" * 40))
+    assert verify_bindings(record, bundle=other)["bundle_binding"] == (
+        "FAILED"
+    )
+    bundle_path = tmp_path / "other-bundle.json"
+    bundle_path.write_text(json.dumps(other), encoding="utf-8")
+    assert (
+        main(
+            ["summarize", "--input",
+             str(ROOT / "examples" / "gate-decision.json"),
+             "--html", "--bundle", str(bundle_path),
+             "--policy", str(policy_path),
+             "--out", str(tmp_path / "e.html")]
+        )
+        == 1
+    )
+    assert "FAILED" in (tmp_path / "e.html").read_text(encoding="utf-8")
+
+
 def test_cli_html_out(tmp_path: Path) -> None:
     out = tmp_path / "evidence.html"
     assert (

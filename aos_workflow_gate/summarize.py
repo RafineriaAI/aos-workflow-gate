@@ -12,10 +12,14 @@ summarized as if it were trustworthy.
 from __future__ import annotations
 
 import html as _html
+from pathlib import Path
 from typing import Any
 
+from . import canonical
 from .errors import InputError
+from .evaluate import evaluate
 from .evidence import verify_record
+from .policy import load_policy
 
 VERDICTS = ("PASS", "WARN", "BLOCK")
 
@@ -353,7 +357,57 @@ def _h(value: Any) -> str:
     )
 
 
-def render_html(record: Any) -> tuple[str, bool]:
+def verify_bindings(
+    record: dict[str, Any],
+    *,
+    bundle: Any = None,
+    policy_path: Path | None = None,
+) -> dict[str, str]:
+    """Optional deep verification for evidence views.
+
+    With the bundle and/or policy at hand, a view can state more than
+    the record's self-digest: ``bundle_binding`` (the record was built
+    from exactly this bundle), ``policy_binding`` (the shipped policy
+    digests to the record's policy digest), and — with both —
+    ``semantic_replay`` (re-evaluating the bundle against the policy
+    reproduces the record's verdict, reasons, inputs, and subject; the
+    generator version is excluded so records replay across releases).
+    """
+    results: dict[str, str] = {}
+    if bundle is not None:
+        ok = record.get("input_bundle_digest") == canonical.digest(bundle)
+        results["bundle_binding"] = "OK" if ok else "FAILED"
+    policy = None
+    if policy_path is not None:
+        try:
+            policy = load_policy(policy_path)
+        except InputError:
+            results["policy_binding"] = "FAILED"
+        else:
+            recorded = record.get("policy")
+            recorded_digest = (
+                recorded.get("digest") if isinstance(recorded, dict) else None
+            )
+            results["policy_binding"] = (
+                "OK" if policy.digest == recorded_digest else "FAILED"
+            )
+    if bundle is not None and policy is not None:
+        decision = evaluate(bundle, policy)
+        derived: dict[str, Any] = {
+            "verdict": decision.verdict,
+            "summary": decision.summary,
+            "reasons": [reason.as_dict() for reason in decision.reasons],
+            "inputs": decision.inputs,
+            "subject": decision.subject.as_dict(),
+        }
+        ok = all(record.get(k) == v for k, v in derived.items())
+        results["semantic_replay"] = "OK" if ok else "FAILED"
+    return results
+
+
+def render_html(
+    record: Any, bindings: dict[str, str] | None = None
+) -> tuple[str, bool]:
     """Render a decision record as a deterministic static HTML page.
 
     Built from the same :func:`diagnose` result as the Markdown summary,
@@ -410,6 +464,17 @@ def render_html(record: Any) -> tuple[str, bool]:
         ("Record self-check", "OK" if diag["intact"] else "FAILED"),
         ("Verification status", diag["verification_status"] or "-"),
     ]
+    if bindings:
+        labels = {
+            "bundle_binding": "Bundle binding",
+            "policy_binding": "Policy binding",
+            "semantic_replay": "Semantic replay",
+        }
+        rows += [
+            (labels[name], bindings[name])
+            for name in ("bundle_binding", "policy_binding", "semantic_replay")
+            if name in bindings
+        ]
     parts.append("<table>")
     for label, value in rows:
         parts.append(

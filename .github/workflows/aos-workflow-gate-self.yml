@@ -66,7 +66,14 @@ jobs:
       - name: Replay collected decision offline
         env:
           RECORD: ${{ steps.gate.outputs.record }}
+          DIAGNOSIS: ${{ steps.gate.outputs.diagnosis }}
+          NEXT_ACTION: ${{ steps.gate.outputs.next-action }}
+          REQ_TOTAL: ${{ steps.gate.outputs.required-total }}
         run: |
           test -f "$RECORD"
           python3 -m aos_workflow_gate verify --input "$RECORD" \
             --bundle .aos-gate/bundle.json
+          test -f .aos-gate/evidence.html
+          test -n "$DIAGNOSIS"
+          test -n "$NEXT_ACTION"
+          test -n "$REQ_TOTAL"
