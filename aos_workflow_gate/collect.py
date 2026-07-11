@@ -409,6 +409,7 @@ def build_generated_policy(
             "failed_required_source": "BLOCK",
             "malformed_input": "BLOCK",
             "advisory_warning": "WARN",
+            "no_required_sources": "WARN",
         },
         "required_sources": required_ids,
         "advisory_sources": [

@@ -2,7 +2,7 @@
   "can_block": false,
   "generator": {
     "tool": "aos-workflow-gate",
-    "version": "0.27.0"
+    "version": "0.28.0"
   },
   "input_bundle_digest": "sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837",
   "inputs": [
@@ -47,6 +47,12 @@
   },
   "reasons": [
     {
+      "detail": "the policy requires nothing, so no missing or failed check can make this gate BLOCK — the record is evidence, not enforcement",
+      "rule": "no_required_sources",
+      "severity": "WARN",
+      "source_id": null
+    },
+    {
       "detail": "advisory source status is 'failure'",
       "rule": "advisory_warning",
       "severity": "WARN",
@@ -65,7 +71,7 @@
       "source_id": "AOS Workflow Gate Self / zero-config"
     }
   ],
-  "record_digest": "sha256:78cf9f4ec7375488a5503f0accbc1d2e669591b21b174ee74488f8bd4cb8e9a5",
+  "record_digest": "sha256:4c55a0b1d1ded228ff4db255c1a834155795cb5d80f0dd01b1725f16f692d9a2",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": null,
@@ -73,7 +79,7 @@
     "repository": "RafineriaAI/aos-workflow-gate",
     "sha": "f8c6517bef32e68d3150d2954cc4c445b6fb1642"
   },
-  "summary": "Gate WARN: required checks satisfied; 3 advisory warning(s).",
+  "summary": "Gate WARN: the policy requires nothing, so nothing can block; 4 warning(s).",
   "verdict": "WARN",
   "verification_status": "UNSIGNED_NOT_OFFICIAL"
 }

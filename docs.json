@@ -121,7 +121,8 @@
     "tests/test_requirements.py",
     "tests/test_golden_summaries.py",
     "tests/test_integrated_preflight.py",
-    "tests/test_html_view.py"
+    "tests/test_html_view.py",
+    "tests/test_discovery.py"
   ],
   "assets": [
     "docs/assets/banner.png"

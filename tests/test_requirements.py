@@ -161,7 +161,7 @@ def test_snapshot_end_to_end(monkeypatch: pytest.MonkeyPatch) -> None:
         url = request.full_url
         if "/rules/branches/" in url:
             return _FakeResponse(rules)
-        if url.endswith("/status"):
+        if ("/status?" in url or url.endswith("/status")):
             return _FakeResponse(
                 {"state": "pending",
                  "statuses": [{"context": "legacy-gate", "state": "pending"}]}

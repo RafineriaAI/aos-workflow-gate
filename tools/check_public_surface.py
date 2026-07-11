@@ -114,9 +114,12 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/case-studies/zero-required-checks.md": [
-        "GitHub permits\nthe merge while zero checks are required at the gate",
+        "required status checks permitted the merge while zero checks "
+        "were\nrequired at the gate",
+        "Scope: required status checks, not\nfull merge-readiness",
         "the state every fresh adopter starts in",
         "zero required\nsources",
+        "never\na quiet `PASS`",
         "shows visibility, not a vulnerability",
         "makes no security claim",
         "UNSIGNED_NOT_OFFICIAL",

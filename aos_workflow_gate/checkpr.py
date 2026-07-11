@@ -92,28 +92,40 @@ def fetch_pr(
 def fetch_commit_statuses(
     api_url: str, slug: str, sha: str, *, token: str | None, budget: Budget
 ) -> list[dict[str, Any]]:
-    """Fetch legacy commit statuses (Status API) for a commit.
+    """Fetch legacy commit statuses (Status API) for a commit, paginated.
 
     Required status checks can be satisfied by legacy statuses, not only
     check runs; ignoring them would fail-closed a context that GitHub
-    itself considers green.
+    itself considers green. Pagination is followed up to the page budget
+    so a busy commit cannot silently hide later contexts.
     """
     headers = {"Accept": "application/vnd.github+json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
-    payload = _request_json(
-        f"{api_url}/repos/{slug}/commits/{sha}/status",
-        headers,
-        timeout=30.0,
-        budget=budget,
-        capability="commit_statuses",
-    )
-    if not isinstance(payload, dict):
-        raise InputError("commit status API response is not a JSON object")
-    statuses = payload.get("statuses")
-    return [s for s in statuses if isinstance(s, dict)] if isinstance(
-        statuses, list
-    ) else []
+    collected: list[dict[str, Any]] = []
+    for page in range(1, 11):
+        payload = _request_json(
+            f"{api_url}/repos/{slug}/commits/{sha}/status"
+            f"?per_page=100&page={page}",
+            headers,
+            timeout=30.0,
+            budget=budget,
+            capability="commit_statuses",
+        )
+        if not isinstance(payload, dict):
+            raise InputError(
+                "commit status API response is not a JSON object"
+            )
+        statuses = payload.get("statuses")
+        page_items = (
+            [s for s in statuses if isinstance(s, dict)]
+            if isinstance(statuses, list)
+            else []
+        )
+        collected.extend(page_items)
+        if len(page_items) < 100:
+            break
+    return collected
 
 
 _STATUS_STATE_MAP = {"success": "success", "failure": "failure",
@@ -160,19 +172,34 @@ def status_sources(
 def fetch_branch_rules(
     api_url: str, slug: str, branch: str, *, token: str | None, budget: Budget
 ) -> list[dict[str, Any]]:
-    """Fetch the ACTIVE aggregated rules for a branch (rulesets included)."""
+    """Fetch the ACTIVE aggregated rules for a branch (rulesets included).
+
+    Pagination is followed up to the page budget so rule-heavy branches
+    cannot silently drop later rules.
+    """
     headers = {"Accept": "application/vnd.github+json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
-    url = f"{api_url}/repos/{slug}/rules/branches/{branch}"
-    payload = _request_json(
-        url, headers, timeout=30.0, budget=budget,
-        capability="branch_rules",
-    )
-    rules = payload if isinstance(payload, list) else payload.get("rules")
-    if not isinstance(rules, list):
-        return []
-    return [rule for rule in rules if isinstance(rule, dict)]
+    collected: list[dict[str, Any]] = []
+    for page in range(1, 11):
+        url = (
+            f"{api_url}/repos/{slug}/rules/branches/{branch}"
+            f"?per_page=100&page={page}"
+        )
+        payload = _request_json(
+            url, headers, timeout=30.0, budget=budget,
+            capability="branch_rules",
+        )
+        rules = payload if isinstance(payload, list) else payload.get("rules")
+        page_items = (
+            [rule for rule in rules if isinstance(rule, dict)]
+            if isinstance(rules, list)
+            else []
+        )
+        collected.extend(page_items)
+        if len(page_items) < 100:
+            break
+    return collected
 
 
 def required_checks_from_rules(

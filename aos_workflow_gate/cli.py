@@ -768,13 +768,78 @@ def _cmd_run(args: argparse.Namespace) -> int:
             deadline_seconds=args.deadline_seconds,
             max_api_calls=args.max_api_calls,
         )
-        runs, truncated, incomplete, waited = wait_for_required(
-            repository, sha, args.require,
-            token=token, api_url=api_url,
-            wait_seconds=args.wait_seconds,
-            poll_interval=args.poll_interval,
-            budget=budget,
-        )
+
+        # requirement discovery: with a GitHub context and no operator
+        # inputs, the gate reads what GitHub itself requires (rulesets,
+        # classic protection fallback) instead of guessing from names
+        discovered: dict[str, Any] | None = None
+        if (
+            args.github_context
+            and not args.require
+            and not args.policy
+            and not args.policy_pack
+        ):
+            branch = os.environ.get("GITHUB_BASE_REF") or os.environ.get(
+                "GITHUB_REF_NAME"
+            )
+            if branch:
+                parts = repository.rstrip("/").rsplit("/", 2)
+                slug = (
+                    "/".join(parts[-2:]) if len(parts) >= 2 else repository
+                )
+                try:
+                    discovered = requirement_snapshot(
+                        api_url=api_url,
+                        slug=slug,
+                        repository=repository,
+                        sha=sha,
+                        branch=branch,
+                        token=token,
+                        budget=budget,
+                        # default stabilization: discovered requirements
+                        # are worth a bounded wait even when the
+                        # operator configured none
+                        wait_seconds=(
+                            args.wait_seconds
+                            if args.wait_seconds > 0
+                            else 120.0
+                        ),
+                        poll_interval=args.poll_interval,
+                        exclude_self=True,
+                    )
+                except InputError as exc:
+                    print(
+                        "Degraded (can_continue: yes): requirement "
+                        f"discovery unavailable ({exc}); continuing in "
+                        "name-based zero-config mode.",
+                        file=sys.stderr,
+                    )
+
+        status_srcs: list[dict[str, Any]] = []
+        if discovered is not None:
+            runs = discovered["qualifying_runs"]
+            truncated = discovered["truncated"]
+            incomplete = discovered["incomplete_required"]
+            waited = discovered["waited_seconds"]
+            required_ids: list[str] = discovered["required_ids"]
+            run_names = {
+                run.get("name")
+                for run in runs
+                if isinstance(run.get("name"), str)
+            }
+            status_srcs, _skipped = status_sources(
+                discovered["statuses"],
+                exclude_contexts={str(name) for name in run_names},
+            )
+        else:
+            runs, truncated, incomplete, waited = wait_for_required(
+                repository, sha, args.require,
+                token=token, api_url=api_url,
+                wait_seconds=args.wait_seconds,
+                poll_interval=args.poll_interval,
+                budget=budget,
+            )
+            required_ids = list(args.require)
         status = "complete"
         if truncated:
             status = "truncated"
@@ -787,6 +852,26 @@ def _cmd_run(args: argparse.Namespace) -> int:
         }
         if incomplete:
             collection["incomplete_required"] = incomplete
+        if discovered is not None:
+            collection["requirements"] = requirement_evidence(
+                discovered["controls"]
+            )
+            collection["rules_digest"] = discovered["rules_digest"]
+            collection["protection_source"] = discovered[
+                "protection_source"
+            ]
+            if discovered["self_reference_excluded"]:
+                collection["self_reference_excluded"] = discovered[
+                    "self_reference_excluded"
+                ]
+            if discovered.get("classic_protection_note"):
+                collection["classic_protection_note"] = discovered[
+                    "classic_protection_note"
+                ]
+            if discovered.get("statuses_unverifiable"):
+                collection["statuses_unverifiable"] = discovered[
+                    "statuses_unverifiable"
+                ]
         if args.github_context:
             snapshot = github_context_snapshot()
             collection["context_snapshot"] = snapshot
@@ -794,6 +879,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
         extra_sources = [sarif_source(Path(p)) for p in args.sarif]
         if args.scorecard:
             extra_sources.append(scorecard_source(Path(args.scorecard)))
+        extra_sources.extend(status_srcs)
         bundle = build_bundle(
             runs,
             repository=repository,
@@ -805,18 +891,39 @@ def _cmd_run(args: argparse.Namespace) -> int:
                 else context["pull_request"]
             ),
             exclude=args.exclude,
-            required=args.require,
+            required=required_ids,
             collection=collection,
             extra_sources=extra_sources,
         )
         _write_json(safe_output_path(args.bundle_out, workspace=workspace), bundle)
+        if discovered is not None:
+            print(
+                f"Discovered {len(required_ids)} required status "
+                f"check(s) from {discovered['protection_source']} on "
+                f"'{discovered['branch']}'."
+            )
+            if discovered["self_reference_excluded"]:
+                print(
+                    "Self-reference: excluded the gate's own check(s) "
+                    "from waiting and grading: "
+                    + ", ".join(discovered["self_reference_excluded"])
+                )
+            if discovered.get("classic_protection_note"):
+                print(f"Note: {discovered['classic_protection_note']}")
 
     if args.policy:
         policy_path = Path(args.policy)
     elif args.policy_pack:
         policy_path = resolve_policy_pack(args.policy_pack)
     elif not args.input:
-        generated = build_generated_policy(bundle, required=args.require)
+        # discovered requirements fail closed on the record (a missing
+        # required check must BLOCK, not error out); operator-typed
+        # --require keeps the early typo-catching error
+        generated = build_generated_policy(
+            bundle,
+            required=required_ids,
+            allow_missing_required=discovered is not None,
+        )
         generated_path = safe_output_path(args.policy_out, workspace=workspace)
         _write_json(generated_path, generated)
         policy_path = generated_path

@@ -99,7 +99,8 @@ real, replayable evidence — `PASS`
 `WARN`
 ([examples/zero-required-record.json](examples/zero-required-record.json)
 — the [main aha case](docs/case-studies/zero-required-checks.md):
-GitHub permits the merge while zero checks are required at the gate),
+GitHub's required status checks permitted the merge while zero checks
+were required at the gate),
 and `BLOCK`
 ([the v0.11.0 incident counterfactual](benchmarks/cases/v0110-incident-counterfactual/)).
 Each triple replays offline with `verify` and is re-replayed by the
@@ -134,9 +135,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.27.0
-        with:
-          required-checks: "ci / validate"
+        uses: RafineriaAI/aos-workflow-gate@v0.28.0
 ```
 
 `checks: read` is needed because a `permissions:` block sets every unlisted
@@ -144,7 +143,11 @@ scope to `none`, and zero-config mode reads the commit's check runs through
 the workflow token. Public repositories happen to work without it; private
 repositories do not.
 
-`required-checks` is optional; named checks become required (missing or
+No `required-checks` input is needed: zero-config mode discovers the
+required status checks from your branch rules (classic branch
+protection included), enforces their app-bound identity, and waits
+briefly for them to stabilize. Name `required-checks` only to
+override the discovery; named checks become required (missing or
 failed means `BLOCK`), every other collected check is advisory. Set
 `wait-for-checks: "120"` to poll until the required checks complete (only
 required checks are waited for; a wait that ends incomplete fails closed
@@ -177,7 +180,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.27.0
+    uses: RafineriaAI/aos-workflow-gate@v0.28.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
