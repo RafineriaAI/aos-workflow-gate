@@ -31,6 +31,9 @@
       "status": "success"
     }
   ],
+  "observation": {
+    "status": "complete"
+  },
   "policy": {
     "digest": "sha256:91b6374ac5cbff06c473af050fac34929b1c20bf19ba1d6a64e1c05de96c8fad",
     "mode": "advisory",
@@ -38,7 +41,7 @@
     "verification_status": "UNSIGNED_NOT_OFFICIAL"
   },
   "reasons": [],
-  "record_digest": "sha256:70f97062702f4e3e57b5f152dac9d68852a3cb6cb964a16ce79baabc86d3122e",
+  "record_digest": "sha256:29ede2098cb9f851206b8fd4950a7f8d28f92cc67c17cd2840a33fa5f5a06b71",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 23,

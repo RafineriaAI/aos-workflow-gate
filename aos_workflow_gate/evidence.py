@@ -20,19 +20,67 @@ SCHEMA_VERSION = "aos-workflow-gate-decision/v0"
 RECORD_DIGEST_FIELD = "record_digest"
 
 
+def observation_from_bundle(bundle: Any) -> dict[str, Any] | None:
+    """Compact projection of the bundle's collection provenance.
+
+    The decision record must be self-describing for its reader: scope
+    and freshness live in the bundle's ``collection``, so the record
+    echoes the compact, display-relevant subset (never the raw API
+    payloads). A bundle without a collection yields ``None`` — the
+    record then honestly shows freshness as not recorded.
+    """
+    if not isinstance(bundle, dict):
+        return None
+    collection = bundle.get("collection")
+    if not isinstance(collection, dict):
+        return None
+    observation: dict[str, Any] = {}
+    for key in (
+        "status",
+        "observed_at",
+        "github_baseline",
+        "protection_source",
+        "strict_up_to_date_required",
+    ):
+        if key in collection:
+            observation[key] = collection[key]
+    visibility = collection.get("workflow_visibility")
+    if isinstance(visibility, dict):
+        compact: dict[str, Any] = {
+            "available": bool(visibility.get("available"))
+        }
+        if isinstance(visibility.get("units_total"), int):
+            compact["units_total"] = visibility["units_total"]
+        not_started = visibility.get("not_started")
+        if isinstance(not_started, list):
+            compact["not_started"] = len(not_started)
+            compact["action_required"] = sum(
+                1
+                for unit in not_started
+                if isinstance(unit, dict)
+                and unit.get("state") == "action_required"
+            )
+        observation["workflow_visibility"] = compact
+    return observation or None
+
+
 def build_record(
     decision: Decision,
     *,
     policy: Policy,
     input_bundle_digest: str,
     can_block: bool = False,
+    observation: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build the stable, self-verifying decision record.
 
     ``can_block`` records whether this evaluation, as configured, could
     have failed the calling process on a ``BLOCK`` verdict (blocking policy
     mode or explicit enforcement). A reader can then tell an enforcing gate
-    from a purely advisory one without guessing.
+    from a purely advisory one without guessing. ``observation`` is the
+    compact collection echo from :func:`observation_from_bundle`; it is
+    part of the digested record, so scope and freshness statements are
+    tamper-evident like everything else.
     """
     record: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
@@ -52,6 +100,8 @@ def build_record(
         "inputs": decision.inputs,
         "input_bundle_digest": input_bundle_digest,
     }
+    if observation is not None:
+        record["observation"] = observation
     record[RECORD_DIGEST_FIELD] = canonical.digest(record)
     return record
 

@@ -1,8 +1,10 @@
 ## Gate decision: WARN
 
 **What happened:** Gate WARN: the policy requires nothing, so nothing can block; 4 warning(s).
+**Scope:** 0 required and policy-named advisory source(s) on RafineriaAI/aos-workflow-gate@f8c6517bef32; not full merge-readiness
+**Freshness:** observation time not recorded; collection complete
+**Effect:** advisory — recorded evidence only; a BLOCK verdict does not fail the job
 **Signals:** 0 required (0 successful) · 4 advisory (4 warning(s))
-**Can block this job:** no
 **Next:** nothing is required, so nothing can block; name required checks (see the suggestion under Coverage) to close the decision gap
 
 | Field | Value |
@@ -12,20 +14,21 @@
 | Policy | `collected-advisory` (advisory) |
 | Policy digest | `sha256:1ac10c8a010a4e3a9f62894184bfd9ba342626922ac4f6dd987f8ca6f0a06cb0` |
 | Input bundle digest | `sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837` |
-| Record digest | `sha256:3b7a8f035d0b622f199c6c4533e1f0465fbdbaf78319ddd25d5699a7a65982ec` |
+| Record digest | `sha256:a963ef6f088a93f969ef33571069b42b0dc4b2f5a0fc14376fdc7408de0f7bf1` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
-### Reasons
+**Dominant problem:** 'AOS Workflow Gate Self / advisory': advisory source status is 'failure'
 
-- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK — the record is evidence, not enforcement
-  - Hint: nothing is required, so nothing can block; name required checks (see the suggestion under Coverage) to close the decision gap
+### Top gaps
+
 - WARN `advisory_warning` AOS Workflow Gate Self / advisory: advisory source status is 'failure'
   - Hint: advisory findings warn but never block; review the source's own report and decide
 - WARN `advisory_warning` AOS Workflow Gate Self / no-checkout: advisory source status is 'skipped'
   - Hint: advisory findings warn but never block; review the source's own report and decide
 - WARN `advisory_warning` AOS Workflow Gate Self / zero-config: advisory source status is 'failure'
   - Hint: advisory findings warn but never block; review the source's own report and decide
+- …and 1 more reason(s) — every one is in the record JSON and the HTML evidence view.
 
 ### Inputs
 
