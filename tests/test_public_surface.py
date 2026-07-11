@@ -61,6 +61,10 @@ def test_action_and_self_workflow_are_bounded() -> None:
 
     workflow = read_text(".github/workflows/aos-workflow-gate-self.yml")
     assert "permissions:\n  contents: read" in workflow
+    assert "  checks: read" in workflow
+    assert "  actions: read" in workflow
+    assert "  pull-requests: read" in workflow
+    assert "  statuses: read" in workflow
     assert "persist-credentials: false" in workflow
     pinned_upload = (
         "uses: actions/upload-artifact@"

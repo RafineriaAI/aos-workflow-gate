@@ -29,6 +29,9 @@ REQUIRED_SNIPPETS = {
         "Apache-2.0. See [LICENSE](LICENSE).",
         "See [NOTICE](NOTICE).",
         "checks: read",
+        "actions: read",
+        "pull-requests: read",
+        "statuses: read",
         "Self-Test Mode",
         "No checkout is needed",
         "docs/RELEASE_GOVERNANCE.md",
@@ -261,6 +264,9 @@ REQUIRED_SNIPPETS = {
         "GitLab jobs collector is planned",
         "the operator's\nclaim, not the gate's",
         "checks: read",
+        "actions: read",
+        "pull-requests: read",
+        "statuses: read",
         "read-only by design",
     ],
     "docs/DECISION_PREDICATE.md": [
@@ -546,7 +552,8 @@ def check_action_surface() -> None:
     workflow = read_text(".github/workflows/aos-workflow-gate-self.yml")
     required_self_snippets = (
         "name: AOS Workflow Gate Self / advisory",
-        "permissions:\n  contents: read\n  checks: read",
+        "permissions:\n  contents: read\n  checks: read\n  actions: read\n"
+        "  pull-requests: read\n  statuses: read",
         "persist-credentials: false",
         "uses: ./",
         "uses: actions/upload-artifact@"

@@ -4,16 +4,14 @@ Every claim below comes with a way to check it without trusting us.
 
 ## What the gate can and cannot do to your environment
 
-- **Read-only by design.** The action needs `contents: read` and, for
-  Self-Test Mode, `checks: read`. No `write` scope of any kind. Verify: the
-  [README](../README.md) workflow examples and
-  [.github/workflows/aos-workflow-gate-self.yml](../.github/workflows/aos-workflow-gate-self.yml).
-- **No data leaves your environment through the gate.** The only network
-  call in the codebase is the GitHub check-runs API request in Self-Test
-  Mode, against your own GitHub host, with your own workflow token. There
-  is no telemetry, no analytics, no phone-home. Verify:
-  `grep -rn "urlopen\|http" aos_workflow_gate/` — one call site, in
-  `collect.py`.
+- **Read-only by design.** Self-Test Mode needs `contents: read`,
+  `checks: read`, `actions: read`, `pull-requests: read`, and
+  `statuses: read`. No `write` scope of any kind. Verify the
+  [README](../README.md) and self-test workflow.
+- **No data leaves your environment through the gate.** Network calls are
+  read-only requests to your configured GitHub host using your workflow
+  token. There is no telemetry, analytics, or phone-home. Verify all call
+  sites with `grep -R "_request_json" aos_workflow_gate/`.
 - **Zero runtime dependencies.** The package depends on the Python standard
   library only, so there is no transitive supply chain to audit. Verify:
   `dependencies = []` in [pyproject.toml](../pyproject.toml).

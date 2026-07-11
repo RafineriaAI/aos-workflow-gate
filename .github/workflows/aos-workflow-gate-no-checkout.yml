@@ -8,6 +8,8 @@ on:
 permissions:
   contents: read
   checks: read
+  actions: read
+  statuses: read
 
 jobs:
   no-checkout:

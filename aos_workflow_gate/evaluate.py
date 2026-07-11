@@ -182,26 +182,42 @@ def _collection_reasons(collection: Any, policy: Policy) -> list[Reason]:
 def _verifier_change_reasons(
     collection: dict[str, Any], policy: Policy
 ) -> list[Reason]:
-    """Evidence generated solely by a changed mechanism is named.
+    """Translate verifier-change evidence into policy reasons.
 
-    The determination is recorded by the collector
-    (``collection.verifier_change``, see verifier_change.py); this rule
-    only translates it into a reason. Advisory (WARN) by default —
-    policy-tunable to BLOCK — and suppressed by a recorded explicit
-    approval or the recorded routine-bump exclusion, both of which stay
-    visible in the bundle.
+    Missing or incomplete analysis is itself policy-visible. Operator
+    acknowledgement remains evidence only and cannot suppress a reason.
     """
     analysis = collection.get("verifier_change")
-    if not isinstance(analysis, dict) or not analysis.get("analyzed"):
+    if not isinstance(analysis, dict):
         return []
-    if analysis.get("approved") or analysis.get("routine_bump_excluded"):
+    if not analysis.get("analyzed"):
+        detail = str(
+            analysis.get("unavailable")
+            or "verifier-change analysis did not complete"
+        )
+        return [
+            Reason(
+                "verifier_change_unavailable",
+                policy.rules.get("verifier_change_unavailable", "WARN"),
+                None,
+                f"verifier-change evidence is unavailable: {detail}; "
+                "a clean result cannot assert verifier independence",
+            )
+        ]
+    if analysis.get("routine_bump_excluded"):
         return []
+
     affected = analysis.get("non_independent_sources")
     if not isinstance(affected, list) or not affected:
         return []
     shown = ", ".join(str(name) for name in affected[:3])
     more = len(affected) - min(len(affected), 3)
-    trusted = analysis.get("trusted_verifier_runs")
+    acknowledgement = (
+        " An operator acknowledgement is recorded as evidence but does "
+        "not authorize or suppress this reason."
+        if analysis.get("acknowledged")
+        else ""
+    )
     return [
         Reason(
             "non_independent_evidence",
@@ -211,17 +227,11 @@ def _verifier_change_reasons(
             f"this change itself modifies ({shown}"
             + (f", and {more} more" if more else "")
             + "): the change grades itself with the grader it edited. "
-            "Require a verifier the change cannot rewrite (an "
-            "unchanged/protected workflow"
-            + (
-                f" — {trusted} such run(s) exist on this commit"
-                if isinstance(trusted, int) and trusted
-                else ""
-            )
-            + ") or record explicit approval",
+            "Require evidence from a verifier governed outside this "
+            "change."
+            + acknowledgement,
         )
     ]
-
 
 def _apply_rules(
     sources: list[Source],

@@ -31,6 +31,9 @@ on:
 permissions:
   contents: read
   checks: read
+  actions: read
+  pull-requests: read
+  statuses: read
 
 jobs:
   self-test:
@@ -44,16 +47,18 @@ jobs:
         uses: RafineriaAI/aos-workflow-gate@v0.30.0
 ```
 
-`checks: read` is needed because a `permissions:` block sets every unlisted
-scope to `none`, and zero-config mode reads the commit's check runs through
-the workflow token. Public repositories happen to work without it; private
-repositories do not.
+A `permissions:` block sets every unlisted scope to `none`. Zero-config
+uses `checks: read` for check runs, `actions: read` for workflow runs,
+`pull-requests: read` for the SHA-bound changed-file set, and
+`statuses: read` for legacy commit statuses. Public repositories may allow
+unauthenticated reads; declare every scope so the same workflow works on
+private repositories.
 
 No `required-checks` input is needed: zero-config mode discovers the
 required status checks from your branch rules (classic branch
-protection included — rulesets and classic protection are read
-together and unioned, because GitHub enforces both when both are
-active), enforces their app-bound identity, and waits
+protection included when the token can read it; an unreadable classic
+surface is recorded as unverifiable, never interpreted as zero
+requirements), enforces their app-bound identity, and waits
 briefly for them to stabilize. Name `required-checks` only to
 override the discovery; named checks become required (missing or
 failed means `BLOCK`), every other collected check is advisory. Set

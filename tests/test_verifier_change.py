@@ -2,7 +2,7 @@
 
 Pins the mechanical determination (no model output in any verdict
 path): path classification, the solely-vs-independently distinction via
-check-suite ids, the routine-bump exclusion, explicit approval as
+check-suite ids, fail-closed collection, and acknowledgement as
 recorded evidence, the advisory-by-default severity, and — the DoD —
 that the detector fires on the frozen corpus's real Airflow and Celery
 self-validating pull requests.
@@ -17,16 +17,20 @@ from typing import Any
 import pytest
 
 from aos_workflow_gate import cli
+from aos_workflow_gate import verifier_change as verifier_change_module
+from aos_workflow_gate.collect import Budget
 from aos_workflow_gate.evaluate import evaluate
 from aos_workflow_gate.policy import Policy
 from aos_workflow_gate.verifier_change import (
     analyze_verifier_change,
     classify_verifier_paths,
+    fetch_pr_files,
     is_routine_bump,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
 SHA = "c" * 40
+BASE = "b" * 40
 APP = 15368
 
 
@@ -47,7 +51,8 @@ def test_classify_verifier_paths() -> None:
         ]
     )
     assert buckets["workflow"] == [".github/workflows/ci.yml"]
-    assert buckets["test_harness"] == ["conftest.py", "tests/test_x.py"]
+    assert buckets["test_harness"] == ["conftest.py"]
+    assert buckets["test_cases"] == ["tests/test_x.py"]
     assert buckets["scanner_config"] == [".pre-commit-config.yaml"]
     assert buckets["policy"] == ["policies/default.yml"]
     assert buckets["dependency_pins"] == ["requirements-dev.txt"]
@@ -73,6 +78,10 @@ def test_routine_bump_requires_bot_and_pin_only_delta() -> None:
     assert is_routine_bump(pins_only, bot_author=False) is False
     with_code = classify_verifier_paths(["requirements.txt", "src/x.py"])
     assert is_routine_bump(with_code, bot_author=True) is False
+    with_test = classify_verifier_paths([
+        "requirements.txt", "tests/test_dependency.py"
+    ])
+    assert is_routine_bump(with_test, bot_author=True) is False
     with_workflow = classify_verifier_paths(
         ["requirements.txt", ".github/workflows/ci.yml"]
     )
@@ -103,11 +112,11 @@ def test_solely_changed_mechanism_is_not_independent() -> None:
     assert analysis["non_independent_sources"] == [
         "ci / lint", "ci / validate",
     ]
-    assert analysis["trusted_verifier_runs"] == 0
+    assert analysis["unchanged_workflow_runs"] == 0
     assert "no model output" in analysis["note"]
 
 
-def test_unchanged_workflow_is_a_trusted_verifier() -> None:
+def test_unchanged_workflow_is_only_a_candidate_alternative() -> None:
     analysis = analyze_verifier_change(
         [".github/workflows/ci.yml"],
         [
@@ -116,9 +125,9 @@ def test_unchanged_workflow_is_a_trusted_verifier() -> None:
         ],
         [_crun("ci / validate", 1), _crun("security-scan", 2)],
     )
-    # only the changed workflow's evidence is tainted
+    # only the changed workflow's evidence is classified non-independent
     assert analysis["non_independent_sources"] == ["ci / validate"]
-    assert analysis["trusted_verifier_runs"] == 1
+    assert analysis["unchanged_workflow_runs"] == 1
 
 
 def test_no_verifier_change_flags_nothing() -> None:
@@ -131,15 +140,15 @@ def test_no_verifier_change_flags_nothing() -> None:
     assert analysis["non_independent_sources"] == []
 
 
-def test_approval_is_recorded_evidence() -> None:
+def test_acknowledgement_is_recorded_evidence() -> None:
     analysis = analyze_verifier_change(
         [".github/workflows/ci.yml"],
         [_wrun(".github/workflows/ci.yml", 1)],
         [_crun("ci / validate", 1)],
-        approved="reviewed by release manager",
+        acknowledged="reviewed by release manager",
     )
-    assert analysis["approved"] == "reviewed by release manager"
-    # the affected sources stay visible even under approval
+    assert analysis["acknowledged"] == "reviewed by release manager"
+    # affected sources stay visible under acknowledgement
     assert analysis["non_independent_sources"] == ["ci / validate"]
 
 
@@ -179,7 +188,7 @@ def _flagged(**overrides: Any) -> dict[str, Any]:
         "verifier_change": True,
         "routine_bump_excluded": False,
         "non_independent_sources": ["ci"],
-        "trusted_verifier_runs": 0,
+        "unchanged_workflow_runs": 0,
     }
     verifier.update(overrides)
     return verifier
@@ -193,7 +202,7 @@ def test_default_is_advisory_warn_never_block() -> None:
         if r.rule == "non_independent_evidence"
     )
     assert "grades itself" in reason.detail
-    assert "explicit approval" in reason.detail
+    assert "governed outside" in reason.detail
 
 
 def test_policy_can_raise_to_block_or_silence() -> None:
@@ -203,22 +212,31 @@ def test_policy_can_raise_to_block_or_silence() -> None:
     assert evaluate(_bundle(_flagged()), silenced).verdict == "PASS"
 
 
-def test_approval_and_routine_bump_suppress_the_reason() -> None:
-    approved = _flagged(approved="ok")
-    assert evaluate(_bundle(approved), _policy()).verdict == "PASS"
+def test_acknowledgement_does_not_suppress_the_reason() -> None:
+    acknowledged = _flagged(acknowledged="reviewed")
+    decision = evaluate(_bundle(acknowledged), _policy())
+    assert decision.verdict == "WARN"
+    reason = next(
+        r for r in decision.reasons
+        if r.rule == "non_independent_evidence"
+    )
+    assert "does not authorize" in reason.detail
+
+
+def test_recorded_routine_pin_bump_stays_quiet() -> None:
     bump = _flagged(routine_bump_excluded=True)
     assert evaluate(_bundle(bump), _policy()).verdict == "PASS"
 
 
-def test_trusted_alternative_is_named_in_the_detail() -> None:
+def test_unchanged_workflow_does_not_claim_independence() -> None:
     decision = evaluate(
-        _bundle(_flagged(trusted_verifier_runs=2)), _policy()
+        _bundle(_flagged(unchanged_workflow_runs=2)), _policy()
     )
     reason = next(
         r for r in decision.reasons
         if r.rule == "non_independent_evidence"
     )
-    assert "2 such run(s) exist" in reason.detail
+    assert "governed outside" in reason.detail
 
 
 # --- end to end through check-pr ----------------------------------------------
@@ -275,7 +293,11 @@ def _install_check_pr(monkeypatch: pytest.MonkeyPatch) -> None:
             return _FakeResponse(
                 {
                     "head": {"sha": SHA, "repo": {"full_name": "octo/repo"}},
-                    "base": {"ref": "main", "repo": {"full_name": "octo/repo"}},
+                    "base": {
+                        "ref": "main",
+                        "sha": BASE,
+                        "repo": {"full_name": "octo/repo"},
+                    },
                     "state": "open",
                     "merged": False,
                     "draft": False,
@@ -329,32 +351,33 @@ def test_check_pr_flags_self_validating_evidence(
     verifier = bundle["collection"]["verifier_change"]
     assert verifier["non_independent_sources"] == ["ci / validate"]
     assert record["observation"]["verifier_change"] == {
+        "available": True,
         "non_independent_sources": 1,
         "routine_bump_excluded": False,
-        "approved": False,
+        "acknowledged": False,
     }
     assert "grades itself" not in capsys.readouterr().err
 
 
-def test_check_pr_approval_flag_records_and_suppresses(
+def test_check_pr_acknowledgement_records_without_suppressing(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     _install_check_pr(monkeypatch)
     monkeypatch.chdir(tmp_path)
     rc = cli.main(
         ["check-pr", "https://github.com/octo/repo/pull/42",
-         "--accept-verifier-change", "release manager reviewed the diff"]
+         "--acknowledge-verifier-change",
+         "release manager reviewed the diff"]
     )
     assert rc == 0
     record = json.loads((tmp_path / "gate-decision.json").read_text("utf-8"))
     rules_hit = {reason["rule"] for reason in record["reasons"]}
-    assert "non_independent_evidence" not in rules_hit
+    assert "non_independent_evidence" in rules_hit
     bundle = json.loads(
         (tmp_path / ".aos-gate" / "bundle.json").read_text("utf-8")
     )
     verifier = bundle["collection"]["verifier_change"]
-    assert verifier["approved"] == "release manager reviewed the diff"
-    # affected sources stay visible under approval
+    assert verifier["acknowledged"] == "release manager reviewed the diff"
     assert verifier["non_independent_sources"] == ["ci / validate"]
 
 
@@ -402,3 +425,150 @@ def test_detector_fires_on_frozen_airflow_and_celery_cases() -> None:
             f"negative control {case['repo']}#{case['number']} "
             "unexpectedly produced self-validating evidence"
         )
+
+
+def test_unavailable_analysis_is_policy_visible() -> None:
+    unavailable = {
+        "analyzed": False,
+        "available": False,
+        "unavailable": "AOS-PERM-004 Actions API is unreadable",
+    }
+    decision = evaluate(_bundle(unavailable), _policy())
+    assert decision.verdict == "WARN"
+    reason = next(
+        r for r in decision.reasons
+        if r.rule == "verifier_change_unavailable"
+    )
+    assert "AOS-PERM-004" in reason.detail
+
+    blocking = _policy(verifier_change_unavailable="BLOCK")
+    assert evaluate(_bundle(unavailable), blocking).verdict == "BLOCK"
+
+
+def test_pr_file_collection_keeps_renames_and_reports_cap(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls = 0
+
+    def request(*args: Any, **kwargs: Any) -> list[dict[str, str]]:
+        nonlocal calls
+        calls += 1
+        return [
+            {
+                "filename": f"new/{calls}-{index}.yml",
+                "previous_filename": f"old/{calls}-{index}.yml",
+            }
+            for index in range(100)
+        ]
+
+    monkeypatch.setattr(verifier_change_module, "_request_json", request)
+    paths, truncated = fetch_pr_files(
+        "https://api.github.com",
+        "octo/repo",
+        42,
+        token=None,
+        budget=Budget(max_api_calls=40),
+    )
+    assert truncated is True
+    assert calls == 30
+    assert len(paths) == 6000
+    assert "old/1-0.yml" in paths
+    assert "new/30-99.yml" in paths
+
+
+def test_frozen_policy_is_opened_once_on_holdout() -> None:
+    analysis = json.loads(
+        (ROOT / "benchmarks" / "discovery" / "analysis.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    holdout = [entry for entry in analysis["pulls"] if entry["split"] == "holdout"]
+    assert len(holdout) == 20
+
+    flagged: list[tuple[str, int]] = []
+    for entry in holdout:
+        changed = list(entry["files"]["workflow"])
+        runs = [
+            {"path": path, "check_suite_id": index}
+            for index, path in enumerate(
+                entry["workflow_runs"]["self_validating_paths"], start=1
+            )
+        ]
+        check_runs = [
+            {"name": f"recorded-suite-{index}", "check_suite": {"id": index}}
+            for index in range(1, len(runs) + 1)
+        ]
+        result = analyze_verifier_change(
+            changed,
+            runs,
+            check_runs,
+            bot_author=bool(entry["author"]["bot"]),
+        )
+        if result["non_independent_sources"]:
+            flagged.append((entry["repo"], entry["number"]))
+
+    assert flagged == [("celery/celery", 10362)]
+
+def _pr_meta(*, head: str = SHA, base: str = BASE) -> dict[str, Any]:
+    return {
+        "head_sha": head,
+        "base_sha": base,
+        "base_ref": "main",
+        "author_bot": False,
+    }
+
+
+def test_collector_rejects_head_drift(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    metadata = iter([_pr_meta(), _pr_meta(head="d" * 40)])
+    monkeypatch.setattr(cli, "fetch_pr", lambda *args, **kwargs: next(metadata))
+    monkeypatch.setattr(
+        cli,
+        "fetch_pr_files",
+        lambda *args, **kwargs: ([".github/workflows/ci.yml"], False),
+    )
+    monkeypatch.setattr(
+        cli,
+        "fetch_workflow_runs",
+        lambda *args, **kwargs: ([_wrun(".github/workflows/ci.yml", 1)], False),
+    )
+
+    result = cli._collect_verifier_change(
+        repository="octo/repo",
+        sha=SHA,
+        pr_number=42,
+        check_runs=[_crun("ci", 1)],
+        token=None,
+        api_url="https://api.github.com",
+        budget=Budget(),
+        acknowledged=None,
+        expected_base_sha=BASE,
+    )
+    assert result["analyzed"] is False
+    assert "changed during" in result["unavailable"]
+
+
+def test_collector_rejects_truncated_file_set(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(cli, "fetch_pr", lambda *args, **kwargs: _pr_meta())
+    monkeypatch.setattr(
+        cli,
+        "fetch_pr_files",
+        lambda *args, **kwargs: ([".github/workflows/ci.yml"], True),
+    )
+
+    result = cli._collect_verifier_change(
+        repository="octo/repo",
+        sha=SHA,
+        pr_number=42,
+        check_runs=[],
+        token=None,
+        api_url="https://api.github.com",
+        budget=Budget(),
+        acknowledged=None,
+        expected_base_sha=BASE,
+    )
+    assert result["analyzed"] is False
+    assert "3,000-file" in result["unavailable"]

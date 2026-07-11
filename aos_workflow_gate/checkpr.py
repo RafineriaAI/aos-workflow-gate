@@ -75,13 +75,19 @@ def fetch_pr(
     base = payload.get("base") or {}
     sha = head.get("sha")
     base_ref = base.get("ref")
-    if not isinstance(sha, str) or not isinstance(base_ref, str):
-        raise InputError("pull request API response has no head sha/base ref")
+    base_sha = base.get("sha")
+    if (
+        not isinstance(sha, str)
+        or not isinstance(base_ref, str)
+        or not isinstance(base_sha, str)
+    ):
+        raise InputError("pull request API response has no head/base sha or base ref")
     head_repo = (head.get("repo") or {}).get("full_name")
     base_repo = (base.get("repo") or {}).get("full_name")
     user = payload.get("user") or {}
     return {
         "head_sha": sha,
+        "base_sha": base_sha,
         "base_ref": base_ref,
         "state": payload.get("state"),
         "merged": bool(payload.get("merged")),

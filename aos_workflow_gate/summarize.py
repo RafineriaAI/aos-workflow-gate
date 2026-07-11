@@ -53,8 +53,12 @@ REPAIR_HINTS = {
     ),
     "non_independent_evidence": (
         "the named checks were produced by a workflow this change "
-        "modifies; add or keep a verifier the change cannot rewrite, "
-        "or record explicit approval (--accept-verifier-change)"
+        "modifies; require evidence from a verifier governed outside "
+        "the change"
+    ),
+    "verifier_change_unavailable": (
+        "the verifier-change analysis was incomplete; grant the named "
+        "read permission, remove the collection error, and re-run"
     ),
 }
 
@@ -160,6 +164,7 @@ _GAP_RULE_RANK = {
     "malformed_input": 0,
     "missing_required_source": 1,
     "failed_required_source": 1,
+    "verifier_change_unavailable": 2,
     "non_independent_evidence": 2,
     "incomplete_collection": 3,
     "advisory_warning": 4,

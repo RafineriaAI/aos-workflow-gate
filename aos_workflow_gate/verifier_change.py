@@ -1,26 +1,19 @@
 """Trusted verifier-change awareness: self-validating changes are named.
 
-When a pull request changes its own verification mechanism — a workflow
-file, the test harness, policy files, or scanner configuration —
-evidence generated **solely by the changed mechanism** must not be
-treated as independent: the change grades itself with the grader it
-just edited. This module detects that condition mechanically and
-records it as evidence; the policy decides what it means (advisory WARN
-by default, raisable to BLOCK, or explicitly approved).
+Version 0 makes one deliberately narrow determination: when a pull
+request changes a GitHub Actions workflow definition and a run of that
+exact workflow produces checks for the same head SHA, those checks are
+not independent evidence. Other verifier-adjacent paths are recorded,
+but no dependency relationship is inferred from paths alone.
 
 Every determination here is a pure function of observed facts: changed
 file paths, workflow-run paths, and check-suite identifiers. **No model
 output participates in any verdict path**, and nothing is executed.
 
-What restores trust, mechanically:
-
-- a *trusted verifier*: a workflow whose definition file the change did
-  not touch (it runs the protected ref's logic, or at least logic this
-  change cannot have rewritten), observed as a workflow run whose
-  ``path`` is not among the changed workflow files; or
-- *explicit approval*: an operator-recorded acceptance
-  (``--accept-verifier-change``), which suppresses the reason but is
-  itself committed into the bundle as evidence.
+An unchanged workflow run is recorded only as a possible alternative;
+its governance and transitive dependencies are not proven here. An
+operator acknowledgement is also evidence, never authorization, and
+never suppresses a policy reason.
 
 Routine dependency bumps are excluded mechanically (bot author, only
 dependency-pin or packaging-metadata files, no workflow/scanner
@@ -37,9 +30,9 @@ from .errors import InputError
 
 WORKFLOW_RE = re.compile(r"^\.github/workflows/[^/]+\.(yml|yaml)$")
 TEST_HARNESS_RE = re.compile(
-    r"(^|/)(tests?|testing)/|(^|/)conftest\.py$|(^|/)(tox|noxfile|pytest)"
-    r"\.(ini|py|toml)$"
+    r"(^|/)conftest\.py$|(^|/)(tox|noxfile|pytest)\.(ini|py|toml)$"
 )
+TEST_CASE_RE = re.compile(r"(^|/)(tests?|testing)/")
 SCANNER_CONFIG_RE = re.compile(
     r"(^|/)(\.pre-commit-config\.ya?ml|codecov\.ya?ml|\.codecov\.ya?ml|"
     r"sonar-project\.properties|\.github/dependabot\.ya?ml|"
@@ -52,6 +45,8 @@ DEPENDENCY_PIN_RE = re.compile(
     r"package-lock\.json|yarn\.lock|pnpm-lock\.ya?ml|go\.sum|Cargo\.lock|"
     r"constraints[^/]*\.txt)$"
 )
+_PER_PAGE = 100
+_MAX_PR_FILE_PAGES = 30
 
 
 def classify_verifier_paths(
@@ -65,7 +60,8 @@ def classify_verifier_paths(
     """
     extra = set(extra_policy_paths or [])
     buckets: dict[str, list[str]] = {
-        "workflow": [], "test_harness": [], "scanner_config": [],
+        "workflow": [], "test_harness": [], "test_cases": [],
+        "scanner_config": [],
         "policy": [], "dependency_pins": [], "packaging": [], "other": [],
     }
     for path in paths:
@@ -77,6 +73,8 @@ def classify_verifier_paths(
             buckets["scanner_config"].append(path)
         elif TEST_HARNESS_RE.search(path):
             buckets["test_harness"].append(path)
+        elif TEST_CASE_RE.search(path):
+            buckets["test_cases"].append(path)
         elif DEPENDENCY_PIN_RE.search(path):
             buckets["dependency_pins"].append(path)
         elif PACKAGING_RE.search(path):
@@ -99,6 +97,7 @@ def is_routine_bump(buckets: dict[str, list[str]], *, bot_author: bool) -> bool:
     verifier_surface = (
         buckets["workflow"] or buckets["scanner_config"]
         or buckets["policy"] or buckets["test_harness"]
+        or buckets["test_cases"]
     )
     only_bump_files = not buckets["other"] and (
         buckets["dependency_pins"] or buckets["packaging"]
@@ -113,13 +112,18 @@ def fetch_pr_files(
     *,
     token: str | None,
     budget: Budget,
-) -> list[str]:
-    """Changed file paths of a pull request (paginated)."""
+) -> tuple[list[str], bool]:
+    """Return changed paths and whether GitHub's file cap was reached.
+
+    Renames include both the current and previous path. GitHub documents
+    a 3,000-file response ceiling, so a full final page is explicitly
+    truncated rather than treated as complete.
+    """
     headers = {"Accept": "application/vnd.github+json"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
     paths: list[str] = []
-    for page in range(1, 4):
+    for page in range(1, _MAX_PR_FILE_PAGES + 1):
         payload = _request_json(
             f"{api_url}/repos/{slug}/pulls/{number}/files"
             f"?per_page=100&page={page}",
@@ -130,15 +134,16 @@ def fetch_pr_files(
         )
         if not isinstance(payload, list):
             raise InputError("pull request files response is not a list")
-        page_paths = [
-            str(item.get("filename"))
-            for item in payload
-            if isinstance(item, dict) and item.get("filename")
-        ]
-        paths.extend(page_paths)
-        if len(payload) < 100:
-            break
-    return paths
+        for item in payload:
+            if not isinstance(item, dict):
+                continue
+            for key in ("filename", "previous_filename"):
+                value = item.get(key)
+                if isinstance(value, str) and value:
+                    paths.append(value)
+        if len(payload) < _PER_PAGE:
+            return sorted(set(paths)), False
+    return sorted(set(paths)), True
 
 
 def _suite_id(run: dict[str, Any]) -> int | None:
@@ -155,7 +160,7 @@ def analyze_verifier_change(
     check_runs: list[dict[str, Any]],
     *,
     bot_author: bool = False,
-    approved: str | None = None,
+    acknowledged: str | None = None,
     extra_policy_paths: list[str] | None = None,
 ) -> dict[str, Any]:
     """Pure, model-free analysis of one change against its evidence.
@@ -168,10 +173,8 @@ def analyze_verifier_change(
     buckets = classify_verifier_paths(
         changed_paths, extra_policy_paths=extra_policy_paths
     )
-    verifier_changed = bool(
-        buckets["workflow"] or buckets["test_harness"]
-        or buckets["scanner_config"] or buckets["policy"]
-    )
+    # Only workflow definitions can be joined mechanically to workflow runs.
+    verifier_changed = bool(buckets["workflow"])
     routine_bump = is_routine_bump(buckets, bot_author=bot_author)
 
     changed_workflow_paths = set(buckets["workflow"])
@@ -180,7 +183,7 @@ def analyze_verifier_change(
         if isinstance(run.get("path"), str)
         and run["path"] in changed_workflow_paths
     ]
-    trusted_runs = [
+    unchanged_runs = [
         run for run in workflow_runs
         if isinstance(run.get("path"), str)
         and run["path"] not in changed_workflow_paths
@@ -208,6 +211,7 @@ def analyze_verifier_change(
         "changed": {
             "workflow": buckets["workflow"],
             "test_harness": buckets["test_harness"],
+            "test_cases": buckets["test_cases"],
             "scanner_config": buckets["scanner_config"],
             "policy": buckets["policy"],
         },
@@ -217,13 +221,14 @@ def analyze_verifier_change(
         ),
         "non_independent_suites": non_independent_suites,
         "non_independent_sources": non_independent_sources,
-        "trusted_verifier_runs": len(trusted_runs),
+        "unchanged_workflow_runs": len(unchanged_runs),
+        "scope": "changed_workflow_definitions_v0",
         "note": (
             "mechanical determination from changed paths, workflow-run "
             "paths, and check-suite ids; no model output participates "
             "in any verdict path"
         ),
     }
-    if approved:
-        evidence["approved"] = approved
+    if acknowledged:
+        evidence["acknowledged"] = acknowledged
     return evidence
