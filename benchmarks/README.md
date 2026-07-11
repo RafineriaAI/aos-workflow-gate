@@ -71,7 +71,7 @@ actions; the attestation in each `case.json` says so.
 ## Replay it yourself (offline, self-service)
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.30.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.31.0"
 
 aos-workflow-gate bench-verify --case benchmarks/cases/v0110-incident-counterfactual
 aos-workflow-gate verify \
