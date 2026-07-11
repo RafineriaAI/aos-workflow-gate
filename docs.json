@@ -107,7 +107,8 @@
     "policies/aos-kernel-release-surface.yml",
     "aos_workflow_gate/packs/minimal-pr-gate.yml",
     "aos_workflow_gate/packs/release-candidate.yml",
-    "aos_workflow_gate/packs/agent-review-advisory.yml"
+    "aos_workflow_gate/packs/agent-review-advisory.yml",
+    "aos_workflow_gate/packs/evidence-integrity.yml"
   ],
   "tools": [
     "tools/__init__.py",
@@ -147,7 +148,8 @@
     "tests/test_discovery.py",
     "tests/test_collection_consistency.py",
     "tests/test_adversarial_corpus.py",
-    "tests/test_backward_compat.py"
+    "tests/test_backward_compat.py",
+    "tests/test_evidence_integrity_policy.py"
   ],
   "assets": [
     "docs/assets/banner.png"
