@@ -1,0 +1,17 @@
+schema_version: draft-0
+policy_id: evidence-integrity
+mode: blocking
+verification_status: UNSIGNED_NOT_OFFICIAL
+subject:
+  require_repository: true
+  require_sha: true
+rules:
+  missing_required_source: BLOCK
+  failed_required_source: BLOCK
+  malformed_input: BLOCK
+  advisory_warning: WARN
+  no_required_sources: BLOCK
+  incomplete_collection: BLOCK
+  non_independent_evidence: BLOCK
+required_sources:
+  - ci
