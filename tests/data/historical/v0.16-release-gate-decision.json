@@ -1,0 +1,99 @@
+{
+  "can_block": true,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "version": "0.16.0"
+  },
+  "input_bundle_digest": "sha256:241a93df006ffc8807f8f97d4de5d1902f1944de5a0d09b9734a13a56f5c07cb",
+  "inputs": [
+    {
+      "digest": "sha256:7db0d1595ebc6ade3f02ab962a578b2333561fe3750b78d21a8c77bf79d3f044",
+      "id": "AOS Workflow Gate CI / validate",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ea905c2dc86de1b858253a3771ccba09e6d0376f3ceeed2bfeef2d764c45aa43",
+      "id": "AOS Workflow Gate Release Gate / enforce",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a3283df1faeb2ed9b3b95d1b4fa68ca3b13b3d683dfde54d3fe7dcb13ec8a006",
+      "id": "AOS Workflow Gate Self / advisory",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f2f916826d2eeb0073b43b08ea93d7c3cb7ca3a4ea4e78f1dcaf0cafdf1adfd0",
+      "id": "AOS Workflow Gate Self / no-checkout",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:10d8fa87a63a38176ba8ce3fe3e5d8f389753c7d044cb44228b617e4adb85d37",
+      "id": "AOS Workflow Gate Self / zero-config",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:84e81f19ea5564a173fb4a64ba1a7fa3b9b49adcb3eddbdd9a8513b28e9a1167",
+      "id": "build",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:61fbe549df00ef601ec9f606274807958eda2a4936b704a44a52522f9364ca2b",
+      "id": "deploy",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3f57601dc44e0e2bea99d146634456efd93216439bfa8a67fad9ab2778ed189e",
+      "id": "report-build-status",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    }
+  ],
+  "policy": {
+    "digest": "sha256:54376c63d96abf02291c75722e3dbc1a80f28eede76ecaf1ad75d48ecc0b5861",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "WARN",
+      "source_id": "AOS Workflow Gate Self / no-checkout"
+    }
+  ],
+  "record_digest": "sha256:2c108da6dec3904190b2d8751806e8e36163d745bf7dd77bdbd3af86b70c3110",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": null,
+    "ref": null,
+    "repository": "RafineriaAI/aos-workflow-gate",
+    "sha": "19ed4146c71f5ee733a120612d404cb0b6c02210"
+  },
+  "summary": "Gate WARN: required checks satisfied; 1 advisory warning(s).",
+  "verdict": "WARN",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

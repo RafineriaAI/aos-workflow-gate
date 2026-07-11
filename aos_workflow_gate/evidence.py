@@ -13,6 +13,7 @@ from typing import Any
 
 from . import canonical
 from .evaluate import Decision
+from .manifest import verifier_manifest_digest
 from .policy import Policy
 from .version import __version__
 
@@ -104,7 +105,14 @@ def build_record(
     """
     record: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
-        "generator": {"tool": "aos-workflow-gate", "version": __version__},
+        "generator": {
+            "tool": "aos-workflow-gate",
+            "version": __version__,
+            # content address of the exact verifier that derived this
+            # decision: substitution becomes detectable, with no signing
+            # or authorship claim (see docs, verifier manifest)
+            "verifier_manifest_digest": verifier_manifest_digest(),
+        },
         "subject": decision.subject.as_dict(),
         "policy": {
             "policy_id": policy.policy_id,

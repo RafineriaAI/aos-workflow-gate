@@ -61,7 +61,7 @@
       "aos": {
         "can_block": false,
         "reason_rules": [],
-        "record_digest": "sha256:1e1f2dc2156eccaaed1aaabaadbba1bce913e63239f3ccb1e837f92522505abf",
+        "record_digest": "sha256:d36973c4758440aa6a3326b0c7aaf28f31cbfe5c865c3475028645d2d0901106",
         "verdict": "PASS"
       },
       "baseline": {
@@ -79,7 +79,7 @@
           "advisory_warning",
           "no_required_sources"
         ],
-        "record_digest": "sha256:c55e2dd38b7254b2d9ce774eb6a9f05fed1d1aa43a15215670fa7390363957da",
+        "record_digest": "sha256:69881955013b66f3089e37064b570a5d12d66ce6ba0c45584df4916cd2a02acb",
         "verdict": "WARN"
       },
       "baseline": {
@@ -96,7 +96,7 @@
         "reason_rules": [
           "advisory_warning"
         ],
-        "record_digest": "sha256:231ab21ecc1aafa631380c9927a332db1e444a946cc0eda589dbcaeb6ed4e173",
+        "record_digest": "sha256:23e7eb2fd199e272a01cf4efc30a5af81230942dbedb9100f464af884f3cd27b",
         "verdict": "WARN"
       },
       "baseline": {
