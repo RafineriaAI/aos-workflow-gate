@@ -18,17 +18,21 @@ summary's Coverage section suggests a starting `required-checks` value
 from your detected checks.
 
 **How do I see and keep the evidence?**
-The decision record is written to the path in the `record` output
-(Self-Test Mode also writes the bundle and generated policy to
-`.aos-gate/`). Upload them as artifacts to keep them; on private
-repositories treat the record with the same sensitivity as your check
-names.
+The decision record is written to the path in the `record` output;
+Self-Test Mode also writes the bundle, the generated policy, and a
+static `evidence.html` view to `.aos-gate/`, and uploads all of it as
+the `aos-gate-evidence` artifact by default. **GitHub artifacts expire**
+(90 days unless your repository configures otherwise), so they are
+retention, not permanence: for decisions worth keeping, attach the
+files to a release (this repository gates and attaches its own release
+evidence that way) or commit the triple. On private repositories treat
+the record with the same sensitivity as your check names.
 
 **How do I reproduce a decision locally?**
 Download the artifacts, then:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.28.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.29.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json
 ```

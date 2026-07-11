@@ -66,7 +66,7 @@ from .requirements import (
     requirement_snapshot,
 )
 from .source_contract import load_external_sources
-from .summarize import render_html, render_markdown
+from .summarize import render_html, render_markdown, verify_bindings
 from .version import __version__
 
 
@@ -582,6 +582,16 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     summarize_parser.add_argument(
         "--out", help="write the rendered view here instead of stdout"
+    )
+    summarize_parser.add_argument(
+        "--bundle",
+        help="also verify the record against this bundle (bundle "
+        "binding; with --policy, semantic replay too)",
+    )
+    summarize_parser.add_argument(
+        "--policy",
+        help="also verify the record's policy digest against this "
+        "policy file (policy binding; with --bundle, semantic replay)",
     )
 
     export_parser = subparsers.add_parser(
@@ -1451,10 +1461,19 @@ def _check_context_integrity(bundle: Any, *, require_match: bool) -> None:
 
 def _cmd_summarize(args: argparse.Namespace) -> int:
     record = _load_json(args.input)
+    bindings: dict[str, str] | None = None
+    if args.bundle or args.policy:
+        bindings = verify_bindings(
+            record if isinstance(record, dict) else {},
+            bundle=_load_json(args.bundle) if args.bundle else None,
+            policy_path=Path(args.policy) if args.policy else None,
+        )
     if args.html:
-        text, intact = render_html(record)
+        text, intact = render_html(record, bindings)
     else:
         text, intact = render_markdown(record)
+    if bindings and any(value == "FAILED" for value in bindings.values()):
+        intact = False
     if args.out:
         out_path = safe_output_path(args.out, workspace=workspace_boundary())
         if out_path.parent != Path(""):

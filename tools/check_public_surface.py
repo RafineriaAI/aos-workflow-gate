@@ -529,6 +529,11 @@ def check_action_surface() -> None:
         "Reproduce locally",
         "Replay path:",
         "can-block=",
+        "diagnosis=",
+        "next-action=",
+        "required-unverifiable=",
+        ".aos-gate/evidence.html",
+        "attach the files to a\n      release for permanence",
         "name: aos-gate-evidence",
         'include-hidden-files: "true"',
         "uses: actions/upload-artifact@"
