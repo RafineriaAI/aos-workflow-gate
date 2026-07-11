@@ -1,0 +1,557 @@
+{
+  "boundary": "public metadata only: changed file paths, counts, timestamps, check conclusions, and workflow paths; no code, no diffs, no comment bodies are stored, and nothing from the observed repositories is executed",
+  "captured_at": "2026-07-11T13:40:46Z",
+  "method": {
+    "per_repo": 30,
+    "selection": "most recently created merged pull requests per repository at capture time",
+    "split_rule": "sha256('<repo>#<number>') last hex digit in c-f => holdout (~25%), else discovery"
+  },
+  "pulls": [
+    {
+      "merged_at": "2026-07-11T12:41:24Z",
+      "number": 69754,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-11T12:28:17Z",
+      "number": 69732,
+      "repo": "apache/airflow",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-11T05:02:36Z",
+      "number": 69730,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-11T13:00:25Z",
+      "number": 69729,
+      "repo": "apache/airflow",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-10T18:17:50Z",
+      "number": 69725,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T18:17:38Z",
+      "number": 69718,
+      "repo": "apache/airflow",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-10T18:17:47Z",
+      "number": 69717,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-11T02:34:39Z",
+      "number": 69708,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T23:47:44Z",
+      "number": 69707,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T07:26:57Z",
+      "number": 69691,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T16:24:33Z",
+      "number": 69690,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T05:53:46Z",
+      "number": 69686,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T03:08:35Z",
+      "number": 69684,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T21:36:57Z",
+      "number": 69682,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T15:58:57Z",
+      "number": 69677,
+      "repo": "apache/airflow",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-11T02:04:30Z",
+      "number": 69674,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-11T01:59:21Z",
+      "number": 69671,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T02:56:00Z",
+      "number": 69669,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T12:54:09Z",
+      "number": 69664,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T18:40:31Z",
+      "number": 69663,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T08:17:38Z",
+      "number": 69662,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T14:36:57Z",
+      "number": 69656,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T20:20:09Z",
+      "number": 69651,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T01:32:43Z",
+      "number": 69650,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T01:33:38Z",
+      "number": 69649,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T07:56:59Z",
+      "number": 69648,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T12:37:42Z",
+      "number": 69647,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T12:38:00Z",
+      "number": 69643,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T06:09:15Z",
+      "number": 69637,
+      "repo": "apache/airflow",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T15:47:17Z",
+      "number": 69636,
+      "repo": "apache/airflow",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-08T14:54:45Z",
+      "number": 10401,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-05T10:24:57Z",
+      "number": 10397,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-05T13:13:29Z",
+      "number": 10385,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-05T12:38:49Z",
+      "number": 10383,
+      "repo": "celery/celery",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-06-27T11:27:51Z",
+      "number": 10382,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-08T15:57:13Z",
+      "number": 10378,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-27T09:42:02Z",
+      "number": 10369,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-24T15:07:50Z",
+      "number": 10368,
+      "repo": "celery/celery",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-06-24T14:48:10Z",
+      "number": 10366,
+      "repo": "celery/celery",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-06T15:24:18Z",
+      "number": 10363,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-30T16:08:04Z",
+      "number": 10362,
+      "repo": "celery/celery",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-01T04:36:29Z",
+      "number": 10358,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-07T15:50:35Z",
+      "number": 10357,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-11T14:47:36Z",
+      "number": 10354,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-14T08:51:14Z",
+      "number": 10352,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-10T01:29:01Z",
+      "number": 10350,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-14T09:05:48Z",
+      "number": 10349,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-10T08:39:50Z",
+      "number": 10348,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-10T11:31:18Z",
+      "number": 10346,
+      "repo": "celery/celery",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-06-08T16:48:46Z",
+      "number": 10345,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-08T15:50:30Z",
+      "number": 10343,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-10T11:13:14Z",
+      "number": 10342,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-03T07:20:55Z",
+      "number": 10335,
+      "repo": "celery/celery",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-06-03T07:47:09Z",
+      "number": 10334,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-06-08T16:46:50Z",
+      "number": 10324,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T14:31:55Z",
+      "number": 10323,
+      "repo": "celery/celery",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-05-25T05:31:20Z",
+      "number": 10321,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-05-20T12:26:36Z",
+      "number": 10313,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-05-14T04:34:35Z",
+      "number": 10309,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-05-12T14:55:43Z",
+      "number": 10306,
+      "repo": "celery/celery",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-11T13:42:01Z",
+      "number": 51,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-11T13:29:31Z",
+      "number": 50,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-11T13:29:00Z",
+      "number": 49,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-11T08:01:24Z",
+      "number": 48,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-11T07:53:50Z",
+      "number": 47,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T20:55:21Z",
+      "number": 46,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T20:49:58Z",
+      "number": 45,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-10T20:43:26Z",
+      "number": 44,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-10T20:33:02Z",
+      "number": 43,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T20:23:53Z",
+      "number": 42,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-10T19:35:26Z",
+      "number": 41,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T19:25:29Z",
+      "number": 40,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-09T19:08:26Z",
+      "number": 39,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-09T18:56:25Z",
+      "number": 38,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-09T18:40:18Z",
+      "number": 37,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-09T18:13:40Z",
+      "number": 36,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-08T19:15:39Z",
+      "number": 35,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-08T18:56:50Z",
+      "number": 34,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-07T16:45:46Z",
+      "number": 33,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-07T16:05:03Z",
+      "number": 32,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-07T00:58:12Z",
+      "number": 31,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-07T00:51:05Z",
+      "number": 30,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-07T00:34:14Z",
+      "number": 29,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "holdout"
+    },
+    {
+      "merged_at": "2026-07-07T00:30:55Z",
+      "number": 28,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-07T00:25:58Z",
+      "number": 27,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-07T00:22:39Z",
+      "number": 26,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-07T00:16:35Z",
+      "number": 25,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-07T00:09:47Z",
+      "number": 24,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-05T13:36:59Z",
+      "number": 23,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    },
+    {
+      "merged_at": "2026-07-05T12:31:51Z",
+      "number": 22,
+      "repo": "RafineriaAI/aos-workflow-gate",
+      "split": "discovery"
+    }
+  ],
+  "repositories": [
+    "apache/airflow",
+    "celery/celery",
+    "RafineriaAI/aos-workflow-gate"
+  ],
+  "schema_version": "discovery-manifest-v0"
+}
