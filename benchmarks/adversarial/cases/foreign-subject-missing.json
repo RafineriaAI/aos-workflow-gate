@@ -1,0 +1,44 @@
+{
+  "bundle": {
+    "schema_version": "draft-0",
+    "sources": [
+      {
+        "id": "ci",
+        "kind": "github_check",
+        "required": true,
+        "status": "success"
+      }
+    ],
+    "subject": {
+      "sha": "ffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "case_id": "foreign-subject-missing",
+  "description": "Policy demands a subject repository; the bundle has none.",
+  "expected": {
+    "detail_contains": "repository",
+    "reason_rules": [
+      "malformed_input"
+    ],
+    "verdict": "BLOCK"
+  },
+  "policy": {
+    "advisory_sources": [],
+    "policy_id": "adversarial",
+    "required_sources": [
+      "ci"
+    ],
+    "rules": {
+      "advisory_warning": "WARN",
+      "failed_required_source": "BLOCK",
+      "malformed_input": "BLOCK",
+      "missing_required_source": "BLOCK",
+      "no_required_sources": "WARN"
+    },
+    "schema_version": "draft-0",
+    "subject": {
+      "require_repository": true,
+      "require_sha": true
+    }
+  }
+}

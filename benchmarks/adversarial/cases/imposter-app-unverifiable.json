@@ -1,0 +1,44 @@
+{
+  "bundle": {
+    "collection": {
+      "requirements": [
+        {
+          "context": "ci",
+          "integration_id": 15368,
+          "state": "unverifiable"
+        }
+      ],
+      "status": "complete"
+    },
+    "schema_version": "draft-0",
+    "sources": [],
+    "subject": {
+      "repository": "octo/repo",
+      "sha": "ffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "case_id": "imposter-app-unverifiable",
+  "description": "A same-named run from a foreign app was excluded as unverifiable; the requirement must fail closed with the state named.",
+  "expected": {
+    "detail_contains": "requirement state: unverifiable",
+    "reason_rules": [
+      "missing_required_source"
+    ],
+    "verdict": "BLOCK"
+  },
+  "policy": {
+    "advisory_sources": [],
+    "policy_id": "adversarial",
+    "required_sources": [
+      "ci"
+    ],
+    "rules": {
+      "advisory_warning": "WARN",
+      "failed_required_source": "BLOCK",
+      "malformed_input": "BLOCK",
+      "missing_required_source": "BLOCK",
+      "no_required_sources": "WARN"
+    },
+    "schema_version": "draft-0"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "bundle": {
+    "schema_version": "draft-0",
+    "sources": [
+      {
+        "contract": "source-v0",
+        "digest": "sha256:912d0c07da7bdb22cdae025b96da26d01523aaab7362edb28544e3949deb369d",
+        "id": "ext",
+        "kind": "github_check",
+        "required": true,
+        "status": "success"
+      }
+    ],
+    "subject": {
+      "repository": "octo/repo",
+      "sha": "ffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "case_id": "self-promoting-source",
+  "description": "A source-v0 source tries to mark itself required.",
+  "expected": {
+    "detail_contains": "policy-owned",
+    "reason_rules": [
+      "malformed_input"
+    ],
+    "verdict": "BLOCK"
+  },
+  "policy": {
+    "advisory_sources": [
+      "ext"
+    ],
+    "policy_id": "adversarial",
+    "required_sources": [],
+    "rules": {
+      "advisory_warning": "WARN",
+      "failed_required_source": "BLOCK",
+      "malformed_input": "BLOCK",
+      "missing_required_source": "BLOCK",
+      "no_required_sources": "WARN"
+    },
+    "schema_version": "draft-0"
+  }
+}

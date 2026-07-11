@@ -1,0 +1,45 @@
+{
+  "bundle": {
+    "schema_version": "draft-0",
+    "sources": [
+      {
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "id": "scan",
+        "identity": {
+          "status": "success",
+          "tool": "x"
+        },
+        "kind": "github_check",
+        "status": "success"
+      }
+    ],
+    "subject": {
+      "repository": "octo/repo",
+      "sha": "ffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "case_id": "tampered-identity",
+  "description": "Attached identity does not recompute to the declared digest.",
+  "expected": {
+    "detail_contains": "identity binding",
+    "reason_rules": [
+      "malformed_input"
+    ],
+    "verdict": "BLOCK"
+  },
+  "policy": {
+    "advisory_sources": [
+      "scan"
+    ],
+    "policy_id": "adversarial",
+    "required_sources": [],
+    "rules": {
+      "advisory_warning": "WARN",
+      "failed_required_source": "BLOCK",
+      "malformed_input": "BLOCK",
+      "missing_required_source": "BLOCK",
+      "no_required_sources": "WARN"
+    },
+    "schema_version": "draft-0"
+  }
+}

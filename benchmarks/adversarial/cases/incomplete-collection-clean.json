@@ -1,0 +1,44 @@
+{
+  "bundle": {
+    "collection": {
+      "status": "wait_timeout"
+    },
+    "schema_version": "draft-0",
+    "sources": [
+      {
+        "id": "ci",
+        "kind": "github_check",
+        "required": true,
+        "status": "success"
+      }
+    ],
+    "subject": {
+      "repository": "octo/repo",
+      "sha": "ffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "case_id": "incomplete-collection-clean",
+  "description": "Required satisfied but the collection did not end complete.",
+  "expected": {
+    "detail_contains": "wait_timeout",
+    "reason_rules": [
+      "incomplete_collection"
+    ],
+    "verdict": "WARN"
+  },
+  "policy": {
+    "advisory_sources": [],
+    "policy_id": "adversarial",
+    "required_sources": [
+      "ci"
+    ],
+    "rules": {
+      "advisory_warning": "WARN",
+      "failed_required_source": "BLOCK",
+      "malformed_input": "BLOCK",
+      "missing_required_source": "BLOCK",
+      "no_required_sources": "WARN"
+    },
+    "schema_version": "draft-0"
+  }
+}
