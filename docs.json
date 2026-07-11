@@ -84,7 +84,17 @@
     "benchmarks/cases/v0110-incident-counterfactual/gate-decision.json",
     "benchmarks/discovery/README.md",
     "benchmarks/discovery/manifest.json",
-    "benchmarks/discovery/analysis.json"
+    "benchmarks/discovery/analysis.json",
+    "benchmarks/adversarial/cases/foreign-subject-missing.json",
+    "benchmarks/adversarial/cases/freshness-unverified-required.json",
+    "benchmarks/adversarial/cases/imposter-app-unverifiable.json",
+    "benchmarks/adversarial/cases/incomplete-collection-clean.json",
+    "benchmarks/adversarial/cases/self-promoting-source.json",
+    "benchmarks/adversarial/cases/status-identity-lie.json",
+    "benchmarks/adversarial/cases/tampered-identity.json",
+    "benchmarks/adversarial/cases/zero-required-all-green.json",
+    "benchmarks/contrast/contrast.json",
+    "benchmarks/contrast/CONTRAST.md"
   ],
   "policies": [
     "policies/default.yml",
@@ -96,7 +106,8 @@
   "tools": [
     "tools/__init__.py",
     "tools/check_public_surface.py",
-    "tools/discovery.py"
+    "tools/discovery.py",
+    "tools/contrast.py"
   ],
   "ci": [
     "pyproject.toml",
@@ -128,7 +139,8 @@
     "tests/test_integrated_preflight.py",
     "tests/test_html_view.py",
     "tests/test_discovery.py",
-    "tests/test_collection_consistency.py"
+    "tests/test_collection_consistency.py",
+    "tests/test_adversarial_corpus.py"
   ],
   "assets": [
     "docs/assets/banner.png"

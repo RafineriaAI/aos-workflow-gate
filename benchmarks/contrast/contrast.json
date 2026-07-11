@@ -1,0 +1,112 @@
+{
+  "boundary": "baselines are operator-declared from historical platform state; scope is required status checks, not full merge-readiness; no security or quality claim is made",
+  "rows": [
+    {
+      "aos": {
+        "can_block": false,
+        "reason_rules": [],
+        "record_digest": "sha256:7af0023ac2dd03cf1122cf9eeaa8272c9e594c3d4563000eb07dbd33770f3db6",
+        "verdict": "PASS"
+      },
+      "baseline": {
+        "declared_by": "operator",
+        "github_merge_ready": true,
+        "note": "GitHub baseline and the gate agree: every required and advisory signal on the head is green (the no-checkout job is excluded as skipped-by-design on pull requests). Control case: agreement, no false alarm.",
+        "required_check": "AOS Workflow Gate CI / validate",
+        "required_check_state": "success"
+      },
+      "case": "benchmarks/cases/agent-pr36-preflight",
+      "classification": "real_pass_control"
+    },
+    {
+      "aos": {
+        "can_block": false,
+        "reason_rules": [
+          "advisory_warning"
+        ],
+        "record_digest": "sha256:b9548de3e85d4476479f28a6016eb0d5a733b750bb04cd19ffeae74b17316fcf",
+        "verdict": "WARN"
+      },
+      "baseline": {
+        "declared_by": "operator",
+        "github_merge_ready": true,
+        "note": "GitHub baseline: dashboard fully green, PR merge-ready. The gate records a named WARN: the no-checkout control never ran on this head (skipped), which no green dashboard surfaces. The gap is invisible to the baseline and explicit in the record.",
+        "required_check": "AOS Workflow Gate CI / validate",
+        "required_check_state": "success"
+      },
+      "case": "benchmarks/cases/green-but-incomplete-pr22",
+      "classification": "real_gap_warn"
+    },
+    {
+      "aos": {
+        "can_block": false,
+        "reason_rules": [
+          "advisory_warning",
+          "failed_required_source"
+        ],
+        "record_digest": "sha256:ccf1da7455eb9a202c47356198ba7e9747a0266f8dd3d3968f2b9fb433816729",
+        "verdict": "BLOCK"
+      },
+      "baseline": {
+        "declared_by": "operator",
+        "github_merge_ready": true,
+        "note": "The real v0.11.0 incident: the change broke action.yml, both self-test jobs concluded failure on the merge commit, yet the only required check (validate) was green, so GitHub reported merge-ready and the release shipped broken. Counterfactual policy (real signals, retrospective required-check choice): requiring the self-test turns this exact commit into a named BLOCK.",
+        "required_check": "AOS Workflow Gate CI / validate",
+        "required_check_state": "success"
+      },
+      "case": "benchmarks/cases/v0110-incident-counterfactual",
+      "classification": "controlled_counterfactual_block"
+    },
+    {
+      "aos": {
+        "can_block": false,
+        "reason_rules": [],
+        "record_digest": "sha256:1e1f2dc2156eccaaed1aaabaadbba1bce913e63239f3ccb1e837f92522505abf",
+        "verdict": "PASS"
+      },
+      "baseline": {
+        "declared_by": "operator",
+        "github_merge_ready": true,
+        "note": "all signals green on the head commit"
+      },
+      "case": "examples/pr-evidence-record.json",
+      "classification": "none (control case)"
+    },
+    {
+      "aos": {
+        "can_block": false,
+        "reason_rules": [
+          "advisory_warning",
+          "no_required_sources"
+        ],
+        "record_digest": "sha256:c55e2dd38b7254b2d9ce774eb6a9f05fed1d1aa43a15215670fa7390363957da",
+        "verdict": "WARN"
+      },
+      "baseline": {
+        "declared_by": "operator",
+        "github_merge_ready": true,
+        "note": "required status check green; self-test jobs failed but were not required"
+      },
+      "case": "examples/zero-required-record.json",
+      "classification": "decision gap (zero required at the gate)"
+    },
+    {
+      "aos": {
+        "can_block": false,
+        "reason_rules": [
+          "advisory_warning"
+        ],
+        "record_digest": "sha256:231ab21ecc1aafa631380c9927a332db1e444a946cc0eda589dbcaeb6ed4e173",
+        "verdict": "WARN"
+      },
+      "baseline": {
+        "declared_by": "operator",
+        "github_merge_ready": true,
+        "note": "dashboard fully green; one control never ran"
+      },
+      "case": "examples/green-but-incomplete-record.json",
+      "classification": "advisory-visibility gap"
+    }
+  ],
+  "schema_version": "contrast-v0"
+}

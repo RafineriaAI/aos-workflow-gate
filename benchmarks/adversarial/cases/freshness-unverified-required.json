@@ -1,0 +1,40 @@
+{
+  "bundle": {
+    "schema_version": "draft-0",
+    "sources": [
+      {
+        "id": "agent.action.abc",
+        "kind": "agent_action",
+        "status": "freshness_unverified"
+      }
+    ],
+    "subject": {
+      "repository": "octo/repo",
+      "sha": "ffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "case_id": "freshness-unverified-required",
+  "description": "A required agent action without a freshness mode fails closed.",
+  "expected": {
+    "detail_contains": "freshness_unverified",
+    "reason_rules": [
+      "failed_required_source"
+    ],
+    "verdict": "BLOCK"
+  },
+  "policy": {
+    "advisory_sources": [],
+    "policy_id": "adversarial",
+    "required_sources": [
+      "agent.action.abc"
+    ],
+    "rules": {
+      "advisory_warning": "WARN",
+      "failed_required_source": "BLOCK",
+      "malformed_input": "BLOCK",
+      "missing_required_source": "BLOCK",
+      "no_required_sources": "WARN"
+    },
+    "schema_version": "draft-0"
+  }
+}

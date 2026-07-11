@@ -1,0 +1,45 @@
+{
+  "bundle": {
+    "schema_version": "draft-0",
+    "sources": [
+      {
+        "digest": "sha256:0fad62fca081ea0b1a85482b33b82828d252e746fb483272ebfa6f7f701b147f",
+        "id": "scan",
+        "identity": {
+          "status": "warning",
+          "tool": "x"
+        },
+        "kind": "github_check",
+        "status": "success"
+      }
+    ],
+    "subject": {
+      "repository": "octo/repo",
+      "sha": "ffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "case_id": "status-identity-lie",
+  "description": "Source claims success while its identity says warning.",
+  "expected": {
+    "detail_contains": "does not match",
+    "reason_rules": [
+      "malformed_input"
+    ],
+    "verdict": "BLOCK"
+  },
+  "policy": {
+    "advisory_sources": [
+      "scan"
+    ],
+    "policy_id": "adversarial",
+    "required_sources": [],
+    "rules": {
+      "advisory_warning": "WARN",
+      "failed_required_source": "BLOCK",
+      "malformed_input": "BLOCK",
+      "missing_required_source": "BLOCK",
+      "no_required_sources": "WARN"
+    },
+    "schema_version": "draft-0"
+  }
+}

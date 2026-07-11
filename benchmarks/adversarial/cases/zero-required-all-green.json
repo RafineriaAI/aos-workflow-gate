@@ -1,0 +1,46 @@
+{
+  "bundle": {
+    "schema_version": "draft-0",
+    "sources": [
+      {
+        "id": "ci",
+        "kind": "github_check",
+        "status": "success"
+      },
+      {
+        "id": "lint",
+        "kind": "github_check",
+        "status": "success"
+      }
+    ],
+    "subject": {
+      "repository": "octo/repo",
+      "sha": "ffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "case_id": "zero-required-all-green",
+  "description": "Nothing required, everything green: honest WARN, never PASS.",
+  "expected": {
+    "detail_contains": "requires nothing",
+    "reason_rules": [
+      "no_required_sources"
+    ],
+    "verdict": "WARN"
+  },
+  "policy": {
+    "advisory_sources": [
+      "ci",
+      "lint"
+    ],
+    "policy_id": "adversarial",
+    "required_sources": [],
+    "rules": {
+      "advisory_warning": "WARN",
+      "failed_required_source": "BLOCK",
+      "malformed_input": "BLOCK",
+      "missing_required_source": "BLOCK",
+      "no_required_sources": "WARN"
+    },
+    "schema_version": "draft-0"
+  }
+}

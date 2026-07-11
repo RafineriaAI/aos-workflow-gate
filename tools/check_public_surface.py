@@ -201,6 +201,9 @@ REQUIRED_SNIPPETS = {
         "a\nsource can never mark itself required",
     ],
     "benchmarks/README.md": [
+        "## Automated contrast and the adversarial corpus",
+        "never an input to the evaluator",
+        "asserts byte equality",
         "no staged repositories, no\nfabricated signals, no synthetic scenarios",
         "## Dogfooding boundary",
         "Claude Code\n(Anthropic), operated by the maintainer",
