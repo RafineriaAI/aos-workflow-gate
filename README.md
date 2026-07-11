@@ -41,7 +41,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.29.0
+        uses: RafineriaAI/aos-workflow-gate@v0.30.0
 ```
 
 `checks: read` is needed because a `permissions:` block sets every unlisted
@@ -51,7 +51,9 @@ repositories do not.
 
 No `required-checks` input is needed: zero-config mode discovers the
 required status checks from your branch rules (classic branch
-protection included), enforces their app-bound identity, and waits
+protection included — rulesets and classic protection are read
+together and unioned, because GitHub enforces both when both are
+active), enforces their app-bound identity, and waits
 briefly for them to stabilize. Name `required-checks` only to
 override the discovery; named checks become required (missing or
 failed means `BLOCK`), every other collected check is advisory. Set
@@ -88,7 +90,7 @@ gates and attaches its own release evidence that way).
 decision offline:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.29.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.30.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json --html --out evidence.html
 ```
@@ -213,7 +215,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.29.0
+    uses: RafineriaAI/aos-workflow-gate@v0.30.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

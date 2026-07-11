@@ -142,8 +142,37 @@ def evaluate(bundle: Any, policy: Policy) -> Decision:
                 )
 
     reasons = _apply_rules(sources, policy, requirement_states)
+    reasons.extend(_collection_reasons(collection, policy))
     inputs = [s.as_input() for s in sorted(sources, key=lambda s: s.id)]
     return _build(subject, policy, reasons, inputs)
+
+
+def _collection_reasons(collection: Any, policy: Policy) -> list[Reason]:
+    """A verdict must not read cleaner than its collection.
+
+    When the bundle records how it was collected and that collection did
+    not end ``complete`` (truncated listing, wait timeout, or any state
+    this version does not know), the decision carries an
+    ``incomplete_collection`` reason — WARN by default, policy-tunable —
+    so an incomplete or unknown observation can never yield a plain
+    PASS. Bundles that record no collection at all make no completeness
+    claim and are unaffected.
+    """
+    if not isinstance(collection, dict) or "status" not in collection:
+        return []
+    status = str(collection.get("status"))
+    if status == "complete":
+        return []
+    return [
+        Reason(
+            "incomplete_collection",
+            policy.rules.get("incomplete_collection", "WARN"),
+            None,
+            f"collection ended '{status}', not 'complete': signals that "
+            "exist for this commit may be absent from the bundle, so a "
+            "clean result cannot be read as a complete PASS",
+        )
+    ]
 
 
 def _apply_rules(

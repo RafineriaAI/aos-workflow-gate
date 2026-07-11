@@ -32,7 +32,7 @@ the record with the same sensitivity as your check names.
 Download the artifacts, then:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.29.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.30.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json
 ```
@@ -81,6 +81,8 @@ aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
 | Collection status `truncated` | More check runs existed than the page budget collected. | Raise limits via CLI flags; uncollected required checks fail closed. |
 | Collection `unverifiable_required` (check-pr) | A same-named observation exists, but it cannot be shown to satisfy the app-bound requirement (different or unidentifiable app; legacy statuses carry no app identity). | Make the required app report the check, or unbind the requirement in the branch rules; the control fails closed as missing until then. |
 | `no_required_sources` reason | Nothing is required by the policy, so nothing can block — zero required plus all-green is an honest `WARN`, never a quiet `PASS`. | Name `required-checks`, or rely on zero-config discovery, which reads required checks from branch rules (classic protection included) automatically. |
+| `incomplete_collection` reason | The bundle records that its collection did not end `complete` (truncated listing or wait timeout), so signals that exist for the commit may be absent — an otherwise-clean result reads `WARN`, never a plain `PASS`. | Re-collect with a larger wait or API budget; set the `incomplete_collection` rule to `BLOCK` in your policy to fail closed instead. |
+| Requirement `github_equivalent: would_pass` with state `failed` | The required check concluded `skipped` or `neutral`: GitHub's own semantics count that as passing, but no evidence was actually produced. | Decide which reading you want: make the check actually run, or accept GitHub's formal pass and record the divergence. |
 
 **Does PASS mean my code is safe?**
 No. `PASS` means your explicit policy was satisfied by the collected

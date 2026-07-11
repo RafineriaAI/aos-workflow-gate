@@ -2,7 +2,7 @@
   "can_block": false,
   "generator": {
     "tool": "aos-workflow-gate",
-    "version": "0.29.0"
+    "version": "0.30.0"
   },
   "input_bundle_digest": "sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837",
   "inputs": [
@@ -71,7 +71,7 @@
       "source_id": "AOS Workflow Gate Self / zero-config"
     }
   ],
-  "record_digest": "sha256:fa2560343188943ee3aa70356a437a0cbc8401857da5b33e740db453620377fb",
+  "record_digest": "sha256:3b7a8f035d0b622f199c6c4533e1f0465fbdbaf78319ddd25d5699a7a65982ec",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": null,
