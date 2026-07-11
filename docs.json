@@ -41,7 +41,8 @@
     "SECURITY.md",
     "CONTRIBUTING.md",
     "LICENSE",
-    "NOTICE"
+    "NOTICE",
+    "docs/pilot/P0-P1-REGISTER.md"
   ],
   "examples": [
     "examples/github-pr-signal-bundle.json",
@@ -126,7 +127,8 @@
     "tests/test_golden_summaries.py",
     "tests/test_integrated_preflight.py",
     "tests/test_html_view.py",
-    "tests/test_discovery.py"
+    "tests/test_discovery.py",
+    "tests/test_collection_consistency.py"
   ],
   "assets": [
     "docs/assets/banner.png"
