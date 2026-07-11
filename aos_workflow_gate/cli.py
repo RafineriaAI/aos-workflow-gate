@@ -55,7 +55,7 @@ from .collect import (
 )
 from .errors import InputError
 from .evaluate import BLOCK, evaluate
-from .evidence import build_record, verify_record
+from .evidence import build_record, observation_from_bundle, verify_record
 from .export import build_statement
 from .paths import safe_output_path, workspace_boundary
 from .policy import load_policy
@@ -729,6 +729,7 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
         policy=policy,
         input_bundle_digest=canonical.digest(bundle),
         can_block=bool(args.enforce or policy.mode == "blocking"),
+        observation=observation_from_bundle(bundle),
     )
     text = json.dumps(record, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
 
@@ -967,6 +968,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
         policy=policy,
         input_bundle_digest=canonical.digest(bundle),
         can_block=bool(enforce or policy.mode == "blocking"),
+        observation=observation_from_bundle(bundle),
     )
     out_path = safe_output_path(args.out, workspace=workspace)
     if out_path.parent != Path(""):
@@ -1132,6 +1134,7 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         policy=loaded,
         input_bundle_digest=canonical.digest(bundle),
         can_block=enforce,
+        observation=observation_from_bundle(bundle),
     )
     out_path = safe_output_path(args.out, workspace=workspace)
     if out_path.parent != Path(""):

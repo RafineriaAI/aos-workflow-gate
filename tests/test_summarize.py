@@ -41,7 +41,9 @@ def test_render_markdown_top_block() -> None:
     record = _record()
     text, _ = render_markdown(record)
     assert "**What happened:**" in text
-    assert "**Can block this job:** no" in text
+    assert "**Scope:**" in text
+    assert "**Freshness:**" in text
+    assert "**Effect:** advisory" in text
     assert "**Next:**" in text
     assert "advisory findings warn but never block" in text
 

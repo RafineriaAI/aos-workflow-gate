@@ -47,6 +47,10 @@
       "status": "success"
     }
   ],
+  "observation": {
+    "status": "complete",
+    "strict_up_to_date_required": false
+  },
   "policy": {
     "digest": "sha256:2014a856e0aba1fa1f3b50ffbb1c352d54a75c620b670f81ff7f9f7b7f89c29c",
     "mode": "advisory",
@@ -61,7 +65,7 @@
       "source_id": "AOS Workflow Gate Self / no-checkout"
     }
   ],
-  "record_digest": "sha256:ef0ba1e23944e2b4d5c92c5e0ffbf40be366018398c8be66492ecf1a71968075",
+  "record_digest": "sha256:70621ddd010d0dcf8a4dadb58536eb92c046e21c3a2cc6c341154a028969a313",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 32,
