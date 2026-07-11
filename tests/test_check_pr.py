@@ -173,7 +173,7 @@ def _fake_urlopen(runs: list[dict[str, Any]]):  # type: ignore[no-untyped-def]
             )
         if "/rules/branches/" in url:
             return _FakeResponse(RULES)
-        if url.endswith("/status"):
+        if ("/status?" in url or url.endswith("/status")):
             return _FakeResponse(
                 {
                     "state": "failure",

@@ -130,24 +130,56 @@ def evaluate(bundle: Any, policy: Policy) -> Decision:
         inputs = [s.as_input() for s in sources] if sources else []
         return _build(subject, policy, malformed, inputs)
 
-    reasons = _apply_rules(sources, policy)
+    requirement_states: dict[str, str] = {}
+    collection = bundle.get("collection")
+    if isinstance(collection, dict):
+        for entry in collection.get("requirements") or []:
+            if isinstance(entry, dict) and isinstance(
+                entry.get("context"), str
+            ):
+                requirement_states[entry["context"]] = str(
+                    entry.get("state", "")
+                )
+
+    reasons = _apply_rules(sources, policy, requirement_states)
     inputs = [s.as_input() for s in sorted(sources, key=lambda s: s.id)]
     return _build(subject, policy, reasons, inputs)
 
 
-def _apply_rules(sources: list[Source], policy: Policy) -> list[Reason]:
+def _apply_rules(
+    sources: list[Source],
+    policy: Policy,
+    requirement_states: dict[str, str] | None = None,
+) -> list[Reason]:
     reasons: list[Reason] = []
     index = {source.id: source for source in sources}
+    states = requirement_states or {}
+
+    if not policy.required_sources:
+        reasons.append(
+            Reason(
+                "no_required_sources",
+                policy.rules.get("no_required_sources", "WARN"),
+                None,
+                "the policy requires nothing, so no missing or failed "
+                "check can make this gate BLOCK — the record is "
+                "evidence, not enforcement",
+            )
+        )
 
     for required_id in policy.required_sources:
         source = index.get(required_id)
         if source is None:
+            state = states.get(required_id)
+            detail = "required source is absent from the bundle"
+            if state in ("pending", "unverifiable", "missing"):
+                detail += f" (requirement state: {state})"
             reasons.append(
                 Reason(
                     "missing_required_source",
                     policy.rules["missing_required_source"],
                     required_id,
-                    "required source is absent from the bundle",
+                    detail,
                 )
             )
         elif source.status.lower() != _SUCCESS:
@@ -350,6 +382,11 @@ def _summary(verdict: str, reasons: list[Reason]) -> str:
         return f"Gate BLOCK: {len(blocking)} blocking issue(s). {detail}".strip()
     if verdict == WARN:
         warnings = [r for r in reasons if r.severity == WARN]
+        if any(r.rule == "no_required_sources" for r in warnings):
+            return (
+                f"Gate WARN: the policy requires nothing, so nothing "
+                f"can block; {len(warnings)} warning(s)."
+            )
         return (
             f"Gate WARN: required checks satisfied; "
             f"{len(warnings)} advisory warning(s)."

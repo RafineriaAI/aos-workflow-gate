@@ -1,8 +1,11 @@
 # Merge-ready with zero enforced evidence
 
-The main aha case, from this repository's own history: **GitHub permits
-the merge while zero checks are required at the gate — and the gate's
-very first advisory record says so, with the failures named.**
+The main aha case, from this repository's own history: **GitHub's
+required status checks permitted the merge while zero checks were
+required at the gate — and the gate's very first advisory record says
+so, with the failures named.** (Scope: required status checks, not
+full merge-readiness — reviews, merge queues, and bypass actors are
+outside what is evaluated.)
 
 ## The real state
 
@@ -33,13 +36,15 @@ sources**. Against the same real commit it produces
 [policy](../../examples/zero-required-policy.json)):
 
 ```text
-WARN  Gate WARN: required checks satisfied; 3 advisory warning(s).
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 4 warning(s).
 Signals: 0 required (0 successful) · 4 advisory (3 warning(s))
 Can block this job: no
 ```
 
-with the two real failures named as reasons, and the Coverage section
-stating the decision gap in one sentence: *no source is required, so a
+with the decision gap itself raised as an explicit `no_required_sources`
+warning — zero required plus green checks would still be `WARN`, never
+a quiet `PASS` — the two real failures named as reasons, and the
+Coverage section stating the gap in one sentence: *no source is required, so a
 missing or failed check cannot make this gate BLOCK — the record is
 evidence, not enforcement.*
 
@@ -54,7 +59,7 @@ is required.
 ## Replay it yourself
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.27.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.28.0"
 aos-workflow-gate verify \
   --input examples/zero-required-record.json \
   --bundle examples/zero-required-bundle.json

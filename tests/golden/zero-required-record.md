@@ -1,9 +1,9 @@
 ## Gate decision: WARN
 
-**What happened:** Gate WARN: required checks satisfied; 3 advisory warning(s).
-**Signals:** 0 required (0 successful) · 4 advisory (3 warning(s))
+**What happened:** Gate WARN: the policy requires nothing, so nothing can block; 4 warning(s).
+**Signals:** 0 required (0 successful) · 4 advisory (4 warning(s))
 **Can block this job:** no
-**Next:** advisory findings warn but never block; review the source's own report and decide
+**Next:** nothing is required, so nothing can block; name required checks (see the suggestion under Coverage) to close the decision gap
 
 | Field | Value |
 | --- | --- |
@@ -12,12 +12,14 @@
 | Policy | `collected-advisory` (advisory) |
 | Policy digest | `sha256:1ac10c8a010a4e3a9f62894184bfd9ba342626922ac4f6dd987f8ca6f0a06cb0` |
 | Input bundle digest | `sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837` |
-| Record digest | `sha256:78cf9f4ec7375488a5503f0accbc1d2e669591b21b174ee74488f8bd4cb8e9a5` |
+| Record digest | `sha256:4c55a0b1d1ded228ff4db255c1a834155795cb5d80f0dd01b1725f16f692d9a2` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
 ### Reasons
 
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK — the record is evidence, not enforcement
+  - Hint: nothing is required, so nothing can block; name required checks (see the suggestion under Coverage) to close the decision gap
 - WARN `advisory_warning` AOS Workflow Gate Self / advisory: advisory source status is 'failure'
   - Hint: advisory findings warn but never block; review the source's own report and decide
 - WARN `advisory_warning` AOS Workflow Gate Self / no-checkout: advisory source status is 'skipped'

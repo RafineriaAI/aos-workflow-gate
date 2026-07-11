@@ -33,6 +33,11 @@ REPAIR_HINTS = {
         "advisory findings warn but never block; review the source's own "
         "report and decide"
     ),
+    "no_required_sources": (
+        "nothing is required, so nothing can block; name required "
+        "checks (see the suggestion under Coverage) to close the "
+        "decision gap"
+    ),
     "malformed_input": (
         "the signal bundle does not match schema draft-0; compare with "
         "examples/github-pr-signal-bundle.json"
@@ -65,11 +70,39 @@ def diagnose(record: Any) -> dict[str, Any]:
         if isinstance(reason, dict)
     ] if isinstance(record.get("reasons"), list) else []
     required = [source for source in inputs if source.get("required")]
+
+    def _requirement_state(reason: dict[str, Any]) -> str:
+        detail = str(reason.get("detail", ""))
+        for state in ("pending", "unverifiable"):
+            if f"(requirement state: {state})" in detail:
+                return state
+        return "missing"
+
+    missing_reasons = [
+        reason for reason in reasons
+        if reason.get("rule") == "missing_required_source"
+    ]
     counts = {
         "required_total": len(required),
         "required_successful": sum(
             1 for source in required
             if str(source.get("status", "")).lower() == "success"
+        ),
+        "required_failed": sum(
+            1 for reason in reasons
+            if reason.get("rule") == "failed_required_source"
+        ),
+        "required_missing": sum(
+            1 for reason in missing_reasons
+            if _requirement_state(reason) == "missing"
+        ),
+        "required_pending": sum(
+            1 for reason in missing_reasons
+            if _requirement_state(reason) == "pending"
+        ),
+        "required_unverifiable": sum(
+            1 for reason in missing_reasons
+            if _requirement_state(reason) == "unverifiable"
         ),
         "advisory_total": len(inputs) - len(required),
         "advisory_warnings": sum(
@@ -77,6 +110,10 @@ def diagnose(record: Any) -> dict[str, Any]:
         ),
         "blocking_reasons": sum(
             1 for reason in reasons if reason.get("severity") == "BLOCK"
+        ),
+        "decision_gap": any(
+            reason.get("rule") == "no_required_sources"
+            for reason in reasons
         ),
     }
     return {
@@ -211,12 +248,16 @@ def _coverage_lines(inputs: list[Any]) -> list[str]:
             "check cannot make this gate BLOCK. The record is evidence, "
             "not enforcement."
         )
+        candidates = [
+            source for source in sources
+            if source.get("kind") == "github_check"
+        ]
         candidate_ids = ", ".join(
             str(source.get("id", ""))
             .replace('"', "")
             .replace("`", "'")
             .replace("\n", " ")
-            for source in sources[:5]
+            for source in candidates[:5]
         )
         if candidate_ids:
             lines.append(
@@ -241,6 +282,29 @@ def _next_step(record: dict[str, Any], intact: bool) -> str:
         )
     verdict = record.get("verdict")
     reasons = record.get("reasons")
+    if verdict == "BLOCK" and isinstance(reasons, list):
+        # one concrete step: name the first blocking source
+        for reason in reasons:
+            if not isinstance(reason, dict):
+                continue
+            if reason.get("severity") != "BLOCK":
+                continue
+            rule = str(reason.get("rule"))
+            source_id = reason.get("source_id")
+            if rule == "missing_required_source" and source_id:
+                return (
+                    f"make the required check '{source_id}' report on "
+                    "this exact commit (the name must match exactly), "
+                    "or correct the required-checks name"
+                )
+            if rule == "failed_required_source" and source_id:
+                return (
+                    f"fix or re-run the required check '{source_id}', "
+                    "then re-evaluate"
+                )
+            hint = REPAIR_HINTS.get(rule)
+            if hint:
+                return hint
     if verdict in ("BLOCK", "WARN") and isinstance(reasons, list):
         for reason in reasons:
             if isinstance(reason, dict):

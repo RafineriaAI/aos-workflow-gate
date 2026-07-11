@@ -119,7 +119,7 @@ def _opener_with_broken_statuses(runs: list[dict[str, Any]]) -> Any:
         url = request.full_url
         if "/rules/branches/" in url:
             return _FakeResponse(RULES)
-        if url.endswith("/status"):
+        if ("/status?" in url or url.endswith("/status")):
             raise _http_error(403)
         if "/pulls/" in url:
             return _FakeResponse(
