@@ -158,19 +158,67 @@ def _collection_reasons(collection: Any, policy: Policy) -> list[Reason]:
     PASS. Bundles that record no collection at all make no completeness
     claim and are unaffected.
     """
-    if not isinstance(collection, dict) or "status" not in collection:
+    if not isinstance(collection, dict):
         return []
-    status = str(collection.get("status"))
-    if status == "complete":
+    reasons: list[Reason] = []
+    if "status" in collection:
+        status = str(collection.get("status"))
+        if status != "complete":
+            reasons.append(
+                Reason(
+                    "incomplete_collection",
+                    policy.rules.get("incomplete_collection", "WARN"),
+                    None,
+                    f"collection ended '{status}', not 'complete': "
+                    "signals that exist for this commit may be absent "
+                    "from the bundle, so a clean result cannot be read "
+                    "as a complete PASS",
+                )
+            )
+    reasons.extend(_verifier_change_reasons(collection, policy))
+    return reasons
+
+
+def _verifier_change_reasons(
+    collection: dict[str, Any], policy: Policy
+) -> list[Reason]:
+    """Evidence generated solely by a changed mechanism is named.
+
+    The determination is recorded by the collector
+    (``collection.verifier_change``, see verifier_change.py); this rule
+    only translates it into a reason. Advisory (WARN) by default —
+    policy-tunable to BLOCK — and suppressed by a recorded explicit
+    approval or the recorded routine-bump exclusion, both of which stay
+    visible in the bundle.
+    """
+    analysis = collection.get("verifier_change")
+    if not isinstance(analysis, dict) or not analysis.get("analyzed"):
         return []
+    if analysis.get("approved") or analysis.get("routine_bump_excluded"):
+        return []
+    affected = analysis.get("non_independent_sources")
+    if not isinstance(affected, list) or not affected:
+        return []
+    shown = ", ".join(str(name) for name in affected[:3])
+    more = len(affected) - min(len(affected), 3)
+    trusted = analysis.get("trusted_verifier_runs")
     return [
         Reason(
-            "incomplete_collection",
-            policy.rules.get("incomplete_collection", "WARN"),
+            "non_independent_evidence",
+            policy.rules.get("non_independent_evidence", "WARN"),
             None,
-            f"collection ended '{status}', not 'complete': signals that "
-            "exist for this commit may be absent from the bundle, so a "
-            "clean result cannot be read as a complete PASS",
+            f"{len(affected)} source(s) were produced by a workflow "
+            f"this change itself modifies ({shown}"
+            + (f", and {more} more" if more else "")
+            + "): the change grades itself with the grader it edited. "
+            "Require a verifier the change cannot rewrite (an "
+            "unchanged/protected workflow"
+            + (
+                f" — {trusted} such run(s) exist on this commit"
+                if isinstance(trusted, int) and trusted
+                else ""
+            )
+            + ") or record explicit approval",
         )
     ]
 

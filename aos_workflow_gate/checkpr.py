@@ -79,6 +79,7 @@ def fetch_pr(
         raise InputError("pull request API response has no head sha/base ref")
     head_repo = (head.get("repo") or {}).get("full_name")
     base_repo = (base.get("repo") or {}).get("full_name")
+    user = payload.get("user") or {}
     return {
         "head_sha": sha,
         "base_ref": base_ref,
@@ -86,6 +87,7 @@ def fetch_pr(
         "merged": bool(payload.get("merged")),
         "draft": bool(payload.get("draft")),
         "from_fork": bool(head_repo and base_repo and head_repo != base_repo),
+        "author_bot": user.get("type") == "Bot",
     }
 
 

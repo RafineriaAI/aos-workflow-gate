@@ -109,6 +109,19 @@ rejection.
   (`satisfied`/`failed`/`missing`/`pending`/`unverifiable`) are recorded
   as evidence in the bundle's `collection.requirements`. Scope: required
   status checks only, deliberately not full merge-readiness.
+- **Trusted verifier-change awareness.** When a pull request changes its
+  own verification mechanism (workflow file, test harness, policy, or
+  scanner configuration), evidence produced solely by the changed
+  mechanism is flagged `non_independent_evidence` — the change grades
+  itself with the grader it just edited. The determination is purely
+  mechanical (changed paths, workflow-run paths, check-suite ids; no
+  model output participates in any verdict path), advisory (WARN) by
+  default and policy-tunable to BLOCK. Trust is restored by a verifier
+  the change cannot rewrite (an unchanged workflow observed on the same
+  commit) or by explicit approval (`--accept-verifier-change`), which is
+  itself committed into the bundle as evidence. Routine dependency bumps
+  (bot-authored, pin-only) are excluded mechanically and the exclusion
+  is recorded.
 - **Policy-digest guard.** `evaluate --policy-digest sha256:<hex>` pins the
   expected policy; a swapped or edited policy file is an operational error
   (exit 2) before any verdict is computed.
