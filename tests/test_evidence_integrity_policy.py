@@ -3,8 +3,7 @@
 ``evidence-integrity`` proves value beyond required-status-check
 control: it blocks on conditions no branch-protection rule can even
 express — a collection that did not observe everything, evidence
-produced by the change that is being judged, and a policy that requires
-nothing. Data only: no new command surface, contract, or adapter.
+produced by the change that is being judged. Data only: no new surface.
 """
 
 from __future__ import annotations
@@ -42,7 +41,7 @@ def test_pack_resolves_and_is_blocking() -> None:
     assert policy.mode == "blocking"
     assert policy.rules["incomplete_collection"] == "BLOCK"
     assert policy.rules["non_independent_evidence"] == "BLOCK"
-    assert policy.rules["no_required_sources"] == "BLOCK"
+    assert "no_required_sources" not in policy.rules
 
 
 def test_blocks_conditions_github_cannot_express() -> None:
@@ -55,6 +54,18 @@ def test_blocks_conditions_github_cannot_express() -> None:
         r.rule == "incomplete_collection" for r in incomplete.reasons
     )
 
+    # green checks, but the change also edits their verifier workflow
+    non_independent = evaluate(
+        _bundle(
+            status="complete",
+            verifier_change={
+                "analyzed": True,
+                "non_independent_sources": ["ci"],
+            },
+        ),
+        policy,
+    )
+    assert non_independent.verdict == "BLOCK"
     # a complete, green observation passes
     clean = evaluate(_bundle(status="complete"), policy)
     assert clean.verdict == "PASS"

@@ -14,7 +14,7 @@
 | Policy | `collected-advisory` (advisory) |
 | Policy digest | `sha256:1ac10c8a010a4e3a9f62894184bfd9ba342626922ac4f6dd987f8ca6f0a06cb0` |
 | Input bundle digest | `sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837` |
-| Record digest | `sha256:296968888e79c7f0e6d8133f3ff6e86f88655fcad934c5e05c5da3dcfd365990` |
+| Record digest | `sha256:50025b114b279addb293262187fce2c41a6af610b4ce6e8ba06f1171ec4e9d2c` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 

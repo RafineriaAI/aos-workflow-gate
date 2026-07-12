@@ -7,6 +7,8 @@ import pytest
 
 from aos_workflow_gate.requirements import (
     classify_control,
+    legacy_status_source_ids,
+    merge_protection_controls,
     qualifying_runs,
     requirement_evidence,
     requirement_snapshot,
@@ -70,6 +72,10 @@ def test_app_bound_identity_rejects_imposter() -> None:
     )
 
     # both present: the qualifying run decides, the imposter is noted
+    boolean_app = _run(app_id=True)
+    assert classify_control(_control(), [boolean_app], [])["state"] == (
+        "unverifiable"
+    )
     both = classify_control(_control(), [imposter, _run()], [])
     assert both["state"] == "satisfied"
     assert 99999 in both["observed"]["nonqualifying_app_ids"]
@@ -113,6 +119,40 @@ def test_qualifying_runs_drops_imposters_only_for_bound_contexts() -> None:
     assert ("ci", 99999) not in names_apps
     assert ("lint", 99999) in names_apps
     assert ("other", 1) in names_apps
+
+
+def test_same_context_controls_keep_distinct_observation_bindings() -> None:
+    controls = merge_protection_controls(
+        [{"context": "ci", "integration_id": None}],
+        [
+            {"context": "ci", "integration_id": APP},
+            {"context": "ci", "integration_id": 99999},
+        ],
+    )
+    by_app = {
+        control["integration_id"]: control["source_id"]
+        for control in controls
+    }
+    assert len(set(by_app.values())) == 3
+
+    kept = qualifying_runs([_run("ci", app_id=APP)], controls)
+    assert {run["_aos_source_id"] for run in kept} == {
+        by_app[None],
+        by_app[APP],
+    }
+    assert by_app[99999] not in {
+        run["_aos_source_id"] for run in kept
+    }
+    assert {
+        (
+            run["_aos_control_identity"]["context"],
+            run["_aos_control_identity"]["integration_id"],
+        )
+        for run in kept
+    } == {("ci", None), ("ci", APP)}
+
+    # A legacy status can prove only the unbound identity.
+    assert legacy_status_source_ids(controls) == {"ci": by_app[None]}
 
 
 def test_requirement_evidence_is_compact() -> None:

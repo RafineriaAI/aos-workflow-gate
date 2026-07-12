@@ -10,7 +10,6 @@ rules:
   failed_required_source: BLOCK
   malformed_input: BLOCK
   advisory_warning: WARN
-  no_required_sources: BLOCK
   incomplete_collection: BLOCK
   non_independent_evidence: BLOCK
 required_sources:

@@ -2,8 +2,42 @@
   "can_block": false,
   "generator": {
     "tool": "aos-workflow-gate",
-    "verifier_manifest_digest": "sha256:5fb9f7e78ce8c2a522545f304ac193f1ba8aab09bbb4a9fe227d829cf18d4132",
-    "version": "0.35.0"
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "330a2b685e9fc08bc3b3cb1595fb96893f02cc840b3519ce5039e42ac0718a70",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "8ce3f344dca713d938e8535efd1fc5fb3cb663d01e1b66cc319eefcc1bbfe4a8",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "checkpr.py": "98ca2d69c7eddb3cbbde4f329b82176c933957018f603c17a2cc09731cfd2258",
+        "cli.py": "23d0ea39d01993ae9dc00ca3ab4c14837e4c044a716700583ea03ef8f8b4d248",
+        "collect.py": "f91c714a99541a6e41768cce1d651057f5257c4aa61de6d7a514635027dc405b",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "b5b9009f1b12f59e3a0afeda46166608c23e99a84e3aa58df1db93e9272ae771",
+        "evidence.py": "6a8993778b935274f7fb42a828e783ad4525fe1e22afe22edecb8fb23c2399f0",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "manifest.py": "0430ab9f521a65f0c7640b9fd9a7747beb4ed4bc3106076f8bb256698e103fad",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "482541d99ffe23104edfe52986719840099c96505f640ebb88a7b0a2457d21ec",
+        "preflight.py": "c87bd5c1e135c90ee01895957c9d5b1c919e12c974538480cd74fff1fef56a6a",
+        "requirements.py": "99eb594444dc68ec16c0ae9021f85703c499b7668ca761066e5536e13630d640",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "5033163c3387c88749b1596af2a561f5a8f6731e6d756716e937d25fc9824687",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "37b6869f406948037183d89e869b4f92139964fdb9ce342c834a2f5a46bb7296",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:5de0fba6f171b6d2285d44e3edaf212a1e98df13ee5082f3161243439d566d96",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:5de0fba6f171b6d2285d44e3edaf212a1e98df13ee5082f3161243439d566d96",
+    "version": "0.36.0"
   },
   "input_bundle_digest": "sha256:b6c60a32a3fab0158f40794b5a3d025c3e805d85241e8ab550f9ea05ab509a84",
   "inputs": [
@@ -66,7 +100,7 @@
       "source_id": "AOS Workflow Gate Self / no-checkout"
     }
   ],
-  "record_digest": "sha256:bb5cb44f8a32ddf2880efb80d368a2cd122ebe16c67462d8d75a4942e940d729",
+  "record_digest": "sha256:918db0d7ca1750599e17e73a2be5d0bf89ed15299953e33ee69a4b1919560e42",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 32,

@@ -17,12 +17,16 @@ manifest is disclosure, never a verdict.
 
 from __future__ import annotations
 
+import copy
 import hashlib
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 from . import canonical
+
+_FILE_HASH_RE = re.compile(r"^[0-9a-f]{64}$")
 
 _PACKAGE_ROOT = Path(__file__).resolve().parent
 
@@ -34,7 +38,7 @@ def _packaged_files() -> list[Path]:
 
 
 @lru_cache(maxsize=1)
-def verifier_manifest() -> dict[str, Any]:
+def _verifier_manifest() -> dict[str, Any]:
     """The manifest of the currently installed verifier."""
     files: dict[str, str] = {}
     for path in _packaged_files():
@@ -45,6 +49,43 @@ def verifier_manifest() -> dict[str, Any]:
         "files": files,
         "manifest_digest": canonical.digest(files),
     }
+
+
+def verifier_manifest() -> dict[str, Any]:
+    """A detached copy of the currently installed verifier manifest."""
+    return copy.deepcopy(_verifier_manifest())
+
+
+def validate_verifier_manifest(value: Any) -> bool:
+    """Validate structure and recompute the embedded manifest digest."""
+    if not isinstance(value, dict):
+        return False
+    if value.get("schema_version") != "verifier-manifest-v0":
+        return False
+    if set(value) != {"schema_version", "files", "manifest_digest"}:
+        return False
+    files = value.get("files")
+    claimed = value.get("manifest_digest")
+    if not isinstance(files, dict) or not isinstance(claimed, str):
+        return False
+    for relative_path, file_hash in files.items():
+        if not isinstance(relative_path, str) or not relative_path:
+            return False
+        if (
+            relative_path.startswith("/")
+            or "\\" in relative_path
+            or any(
+                part in ("", ".", "..")
+                for part in relative_path.split("/")
+            )
+        ):
+            return False
+        if (
+            not isinstance(file_hash, str)
+            or _FILE_HASH_RE.fullmatch(file_hash) is None
+        ):
+            return False
+    return claimed == canonical.digest(files)
 
 
 def verifier_manifest_digest() -> str:

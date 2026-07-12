@@ -7,4 +7,4 @@
 **Signals:** 1 required (1 successful) · 2 advisory (0 warning(s))
 **Next:** set enforce: "true" (or a blocking policy) so a BLOCK verdict fails the job
 
-Record `sha256:c885c0e87cc9edec425b015b7a5a83e14ce0a6f18fdbd916996c678a11b17bae` · bundle `sha256:a06a19c633c11a343a622b96fa201ddcbd1b88176565ac93e6ee2fd7c29a973d` · self-check OK · UNSIGNED\_NOT\_OFFICIAL
+Record `sha256:215999df5bb4b8cfdd7e87957f6ea36e2ae42c43e8f27c494dfe102916a8ebfe` · bundle `sha256:a06a19c633c11a343a622b96fa201ddcbd1b88176565ac93e6ee2fd7c29a973d` · self-check OK · UNSIGNED\_NOT\_OFFICIAL

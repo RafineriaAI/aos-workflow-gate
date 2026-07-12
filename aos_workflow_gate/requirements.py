@@ -45,8 +45,10 @@ misrepresents the other.
 
 Protection sources are merged, not chosen: GitHub enforces rulesets and
 classic branch protection simultaneously when both are active, so the
-snapshot reads both and takes the union of required contexts; each
-control records which mechanism(s) require it (``required_by``).
+snapshot reads both and unions exact ``(context, integration_id)`` control
+identities. ``required_by`` is deterministic provenance, not identity;
+``repository + head_sha`` scopes the observation, not the requirement.
+Different app bindings for one context remain separate controls.
 """
 
 from __future__ import annotations
@@ -84,9 +86,87 @@ WOULD_WAIT = "would_wait"
 UNKNOWN = "unknown"
 
 
+def control_identity(control: dict[str, Any]) -> tuple[str, int | None]:
+    """Return requirement identity, excluding provenance and scope."""
+    return control["context"], control.get("integration_id")
+
+
+def _identity_sort_key(
+    identity: tuple[str, int | None],
+) -> tuple[str, bool, int]:
+    context, integration_id = identity
+    return context, integration_id is not None, integration_id or -1
+
+
+def _assign_source_ids(
+    controls: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Project control identities to deterministic policy source ids.
+
+    A unique context retains its historical id. Only same-context controls
+    with distinct app identities need a disambiguating suffix.
+    """
+    counts: dict[str, int] = {}
+    for control in controls:
+        context = control["context"]
+        counts[context] = counts.get(context, 0) + 1
+
+    assigned: list[dict[str, Any]] = []
+    raw_contexts = set(counts)
+    used: set[str] = set()
+    for control in controls:
+        context, integration_id = control_identity(control)
+        source_id = context
+        if counts[context] > 1:
+            suffix = "any" if integration_id is None else str(integration_id)
+            base = f"{context} [app:{suffix}]"
+            source_id = base
+            if source_id in raw_contexts or source_id in used:
+                short_digest = canonical.digest(
+                    {
+                        "context": context,
+                        "integration_id": integration_id,
+                    }
+                )[7:19]
+                source_id = f"{base} [{short_digest}]"
+                ordinal = 2
+                while source_id in raw_contexts or source_id in used:
+                    source_id = f"{base} [{short_digest}-{ordinal}]"
+                    ordinal += 1
+        if source_id in used:
+            raise InputError(
+                "required control source ids are not unique after "
+                "identity projection"
+            )
+        used.add(source_id)
+        assigned.append({**control, "source_id": source_id})
+    return assigned
+
+
+def legacy_status_source_ids(
+    controls: list[dict[str, Any]],
+) -> dict[str, str | None]:
+    """Map contexts to the requirement a legacy status may prove.
+
+    None means that every same-context requirement is app-bound. A legacy
+    status carries no app identity and therefore cannot qualify.
+    """
+    by_context: dict[str, str | None] = {}
+    for control in controls:
+        context = control["context"]
+        by_context.setdefault(context, None)
+        if control.get("integration_id") is None:
+            by_context[context] = str(control.get("source_id", context))
+    return by_context
+
+
 def _run_app_id(run: dict[str, Any]) -> int | None:
     app = run.get("app")
-    if isinstance(app, dict) and isinstance(app.get("id"), int):
+    if (
+        isinstance(app, dict)
+        and isinstance(app.get("id"), int)
+        and not isinstance(app.get("id"), bool)
+    ):
         return app["id"]
     return None
 
@@ -223,22 +303,37 @@ def classify_control(
 def qualifying_runs(
     runs: list[dict[str, Any]], controls: list[dict[str, Any]]
 ) -> list[dict[str, Any]]:
-    """Drop runs that share an app-bound control's context but come from
-    another app, so an imposter can never become the bundled source for
-    a requirement it does not satisfy. Runs for non-required contexts
-    pass through untouched."""
-    bound = {
-        control["context"]: control["integration_id"]
-        for control in controls
-        if control.get("integration_id") is not None
-    }
-    kept = []
+    """Bind runs to every qualifying control identity.
+
+    One observation may satisfy both an unbound and an app-bound requirement.
+    It is then projected to two digest-bound sources. Same-name imposters do
+    not pass through; runs for non-required contexts do.
+    """
+    by_context: dict[str, list[dict[str, Any]]] = {}
+    for control in controls:
+        by_context.setdefault(control["context"], []).append(control)
+
+    kept: list[dict[str, Any]] = []
     for run in runs:
         name = run.get("name")
-        if isinstance(name, str) and name in bound:
-            if _run_app_id(run) != bound[name]:
+        candidates = by_context.get(name) if isinstance(name, str) else None
+        if not candidates:
+            kept.append(run)
+            continue
+        app_id = _run_app_id(run)
+        for control in candidates:
+            bound_app = control.get("integration_id")
+            if bound_app is not None and app_id != bound_app:
                 continue
-        kept.append(run)
+            projected = dict(run)
+            projected["_aos_source_id"] = control.get(
+                "source_id", control["context"]
+            )
+            projected["_aos_control_identity"] = {
+                "context": control["context"],
+                "integration_id": bound_app,
+            }
+            kept.append(projected)
     return kept
 
 
@@ -280,21 +375,39 @@ def fetch_classic_protection(
     if not isinstance(rsc, dict):
         return result
     result["strict"] = bool(rsc.get("strict"))
-    controls: dict[str, dict[str, Any]] = {}
+    controls: dict[tuple[str, int | None], dict[str, Any]] = {}
+    checked_contexts: set[str] = set()
     checks = rsc.get("checks")
     if isinstance(checks, list):
         for check in checks:
             if isinstance(check, dict) and isinstance(
                 check.get("context"), str
             ):
-                controls[check["context"]] = {
-                    "context": check["context"],
-                    "integration_id": check.get("app_id"),
+                context = check["context"]
+                integration_id = check.get("app_id")
+                if integration_id is not None and (
+                    not isinstance(integration_id, int)
+                    or isinstance(integration_id, bool)
+                ):
+                    raise InputError(
+                        "classic protection app_id must be an integer"
+                    )
+                checked_contexts.add(context)
+                controls[(context, integration_id)] = {
+                    "context": context,
+                    "integration_id": integration_id,
                 }
     for context in rsc.get("contexts") or []:
-        if isinstance(context, str) and context not in controls:
-            controls[context] = {"context": context, "integration_id": None}
-    result["controls"] = [controls[key] for key in sorted(controls)]
+        # contexts is the legacy projection of checks in this same surface:
+        # use it as fallback, not as a second requirement identity.
+        if isinstance(context, str) and context not in checked_contexts:
+            controls[(context, None)] = {
+                "context": context,
+                "integration_id": None,
+            }
+    result["controls"] = [
+        controls[key] for key in sorted(controls, key=_identity_sort_key)
+    ]
     return result
 
 
@@ -308,27 +421,30 @@ def merge_protection_controls(
 ) -> list[dict[str, Any]]:
     """Union of the two protection surfaces GitHub enforces together.
 
-    A context required by both mechanisms is one control with both
-    listed in ``required_by``; an app binding declared by either
-    mechanism is kept (a control cannot lose its identity binding by
-    also being required somewhere that does not declare one).
+    Only an identical ``(context, integration_id)`` tuple is one control.
+    ``required_by`` records deterministic provenance without changing
+    identity. Same-context controls with different app bindings remain
+    separate requirements.
     """
-    merged: dict[str, dict[str, Any]] = {}
-    for control in ruleset_controls:
-        merged[control["context"]] = {**control, "required_by": [RULESETS]}
-    for control in classic_controls:
-        context = control["context"]
-        existing = merged.get(context)
-        if existing is None:
-            merged[context] = {**control, "required_by": [CLASSIC]}
-            continue
-        existing["required_by"].append(CLASSIC)
-        if (
-            existing.get("integration_id") is None
-            and control.get("integration_id") is not None
-        ):
-            existing["integration_id"] = control["integration_id"]
-    return [merged[key] for key in sorted(merged)]
+    merged: dict[tuple[str, int | None], dict[str, Any]] = {}
+    for provenance, surface in (
+        (RULESETS, ruleset_controls),
+        (CLASSIC, classic_controls),
+    ):
+        for control in surface:
+            identity = control_identity(control)
+            existing = merged.get(identity)
+            if existing is None:
+                merged[identity] = {
+                    **control,
+                    "required_by": [provenance],
+                }
+            elif provenance not in existing["required_by"]:
+                existing["required_by"].append(provenance)
+    ordered = [
+        merged[key] for key in sorted(merged, key=_identity_sort_key)
+    ]
+    return _assign_source_ids(ordered)
 
 
 def protection_digest(
@@ -374,6 +490,34 @@ def github_baseline(controls: list[dict[str, Any]]) -> str:
     return "clear"
 
 
+def _is_self_run(run: dict[str, Any]) -> bool:
+    run_id = os.environ.get("GITHUB_RUN_ID")
+    if not run_id:
+        return False
+    details = run.get("details_url")
+    return (
+        isinstance(details, str)
+        and f"/runs/{run_id}/" in details
+    )
+
+
+def self_control_source_ids(
+    runs: list[dict[str, Any]], controls: list[dict[str, Any]]
+) -> list[str]:
+    """Return only requirement identities produced by this workflow run."""
+    source_ids: set[str] = set()
+    for run in runs:
+        if not _is_self_run(run):
+            continue
+        for control in controls:
+            if run.get("name") != control["context"]:
+                continue
+            bound_app = control.get("integration_id")
+            if bound_app is None or _run_app_id(run) == bound_app:
+                source_ids.add(str(control["source_id"]))
+    return sorted(source_ids)
+
+
 def exclude_self_runs(
     runs: list[dict[str, Any]],
 ) -> tuple[list[dict[str, Any]], list[str]]:
@@ -384,15 +528,10 @@ def exclude_self_runs(
     in each check run's ``details_url``; excluded names are returned so
     the exclusion is recorded as evidence, never silent.
     """
-    run_id = os.environ.get("GITHUB_RUN_ID")
-    if not run_id:
-        return runs, []
-    marker = f"/runs/{run_id}/"
     kept: list[dict[str, Any]] = []
     excluded: list[str] = []
     for run in runs:
-        details = run.get("details_url")
-        if isinstance(details, str) and marker in details:
+        if _is_self_run(run):
             name = run.get("name")
             excluded.append(name if isinstance(name, str) else "(unnamed)")
             continue
@@ -436,8 +575,8 @@ def requirement_snapshot(
     classic_note: str | None = None
     classic_controls: list[dict[str, Any]] = []
     classic_strict = False
-    # both mechanisms enforce simultaneously when both are active, so
-    # both are read on every snapshot and their contexts are unioned;
+    # Both mechanisms enforce simultaneously when active, so both are
+    # read and their exact control identities are unioned;
     # an unreadable classic surface degrades with a note, never silently
     try:
         classic = fetch_classic_protection(
@@ -465,24 +604,29 @@ def requirement_snapshot(
         protection_source = CLASSIC
     else:
         protection_source = "none"
-    required_ids = [control["context"] for control in controls]
+    required_ids = [str(control["source_id"]) for control in controls]
 
-    self_names: list[str] = []
+    self_source_ids: list[str] = []
     if exclude_self and os.environ.get("GITHUB_RUN_ID"):
         initial_runs, _ = fetch_check_runs(
             repository, sha, token=token, api_url=api_url, budget=budget
         )
-        _, self_names = exclude_self_runs(initial_runs)
-    wait_ids = [name for name in required_ids if name not in self_names]
+        self_source_ids = self_control_source_ids(initial_runs, controls)
+    wait_controls = [
+        control for control in controls
+        if control["source_id"] not in self_source_ids
+    ]
+    wait_ids = [str(control["source_id"]) for control in wait_controls]
 
     runs, truncated, incomplete, waited = wait_for_required(
         repository, sha, wait_ids,
         token=token, api_url=api_url,
         wait_seconds=wait_seconds, poll_interval=poll_interval,
         budget=budget,
+        required_controls=wait_controls,
     )
     if exclude_self:
-        runs, self_names = exclude_self_runs(runs)
+        runs, _ = exclude_self_runs(runs)
     statuses_unverifiable: str | None = None
     try:
         statuses = fetch_commit_statuses(
@@ -495,8 +639,16 @@ def requirement_snapshot(
         statuses = []
         statuses_unverifiable = str(exc)
     classified = []
+    scoped_runs = [
+        run for run in runs if run.get("head_sha") == sha
+    ]
+    subject_mismatch_runs = [
+        run.get("id") for run in runs
+        if run.get("head_sha") != sha
+    ]
+
     for control in controls:
-        if control["context"] in self_names:
+        if control["source_id"] in self_source_ids:
             classified.append(
                 {
                     **control,
@@ -514,13 +666,15 @@ def requirement_snapshot(
             continue
         classified.append(
             classify_control(
-                control, runs, statuses,
+                control, scoped_runs, statuses,
                 statuses_readable=statuses_unverifiable is None,
             )
         )
     merged_strict = strict_policy_from_rules(rules) or classic_strict
     snapshot: dict[str, Any] = {
         "sha": sha,
+        "repository": repository,
+        "observation_scope": {"repository": repository, "head_sha": sha},
         "branch": branch,
         "rules": rules,
         "rules_digest": rules_digest(rules),
@@ -531,11 +685,11 @@ def requirement_snapshot(
         "github_baseline": github_baseline(classified),
         "controls": classified,
         "required_ids": [
-            name for name in required_ids if name not in self_names
+            name for name in required_ids if name not in self_source_ids
         ],
-        "self_reference_excluded": self_names,
-        "runs": runs,
-        "qualifying_runs": qualifying_runs(runs, controls),
+        "self_reference_excluded": self_source_ids,
+        "runs": scoped_runs,
+        "qualifying_runs": qualifying_runs(scoped_runs, controls),
         "statuses": statuses,
         "truncated": truncated,
         "incomplete_required": incomplete,
@@ -546,6 +700,8 @@ def requirement_snapshot(
         snapshot["classic_protection_note"] = classic_note
     if statuses_unverifiable is not None:
         snapshot["statuses_unverifiable"] = statuses_unverifiable
+    if subject_mismatch_runs:
+        snapshot["subject_mismatch_runs"] = subject_mismatch_runs
     return snapshot
 
 
@@ -566,6 +722,9 @@ def requirement_evidence(
             "integration_id": control.get("integration_id"),
             "state": control["state"],
         }
+        source_id = control.get("source_id", control["context"])
+        if source_id != control["context"]:
+            entry["source_id"] = source_id
         if "github_equivalent" in control:
             entry["github_equivalent"] = control["github_equivalent"]
         if control.get("required_by"):

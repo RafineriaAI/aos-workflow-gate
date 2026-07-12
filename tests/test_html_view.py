@@ -106,6 +106,14 @@ def test_verify_bindings_and_cli_flags(tmp_path: Path) -> None:
         "FAILED"
     )
     bundle_path = tmp_path / "other-bundle.json"
+    # Even a re-digested pair fails when record and bundle subjects differ.
+    rebound = dict(record)
+    rebound["input_bundle_digest"] = canonical.digest(other)
+    rebound.pop("record_digest", None)
+    rebound["record_digest"] = canonical.digest(rebound)
+    assert verify_bindings(rebound, bundle=other)["bundle_binding"] == (
+        "FAILED"
+    )
     bundle_path.write_text(json.dumps(other), encoding="utf-8")
     assert (
         main(

@@ -141,12 +141,15 @@ _STATUS_STATE_MAP = {"success": "success", "failure": "failure",
 
 
 def status_sources(
-    statuses: list[dict[str, Any]], *, exclude_contexts: set[str]
+    statuses: list[dict[str, Any]], *, exclude_contexts: set[str],
+    source_ids_by_context: dict[str, str | None] | None = None,
 ) -> tuple[list[dict[str, Any]], list[str]]:
-    """Reduce legacy statuses to sources; check-run names take precedence.
+    """Reduce legacy statuses to sources without crossing app identities.
 
-    Returns the sources plus the contexts skipped because a check run with
-    the same name already exists (GitHub shares one context namespace).
+    ``source_ids_by_context`` maps an unbound requirement to its projected
+    source id; ``None`` means the context is app-bound only and a legacy
+    status cannot qualify. Returns sources and duplicate contexts skipped
+    because a qualifying check-run source already exists.
     """
     sources: list[dict[str, Any]] = []
     skipped: list[str] = []
@@ -156,15 +159,32 @@ def status_sources(
         if not isinstance(context, str) or not context or context in seen:
             continue
         seen.add(context)
-        if context in exclude_contexts:
+        source_id: str | None = context
+        if (
+            source_ids_by_context is not None
+            and context in source_ids_by_context
+        ):
+            source_id = source_ids_by_context[context]
+        # Legacy statuses carry no app identity and cannot prove an
+        # app-bound requirement.
+        if source_id is None:
+            continue
+        if source_id in exclude_contexts:
             skipped.append(context)
             continue
         raw_state = str(status.get("state", "unknown")).lower()
         state = _STATUS_STATE_MAP.get(raw_state, raw_state)
-        identity = {"context": context, "state": raw_state, "status": state}
+        identity: dict[str, Any] = {
+            "context": context, "state": raw_state, "status": state
+        }
+        if source_id != context:
+            identity["requirement_identity"] = {
+                "context": context,
+                "integration_id": None,
+            }
         sources.append(
             {
-                "id": context,
+                "id": source_id,
                 "kind": "commit_status",
                 "signal_source": "github_status_api",
                 "status": state,
@@ -214,7 +234,7 @@ def required_checks_from_rules(
     rules: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     """Extract canonical control identities of required status checks."""
-    controls: dict[str, dict[str, Any]] = {}
+    controls: dict[tuple[str, int | None], dict[str, Any]] = {}
     for rule in rules:
         if rule.get("type") != "required_status_checks":
             continue
@@ -225,11 +245,27 @@ def required_checks_from_rules(
             context = check.get("context")
             if not isinstance(context, str) or not context:
                 continue
-            controls[context] = {
+            integration_id = check.get("integration_id")
+            if integration_id is not None and (
+                not isinstance(integration_id, int)
+                or isinstance(integration_id, bool)
+            ):
+                raise InputError(
+                    "required status check integration_id must be an integer"
+                )
+            controls[(context, integration_id)] = {
                 "context": context,
-                "integration_id": check.get("integration_id"),
+                "integration_id": integration_id,
             }
-    return [controls[key] for key in sorted(controls)]
+    return [
+        controls[key]
+        for key in sorted(
+            controls,
+            key=lambda item: (
+                item[0], item[1] is not None, item[1] or -1
+            ),
+        )
+    ]
 
 
 def strict_policy_from_rules(rules: list[dict[str, Any]]) -> bool:

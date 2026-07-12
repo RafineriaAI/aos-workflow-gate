@@ -10,7 +10,7 @@ pack is exactly what `evaluate --policy` reads.
 | `minimal-pr-gate` | advisory | `ci` | `scanner.sarif`, `agent.review` | first PR gate; evidence before enforcement |
 | `release-candidate` | **blocking** | `ci`, `scanner.sarif` | `agent.review`, `scorecard` | release gates where a missing scan must block |
 | `agent-review-advisory` | advisory | `ci`, `agent.review` | `scanner.sarif`, `scorecard` | AI-agent changes: agent review must have run |
-| `evidence-integrity` | **blocking** | `ci` | — | the second differentiating control: blocks on conditions no branch-protection rule can express — incomplete collection, non-independent evidence (the change judges itself), and a policy that requires nothing |
+| `evidence-integrity` | **blocking** | `ci` | — | blocks on evidence-integrity conditions branch protection cannot express: incomplete collection and non-independent evidence (the change judges itself) |
 
 Both the CLI (`run --policy-pack NAME`) and the GitHub Action select a pack
 by name; `evaluate --policy` takes any file path directly. `release-candidate` is `mode: blocking`, so a

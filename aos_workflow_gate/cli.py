@@ -55,15 +55,24 @@ from .collect import (
 )
 from .errors import InputError
 from .evaluate import BLOCK, evaluate
-from .evidence import build_record, observation_from_bundle, verify_record
+from .evidence import (
+    build_record,
+    observation_from_bundle,
+    subject_identity,
+    verify_record,
+)
 from .export import build_statement
-from .manifest import verifier_manifest_digest
+from .manifest import (
+    validate_verifier_manifest,
+    verifier_manifest_digest,
+)
 from .paths import safe_output_path, workspace_boundary
 from .policy import load_policy
 from .preflight import render_report, run_preflight
 from .requirements import (
     PENDING,
     UNVERIFIABLE,
+    legacy_status_source_ids,
     requirement_evidence,
     requirement_snapshot,
 )
@@ -672,6 +681,10 @@ def _cmd_collect(args: argparse.Namespace) -> int:
         "waited_seconds": round(waited, 1),
     }
     if args.github_context:
+        collection["subject_context"] = {
+            "repository": repository,
+            "sha": sha,
+        }
         snapshot = github_context_snapshot()
         collection["context_snapshot"] = snapshot
         collection["context_digest"] = canonical.digest(snapshot)
@@ -850,14 +863,19 @@ def _cmd_run(args: argparse.Namespace) -> int:
             incomplete = discovered["incomplete_required"]
             waited = discovered["waited_seconds"]
             required_ids: list[str] = discovered["required_ids"]
-            run_names = {
-                run.get("name")
+            run_source_ids = {
+                run.get("_aos_source_id", run.get("name"))
                 for run in runs
-                if isinstance(run.get("name"), str)
+                if isinstance(
+                    run.get("_aos_source_id", run.get("name")), str
+                )
             }
             status_srcs, _skipped = status_sources(
                 discovered["statuses"],
-                exclude_contexts={str(name) for name in run_names},
+                exclude_contexts={str(name) for name in run_source_ids},
+                source_ids_by_context=legacy_status_source_ids(
+                    discovered["controls"]
+                ),
             )
         else:
             runs, truncated, incomplete, waited = wait_for_required(
@@ -871,6 +889,10 @@ def _cmd_run(args: argparse.Namespace) -> int:
         status = "complete"
         if truncated:
             status = "truncated"
+        elif discovered is not None and discovered.get(
+            "subject_mismatch_runs"
+        ):
+            status = "subject_mismatch"
         elif incomplete:
             status = "wait_timeout"
         collection: dict[str, Any] = {
@@ -882,6 +904,17 @@ def _cmd_run(args: argparse.Namespace) -> int:
         if incomplete:
             collection["incomplete_required"] = incomplete
         if discovered is not None:
+            collection["observation_scope"] = discovered[
+                "observation_scope"
+            ]
+            collection["required_controls"] = [
+                {
+                    "context": control["context"],
+                    "integration_id": control.get("integration_id"),
+                    "source_id": control["source_id"],
+                }
+                for control in discovered["controls"]
+            ]
             collection["requirements"] = requirement_evidence(
                 discovered["controls"]
             )
@@ -905,7 +938,15 @@ def _cmd_run(args: argparse.Namespace) -> int:
                 collection["statuses_unverifiable"] = discovered[
                     "statuses_unverifiable"
                 ]
+            if discovered.get("subject_mismatch_runs"):
+                collection["subject_mismatch_runs"] = discovered[
+                    "subject_mismatch_runs"
+                ]
         if args.github_context:
+            collection["subject_context"] = {
+                "repository": repository,
+                "sha": sha,
+            }
             snapshot = github_context_snapshot()
             collection["context_snapshot"] = snapshot
             collection["context_digest"] = canonical.digest(snapshot)
@@ -1220,28 +1261,35 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
     runs = snapshot["qualifying_runs"]
     incomplete = snapshot["incomplete_required"]
 
-    run_names = {
-        run.get("name") for run in runs if isinstance(run.get("name"), str)
+    run_source_ids = {
+        run.get("_aos_source_id", run.get("name"))
+        for run in runs
+        if isinstance(run.get("_aos_source_id", run.get("name")), str)
     }
     status_srcs, skipped_contexts = status_sources(
-        snapshot["statuses"], exclude_contexts={str(n) for n in run_names}
+        snapshot["statuses"],
+        exclude_contexts={str(n) for n in run_source_ids},
+        source_ids_by_context=legacy_status_source_ids(controls),
     )
     still_running = sorted(
-        control["context"] for control in controls
+        str(control["source_id"]) for control in controls
         if control["state"] == PENDING
     )
     unverifiable = sorted(
-        control["context"] for control in controls
+        str(control["source_id"]) for control in controls
         if control["state"] == UNVERIFIABLE
     )
     status = "complete"
     if snapshot["truncated"]:
         status = "truncated"
+    elif snapshot.get("subject_mismatch_runs"):
+        status = "subject_mismatch"
     elif incomplete:
         status = "wait_timeout"
     collection: dict[str, Any] = {
         "status": status,
         "observed_at": collection_timestamp(),
+        "observation_scope": snapshot["observation_scope"],
         "api_calls": budget.api_calls,
         "waited_seconds": round(snapshot["waited_seconds"], 1),
         "rules_digest": snapshot["rules_digest"],
@@ -1251,6 +1299,7 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         "required_controls": [
             {
                 "context": control["context"],
+                "source_id": control["source_id"],
                 "integration_id": control.get("integration_id"),
             }
             for control in controls
@@ -1288,6 +1337,10 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
     if snapshot.get("statuses_unverifiable"):
         collection["statuses_unverifiable"] = snapshot[
             "statuses_unverifiable"
+        ]
+    if snapshot.get("subject_mismatch_runs"):
+        collection["subject_mismatch_runs"] = snapshot[
+            "subject_mismatch_runs"
         ]
     if skipped_contexts:
         collection["duplicate_status_contexts"] = skipped_contexts
@@ -1690,12 +1743,29 @@ def _check_context_integrity(bundle: Any, *, require_match: bool) -> None:
     """
     if isinstance(bundle, dict):
         collection = bundle.get("collection")
-        if isinstance(collection, dict) and "context_snapshot" in collection:
-            snapshot = collection.get("context_snapshot")
-            claimed = collection.get("context_digest")
-            if canonical.digest(snapshot) != claimed:
+        if isinstance(collection, dict):
+            has_snapshot = "context_snapshot" in collection
+            has_digest = "context_digest" in collection
+            if has_snapshot != has_digest:
+                raise InputError(
+                    "context snapshot binding is incomplete "
+                    "(operational error, not a verdict)"
+                )
+            if has_snapshot and canonical.digest(
+                collection.get("context_snapshot")
+            ) != collection.get("context_digest"):
                 raise InputError(
                     "context snapshot does not match its digest "
+                    "(operational error, not a verdict)"
+                )
+            scope = collection.get(
+                "observation_scope", collection.get("subject_context")
+            )
+            if scope is not None and not _scope_matches_subject(
+                scope, bundle.get("subject")
+            ):
+                raise InputError(
+                    "observation scope does not match bundle subject "
                     "(operational error, not a verdict)"
                 )
     if not require_match:
@@ -1755,55 +1825,152 @@ def _cmd_export(args: argparse.Namespace) -> int:
     return 0
 
 
+
+def _scope_matches_subject(scope: Any, subject: Any) -> bool:
+    if not isinstance(scope, dict):
+        return False
+    identity = subject_identity(subject)
+    if identity is None:
+        return False
+    repository = scope.get("repository")
+    sha = scope.get("head_sha", scope.get("sha"))
+    return (
+        isinstance(repository, str)
+        and isinstance(sha, str)
+        and repository == identity.get("repository")
+        and sha == identity.get("sha")
+    )
+
+
+def _bundle_bindings(
+    record: dict[str, Any], bundle: Any,
+) -> tuple[bool, str]:
+    if not isinstance(bundle, dict):
+        return False, "bundle is not an object"
+    if (
+        subject_identity(record.get("subject"))
+        != subject_identity(bundle.get("subject"))
+    ):
+        return False, "record and bundle subjects differ"
+
+    collection = bundle.get("collection")
+    if not isinstance(collection, dict):
+        return True, "not recorded in this bundle"
+
+    has_snapshot = "context_snapshot" in collection
+    has_digest = "context_digest" in collection
+    if has_snapshot != has_digest:
+        return False, "context snapshot binding is incomplete"
+    if has_snapshot and canonical.digest(
+        collection.get("context_snapshot")
+    ) != collection.get("context_digest"):
+        return False, "context snapshot digest does not recompute"
+
+    scope = collection.get(
+        "observation_scope", collection.get("subject_context")
+    )
+    if scope is None:
+        return True, "not recorded in this bundle"
+    if not _scope_matches_subject(scope, bundle.get("subject")):
+        return False, "observation scope does not match bundle subject"
+    return True, "exact repository and SHA match"
+
+
+def _canonical_digest_string(value: Any) -> bool:
+    return (
+        isinstance(value, str)
+        and value.startswith("sha256:")
+        and len(value) == 71
+        and all(ch in "0123456789abcdef" for ch in value[7:])
+    )
+
+
 def _cmd_verify(args: argparse.Namespace) -> int:
     record = _load_json(args.input)
     ok = verify_record(record)
     bundle: Any = None
+    context_status = "not checked without a bundle"
+    manifest_kind = "none"
+    recorded: Any = None
+    if ok and isinstance(record, dict):
+        generator = record.get("generator")
+        if isinstance(generator, dict):
+            recorded = generator.get("verifier_manifest_digest")
+            embedded = generator.get("verifier_manifest")
+            if embedded is not None:
+                if (
+                    isinstance(embedded, dict)
+                    and embedded.get("schema_version")
+                    != "verifier-manifest-v0"
+                ):
+                    manifest_kind = "unsupported"
+                    ok = _canonical_digest_string(recorded)
+                else:
+                    manifest_kind = "embedded"
+                    ok = (
+                        isinstance(embedded, dict)
+                        and validate_verifier_manifest(embedded)
+                        and recorded == embedded.get("manifest_digest")
+                    )
+            elif recorded is not None:
+                manifest_kind = "digest-only"
+                ok = _canonical_digest_string(recorded)
+
+        observation = record.get("observation")
+        if isinstance(observation, dict) and "observation_scope" in observation:
+            ok = ok and _scope_matches_subject(
+                observation["observation_scope"], record.get("subject")
+            )
+
     if ok and args.bundle and isinstance(record, dict):
         bundle = _load_json(args.bundle)
         ok = record.get("input_bundle_digest") == canonical.digest(bundle)
+        if ok:
+            ok, context_status = _bundle_bindings(record, bundle)
+
     print("OK" if ok else "TAMPERED")
-    if ok and isinstance(record, dict):
-        # verifier artifact binding: disclosure, never a verdict —
-        # records replay across verifier versions, and substitution is
-        # detectable instead of silent
-        generator = record.get("generator")
-        recorded = (
-            generator.get("verifier_manifest_digest")
-            if isinstance(generator, dict)
-            else None
-        )
-        if isinstance(recorded, str):
-            current = verifier_manifest_digest()
+    if not ok or not isinstance(record, dict):
+        return 1
+
+    # A different valid verifier is disclosure, not record tampering.
+    if _canonical_digest_string(recorded):
+        current = verifier_manifest_digest()
+        if manifest_kind == "embedded":
             if recorded == current:
                 print("verifier: same manifest as this installation")
             else:
                 print(
-                    "verifier: DIFFERENT manifest — the record was "
+                    "verifier: valid embedded DIFFERENT manifest — "
+                    "the record was "
                     f"produced by {recorded[:23]}..., this installation "
                     f"is {current[:23]}... (content address only; no "
                     "signing or authorship claim)"
                 )
-        else:
+        elif manifest_kind == "unsupported":
             print(
-                "verifier: record predates manifest binding "
-                "(pre-v0.33 record; digest replay remains valid)"
+                "verifier: embedded manifest schema is newer or unknown; "
+                "record digest replay remains valid, file inventory was "
+                "not interpreted"
             )
-        if isinstance(bundle, dict):
-            collection = bundle.get("collection")
-            context_digest = (
-                collection.get("context_digest")
-                if isinstance(collection, dict)
-                else None
-            )
-            if isinstance(context_digest, str):
-                print(
-                    "subject context: bound "
-                    f"({context_digest[:23]}...) via the bundle digest"
-                )
+        else:
+            if recorded == current:
+                comparison = "same digest as this installation"
             else:
-                print("subject context: not recorded in this bundle")
-    return 0 if ok else 1
+                comparison = "different digest from this installation"
+            print(
+                "verifier: digest-only record; file inventory is absent; "
+                f"{comparison}"
+            )
+    else:
+        print(
+            "verifier: record predates manifest binding "
+            "(digest replay remains valid)"
+        )
+
+    if isinstance(bundle, dict):
+        print("subject binding: record and bundle match")
+        print(f"subject context: {context_status}")
+    return 0
 
 
 def _load_json(path: str) -> Any:

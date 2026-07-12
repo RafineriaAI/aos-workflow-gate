@@ -8,10 +8,12 @@ import pytest
 
 from aos_workflow_gate import canonical, cli
 from aos_workflow_gate.collect import github_context_snapshot
+from aos_workflow_gate.manifest import verifier_manifest
 from aos_workflow_gate.policy import load_policy
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE = ROOT / "examples" / "github-pr-signal-bundle.json"
+RECORD = ROOT / "examples" / "gate-decision.json"
 POLICY = ROOT / "policies" / "default.yml"
 SHA = "0123456789abcdef0123456789abcdef01234567"
 
@@ -65,6 +67,86 @@ def test_context_digest_selfcheck(tmp_path: Path) -> None:
         cli.main(["evaluate", "--input", str(bad_path), "--policy", str(POLICY)])
         == 2
     )
+
+
+def _write_bound_pair(
+    tmp_path: Path,
+    record: dict[str, Any],
+    bundle: dict[str, Any],
+) -> tuple[Path, Path]:
+    record["input_bundle_digest"] = canonical.digest(bundle)
+    record.pop("record_digest", None)
+    record["record_digest"] = canonical.digest(record)
+    record_path = tmp_path / "record.json"
+    bundle_path = tmp_path / "bundle.json"
+    record_path.write_text(json.dumps(record), encoding="utf-8")
+    bundle_path.write_text(json.dumps(bundle), encoding="utf-8")
+    return record_path, bundle_path
+
+
+def test_verify_rejects_cross_subject_pair(tmp_path: Path) -> None:
+    record = json.loads(RECORD.read_text("utf-8"))
+    bundle = json.loads(BUNDLE.read_text("utf-8"))
+    bundle["subject"]["sha"] = "f" * 40
+    record_path, bundle_path = _write_bound_pair(tmp_path, record, bundle)
+
+    assert cli.main(
+        ["verify", "--input", str(record_path), "--bundle", str(bundle_path)]
+    ) == 1
+
+
+def test_verify_rejects_invalid_context_digest(tmp_path: Path) -> None:
+    record = json.loads(RECORD.read_text("utf-8"))
+    bundle = json.loads(BUNDLE.read_text("utf-8"))
+    snapshot = {
+        "GITHUB_REPOSITORY": bundle["subject"]["repository"],
+        "GITHUB_SHA": bundle["subject"]["sha"],
+    }
+    bundle["collection"] = {
+        "status": "complete",
+        "context_snapshot": snapshot,
+        "context_digest": "sha256:" + "0" * 64,
+    }
+    record_path, bundle_path = _write_bound_pair(tmp_path, record, bundle)
+
+    assert cli.main(
+        ["verify", "--input", str(record_path), "--bundle", str(bundle_path)]
+    ) == 1
+
+
+def test_verify_rejects_subject_scope_mismatch(tmp_path: Path) -> None:
+    record = json.loads(RECORD.read_text("utf-8"))
+    bundle = json.loads(BUNDLE.read_text("utf-8"))
+    bundle["collection"] = {
+        "status": "complete",
+        "observation_scope": {
+            "repository": bundle["subject"]["repository"],
+            "head_sha": "f" * 40,
+        },
+    }
+    record_path, bundle_path = _write_bound_pair(tmp_path, record, bundle)
+
+    assert cli.main(
+        ["verify", "--input", str(record_path), "--bundle", str(bundle_path)]
+    ) == 1
+
+
+def test_verify_rejects_malformed_embedded_manifest(tmp_path: Path) -> None:
+    record = json.loads(RECORD.read_text("utf-8"))
+    bundle = json.loads(BUNDLE.read_text("utf-8"))
+    manifest = verifier_manifest()
+    files = dict(manifest["files"])
+    files["evaluate.py"] = "0" * 64
+    manifest["files"] = files
+    record["generator"]["verifier_manifest"] = manifest
+    record["generator"]["verifier_manifest_digest"] = manifest[
+        "manifest_digest"
+    ]
+    record_path, bundle_path = _write_bound_pair(tmp_path, record, bundle)
+
+    assert cli.main(
+        ["verify", "--input", str(record_path), "--bundle", str(bundle_path)]
+    ) == 1
 
 
 def test_github_context_match(
