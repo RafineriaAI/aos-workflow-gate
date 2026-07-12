@@ -1,10 +1,12 @@
 """Content-addressed verifier manifest.
 
 A decision is only as trustworthy as the code that derived it. The
-verifier manifest is a deterministic content address of the exact
-verifier artifact: the sha256 of every packaged source file and policy
-pack, keyed by its package-relative path, plus one digest over that
-mapping. The record carries the manifest digest, so **verifier
+verifier manifest is a deterministic content address of the verifier
+artifact: the sha256 of every packaged source file and policy pack,
+keyed by its package-relative path, plus one digest over that mapping.
+Text line endings are canonicalized to LF before hashing, so the same
+packaged source has one identity on every supported platform. The
+record carries the manifest digest, so **verifier
 substitution is detectable**: a record claiming to come from manifest X
 can be checked against any installation, and ``verify`` discloses a
 mismatch instead of pretending the code was the same.
@@ -37,13 +39,19 @@ def _packaged_files() -> list[Path]:
     return files
 
 
+def _canonical_content_digest(content: bytes) -> str:
+    """Hash canonical text bytes, independent of platform line endings."""
+    normalized = content.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(normalized).hexdigest()
+
+
 @lru_cache(maxsize=1)
 def _verifier_manifest() -> dict[str, Any]:
     """The manifest of the currently installed verifier."""
     files: dict[str, str] = {}
     for path in _packaged_files():
         rel = path.relative_to(_PACKAGE_ROOT).as_posix()
-        files[rel] = hashlib.sha256(path.read_bytes()).hexdigest()
+        files[rel] = _canonical_content_digest(path.read_bytes())
     return {
         "schema_version": "verifier-manifest-v0",
         "files": files,

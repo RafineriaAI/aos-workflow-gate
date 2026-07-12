@@ -100,7 +100,9 @@ rejection.
 ## Zero-trust signalling
 
 - **Verifier artifact binding.** New records embed a content-addressed
-  manifest (packaged path → sha256) and its canonical digest. `verify`
+  manifest (packaged path → sha256) and its canonical digest. Each file
+  hash uses its bytes after canonicalizing CRLF and bare CR line endings
+  to LF, making artifact identity platform-independent. `verify`
   recomputes the manifest before comparing it with the current
   installation; verifier substitution
   is detectable, never silent. Digest-only and pre-manifest records

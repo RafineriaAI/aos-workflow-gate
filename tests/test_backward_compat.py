@@ -29,6 +29,7 @@ from aos_workflow_gate import canonical
 from aos_workflow_gate.evaluate import evaluate
 from aos_workflow_gate.evidence import build_record, verify_record
 from aos_workflow_gate.manifest import (
+    _canonical_content_digest,
     validate_verifier_manifest,
     verifier_manifest,
     verifier_manifest_digest,
@@ -101,6 +102,12 @@ def test_new_records_embed_the_verifier_manifest() -> None:
     assert manifest["manifest_digest"] == digest
     assert "evaluate.py" in manifest["files"]
     assert "manifest.py" in manifest["files"]
+
+
+def test_manifest_hash_is_line_ending_independent() -> None:
+    expected = _canonical_content_digest(b"first\nsecond\n")
+    assert _canonical_content_digest(b"first\r\nsecond\r\n") == expected
+    assert _canonical_content_digest(b"first\rsecond\r") == expected
 
 
 def test_digest_only_record_remains_compatible() -> None:
