@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "tests/data/historical/v0.16-release-gate-bundle.json",
+    "record": "tests/data/historical/v0.16-release-gate-decision.json"
+  },
+  "case_id": "historical-pre-manifest",
+  "classification": "neutral_control",
+  "description": "A historical record predating verifier manifests retains digest replay with the weaker boundary disclosed.",
+  "mechanism": "backward_compatibility",
+  "mutation": "none",
+  "expected": {
+    "exit_code": 0,
+    "outcome": "ACCEPT_WITH_DISCLOSURE",
+    "output_contains": [
+      "OK",
+      "record predates manifest binding"
+    ]
+  }
+}

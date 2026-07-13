@@ -131,6 +131,14 @@ def render_markdown(contrast: dict[str, Any]) -> str:
         "Every row replays offline from the committed files; decision",
         "records carry UNSIGNED_NOT_OFFICIAL status.",
         "",
+        "## Separate adversarial regression coverage",
+        "",
+        "The contrast rows above are evidence-backed baseline rows.",
+        "Synthetic adversarial fixtures are intentionally excluded from",
+        "the contrast claim. Their positive, negative, and neutral",
+        "coverage is listed in",
+        "[the adversarial matrix](../adversarial/MATRIX.md).",
+        "",
     ]
     return "\n".join(lines)
 

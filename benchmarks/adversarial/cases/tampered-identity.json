@@ -19,7 +19,9 @@
     }
   },
   "case_id": "tampered-identity",
+  "classification": "negative_control",
   "description": "Attached identity does not recompute to the declared digest.",
+  "mechanism": "source_integrity",
   "expected": {
     "detail_contains": "identity binding",
     "reason_rules": [

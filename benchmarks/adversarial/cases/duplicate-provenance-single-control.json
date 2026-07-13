@@ -1,14 +1,24 @@
 {
   "bundle": {
     "collection": {
-      "status": "wait_timeout"
+      "requirements": [
+        {
+          "context": "ci",
+          "integration_id": 101,
+          "required_by": [
+            "rulesets",
+            "classic_branch_protection"
+          ],
+          "state": "satisfied"
+        }
+      ],
+      "status": "complete"
     },
     "schema_version": "draft-0",
     "sources": [
       {
         "id": "ci",
         "kind": "github_check",
-        "required": true,
         "status": "success"
       }
     ],
@@ -17,16 +27,13 @@
       "sha": "ffffffffffffffffffffffffffffffffffffffff"
     }
   },
-  "case_id": "incomplete-collection-clean",
-  "classification": "negative_control",
-  "description": "Required satisfied but the collection did not end complete.",
-  "mechanism": "collection_completeness",
+  "case_id": "duplicate-provenance-single-control",
+  "classification": "neutral_control",
+  "description": "The same control declared by two protection surfaces remains one requirement with merged provenance.",
+  "mechanism": "requirement_provenance",
   "expected": {
-    "detail_contains": "wait_timeout",
-    "reason_rules": [
-      "incomplete_collection"
-    ],
-    "verdict": "WARN"
+    "reason_rules": [],
+    "verdict": "PASS"
   },
   "policy": {
     "advisory_sources": [],

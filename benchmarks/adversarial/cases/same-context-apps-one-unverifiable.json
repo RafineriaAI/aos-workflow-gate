@@ -4,22 +4,35 @@
       "requirements": [
         {
           "context": "ci",
-          "integration_id": 15368,
+          "integration_id": 101,
+          "source_id": "ci [app:101]",
+          "state": "satisfied"
+        },
+        {
+          "context": "ci",
+          "integration_id": 202,
+          "source_id": "ci [app:202]",
           "state": "unverifiable"
         }
       ],
       "status": "complete"
     },
     "schema_version": "draft-0",
-    "sources": [],
+    "sources": [
+      {
+        "id": "ci [app:101]",
+        "kind": "github_check",
+        "status": "success"
+      }
+    ],
     "subject": {
       "repository": "octo/repo",
       "sha": "ffffffffffffffffffffffffffffffffffffffff"
     }
   },
-  "case_id": "imposter-app-unverifiable",
+  "case_id": "same-context-apps-one-unverifiable",
   "classification": "negative_control",
-  "description": "A same-named run from a foreign app was excluded as unverifiable; the requirement must fail closed with the state named.",
+  "description": "One green app-bound control cannot collapse a second same-context app requirement.",
   "mechanism": "control_identity",
   "expected": {
     "detail_contains": "requirement state: unverifiable",
@@ -32,7 +45,8 @@
     "advisory_sources": [],
     "policy_id": "adversarial",
     "required_sources": [
-      "ci"
+      "ci [app:101]",
+      "ci [app:202]"
     ],
     "rules": {
       "advisory_warning": "WARN",

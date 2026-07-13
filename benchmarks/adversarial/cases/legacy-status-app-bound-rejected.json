@@ -1,26 +1,30 @@
 {
   "bundle": {
+    "collection": {
+      "requirements": [
+        {
+          "context": "ci",
+          "integration_id": 101,
+          "state": "unverifiable"
+        }
+      ],
+      "status": "complete"
+    },
     "schema_version": "draft-0",
-    "sources": [
-      {
-        "id": "agent.action.abc",
-        "kind": "agent_action",
-        "status": "freshness_unverified"
-      }
-    ],
+    "sources": [],
     "subject": {
       "repository": "octo/repo",
       "sha": "ffffffffffffffffffffffffffffffffffffffff"
     }
   },
-  "case_id": "freshness-unverified-required",
+  "case_id": "legacy-status-app-bound-rejected",
   "classification": "negative_control",
-  "description": "A required agent action without a freshness mode fails closed.",
-  "mechanism": "agent_action_freshness",
+  "description": "A same-name legacy status carries no app identity and cannot satisfy an app-bound control.",
+  "mechanism": "legacy_status_boundary",
   "expected": {
-    "detail_contains": "freshness_unverified",
+    "detail_contains": "requirement state: unverifiable",
     "reason_rules": [
-      "failed_required_source"
+      "missing_required_source"
     ],
     "verdict": "BLOCK"
   },
@@ -28,7 +32,7 @@
     "advisory_sources": [],
     "policy_id": "adversarial",
     "required_sources": [
-      "agent.action.abc"
+      "ci"
     ],
     "rules": {
       "advisory_warning": "WARN",

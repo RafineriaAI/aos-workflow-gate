@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "cross-subject-rebound",
+  "classification": "negative_control",
+  "description": "Rebinding a valid record digest to bundle bytes from another SHA cannot bypass subject correlation.",
+  "mechanism": "record_subject_binding",
+  "mutation": "cross_subject_rebound",
+  "expected": {
+    "binding_detail": "record and bundle subjects differ",
+    "exit_code": 1,
+    "outcome": "REJECT",
+    "output_contains": [
+      "TAMPERED"
+    ]
+  }
+}

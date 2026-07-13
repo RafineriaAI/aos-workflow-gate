@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "invalid-context-digest",
+  "classification": "negative_control",
+  "description": "A redigested pair still fails when the context snapshot digest does not recompute.",
+  "mechanism": "context_snapshot_binding",
+  "mutation": "invalid_context_digest",
+  "expected": {
+    "binding_detail": "context snapshot digest does not recompute",
+    "exit_code": 1,
+    "outcome": "REJECT",
+    "output_contains": [
+      "TAMPERED"
+    ]
+  }
+}

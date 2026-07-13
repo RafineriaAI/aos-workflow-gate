@@ -103,10 +103,13 @@ and asserts byte equality, so it cannot drift from the evidence.
 Baselines are operator-declared; scope is required status checks, not
 full merge-readiness.
 
-[`adversarial/cases/`](adversarial/cases/) is the frozen adversarial
-regression corpus: imposter apps, tampered identities, self-promoting
-sources, unverified freshness, incomplete collections, zero-required
-states, and foreign subjects. Every case replays on every CI run.
-Expected verdicts exist only as test assertions over corpus data —
-they are never an input to the evaluator, and a test asserts the
-evaluator code cannot even name them.
+[The adversarial corpus](adversarial/) is a separate deterministic
+regression suite covering decision and verification behavior: control
+identity, provenance, observation scope, record/subject binding,
+verifier manifests, source integrity, and compatibility disclosure.
+Its generated matrix includes positive, negative, and neutral
+controls across PASS, WARN, BLOCK, ACCEPT, REJECT, and disclosed replay.
+
+These fixtures are synthetic and intentionally excluded from the
+real-history GitHub-baseline contrast. Expected outcomes exist only as
+test assertions; they are never an input to the evaluator or verifier.

@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "exact-record-bundle",
+  "classification": "positive_control",
+  "description": "An intact record and its exact bundle verify with matching subjects.",
+  "mechanism": "record_subject_binding",
+  "mutation": "none",
+  "expected": {
+    "exit_code": 0,
+    "outcome": "ACCEPT",
+    "output_contains": [
+      "OK",
+      "subject binding: record and bundle match"
+    ]
+  }
+}

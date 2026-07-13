@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "future-manifest-schema",
+  "classification": "neutral_control",
+  "description": "An unknown future manifest schema preserves record replay without pretending its inventory was interpreted.",
+  "mechanism": "forward_compatibility",
+  "mutation": "future_manifest_schema",
+  "expected": {
+    "exit_code": 0,
+    "outcome": "ACCEPT_WITH_DISCLOSURE",
+    "output_contains": [
+      "OK",
+      "embedded manifest schema is newer or unknown"
+    ]
+  }
+}

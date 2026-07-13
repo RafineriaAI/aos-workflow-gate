@@ -14,7 +14,9 @@
     }
   },
   "case_id": "foreign-subject-missing",
+  "classification": "negative_control",
   "description": "Policy demands a subject repository; the bundle has none.",
+  "mechanism": "subject_validation",
   "expected": {
     "detail_contains": "repository",
     "reason_rules": [
