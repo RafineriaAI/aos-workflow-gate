@@ -1,0 +1,275 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+      "repository": "Geotab/mygeotab-python"
+    },
+    "observed_at": "2026-07-14T20:25:10Z",
+    "pr": {
+      "draft": false,
+      "from_fork": false,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [
+          "mypy.ini"
+        ],
+        "test_cases": [
+          "tests/test_altitude.py",
+          "tests/test_api.py",
+          "tests/test_api_call.py",
+          "tests/test_api_entitylist.py",
+          "tests/test_api_live.py",
+          "tests/test_daas_definition.py"
+        ],
+        "test_harness": [
+          "pytest.ini"
+        ],
+        "workflow": [
+          ".github/workflows/pythonpackage.yml"
+        ]
+      },
+      "complete": true,
+      "non_independent_sources": [
+        "Integration tests – Python 3.12",
+        "Live network tests – Python 3.12",
+        "Unit tests – Python 3.10",
+        "Unit tests – Python 3.11",
+        "Unit tests – Python 3.12",
+        "Unit tests – Python 3.13",
+        "Unit tests – Python 3.14"
+      ],
+      "non_independent_suites": [
+        79485187272
+      ],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [
+        ".github/workflows/pythonpackage.yml"
+      ],
+      "subject": {
+        "base_sha": "057fae9c651d3bd2029104c9c663c4eb896348cf",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "pull_request": 240,
+        "repository": "Geotab/mygeotab-python"
+      },
+      "unchanged_workflow_runs": 1,
+      "verifier_change": true
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [],
+      "states": {
+        "action_required": 0,
+        "completed": 3,
+        "pending": 0
+      },
+      "units_total": 3
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:dca8e06cba8450595e33c59a4c8581def46e6460c237b81c2962df927afa8b01",
+      "id": "Analyze (python)",
+      "identity": {
+        "check_run_id": 87194984176,
+        "completed_at": "2026-07-14T20:19:47Z",
+        "conclusion": "success",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "name": "Analyze (python)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:47Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194984176 concluded success."
+    },
+    {
+      "digest": "sha256:345cdc3290385e27b4bc1b6e44f0c4523295e89c21a640b03c1a68cb8dd9a34f",
+      "id": "CodeQL",
+      "identity": {
+        "check_run_id": 87195148930,
+        "completed_at": "2026-07-14T20:19:41Z",
+        "conclusion": "success",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "name": "CodeQL",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87195148930 concluded success."
+    },
+    {
+      "digest": "sha256:fac61e8187950c277a7cf7cf8ebdeca79082428292eebfc31946fdd7ff636b51",
+      "id": "Integration tests – Python 3.12",
+      "identity": {
+        "check_run_id": 87194983921,
+        "completed_at": "2026-07-14T20:19:28Z",
+        "conclusion": "success",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "name": "Integration tests – Python 3.12",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:28Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194983921 concluded success."
+    },
+    {
+      "digest": "sha256:f7344f7fb5c9c0061c6e52a672d2cfb1f55e8ff7dbed1183148679afc4482d01",
+      "id": "Live network tests – Python 3.12",
+      "identity": {
+        "check_run_id": 87194983909,
+        "completed_at": "2026-07-14T20:19:35Z",
+        "conclusion": "success",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "name": "Live network tests – Python 3.12",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194983909 concluded success."
+    },
+    {
+      "digest": "sha256:6bdee29d540ec4b6d35e3259102693122bd3afb00e529a8b4e2793502a445b96",
+      "id": "Unit tests – Python 3.10",
+      "identity": {
+        "check_run_id": 87194984013,
+        "completed_at": "2026-07-14T20:19:42Z",
+        "conclusion": "success",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "name": "Unit tests – Python 3.10",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:42Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194984013 concluded success."
+    },
+    {
+      "digest": "sha256:5b2bfccd11d7044d2ade19044fbc5e86b5806e13c453e46970e335456b0fb43e",
+      "id": "Unit tests – Python 3.11",
+      "identity": {
+        "check_run_id": 87194984044,
+        "completed_at": "2026-07-14T20:19:32Z",
+        "conclusion": "success",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "name": "Unit tests – Python 3.11",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:32Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194984044 concluded success."
+    },
+    {
+      "digest": "sha256:ab107cdca11167fa875fda76a9884352c07912fcaf2cfca7cef77f1aefcb40dd",
+      "id": "Unit tests – Python 3.12",
+      "identity": {
+        "check_run_id": 87194983981,
+        "completed_at": "2026-07-14T20:19:35Z",
+        "conclusion": "success",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "name": "Unit tests – Python 3.12",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194983981 concluded success."
+    },
+    {
+      "digest": "sha256:38a6cd09835c0dde41840f436806c5344f1797fdf43053e43d0ed611cbde1bd1",
+      "id": "Unit tests – Python 3.13",
+      "identity": {
+        "check_run_id": 87194984053,
+        "completed_at": "2026-07-14T20:19:33Z",
+        "conclusion": "success",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "name": "Unit tests – Python 3.13",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:33Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194984053 concluded success."
+    },
+    {
+      "digest": "sha256:402f5d51edd417f0b7836de65096cc1e6fe0a86723f4f1724f42f7240c03c246",
+      "id": "Unit tests – Python 3.14",
+      "identity": {
+        "check_run_id": 87194983969,
+        "completed_at": "2026-07-14T20:19:43Z",
+        "conclusion": "success",
+        "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+        "name": "Unit tests – Python 3.14",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194983969 concluded success."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": 240,
+    "ref": "refs/pull/240/head",
+    "repository": "Geotab/mygeotab-python",
+    "sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7"
+  }
+}

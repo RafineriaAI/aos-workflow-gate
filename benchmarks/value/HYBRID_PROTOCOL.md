@@ -33,6 +33,13 @@ exact-baseline evidence with the frozen precision and repository-diversity
 thresholds. Insufficient outcome coverage is `SIGNAL_INCONCLUSIVE`, not
 noise.
 
+Current mechanism evidence comprises three prospective exact-SHA cases across
+three repositories. It establishes only that AOS can identify verifier
+non-independence absent from the observed GitHub green/clean baseline. Two
+cases retain canonical replay artifacts. No case has an independently
+adjudicated outcome; therefore the mechanism is `MECHANISM_CONFIRMED`
+while signal validity remains `SIGNAL_INCONCLUSIVE`.
+
 ### B0. Product-test readiness
 
 This track verifies only that the product is ready to place in front of a
@@ -74,12 +81,13 @@ or transaction evidence and remains separate from usability.
 
 ## Decision firewall
 
-| Signal | Product test | External usability | Decision |
-| --- | --- | --- | --- |
-| supported | ready | pending | controlled external study only |
-| supported | ready | supported | limited-release candidate |
-| unsupported | any | any | `NO_GO` |
-| inconclusive | any | any | extend the frozen study; no claim |
+| Mechanism | Signal | Product test | External usability | Decision |
+| --- | --- | --- | --- | --- |
+| confirmed | supported | ready | pending | controlled external study only |
+| confirmed | supported | ready | supported | limited-release candidate |
+| incomplete | any | any | any | `NO_GO` |
+| any | unsupported | any | any | `NO_GO` |
+| any | inconclusive | any | any | extend the frozen study; no claim |
 
 Commercialization remains unvalidated until field utility and retention are
 observed. Availability of source code, a green test suite, replayable
@@ -87,6 +95,7 @@ evidence, or historical review agreement cannot open publication by itself.
 
 ## Current state
 
+- Mechanism evidence: `MECHANISM_CONFIRMED`.
 - Signal validity: `SIGNAL_INCONCLUSIVE`.
 - Internal product test: `PRODUCT_TEST_READY`.
 - External participants: unavailable.

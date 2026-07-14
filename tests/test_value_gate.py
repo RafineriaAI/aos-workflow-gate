@@ -9,6 +9,8 @@ from typing import Any
 
 import pytest
 
+from aos_workflow_gate import canonical
+from aos_workflow_gate.evidence import verify_record
 from tools.value_gate import assess, render_markdown
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,6 +19,10 @@ VALUE = ROOT / "benchmarks" / "value"
 
 def _corpus() -> dict[str, Any]:
     return json.loads((VALUE / "corpus.json").read_text(encoding="utf-8"))
+
+
+def _contrasts() -> dict[str, Any]:
+    return json.loads((VALUE / "exact-contrasts.json").read_text(encoding="utf-8"))
 
 
 def _product_readiness(
@@ -76,6 +82,7 @@ def _assess(
             participants_available=participants_available,
             teams_available=teams_available,
         ),
+        contrasts=_contrasts(),
     )
 
 
@@ -109,21 +116,76 @@ def test_committed_corpus_is_metadata_only_and_diverse() -> None:
     )
 
 
+def test_committed_contrasts_are_metadata_only_and_artifact_bound() -> None:
+    contrasts = _contrasts()
+    assert contrasts["schema_version"] == "value-contrast-v0"
+    assert len(contrasts["cases"]) == 3
+    assert len({case["repository"] for case in contrasts["cases"]}) == 3
+    assert _keys(contrasts).isdisjoint(
+        {
+            "annotation",
+            "annotations",
+            "code",
+            "comment_body",
+            "commit_message",
+            "diff",
+            "log",
+            "logs",
+            "patch",
+        }
+    )
+
+    full_cli = [
+        case
+        for case in contrasts["cases"]
+        if case["aos"]["execution"] == "live_full_cli"
+    ]
+    assert len(full_cli) == 2
+    for case in full_cli:
+        aos = case["aos"]
+        artifact_paths = [
+            ROOT / aos["artifact_bundle"],
+            ROOT / aos["artifact_policy"],
+            ROOT / aos["artifact_record"],
+        ]
+        assert all(path.is_file() for path in artifact_paths)
+
+        bundle = json.loads(artifact_paths[0].read_text(encoding="utf-8"))
+        record = json.loads(artifact_paths[2].read_text(encoding="utf-8"))
+        assert canonical.digest(bundle) == aos["bundle_digest"]
+        assert record["input_bundle_digest"] == aos["bundle_digest"]
+        assert record["record_digest"] == aos["record_digest"]
+        assert record["verdict"] == aos["verdict"]
+        assert verify_record(record)
+        assert record["subject"] == bundle["subject"]
+        assert record["subject"]["repository"] == case["repository"]
+        assert record["subject"]["pull_request"] == case["pull_request"]
+        assert record["subject"]["sha"] == case["head_sha"]
+        assert aos["reason_code"] in {reason["rule"] for reason in record["reasons"]}
+
+
 def test_current_evidence_separates_all_tracks() -> None:
     result = _assess(_corpus())
     assert result["status"] == "NO_GO"
-    assert result["schema_version"] == "value-assessment-v1"
+    assert result["schema_version"] == "value-assessment-v2"
     assert result["metrics"]["sample_cases"] == 100
     assert result["metrics"]["repositories"] == 10
     assert result["metrics"]["self_validating_cases"] == 7
     assert result["metrics"]["self_validating_repositories"] == 5
     assert result["metrics"]["bot_signal_cases"] == 2
     assert result["metrics"]["labeled_signal_cases"] == 0
+    assert result["metrics"]["exact_semantic_contrast_cases"] == 3
+    assert result["metrics"]["exact_semantic_contrast_repositories"] == 3
+    assert result["metrics"]["replayable_contrast_cases"] == 2
+    assert result["metrics"]["required_non_independent_check_cases"] == 1
+    assert result["metrics"]["independently_labeled_contrast_cases"] == 0
+    assert result["criteria"]["mechanism_evidence"][0]["met"] is True
     assert result["metrics"]["precision"] is None
     assert result["tracks"] == {
         "external_study": "EXTERNAL_STUDY_NOT_READY",
         "external_usability": "EXTERNAL_VALIDATION_PENDING",
         "field_utility": "FIELD_VALIDATION_PENDING",
+        "mechanism_evidence": "MECHANISM_CONFIRMED",
         "product_test_readiness": "PRODUCT_TEST_READY",
         "signal_validity": "SIGNAL_INCONCLUSIVE",
     }
@@ -183,6 +245,7 @@ def test_legacy_user_observations_cannot_create_product_usefulness() -> None:
         "EXTERNAL_VALIDATION_INCONCLUSIVE"
     )
 
+
 def test_internal_readiness_cannot_create_external_user_evidence() -> None:
     result = _assess(_fully_labeled_corpus(include_ux=False))
     assert result["metrics"]["product_readiness_checks_met"] == 6
@@ -198,11 +261,10 @@ def test_product_readiness_failure_blocks_external_study() -> None:
     result = assess(
         _fully_labeled_corpus(include_ux=False),
         product_readiness=readiness,
+        contrasts=_contrasts(),
     )
     assert result["tracks"]["signal_validity"] == "SIGNAL_SUPPORTED"
-    assert result["tracks"]["product_test_readiness"] == (
-        "PRODUCT_TEST_INCOMPLETE"
-    )
+    assert result["tracks"]["product_test_readiness"] == ("PRODUCT_TEST_INCOMPLETE")
     assert result["tracks"]["external_study"] == "EXTERNAL_STUDY_NOT_READY"
     assert "product_adversarial_ux" in result["external_study_blockers"]
 
@@ -214,6 +276,25 @@ def test_operator_label_cannot_create_precision() -> None:
     result = _assess(corpus, participants_available=True)
     assert result["metrics"]["labeled_signal_cases"] == 0
     assert result["metrics"]["precision"] is None
+    assert result["tracks"]["signal_validity"] == "SIGNAL_INCONCLUSIVE"
+    assert result["status"] == "NO_GO"
+
+
+def test_one_independent_contrast_label_updates_evidence_not_publication() -> None:
+    contrasts = copy.deepcopy(_contrasts())
+    contrasts["cases"][0]["outcome"] = {
+        "classification": "actionable_gap",
+        "evidence_url": "https://example.invalid/independent/1",
+        "source": "external_user",
+    }
+    result = assess(
+        _corpus(),
+        product_readiness=_product_readiness(),
+        contrasts=contrasts,
+    )
+    assert result["metrics"]["independently_labeled_contrast_cases"] == 1
+    assert result["metrics"]["actionable_exact_findings"] == 1
+    assert result["metrics"]["precision"] == 1.0
     assert result["tracks"]["signal_validity"] == "SIGNAL_INCONCLUSIVE"
     assert result["status"] == "NO_GO"
 
@@ -302,6 +383,45 @@ def test_malformed_inputs_fail_closed() -> None:
     contradiction = _fully_labeled_corpus(include_ux=True)
     with pytest.raises(ValueError, match="contradict unavailable participants"):
         _assess(contradiction)
+
+
+def test_malformed_contrast_corpus_fails_closed() -> None:
+    unknown = _contrasts()
+    unknown["cases"][0]["unexpected"] = True
+    with pytest.raises(ValueError, match="fields do not match"):
+        assess(_corpus(), contrasts=unknown)
+
+    malformed_digest = _contrasts()
+    malformed_digest["cases"][0]["aos"]["record_digest"] = "sha256:nope"
+    with pytest.raises(ValueError, match="canonical sha256 digest"):
+        assess(_corpus(), contrasts=malformed_digest)
+
+    unsafe_artifact = _contrasts()
+    unsafe_artifact["cases"][0]["aos"]["artifact_record"] = "../record.json"
+    with pytest.raises(ValueError, match="artifact path is invalid"):
+        assess(_corpus(), contrasts=unsafe_artifact)
+
+    false_overlap = _contrasts()
+    false_overlap["cases"][2]["required_non_independent_sources"] = ["not-required"]
+    with pytest.raises(ValueError, match="not a true overlap"):
+        assess(_corpus(), contrasts=false_overlap)
+
+    inconsistent_funnel = _contrasts()
+    inconsistent_funnel["method"]["topn"] = 2
+    with pytest.raises(ValueError, match="method funnel is inconsistent"):
+        assess(_corpus(), contrasts=inconsistent_funnel)
+
+    false_exact_sha = _contrasts()
+    false_exact_sha["cases"][0]["github"]["exact_sha"] = False
+    result = assess(_corpus(), contrasts=false_exact_sha)
+    assert result["metrics"]["exact_semantic_contrast_cases"] == 2
+    assert result["tracks"]["mechanism_evidence"] == "MECHANISM_INCOMPLETE"
+    assert "exact_semantic_contrast" in result["external_study_blockers"]
+
+    engine_artifact_claim = _contrasts()
+    engine_artifact_claim["cases"][2]["aos"]["artifact_record"] = "record.json"
+    with pytest.raises(ValueError, match="cannot claim canonical artifacts"):
+        assess(_corpus(), contrasts=engine_artifact_claim)
 
 
 def test_action_uses_shared_diagnosis_for_required_total() -> None:

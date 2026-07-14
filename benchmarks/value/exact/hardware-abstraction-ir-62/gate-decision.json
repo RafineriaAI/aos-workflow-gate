@@ -1,0 +1,155 @@
+{
+  "can_block": false,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "330a2b685e9fc08bc3b3cb1595fb96893f02cc840b3519ce5039e42ac0718a70",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "8ce3f344dca713d938e8535efd1fc5fb3cb663d01e1b66cc319eefcc1bbfe4a8",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
+        "cli.py": "be1224367fa91a5b4a10af7cab9af57cc300ccff183ff31fa8a736a7a0ac9034",
+        "collect.py": "facbb257e47a3b00b24ecb3c0feb0926ac85ea6b645dfd183fbdc4a55e883f41",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "9f8919e05e41f0a1ccac237d9d4b8bfcc12005c4d0bc7261ae1fbfaddd0c8591",
+        "evidence.py": "9159fac451be616088c0837640c73f5bb1132c33103968f24af044ab0f79daf5",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "482541d99ffe23104edfe52986719840099c96505f640ebb88a7b0a2457d21ec",
+        "preflight.py": "c87bd5c1e135c90ee01895957c9d5b1c919e12c974538480cd74fff1fef56a6a",
+        "requirements.py": "377e9cb4080aaf6022aefe718b3ef0a20d8e5f7ce83e995b2d3c378496906e63",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "62b2eb1085453c75558f94cd8987817eaf3e7f6897577ccf89eb0c6ca3b98980",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "37b6869f406948037183d89e869b4f92139964fdb9ce342c834a2f5a46bb7296",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:3c7fcd86b05a822bb2e647913f61043e93f4cd479389686271ad0e322aa00766",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:3c7fcd86b05a822bb2e647913f61043e93f4cd479389686271ad0e322aa00766",
+    "version": "0.36.0"
+  },
+  "input_bundle_digest": "sha256:9db56de60abcd8d28c5f3db8992642dcf68e2bcf7130286f322ecdd08902505d",
+  "inputs": [
+    {
+      "digest": "sha256:4d98d38c08ff7daae3655de8659f11b7d114301d04a40e80e8d8088f89fce391",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:76269a1d554f7d46250f1e08ed5576bd652209715c3b20c73f7f265f7c31aae4",
+      "id": "ch32v203g6u6 / Verify ch32v203g6u6",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a8fe8d6a09ef8defcbb445c27d3acb9e15f39c192b601d5116d439bb81625c0c",
+      "id": "copilot-pull-request-reviewer",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d942ece6c8b6cf0e2d7ba57f76d255f7a23b0c4cff85e2c01606f6db054d7c0c",
+      "id": "custom-qemu",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:675aceb5cf491368b67322bf302c225d34089087eefb9bb1c57da611bd80d562",
+      "id": "esp32c3fn4",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:05171902a5e6e29b7f2e969af39ab46cd97e4009322359915335a9f451875c58",
+      "id": "lm3s6965 / Verify lm3s6965",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:4c8ddc41cc792ef503d101778deaf218ca7c656c7896258b1f9d490bb03f7d53",
+      "id": "stm32f405rgt6 / Verify stm32f405rgt6",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    }
+  ],
+  "observation": {
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+      "repository": "Alan-Jowett/HardwareAbstractionIR"
+    },
+    "observed_at": "2026-07-14T20:25:45Z",
+    "protection_source": "none",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "acknowledged": false,
+      "available": true,
+      "non_independent_sources": 5,
+      "routine_bump_excluded": false
+    },
+    "workflow_visibility": {
+      "action_required": 0,
+      "available": true,
+      "not_started": 1,
+      "units_total": 3
+    }
+  },
+  "policy": {
+    "digest": "sha256:2d2848ba8701220ca633f7bd373bb6de2362870980956cae54b8ec27e357b86b",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "the policy requires nothing, so no missing or failed check can make this gate BLOCK — the record is evidence, not enforcement",
+      "rule": "no_required_sources",
+      "severity": "WARN",
+      "source_id": null
+    },
+    {
+      "detail": "5 source(s) were produced by a workflow this change itself modifies (ch32v203g6u6 / Verify ch32v203g6u6, custom-qemu, esp32c3fn4, and 2 more): the change grades itself with the grader it edited. Require evidence from a verifier governed outside this change.",
+      "rule": "non_independent_evidence",
+      "severity": "WARN",
+      "source_id": null
+    }
+  ],
+  "record_digest": "sha256:377fecb99cd892e236523d2e48415c0f4263c5dc7147a7816196e52469c53727",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 62,
+    "ref": "refs/pull/62/head",
+    "repository": "Alan-Jowett/HardwareAbstractionIR",
+    "sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4"
+  },
+  "summary": "Gate WARN: the policy requires nothing, so nothing can block; 2 warning(s).",
+  "verdict": "WARN",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}
