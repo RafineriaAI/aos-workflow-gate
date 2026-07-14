@@ -61,6 +61,24 @@ The evidence writer emits a stable decision artifact with:
 - Verification status: initially `UNSIGNED_NOT_OFFICIAL`.
 - Human-readable summary.
 
+## Diagnosis and remediation
+
+The decision record remains the source of truth; `diagnose()` is a
+deterministic presentation projection. Remediation selection uses only
+structured fields:
+
+- `reason.rule` selects the rule-level fallback;
+- optional `reason.state` records the exact emitted operational state;
+- `inputs[].status` recovers failed-source state when reading a
+  historical record without `reason.state`;
+- `observation.status` recovers incomplete-collection state when reading
+  a historical record without `reason.state`.
+
+`reason.detail` is display-only and is never parsed. Historical records
+without a structural state remain readable and receive the conservative
+rule-level fallback. Remediation codes guide the operator; they do not
+change the policy verdict or CI exit behavior.
+
 ## Security posture
 
 Early releases should run with least privilege, avoid secrets when possible, and treat external workflow data as untrusted input. GitHub Action integration should start in advisory mode and use read-only permissions by default.

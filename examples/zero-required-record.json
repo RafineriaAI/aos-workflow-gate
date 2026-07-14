@@ -15,7 +15,7 @@
         "collect.py": "facbb257e47a3b00b24ecb3c0feb0926ac85ea6b645dfd183fbdc4a55e883f41",
         "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
         "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
-        "evaluate.py": "b5b9009f1b12f59e3a0afeda46166608c23e99a84e3aa58df1db93e9272ae771",
+        "evaluate.py": "9f8919e05e41f0a1ccac237d9d4b8bfcc12005c4d0bc7261ae1fbfaddd0c8591",
         "evidence.py": "9159fac451be616088c0837640c73f5bb1132c33103968f24af044ab0f79daf5",
         "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
         "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
@@ -28,15 +28,15 @@
         "preflight.py": "c87bd5c1e135c90ee01895957c9d5b1c919e12c974538480cd74fff1fef56a6a",
         "requirements.py": "377e9cb4080aaf6022aefe718b3ef0a20d8e5f7ce83e995b2d3c378496906e63",
         "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
-        "summarize.py": "86d38342eea5fda9f79d6e1321144b2e7146510d252521d93f19c6468543c646",
+        "summarize.py": "62b2eb1085453c75558f94cd8987817eaf3e7f6897577ccf89eb0c6ca3b98980",
         "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
         "version.py": "37b6869f406948037183d89e869b4f92139964fdb9ce342c834a2f5a46bb7296",
         "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
       },
-      "manifest_digest": "sha256:cb68d70a6caa237cba8947d70517582dba8b264b2d335f02fab4d65415ae459b",
+      "manifest_digest": "sha256:3c7fcd86b05a822bb2e647913f61043e93f4cd479389686271ad0e322aa00766",
       "schema_version": "verifier-manifest-v0"
     },
-    "verifier_manifest_digest": "sha256:cb68d70a6caa237cba8947d70517582dba8b264b2d335f02fab4d65415ae459b",
+    "verifier_manifest_digest": "sha256:3c7fcd86b05a822bb2e647913f61043e93f4cd479389686271ad0e322aa00766",
     "version": "0.36.0"
   },
   "input_bundle_digest": "sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837",
@@ -109,7 +109,7 @@
       "source_id": "AOS Workflow Gate Self / zero-config"
     }
   ],
-  "record_digest": "sha256:e8b4017a8fedb1b587e505938852537a6edd06f49f0c71857dc6c02ff3fe678d",
+  "record_digest": "sha256:b8fe7e35c61108ffa7977cf37e9ce1030a257a52acdb760d84c5d4b4920dc5f9",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": null,

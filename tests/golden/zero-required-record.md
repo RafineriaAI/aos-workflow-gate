@@ -14,19 +14,19 @@
 | Policy | `collected-advisory` (advisory) |
 | Policy digest | `sha256:1ac10c8a010a4e3a9f62894184bfd9ba342626922ac4f6dd987f8ca6f0a06cb0` |
 | Input bundle digest | `sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837` |
-| Record digest | `sha256:e8b4017a8fedb1b587e505938852537a6edd06f49f0c71857dc6c02ff3fe678d` |
+| Record digest | `sha256:b8fe7e35c61108ffa7977cf37e9ce1030a257a52acdb760d84c5d4b4920dc5f9` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
-**Dominant problem:** 'AOS Workflow Gate Self / advisory': advisory source status is 'failure'
+**Dominant problem:** the policy requires nothing, so no missing or failed check can make this gate BLOCK — the record is evidence, not enforcement
 
 ### Top gaps
 
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK — the record is evidence, not enforcement
+  - Hint: nothing is required, so nothing can block; name required checks (see the suggestion under Coverage) to close the decision gap
 - WARN `advisory_warning` AOS Workflow Gate Self / advisory: advisory source status is 'failure'
   - Hint: advisory findings warn but never block; review the source's own report and decide
 - WARN `advisory_warning` AOS Workflow Gate Self / no-checkout: advisory source status is 'skipped'
-  - Hint: advisory findings warn but never block; review the source's own report and decide
-- WARN `advisory_warning` AOS Workflow Gate Self / zero-config: advisory source status is 'failure'
   - Hint: advisory findings warn but never block; review the source's own report and decide
 - …and 1 more reason(s) — every one is in the record JSON and the HTML evidence view.
 

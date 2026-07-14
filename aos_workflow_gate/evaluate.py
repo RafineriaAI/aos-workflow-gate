@@ -37,14 +37,18 @@ class Reason:
     severity: str
     source_id: str | None
     detail: str
+    state: str | None = None
 
     def as_dict(self) -> dict[str, Any]:
-        return {
+        value: dict[str, Any] = {
             "rule": self.rule,
             "severity": self.severity,
             "source_id": self.source_id,
             "detail": self.detail,
         }
+        if self.state is not None:
+            value["state"] = self.state
+        return value
 
 
 @dataclass(frozen=True)
@@ -176,6 +180,7 @@ def _collection_reasons(collection: Any, policy: Policy) -> list[Reason]:
                     "signals that exist for this commit may be absent "
                     "from the bundle, so a clean result cannot be read "
                     "as a complete PASS",
+                    status,
                 )
             )
     reasons.extend(_verifier_change_reasons(collection, policy))
@@ -260,16 +265,22 @@ def _apply_rules(
     for required_id in policy.required_sources:
         source = index.get(required_id)
         if source is None:
-            state = states.get(required_id)
+            observed_state = states.get(required_id)
+            state = (
+                observed_state
+                if observed_state in ("missing", "pending", "unverifiable")
+                else "missing"
+            )
             detail = "required source is absent from the bundle"
-            if state in ("pending", "unverifiable", "missing"):
-                detail += f" (requirement state: {state})"
+            if observed_state in ("pending", "unverifiable", "missing"):
+                detail += f" (requirement state: {observed_state})"
             reasons.append(
                 Reason(
                     "missing_required_source",
                     policy.rules["missing_required_source"],
                     required_id,
                     detail,
+                    state,
                 )
             )
         elif source.status.lower() != _SUCCESS:
