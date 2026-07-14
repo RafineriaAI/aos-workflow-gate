@@ -3,14 +3,96 @@
     "exact_incremental_findings",
     "precision_sample",
     "observed_precision",
+    "controlled_comparative_study",
     "qualified_external_users",
     "next_action_clarity",
     "retention",
     "comprehension_time"
   ],
-  "boundary": "This is a product-publication decision, not a merge-readiness verdict. Frequency is not precision; historical check states are not an exact GitHub baseline; operator labels are not independent user evidence.",
+  "boundary": "This is a product-publication decision, not a merge-readiness verdict. Signal validity, internal product-test readiness, external usability, and field utility are separate claims. Internal tests and public repository history are never user evidence.",
   "criteria": {
-    "technical_value": [
+    "external_usability": [
+      {
+        "id": "controlled_comparative_study",
+        "met": false,
+        "observed": "not_run",
+        "operator": "==",
+        "required": "verified"
+      },
+      {
+        "id": "qualified_external_users",
+        "met": false,
+        "observed": 0,
+        "operator": ">=",
+        "required": 8
+      },
+      {
+        "id": "next_action_clarity",
+        "met": false,
+        "observed": null,
+        "operator": ">=",
+        "required": 1.0
+      },
+      {
+        "id": "retention",
+        "met": false,
+        "observed": null,
+        "operator": ">=",
+        "required": 1.0
+      },
+      {
+        "id": "comprehension_time",
+        "met": false,
+        "observed": null,
+        "operator": "<=",
+        "required": 30
+      }
+    ],
+    "product_test_readiness": [
+      {
+        "id": "product_adversarial_ux",
+        "met": true,
+        "observed": "met",
+        "operator": "==",
+        "required": "met"
+      },
+      {
+        "id": "product_clean_room_install",
+        "met": true,
+        "observed": "met",
+        "operator": "==",
+        "required": "met"
+      },
+      {
+        "id": "product_deterministic_diagnosis",
+        "met": true,
+        "observed": "met",
+        "operator": "==",
+        "required": "met"
+      },
+      {
+        "id": "product_external_protocol_frozen",
+        "met": true,
+        "observed": "met",
+        "operator": "==",
+        "required": "met"
+      },
+      {
+        "id": "product_first_run_path",
+        "met": true,
+        "observed": "met",
+        "operator": "==",
+        "required": "met"
+      },
+      {
+        "id": "product_verdict_task_corpus",
+        "met": true,
+        "observed": "met",
+        "operator": "==",
+        "required": "met"
+      }
+    ],
+    "signal_validity": [
       {
         "id": "sample_scale",
         "met": true,
@@ -72,38 +154,13 @@
         "operator": ">=",
         "required": 0.95
       }
-    ],
-    "user_satisfaction": [
-      {
-        "id": "qualified_external_users",
-        "met": false,
-        "observed": 0,
-        "operator": ">=",
-        "required": 5
-      },
-      {
-        "id": "next_action_clarity",
-        "met": false,
-        "observed": null,
-        "operator": ">=",
-        "required": 1.0
-      },
-      {
-        "id": "retention",
-        "met": false,
-        "observed": null,
-        "operator": ">=",
-        "required": 1.0
-      },
-      {
-        "id": "comprehension_time",
-        "met": false,
-        "observed": null,
-        "operator": "<=",
-        "required": 30
-      }
     ]
   },
+  "external_study_blockers": [
+    "exact_incremental_findings",
+    "precision_sample",
+    "observed_precision"
+  ],
   "metrics": {
     "actionable_exact_findings": 0,
     "actionable_exact_repositories": 0,
@@ -112,12 +169,16 @@
     "ci_related_review_prs": 12,
     "collection_complete_cases": 100,
     "collection_complete_ratio": 1.0,
+    "external_participants_available": false,
+    "external_teams_available": false,
     "external_users": 0,
     "labeled_signal_cases": 0,
     "median_comprehension_seconds": null,
     "next_action_rate": null,
     "noise_cases": 0,
     "precision": null,
+    "product_readiness_checks_met": 6,
+    "product_readiness_checks_required": 6,
     "qualified_external_users": 0,
     "repositories": 10,
     "retention_rate": null,
@@ -125,6 +186,13 @@
     "self_validating_cases": 7,
     "self_validating_repositories": 5
   },
-  "schema_version": "value-assessment-v0",
-  "status": "NO_GO"
+  "schema_version": "value-assessment-v1",
+  "status": "NO_GO",
+  "tracks": {
+    "external_study": "EXTERNAL_STUDY_NOT_READY",
+    "external_usability": "EXTERNAL_VALIDATION_PENDING",
+    "field_utility": "FIELD_VALIDATION_PENDING",
+    "product_test_readiness": "PRODUCT_TEST_READY",
+    "signal_validity": "SIGNAL_INCONCLUSIVE"
+  }
 }

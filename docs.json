@@ -38,6 +38,7 @@
     "benchmarks/README.md",
     "benchmarks/value/README.md",
     "benchmarks/value/ASSESSMENT.md",
+    "benchmarks/value/HYBRID_PROTOCOL.md",
     "ROADMAP.md",
     "SECURITY.md",
     "CONTRIBUTING.md",
@@ -103,7 +104,8 @@
     "benchmarks/contrast/contrast.json",
     "benchmarks/contrast/CONTRAST.md",
     "benchmarks/value/corpus.json",
-    "benchmarks/value/assessment.json"
+    "benchmarks/value/assessment.json",
+    "benchmarks/value/product-test-readiness.json"
   ],
   "policies": [
     "policies/default.yml",
@@ -153,7 +155,9 @@
     "tests/test_adversarial_corpus.py",
     "tests/test_backward_compat.py",
     "tests/test_evidence_integrity_policy.py",
-    "tests/test_remediation_coverage.py"
+    "tests/test_remediation_coverage.py",
+    "tests/test_value_gate.py",
+    "tests/test_product_test_readiness.py"
   ],
   "assets": [
     "docs/assets/banner.png"

@@ -1,7 +1,7 @@
 # GitHub Marketplace Listing (draft)
 
 **Status: publication blocked.** Do not submit this listing while the
-[Incremental Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`.
+[Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`.
 The copy below is retained as a draft, not as an active launch surface.
 
 

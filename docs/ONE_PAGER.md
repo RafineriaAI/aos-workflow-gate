@@ -1,7 +1,7 @@
 # AOS Workflow Gate — One-Pager
 
 **Status: pre-pilot validation; external intake closed.** The current
-[Incremental Value Gate](../benchmarks/value/ASSESSMENT.md) decision is
+[Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) decision is
 `NO_GO`.
 
 

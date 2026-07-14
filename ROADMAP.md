@@ -85,7 +85,7 @@ The gate is technically self-contained: advertised mechanics are
 implemented, tested, replayable offline, and bounded by explicit claims.
 That does not establish incremental user value, acceptable noise, or
 pilot readiness. External onboarding and pilot intake remain closed until
-the [Incremental Value Gate](benchmarks/value/ASSESSMENT.md) reaches `GO`.
+the [Hybrid Value Gate](benchmarks/value/ASSESSMENT.md) reaches `GO`.
 
 ## Pre-pilot correctness and trust program (v0.30+)
 

@@ -2,7 +2,7 @@
 
 **Status: inactive specification.** External onboarding and pilot intake
 remain closed while the
-[Incremental Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`.
+[Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`.
 
 After `GO`, each activation step should work without mandatory contact and
 leave the user with something independently verifiable.
@@ -10,7 +10,7 @@ leave the user with something independently verifiable.
 | Step | Surface | What you leave with |
 | --- | --- | --- |
 | Discover (future) | GitHub topics, Marketplace listing, org profile after `GO` | The bounded claim and a one-line technical quickstart |
-| Qualify | [Incremental Value Gate](../benchmarks/value/README.md) | A maintainer-owned `GO`/`CONDITIONAL_GO`/`NO_GO` publication decision |
+| Qualify | [Hybrid Value Gate](../benchmarks/value/README.md) | Separate signal, product-test, external-usability, field-utility, and publication states |
 | Adopt | Self-Test Mode (no checkout, read-only) | A replayable decision record from your own pipeline in one PR |
 | Understand | Job Summary: what happened / can block / next, repair hints, replay path | An adaptive next step and the exact files to keep |
 | Verify | [TRUST.md](TRUST.md), offline `verify`, [case studies](case-studies/green-but-incomplete.md) | Independent confirmation of every claim |

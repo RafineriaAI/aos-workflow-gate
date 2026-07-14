@@ -17,7 +17,7 @@ The repository, CLI, and GitHub Action are free under Apache-2.0, for
 private and commercial use, with no feature gates. There is currently no
 active paid offering: external onboarding and pilot intake remain closed
 while the
-[Incremental Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`.
+[Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`.
 The future pilot specification describes policy design and replayable
 handover, but it is not an offer and has no active intake path.
 

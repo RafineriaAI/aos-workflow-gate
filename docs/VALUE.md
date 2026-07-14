@@ -5,8 +5,9 @@ reaches.
 
 **Current evidence boundary:** these are product hypotheses, not validated
 market outcomes. The
-[Incremental Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`
-until exact-baseline precision and external-usability criteria pass.
+[Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`. Signal
+validity is inconclusive; internal product-test readiness passes; external
+usability and field utility remain untested.
 
 ## Pain hypotheses
 

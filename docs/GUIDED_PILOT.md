@@ -1,7 +1,7 @@
 # Guided Pilot
 
 **Status: intake closed.** This is a future engagement specification.
-The [Incremental Value Gate](../benchmarks/value/ASSESSMENT.md) is
+The [Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) is
 `NO_GO`; no paid pilot or design-partner offer is active.
 
 

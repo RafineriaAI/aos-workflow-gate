@@ -1,4 +1,4 @@
-"""Pre-publication value gate and Action diagnosis consistency."""
+"""Hybrid pre-publication value gate and claim-boundary tests."""
 
 from __future__ import annotations
 
@@ -17,6 +17,21 @@ VALUE = ROOT / "benchmarks" / "value"
 
 def _corpus() -> dict[str, Any]:
     return json.loads((VALUE / "corpus.json").read_text(encoding="utf-8"))
+
+
+def _product_readiness(
+    *,
+    participants_available: bool = False,
+    teams_available: bool = False,
+) -> dict[str, Any]:
+    readiness = json.loads(
+        (VALUE / "product-test-readiness.json").read_text(encoding="utf-8")
+    )
+    readiness["external_access"] = {
+        "participants_available": participants_available,
+        "teams_available": teams_available,
+    }
+    return readiness
 
 
 def _fully_labeled_corpus(*, include_ux: bool) -> dict[str, Any]:
@@ -44,9 +59,24 @@ def _fully_labeled_corpus(*, include_ux: bool) -> dict[str, Any]:
                 "retained_days": 7,
                 "understood_seconds": 20,
             }
-            for _ in range(5)
+            for _ in range(8)
         ]
     return corpus
+
+
+def _assess(
+    corpus: dict[str, Any],
+    *,
+    participants_available: bool = False,
+    teams_available: bool = False,
+) -> dict[str, Any]:
+    return assess(
+        corpus,
+        product_readiness=_product_readiness(
+            participants_available=participants_available,
+            teams_available=teams_available,
+        ),
+    )
 
 
 def _keys(value: Any) -> set[str]:
@@ -79,9 +109,10 @@ def test_committed_corpus_is_metadata_only_and_diverse() -> None:
     )
 
 
-def test_current_evidence_is_no_go_without_inventing_truth() -> None:
-    result = assess(_corpus())
+def test_current_evidence_separates_all_tracks() -> None:
+    result = _assess(_corpus())
     assert result["status"] == "NO_GO"
+    assert result["schema_version"] == "value-assessment-v1"
     assert result["metrics"]["sample_cases"] == 100
     assert result["metrics"]["repositories"] == 10
     assert result["metrics"]["self_validating_cases"] == 7
@@ -89,12 +120,19 @@ def test_current_evidence_is_no_go_without_inventing_truth() -> None:
     assert result["metrics"]["bot_signal_cases"] == 2
     assert result["metrics"]["labeled_signal_cases"] == 0
     assert result["metrics"]["precision"] is None
+    assert result["tracks"] == {
+        "external_study": "EXTERNAL_STUDY_NOT_READY",
+        "external_usability": "EXTERNAL_VALIDATION_PENDING",
+        "field_utility": "FIELD_VALIDATION_PENDING",
+        "product_test_readiness": "PRODUCT_TEST_READY",
+        "signal_validity": "SIGNAL_INCONCLUSIVE",
+    }
     assert "exact_incremental_findings" in result["blockers"]
     assert "qualified_external_users" in result["blockers"]
 
 
 def test_committed_assessment_regenerates_identically() -> None:
-    result = assess(_corpus())
+    result = _assess(_corpus())
     committed_json = (VALUE / "assessment.json").read_text(encoding="utf-8")
     regenerated_json = (
         json.dumps(result, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
@@ -105,12 +143,18 @@ def test_committed_assessment_regenerates_identically() -> None:
     )
 
 
-def test_technical_evidence_allows_only_conditional_go_without_user() -> None:
-    result = assess(_fully_labeled_corpus(include_ux=False))
+def test_signal_and_b0_open_only_the_external_study() -> None:
+    result = _assess(_fully_labeled_corpus(include_ux=False))
     assert result["metrics"]["labeled_signal_cases"] == 100
     assert result["metrics"]["precision"] == 0.99
-    assert result["status"] == "CONDITIONAL_GO"
+    assert result["status"] == "NO_GO"
+    assert result["tracks"]["signal_validity"] == "SIGNAL_SUPPORTED"
+    assert result["tracks"]["product_test_readiness"] == "PRODUCT_TEST_READY"
+    assert result["tracks"]["external_study"] == "EXTERNAL_STUDY_READY"
+    assert result["tracks"]["external_usability"] == "EXTERNAL_VALIDATION_PENDING"
+    assert result["external_study_blockers"] == []
     assert result["blockers"] == [
+        "controlled_comparative_study",
         "qualified_external_users",
         "next_action_clarity",
         "retention",
@@ -118,29 +162,59 @@ def test_technical_evidence_allows_only_conditional_go_without_user() -> None:
     ]
 
 
-def test_go_requires_clear_fast_and_retained_external_use() -> None:
-    result = assess(_fully_labeled_corpus(include_ux=True))
-    assert result["status"] == "GO"
-    assert result["blockers"] == []
-
-    unclear = _fully_labeled_corpus(include_ux=True)
-    unclear["ux_observations"][0]["next_action_clear"] = False
-    assert assess(unclear)["status"] == "CONDITIONAL_GO"
+def test_legacy_user_observations_cannot_create_product_usefulness() -> None:
+    result = _assess(
+        _fully_labeled_corpus(include_ux=True),
+        participants_available=True,
+    )
+    assert result["metrics"]["qualified_external_users"] == 8
+    assert result["status"] == "NO_GO"
+    assert result["tracks"]["external_usability"] == (
+        "EXTERNAL_VALIDATION_INCONCLUSIVE"
+    )
+    assert "controlled_comparative_study" in result["blockers"]
 
     insufficient = _fully_labeled_corpus(include_ux=True)
     insufficient["ux_observations"][0]["retained_days"] = 6
-    result = assess(insufficient)
-    assert result["metrics"]["qualified_external_users"] == 4
-    assert result["status"] == "CONDITIONAL_GO"
+    result = _assess(insufficient, participants_available=True)
+    assert result["metrics"]["qualified_external_users"] == 7
+    assert result["status"] == "NO_GO"
+    assert result["tracks"]["external_usability"] == (
+        "EXTERNAL_VALIDATION_INCONCLUSIVE"
+    )
+
+def test_internal_readiness_cannot_create_external_user_evidence() -> None:
+    result = _assess(_fully_labeled_corpus(include_ux=False))
+    assert result["metrics"]["product_readiness_checks_met"] == 6
+    assert result["metrics"]["external_users"] == 0
+    assert result["tracks"]["product_test_readiness"] == "PRODUCT_TEST_READY"
+    assert result["tracks"]["external_usability"] == "EXTERNAL_VALIDATION_PENDING"
+    assert result["status"] == "NO_GO"
+
+
+def test_product_readiness_failure_blocks_external_study() -> None:
+    readiness = _product_readiness()
+    readiness["checks"][0]["status"] = "not_met"
+    result = assess(
+        _fully_labeled_corpus(include_ux=False),
+        product_readiness=readiness,
+    )
+    assert result["tracks"]["signal_validity"] == "SIGNAL_SUPPORTED"
+    assert result["tracks"]["product_test_readiness"] == (
+        "PRODUCT_TEST_INCOMPLETE"
+    )
+    assert result["tracks"]["external_study"] == "EXTERNAL_STUDY_NOT_READY"
+    assert "product_adversarial_ux" in result["external_study_blockers"]
 
 
 def test_operator_label_cannot_create_precision() -> None:
     corpus = copy.deepcopy(_fully_labeled_corpus(include_ux=True))
     for case in corpus["cases"]:
         case["outcome"]["source"] = "operator"
-    result = assess(corpus)
+    result = _assess(corpus, participants_available=True)
     assert result["metrics"]["labeled_signal_cases"] == 0
     assert result["metrics"]["precision"] is None
+    assert result["tracks"]["signal_validity"] == "SIGNAL_INCONCLUSIVE"
     assert result["status"] == "NO_GO"
 
 
@@ -152,43 +226,45 @@ def test_historical_check_states_cannot_create_an_exact_baseline() -> None:
             "merge_ready": True,
             "source": "unverified_historical",
         }
-    result = assess(corpus)
+    result = _assess(corpus, participants_available=True)
     assert result["metrics"]["labeled_signal_cases"] == 0
+    assert result["tracks"]["signal_validity"] == "SIGNAL_INCONCLUSIVE"
     assert result["status"] == "NO_GO"
 
 
-def test_precision_below_threshold_blocks_publication() -> None:
+def test_precision_below_threshold_is_signal_not_supported() -> None:
     corpus = _fully_labeled_corpus(include_ux=True)
     for case in corpus["cases"][:5]:
         case["outcome"]["classification"] = "noise"
-    result = assess(corpus)
+    result = _assess(corpus, participants_available=True)
     assert result["metrics"]["precision"] == 0.94
     assert "observed_precision" in result["blockers"]
+    assert result["tracks"]["signal_validity"] == "SIGNAL_NOT_SUPPORTED"
     assert result["status"] == "NO_GO"
 
 
-def test_malformed_corpus_fails_closed() -> None:
+def test_malformed_inputs_fail_closed() -> None:
     unknown = _corpus()
     unknown["unexpected"] = True
     with pytest.raises(ValueError, match="unknown fields"):
-        assess(unknown)
+        _assess(unknown)
 
     malformed_case = _corpus()
     malformed_case["cases"][0].pop("head_sha")
     with pytest.raises(ValueError, match="fields do not match"):
-        assess(malformed_case)
+        _assess(malformed_case)
 
     float_count = _corpus()
     float_count["cases"][0]["review_comments"]["ci_related"] = 0.5
     with pytest.raises(ValueError, match="non-negative integer"):
-        assess(float_count)
+        _assess(float_count)
 
     mismatched_repositories = _corpus()
     mismatched_repositories["repositories"] = mismatched_repositories["repositories"][
         :-1
     ]
     with pytest.raises(ValueError, match="sorted case repository set"):
-        assess(mismatched_repositories)
+        _assess(mismatched_repositories)
 
     nonfinite_ux = _corpus()
     nonfinite_ux["ux_observations"] = [
@@ -202,7 +278,7 @@ def test_malformed_corpus_fails_closed() -> None:
         }
     ]
     with pytest.raises(ValueError, match="understood_seconds is invalid"):
-        assess(nonfinite_ux)
+        _assess(nonfinite_ux, participants_available=True)
 
     unsupported_label = _corpus()
     unsupported_label["cases"][0]["outcome"] = {
@@ -211,7 +287,21 @@ def test_malformed_corpus_fails_closed() -> None:
         "source": "external_user",
     }
     with pytest.raises(ValueError, match="requires an evidence URL"):
-        assess(unsupported_label)
+        _assess(unsupported_label)
+
+    unknown_readiness = _product_readiness()
+    unknown_readiness["unexpected"] = True
+    with pytest.raises(ValueError, match="fields do not match"):
+        assess(_corpus(), product_readiness=unknown_readiness)
+
+    missing_check = _product_readiness()
+    missing_check["checks"].pop()
+    with pytest.raises(ValueError, match="frozen required check set"):
+        assess(_corpus(), product_readiness=missing_check)
+
+    contradiction = _fully_labeled_corpus(include_ux=True)
+    with pytest.raises(ValueError, match="contradict unavailable participants"):
+        _assess(contradiction)
 
 
 def test_action_uses_shared_diagnosis_for_required_total() -> None:

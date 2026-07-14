@@ -1,67 +1,72 @@
-# Incremental Value Gate
+# Hybrid Value Gate
 
-This directory is a pre-publication product gate. It asks whether AOS has
-shown useful, incremental signal beyond GitHub's exact decision baseline
-with sufficiently low noise, and whether an external user can understand
-and act on the result. It does not issue a merge-readiness verdict.
+This directory is the pre-publication product gate. It keeps four claims
+separate:
+
+1. whether an AOS signal is valid and incremental;
+2. whether the product is internally ready for a user test;
+3. whether an external user understands and benefits from it;
+4. whether teams retain it in real work.
+
+It does not issue a merge-readiness verdict.
 
 ## Current result
 
-`NO_GO`. Do not publish, market, or start an external pilot from this
-evidence. The technical implementation may be evaluated internally in
-advisory mode.
+`NO_GO`.
 
-The committed sample contains public metadata for 100 recently merged pull
-requests across 10 repositories. Collection was complete for all 100 cases.
-Seven PRs across five repositories changed a workflow that also evaluated
-that change; two of the seven were bot-authored. Keyword matching found
-22 CI/test-related inline review comments across 12 PRs.
+- Signal validity: `SIGNAL_INCONCLUSIVE`.
+- Internal product test: `PRODUCT_TEST_READY`.
+- External participants: currently unavailable.
+- External teams: currently unavailable.
+- External usability: `EXTERNAL_VALIDATION_PENDING`.
+- Field utility: `FIELD_VALIDATION_PENDING`.
 
-Those observations establish recurring candidate pain, not product value:
+The 100-PR discovery corpus establishes recurring candidate pain. It does
+not contain independently adjudicated exact-baseline outcomes and therefore
+cannot establish precision or usefulness. Internal tests can establish only
+that the product is ready to test. They are never user evidence.
 
-- No retrospective case has an exact-SHA GitHub merge-readiness snapshot.
-- No signal case has an independent actionable/noise outcome label.
-- Historical check conclusions do not prove what GitHub permitted at merge.
-- Operator judgment cannot be used to compute product precision.
-- External comprehension, remediation success, and retention are untested.
+## Evidence files
 
-The observed review history points to everyday gaps around test adequacy,
-selective-CI path coverage, public-API impact, manual test evidence, and
-workflow security rationale. A policy for any of these gaps remains out of
-scope until it can be specified deterministically and shown to be low-noise.
+- `corpus.json` is the frozen public-metadata-only signal sample.
+- `product-test-readiness.json` binds B0 checks to executable evidence.
+- `HYBRID_PROTOCOL.md` freezes the claim separation and deferred B1-B3 design.
+- `assessment.json` is the deterministic machine-readable gate result.
+- `ASSESSMENT.md` is its human-readable projection.
 
-## Files
-
-- `corpus.json` is the frozen, public-metadata-only sample. It contains no
-  code, diffs, logs, annotations, comment bodies, or commit messages.
-- `assessment.json` is the deterministic machine-readable decision.
-- `ASSESSMENT.md` is a projection of the same decision for maintainers.
+No code, diffs, logs, annotations, comment bodies, or commit messages are
+stored in the discovery corpus.
 
 ## Reproduce
 
 ```bash
 python tools/value_gate.py \
   --corpus benchmarks/value/corpus.json \
+  --product-readiness benchmarks/value/product-test-readiness.json \
   --json-out benchmarks/value/assessment.json \
   --markdown-out benchmarks/value/ASSESSMENT.md
 ```
 
-`--require-go` returns non-zero unless every technical-value and external-
-usability criterion passes. `GO`, `CONDITIONAL_GO`, and `NO_GO` are product
-release states; they are deliberately distinct from AOS
-`PASS`/`WARN`/`BLOCK` verdicts.
+`--require-go` returns non-zero until publication criteria pass.
 
 ## Advancement rule
 
-- `NO_GO`: publication and external pilot intake stay closed.
-- `CONDITIONAL_GO`: technical value is demonstrated; a controlled external
-  usability test may start.
-- `GO`: technical value and external usability both meet the predeclared
-  thresholds in `tools/value_gate.py`.
+- `SIGNAL_SUPPORTED + PRODUCT_TEST_READY` permits only a controlled external
+  study. It does not permit product publication.
+- `GO` additionally requires `EXTERNAL_USABILITY_SUPPORTED`.
+- Commercialization remains unvalidated until a separate field study
+  establishes practical utility and retention.
+- `NO_GO` blocks publication, marketing, production recommendations, and paid
+  pilot intake.
 
-A qualified external user has completed at least three real gate runs and
-kept the gate enabled for at least seven days. `GO` requires five such
-users; one-off reactions do not count as usability or retention evidence.
+When access becomes available, formative usability requires 8-12 independent
+developers. Comparative testing and a 30-day, 5-10-team field pilot remain
+separate later stages. One-off reactions, maintainer dogfooding, AI-agent
+simulations, and historical review comments cannot satisfy those stages. The
+existing simple UX observation fields cannot produce a product-usefulness claim;
+a versioned comparative-study contract must be frozen before enrollment.
 
-The corpus is a bounded sample, not a market study. It ranks no tools and
-supports no security, compliance, ROI, or defect-prevention claim.
+The full protocol is [HYBRID_PROTOCOL.md](HYBRID_PROTOCOL.md). The corpus is
+a bounded discovery sample, not a market study. It ranks no tools and
+supports no security, compliance, ROI, defect-prevention, adoption, or
+willingness-to-pay claim.

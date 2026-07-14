@@ -12,11 +12,12 @@ Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals.
 This repository is the workflow layer around `aos-kernel`. Its job is to make a pull request or release gate explainable and replayable: collect workflow signals, apply an explicit policy, and produce a `PASS`, `WARN`, or `BLOCK` decision with evidence.
 
 > **Pre-pilot validation:** the implementation is available for internal,
-> advisory technical evaluation, but its incremental user value has not
-> passed the pre-publication gate. The committed
-> [Value Gate assessment](benchmarks/value/ASSESSMENT.md) is `NO_GO`;
-> external onboarding, marketing, production recommendations, and paid
-> pilot intake remain closed until the assessment reaches `GO`.
+> advisory technical evaluation. The committed
+> [Hybrid Value Gate assessment](benchmarks/value/ASSESSMENT.md) is `NO_GO`:
+> signal validity is inconclusive, internal product-test readiness passes,
+> and external usability and field utility remain untested. External
+> onboarding, marketing, production recommendations, and paid pilot intake
+> remain closed.
 
 
 ## Technical evaluation (zero config)
@@ -131,10 +132,10 @@ replayed by the test suite on every CI run.
 
 These examples do not prove incremental market value, production
 effectiveness, or low false-positive rates. The separate
-[Incremental Value Gate](benchmarks/value/README.md) evaluates those claims
-against a frozen 100-PR metadata corpus, exact GitHub baselines, independent
-outcome labels, and external-usability evidence. Its current publication
-decision is [`NO_GO`](benchmarks/value/ASSESSMENT.md).
+[Hybrid Value Gate](benchmarks/value/README.md) keeps signal validity,
+internal product-test readiness, external usability, and field utility as
+separate claims. Its current publication decision is
+[`NO_GO`](benchmarks/value/ASSESSMENT.md).
 
 ## Current status
 
@@ -310,7 +311,7 @@ collector and the Action are GitHub-specific by design.
 - [Value metrics](docs/VALUE_METRICS.md) counts operational friction from the committed case studies — no ROI arithmetic, by design.
 - [Comparison](docs/COMPARISON.md) maps what branch protection, OPA/conftest, in-toto attestations, and the gate each answer — a capability matrix, not a ranking.
 - [One-pager](docs/ONE_PAGER.md) is the technical summary and claim boundary.
-- [Incremental Value Gate](benchmarks/value/README.md) defines the evidence required before publication or external pilots.
+- [Hybrid Value Gate](benchmarks/value/README.md) defines the evidence required before publication or external pilots.
 - [Guided pilot](docs/GUIDED_PILOT.md) is a future engagement specification; intake is closed.
 - [Funnel](docs/FUNNEL.md) is retained as a future activation specification while external intake is closed.
 - [Pilot package](docs/PILOT_PACKAGE.md) is the future evidence handover specification.
