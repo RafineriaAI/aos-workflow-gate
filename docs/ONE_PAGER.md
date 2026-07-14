@@ -1,15 +1,20 @@
 # AOS Workflow Gate — One-Pager
 
+**Status: pre-pilot validation; external intake closed.** The current
+[Incremental Value Gate](../benchmarks/value/ASSESSMENT.md) decision is
+`NO_GO`.
+
+
 **RafineriaAI builds deterministic evidence infrastructure for
 AI-controlled workflows — starting with replayable CI and release-gate
 decisions.**
 
-## The problem
+## Problem hypothesis
 
-Platform, release, and security teams adopting AI coding agents cannot
-answer *"why did this merge?"* without archaeology across CI logs.
-Advisory checks look protective but never block; nothing tamper-evident
-binds a decision to its commit, policy, and inputs.
+Some platform, release, and security teams adopting AI coding agents may
+struggle to answer *"why did this merge?"* without archaeology across CI
+logs. Advisory checks can look protective while remaining non-blocking, and
+the merge decision may not be bound to its commit, policy, and inputs.
 
 ## The product
 
@@ -19,7 +24,7 @@ records that are tamper-evident and replay offline. Read-only scopes, no
 telemetry, zero runtime dependencies, Apache-2.0. GitHub.com and GHES
 natively; GitLab CI and Jenkins via the platform-neutral CLI.
 
-## How it works (60 seconds)
+## Technical flow
 
 1. Add the action — no checkout, no config
    (`uses: RafineriaAI/aos-workflow-gate@v0.36.0`).
@@ -28,25 +33,22 @@ natively; GitLab CI and Jenkins via the platform-neutral CLI.
 3. Name your `required-checks` and set `enforce: "true"` when ready —
    the gate goes from evidence to enforcement on your terms.
 
-## Proof, not promises
+## Technical proof
 
-Real-repository case study
-([60-second version](case-studies/aos-kernel-release-surface-replay.md)):
-~360 ms to verdict, real branch-protection policy, offline replay from
-committed files. Every claim has a self-verification step in
-[TRUST.md](TRUST.md); every failure symptom has a fix in
-[USER_FAQ.md](USER_FAQ.md).
+The [real-repository replay case](case-studies/aos-kernel-release-surface-replay.md)
+demonstrates deterministic evaluation and offline replay from committed
+files. [TRUST.md](TRUST.md) provides self-verification steps and
+[USER_FAQ.md](USER_FAQ.md) maps operational failures to remediation. These
+artifacts prove mechanics, not incremental product value, production
+effectiveness, or low false-positive rates.
 
-## Engagement paths
+## Availability
 
-| Path | Cost | What happens |
-| --- | --- | --- |
-| Self-serve | Free (Apache-2.0, no feature gates) | Add the action; you own everything it produces |
-| [Guided pilot](GUIDED_PILOT.md) | Paid, scoped individually | We design the policy for one real workflow, wire it in, hand over measured, replayable results |
-| [Design partner](GUIDED_PILOT.md#design-partner-variant) | Reduced scope fee | Pilot terms plus roadmap influence, in exchange for structured feedback |
-
-**Start:** [guided-pilot scoping form](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)
-— submitting commits neither side.
+The Apache-2.0 source remains available for internal, advisory technical
+evaluation. External onboarding, production recommendations, paid pilots,
+and design-partner intake remain closed until the Value Gate reaches
+`GO`. [GUIDED_PILOT.md](GUIDED_PILOT.md) is a future specification, not
+an active offer.
 
 ## Boundary
 

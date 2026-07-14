@@ -32,9 +32,10 @@ minutes or money.
 No return-on-investment figure, no hours-saved estimate, no incident
 probability, and no monetary risk reduction. Those depend on your team's
 rates, incident history, and audit regime — numbers we do not have and
-will not invent. If you need them, the [guided pilot](GUIDED_PILOT.md)
-measures the same operational metrics on your workflows and leaves the
-arithmetic to you.
+will not invent. A future [guided pilot](GUIDED_PILOT.md), after the
+pre-publication Value Gate reaches `GO`, would measure the same operational
+metrics on customer workflows and leave the arithmetic to the customer.
+Pilot intake is currently closed.
 
 ## Boundary
 

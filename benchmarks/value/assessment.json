@@ -1,0 +1,130 @@
+{
+  "blockers": [
+    "exact_incremental_findings",
+    "precision_sample",
+    "observed_precision",
+    "qualified_external_users",
+    "next_action_clarity",
+    "retention",
+    "comprehension_time"
+  ],
+  "boundary": "This is a product-publication decision, not a merge-readiness verdict. Frequency is not precision; historical check states are not an exact GitHub baseline; operator labels are not independent user evidence.",
+  "criteria": {
+    "technical_value": [
+      {
+        "id": "sample_scale",
+        "met": true,
+        "observed": 100,
+        "operator": ">=",
+        "required": 100
+      },
+      {
+        "id": "repository_diversity",
+        "met": true,
+        "observed": 10,
+        "operator": ">=",
+        "required": 10
+      },
+      {
+        "id": "collection_completeness",
+        "met": true,
+        "observed": 1.0,
+        "operator": ">=",
+        "required": 0.95
+      },
+      {
+        "id": "recurring_signal",
+        "met": true,
+        "observed": {
+          "cases": 7,
+          "repositories": 5
+        },
+        "operator": ">= each",
+        "required": {
+          "cases": 3,
+          "repositories": 3
+        }
+      },
+      {
+        "id": "exact_incremental_findings",
+        "met": false,
+        "observed": {
+          "cases": 0,
+          "repositories": 0
+        },
+        "operator": ">= each",
+        "required": {
+          "cases": 3,
+          "repositories": 3
+        }
+      },
+      {
+        "id": "precision_sample",
+        "met": false,
+        "observed": 0,
+        "operator": ">=",
+        "required": 20
+      },
+      {
+        "id": "observed_precision",
+        "met": false,
+        "observed": null,
+        "operator": ">=",
+        "required": 0.95
+      }
+    ],
+    "user_satisfaction": [
+      {
+        "id": "qualified_external_users",
+        "met": false,
+        "observed": 0,
+        "operator": ">=",
+        "required": 5
+      },
+      {
+        "id": "next_action_clarity",
+        "met": false,
+        "observed": null,
+        "operator": ">=",
+        "required": 1.0
+      },
+      {
+        "id": "retention",
+        "met": false,
+        "observed": null,
+        "operator": ">=",
+        "required": 1.0
+      },
+      {
+        "id": "comprehension_time",
+        "met": false,
+        "observed": null,
+        "operator": "<=",
+        "required": 30
+      }
+    ]
+  },
+  "metrics": {
+    "actionable_exact_findings": 0,
+    "actionable_exact_repositories": 0,
+    "bot_signal_cases": 2,
+    "ci_related_review_comments": 22,
+    "ci_related_review_prs": 12,
+    "collection_complete_cases": 100,
+    "collection_complete_ratio": 1.0,
+    "external_users": 0,
+    "labeled_signal_cases": 0,
+    "median_comprehension_seconds": null,
+    "next_action_rate": null,
+    "noise_cases": 0,
+    "precision": null,
+    "qualified_external_users": 0,
+    "repositories": 10,
+    "retention_rate": null,
+    "sample_cases": 100,
+    "self_validating_cases": 7,
+    "self_validating_repositories": 5
+  },
+  "schema_version": "value-assessment-v0",
+  "status": "NO_GO"
+}

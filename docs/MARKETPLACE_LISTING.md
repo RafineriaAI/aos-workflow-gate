@@ -1,4 +1,9 @@
-# GitHub Marketplace Listing (paste-ready)
+# GitHub Marketplace Listing (draft)
+
+**Status: publication blocked.** Do not submit this listing while the
+[Incremental Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`.
+The copy below is retained as a draft, not as an active launch surface.
+
 
 Publishing an Action to the Marketplace is UI-only: draft a new release,
 tick **"Publish this Action to the GitHub Marketplace"**, and paste the
@@ -45,7 +50,7 @@ status; no production, compliance, or security-audit claim is made.
 
 ## After publishing
 
-Set the repository homepage to the Marketplace listing URL (reserved slot)
-and update this file's status line below.
+Only after the Value Gate reaches `GO`, set the repository homepage to
+the Marketplace listing URL and update this file's status line below.
 
-Status: NOT YET LISTED (verified 2026-07-05).
+Status: NOT LISTED; PUBLICATION BLOCKED BY VALUE GATE.

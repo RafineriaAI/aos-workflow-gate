@@ -11,7 +11,15 @@ Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals.
 
 This repository is the workflow layer around `aos-kernel`. Its job is to make a pull request or release gate explainable and replayable: collect workflow signals, apply an explicit policy, and produce a `PASS`, `WARN`, or `BLOCK` decision with evidence.
 
-## Start here (two minutes, zero config)
+> **Pre-pilot validation:** the implementation is available for internal,
+> advisory technical evaluation, but its incremental user value has not
+> passed the pre-publication gate. The committed
+> [Value Gate assessment](benchmarks/value/ASSESSMENT.md) is `NO_GO`;
+> external onboarding, marketing, production recommendations, and paid
+> pilot intake remain closed until the assessment reaches `GO`.
+
+
+## Technical evaluation (zero config)
 
 
 Self-Test Mode (zero-config) — an advisory self-test of your pipeline,
@@ -71,7 +79,7 @@ commit's check suites and workflow runs, and anything still queued or
 awaiting approval is recorded in the bundle instead of silently not
 existing.
 
-What the job page answers, in under thirty seconds: the verdict
+The job page is designed to make these facts quickly scannable: the verdict
 (`PASS`, `WARN`, or `BLOCK`), the scope it covers (and expressly does
 not), the freshness of the observation, the effect (advisory or
 enforcing), the signal counts, at most three top gaps with one
@@ -112,20 +120,21 @@ aos-workflow-gate summarize --input gate-decision.json --html --out evidence.htm
 record shows the gate you want, set `mode: "enforce"` — a `BLOCK`
 verdict then fails the step, on your terms.
 
-## Public proof
+## Public technical proof
 
-Every verdict the gate can produce is committed to this repository as
-real, replayable evidence — `PASS`
-([examples/pr-evidence-record.json](examples/pr-evidence-record.json)),
-`WARN`
-([examples/zero-required-record.json](examples/zero-required-record.json)
-— the [main aha case](docs/case-studies/zero-required-checks.md):
-GitHub's required status checks permitted the merge while zero checks
-were required at the gate),
-and `BLOCK`
-([the v0.11.0 incident counterfactual](benchmarks/cases/v0110-incident-counterfactual/)).
-Each triple replays offline with `verify` and is re-replayed by the
-test suite on every CI run.
+The committed `PASS`, `WARN`, and `BLOCK` examples prove deterministic
+evaluation, evidence integrity, and offline replay:
+[PASS](examples/pr-evidence-record.json),
+[WARN](examples/zero-required-record.json), and
+[BLOCK](benchmarks/cases/v0110-incident-counterfactual/). Each artifact is
+replayed by the test suite on every CI run.
+
+These examples do not prove incremental market value, production
+effectiveness, or low false-positive rates. The separate
+[Incremental Value Gate](benchmarks/value/README.md) evaluates those claims
+against a frozen 100-PR metadata corpus, exact GitHub baselines, independent
+outcome labels, and external-usability evidence. Its current publication
+decision is [`NO_GO`](benchmarks/value/ASSESSMENT.md).
 
 ## Current status
 
@@ -244,22 +253,15 @@ and in the `verdict` output. Set `enforce: "true"` to make a `BLOCK` verdict
 fail the step. This repository runs the action on itself in
 [.github/workflows/aos-workflow-gate-self.yml](.github/workflows/aos-workflow-gate-self.yml).
 
-## Pilots and design partners
+## External availability
 
-Self-serve use is free (Apache-2.0, no feature gates). Evaluating a real
-release gate for your workflows? A [guided pilot](docs/GUIDED_PILOT.md)
-designs the policy for one real workflow and hands over measured,
-replayable results — the policy stays yours. A limited
-[design-partner variant](docs/GUIDED_PILOT.md#design-partner-variant)
-trades structured feedback for reduced scope fee.
-Not sure where you stand? The
-[pilot readiness wizard](https://rafineriaai.github.io/aos-workflow-gate/pilot-wizard/)
-runs entirely in your browser and drafts a Decision-Gap Report that
-prefills the scoping form.
-**[Request scoping →](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)**
-(commits neither side). Tried the gate?
-[Two minutes of feedback](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=feedback.yml)
-shapes the roadmap.
+External onboarding and paid pilot intake are closed while the
+[Value Gate](benchmarks/value/ASSESSMENT.md) is `NO_GO`. The repository
+remains Apache-2.0 for reproducible technical evaluation, but no external
+user should infer a production recommendation or validated product value
+from availability of the source. [GUIDED_PILOT](docs/GUIDED_PILOT.md) and
+[PILOT_PACKAGE](docs/PILOT_PACKAGE.md) are future engagement specifications,
+not active offers.
 
 ## Platform neutrality
 
@@ -307,11 +309,12 @@ collector and the Action are GitHub-specific by design.
 - [Value](docs/VALUE.md) states what the gate is worth, only as far as the evidence reaches.
 - [Value metrics](docs/VALUE_METRICS.md) counts operational friction from the committed case studies — no ROI arithmetic, by design.
 - [Comparison](docs/COMPARISON.md) maps what branch protection, OPA/conftest, in-toto attestations, and the gate each answer — a capability matrix, not a ranking.
-- [One-pager](docs/ONE_PAGER.md) is the sendable summary: problem, product, proof, engagement paths.
-- [Guided pilot](docs/GUIDED_PILOT.md) defines the paid assisted path and the design-partner variant.
-- [Funnel](docs/FUNNEL.md) maps the no-contact path from discovery to scoping — a human enters exactly once, and only on request.
-- [Pilot package](docs/PILOT_PACKAGE.md) lists the evidence-led pilot deliverables file by file, with the handover checklist and report template.
-- [Marketplace listing](docs/MARKETPLACE_LISTING.md) holds the paste-ready listing copy and status.
+- [One-pager](docs/ONE_PAGER.md) is the technical summary and claim boundary.
+- [Incremental Value Gate](benchmarks/value/README.md) defines the evidence required before publication or external pilots.
+- [Guided pilot](docs/GUIDED_PILOT.md) is a future engagement specification; intake is closed.
+- [Funnel](docs/FUNNEL.md) is retained as a future activation specification while external intake is closed.
+- [Pilot package](docs/PILOT_PACKAGE.md) is the future evidence handover specification.
+- [Marketplace listing](docs/MARKETPLACE_LISTING.md) holds draft copy; publication is blocked by the Value Gate.
 - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
 - [Green, but incomplete](docs/case-studies/green-but-incomplete.md) shows a fully green dashboard hiding a control that never ran — and the gate recording it as a named, replayable `WARN`.
 - [Merge-ready with zero enforced evidence](docs/case-studies/zero-required-checks.md) is the main aha case: GitHub permits the merge while zero checks are required at the gate, and the default first run answers `WARN` with the decision gap and both real failures named — replayable from committed files.

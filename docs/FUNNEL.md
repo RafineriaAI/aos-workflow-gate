@@ -1,27 +1,31 @@
-# The No-Contact Funnel
+# Future Self-Serve Activation Path
 
-Every step from discovery to a scoped pilot request works without talking
-to anyone, and each step leaves the visitor with something verifiable. A
-human enters exactly once — and only if you ask for scoping.
+**Status: inactive specification.** External onboarding and pilot intake
+remain closed while the
+[Incremental Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`.
+
+After `GO`, each activation step should work without mandatory contact and
+leave the user with something independently verifiable.
 
 | Step | Surface | What you leave with |
 | --- | --- | --- |
-| Discover | GitHub topics, Marketplace listing, org profile | The umbrella claim and a one-line quickstart |
-| Qualify | [Pilot readiness wizard](https://rafineriaai.github.io/aos-workflow-gate/pilot-wizard/) — browser-only, no cookies, no analytics | A readiness verdict, a draft Decision-Gap Report, and a ready-to-commit `aos-self-test.yml` tailored to your answers |
+| Discover (future) | GitHub topics, Marketplace listing, org profile after `GO` | The bounded claim and a one-line technical quickstart |
+| Qualify | [Incremental Value Gate](../benchmarks/value/README.md) | A maintainer-owned `GO`/`CONDITIONAL_GO`/`NO_GO` publication decision |
 | Adopt | Self-Test Mode (no checkout, read-only) | A replayable decision record from your own pipeline in one PR |
 | Understand | Job Summary: what happened / can block / next, repair hints, replay path | An adaptive next step and the exact files to keep |
 | Verify | [TRUST.md](TRUST.md), offline `verify`, [case studies](case-studies/green-but-incomplete.md) | Independent confirmation of every claim |
-| Escalate (optional) | [Scoping form](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml) prefilled by the wizard; [feedback form](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=feedback.yml) | A written scoping thread — the first and only human touchpoint |
+| Escalate (future) | Opens only after a `GO` decision | A bounded, written scoping record |
 
 ## Where a human is required
 
-Only at pilot scoping and delivery ([GUIDED_PILOT.md](GUIDED_PILOT.md)) —
-by design, because policy design against real workflows is judgment work.
-Everything self-serve stays free (Apache-2.0) with no feature gates, no
-account, no trial clock, and no telemetry reporting you were ever here.
+No external human path is active while intake is closed. After `GO`, a
+human would enter only for pilot scoping and delivery
+([GUIDED_PILOT.md](GUIDED_PILOT.md)), because policy design against real
+workflows is judgment work. The technical source remains Apache-2.0, with
+no account, trial clock, or telemetry reporting that it was evaluated.
 
 ## Boundary
 
-The funnel sells evidence handling, not protection quality; nothing in it
-makes a repository secure or compliant, and decision records remain
-`UNSIGNED_NOT_OFFICIAL`.
+The future path would sell evidence handling, not protection quality.
+Nothing in it makes a repository secure or compliant, and decision records
+remain `UNSIGNED_NOT_OFFICIAL`.
