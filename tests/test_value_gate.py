@@ -40,6 +40,16 @@ def _product_readiness(
     return readiness
 
 
+def _utility_readiness() -> dict[str, Any]:
+    return json.loads(
+        (VALUE / "utility-test-readiness.json").read_text(encoding="utf-8")
+    )
+
+
+def _utility_task_corpus() -> dict[str, Any]:
+    return json.loads((VALUE / "utility-task-corpus.json").read_text(encoding="utf-8"))
+
+
 def _fully_labeled_corpus(*, include_ux: bool) -> dict[str, Any]:
     corpus = _corpus()
     for index, case in enumerate(corpus["cases"]):
@@ -82,6 +92,8 @@ def _assess(
             participants_available=participants_available,
             teams_available=teams_available,
         ),
+        utility_readiness=_utility_readiness(),
+        utility_task_corpus=_utility_task_corpus(),
         contrasts=_contrasts(),
     )
 
@@ -167,7 +179,7 @@ def test_committed_contrasts_are_metadata_only_and_artifact_bound() -> None:
 def test_current_evidence_separates_all_tracks() -> None:
     result = _assess(_corpus())
     assert result["status"] == "NO_GO"
-    assert result["schema_version"] == "value-assessment-v2"
+    assert result["schema_version"] == "value-assessment-v3"
     assert result["metrics"]["sample_cases"] == 100
     assert result["metrics"]["repositories"] == 10
     assert result["metrics"]["self_validating_cases"] == 7
@@ -182,13 +194,18 @@ def test_current_evidence_separates_all_tracks() -> None:
     assert result["criteria"]["mechanism_evidence"][0]["met"] is True
     assert result["metrics"]["precision"] is None
     assert result["tracks"] == {
-        "external_study": "EXTERNAL_STUDY_NOT_READY",
+        "external_test_readiness": "READY_FOR_EXTERNAL_VALIDATION",
         "external_usability": "EXTERNAL_VALIDATION_PENDING",
         "field_utility": "FIELD_VALIDATION_PENDING",
         "mechanism_evidence": "MECHANISM_CONFIRMED",
+        "participant_access": "RECRUITMENT_PENDING",
+        "practical_utility_testability": "UTILITY_TEST_READY",
         "product_test_readiness": "PRODUCT_TEST_READY",
         "signal_validity": "SIGNAL_INCONCLUSIVE",
     }
+    assert result["metrics"]["utility_task_cases"] == 8
+    assert result["metrics"]["utility_readiness_checks_met"] == 7
+    assert result["external_test_blockers"] == []
     assert "exact_incremental_findings" in result["blockers"]
     assert "qualified_external_users" in result["blockers"]
 
@@ -205,16 +222,19 @@ def test_committed_assessment_regenerates_identically() -> None:
     )
 
 
-def test_signal_and_b0_open_only_the_external_study() -> None:
+def test_signal_and_internal_readiness_open_only_external_validation() -> None:
     result = _assess(_fully_labeled_corpus(include_ux=False))
     assert result["metrics"]["labeled_signal_cases"] == 100
     assert result["metrics"]["precision"] == 0.99
     assert result["status"] == "NO_GO"
     assert result["tracks"]["signal_validity"] == "SIGNAL_SUPPORTED"
     assert result["tracks"]["product_test_readiness"] == "PRODUCT_TEST_READY"
-    assert result["tracks"]["external_study"] == "EXTERNAL_STUDY_READY"
+    assert result["tracks"]["external_test_readiness"] == (
+        "READY_FOR_EXTERNAL_VALIDATION"
+    )
+    assert result["tracks"]["practical_utility_testability"] == ("UTILITY_TEST_READY")
     assert result["tracks"]["external_usability"] == "EXTERNAL_VALIDATION_PENDING"
-    assert result["external_study_blockers"] == []
+    assert result["external_test_blockers"] == []
     assert result["blockers"] == [
         "controlled_comparative_study",
         "qualified_external_users",
@@ -255,18 +275,37 @@ def test_internal_readiness_cannot_create_external_user_evidence() -> None:
     assert result["status"] == "NO_GO"
 
 
-def test_product_readiness_failure_blocks_external_study() -> None:
+def test_product_readiness_failure_blocks_external_validation() -> None:
     readiness = _product_readiness()
     readiness["checks"][0]["status"] = "not_met"
     result = assess(
         _fully_labeled_corpus(include_ux=False),
         product_readiness=readiness,
+        utility_readiness=_utility_readiness(),
+        utility_task_corpus=_utility_task_corpus(),
         contrasts=_contrasts(),
     )
     assert result["tracks"]["signal_validity"] == "SIGNAL_SUPPORTED"
     assert result["tracks"]["product_test_readiness"] == ("PRODUCT_TEST_INCOMPLETE")
-    assert result["tracks"]["external_study"] == "EXTERNAL_STUDY_NOT_READY"
-    assert "product_adversarial_ux" in result["external_study_blockers"]
+    assert result["tracks"]["external_test_readiness"] == (
+        "NOT_READY_FOR_EXTERNAL_VALIDATION"
+    )
+    assert "product_adversarial_ux" in result["external_test_blockers"]
+
+
+def test_missing_utility_readiness_blocks_external_validation() -> None:
+    result = assess(
+        _corpus(),
+        product_readiness=_product_readiness(),
+        contrasts=_contrasts(),
+    )
+    assert result["tracks"]["practical_utility_testability"] == (
+        "UTILITY_TEST_INCOMPLETE"
+    )
+    assert result["tracks"]["external_test_readiness"] == (
+        "NOT_READY_FOR_EXTERNAL_VALIDATION"
+    )
+    assert "utility_advisory_effect" in result["external_test_blockers"]
 
 
 def test_operator_label_cannot_create_precision() -> None:
@@ -290,6 +329,8 @@ def test_one_independent_contrast_label_updates_evidence_not_publication() -> No
     result = assess(
         _corpus(),
         product_readiness=_product_readiness(),
+        utility_readiness=_utility_readiness(),
+        utility_task_corpus=_utility_task_corpus(),
         contrasts=contrasts,
     )
     assert result["metrics"]["independently_labeled_contrast_cases"] == 1
@@ -321,6 +362,10 @@ def test_precision_below_threshold_is_signal_not_supported() -> None:
     assert result["metrics"]["precision"] == 0.94
     assert "observed_precision" in result["blockers"]
     assert result["tracks"]["signal_validity"] == "SIGNAL_NOT_SUPPORTED"
+    assert result["tracks"]["external_test_readiness"] == (
+        "NOT_READY_FOR_EXTERNAL_VALIDATION"
+    )
+    assert result["external_test_blockers"] == ["signal_not_supported"]
     assert result["status"] == "NO_GO"
 
 
@@ -380,6 +425,49 @@ def test_malformed_inputs_fail_closed() -> None:
     with pytest.raises(ValueError, match="frozen required check set"):
         assess(_corpus(), product_readiness=missing_check)
 
+    unknown_utility = _utility_readiness()
+    unknown_utility["unexpected"] = True
+    with pytest.raises(ValueError, match="fields do not match"):
+        assess(_corpus(), utility_readiness=unknown_utility)
+
+    malformed_utility_digest = _utility_readiness()
+    malformed_utility_digest["task_corpus"]["digest"] = "sha256:nope"
+    with pytest.raises(ValueError, match="canonical sha256 digest"):
+        assess(_corpus(), utility_readiness=malformed_utility_digest)
+
+    missing_utility_check = _utility_readiness()
+    missing_utility_check["checks"].pop()
+    with pytest.raises(ValueError, match="frozen required check set"):
+        assess(_corpus(), utility_readiness=missing_utility_check)
+
+    inconsistent_utility_counts = _utility_readiness()
+    inconsistent_utility_counts["task_corpus"]["case_count"] = 9
+    with pytest.raises(ValueError, match="counts are inconsistent"):
+        assess(_corpus(), utility_readiness=inconsistent_utility_counts)
+    with pytest.raises(ValueError, match="requires its bound task corpus"):
+        assess(_corpus(), utility_readiness=_utility_readiness())
+
+    tampered_utility_corpus = _utility_task_corpus()
+    tampered_utility_corpus["boundary"] += " mutated"
+    with pytest.raises(ValueError, match="canonical digest"):
+        assess(
+            _corpus(),
+            utility_readiness=_utility_readiness(),
+            utility_task_corpus=tampered_utility_corpus,
+        )
+    unsafe_utility_path = _utility_readiness()
+    unsafe_utility_path["task_corpus"]["path"] = "../task-corpus.json"
+    with pytest.raises(ValueError, match="task_corpus.path is invalid"):
+        assess(_corpus(), utility_readiness=unsafe_utility_path)
+
+    unknown_task_field = _utility_task_corpus()
+    unknown_task_field["unexpected"] = True
+    with pytest.raises(ValueError, match="fields do not match"):
+        assess(
+            _corpus(),
+            utility_readiness=_utility_readiness(),
+            utility_task_corpus=unknown_task_field,
+        )
     contradiction = _fully_labeled_corpus(include_ux=True)
     with pytest.raises(ValueError, match="contradict unavailable participants"):
         _assess(contradiction)
@@ -413,10 +501,15 @@ def test_malformed_contrast_corpus_fails_closed() -> None:
 
     false_exact_sha = _contrasts()
     false_exact_sha["cases"][0]["github"]["exact_sha"] = False
-    result = assess(_corpus(), contrasts=false_exact_sha)
+    result = assess(
+        _corpus(),
+        utility_readiness=_utility_readiness(),
+        utility_task_corpus=_utility_task_corpus(),
+        contrasts=false_exact_sha,
+    )
     assert result["metrics"]["exact_semantic_contrast_cases"] == 2
     assert result["tracks"]["mechanism_evidence"] == "MECHANISM_INCOMPLETE"
-    assert "exact_semantic_contrast" in result["external_study_blockers"]
+    assert "exact_semantic_contrast" in result["external_test_blockers"]
 
     engine_artifact_claim = _contrasts()
     engine_artifact_claim["cases"][2]["aos"]["artifact_record"] = "record.json"

@@ -107,6 +107,8 @@
     "benchmarks/value/corpus.json",
     "benchmarks/value/assessment.json",
     "benchmarks/value/product-test-readiness.json",
+    "benchmarks/value/utility-task-corpus.json",
+    "benchmarks/value/utility-test-readiness.json",
     "benchmarks/value/exact-contrasts.json",
     "benchmarks/value/exact/geotab-mygeotab-python-240/bundle.json",
     "benchmarks/value/exact/geotab-mygeotab-python-240/policy.json",
@@ -165,7 +167,8 @@
     "tests/test_evidence_integrity_policy.py",
     "tests/test_remediation_coverage.py",
     "tests/test_value_gate.py",
-    "tests/test_product_test_readiness.py"
+    "tests/test_product_test_readiness.py",
+    "tests/test_utility_test_readiness.py"
   ],
   "assets": [
     "docs/assets/banner.png"

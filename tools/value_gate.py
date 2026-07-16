@@ -2,8 +2,9 @@
 
 This maintainer tool evaluates evidence about *incremental* product value.
 It never participates in a merge-readiness verdict. Signal validity,
-internal product-test readiness, external usability, and field utility are
-reported independently so one kind of evidence cannot stand in for another.
+internal product readiness, practical-utility testability, external-test
+readiness, external usability, and field utility are reported independently
+so one kind of evidence cannot stand in for another.
 
 The gate can reduce a discovery capture to a public-metadata-only corpus,
 then assess that corpus against predeclared thresholds. Retrospective check
@@ -20,10 +21,14 @@ import statistics
 from pathlib import Path
 from typing import Any
 
+from aos_workflow_gate import canonical
+
 CORPUS_SCHEMA = "value-corpus-v0"
 CONTRAST_SCHEMA = "value-contrast-v0"
 PRODUCT_READINESS_SCHEMA = "product-test-readiness-v0"
-ASSESSMENT_SCHEMA = "value-assessment-v2"
+UTILITY_READINESS_SCHEMA = "utility-test-readiness-v0"
+UTILITY_TASK_CORPUS_SCHEMA = "utility-task-corpus-v0"
+ASSESSMENT_SCHEMA = "value-assessment-v3"
 
 THRESHOLDS: dict[str, int | float] = {
     "sample_cases": 100,
@@ -60,6 +65,35 @@ _PRODUCT_READINESS_FIELDS = frozenset(
 )
 _PRODUCT_CHECK_FIELDS = frozenset({"evidence", "id", "status"})
 _EXTERNAL_ACCESS_FIELDS = frozenset({"participants_available", "teams_available"})
+_REQUIRED_UTILITY_CHECKS = frozenset(
+    {
+        "advisory_effect",
+        "claim_firewall",
+        "contrast_task",
+        "deterministic_replay",
+        "low_noise_controls",
+        "single_next_action",
+        "verdict_coverage",
+    }
+)
+_UTILITY_READINESS_FIELDS = frozenset(
+    {"boundary", "captured_at", "checks", "schema_version", "task_corpus"}
+)
+_UTILITY_CORPUS_FIELDS = frozenset(
+    {"case_count", "digest", "negative_controls", "path", "positive_controls"}
+)
+_UTILITY_TASK_TOP_FIELDS = frozenset({"boundary", "cases", "schema_version"})
+_UTILITY_TASK_CASE_FIELDS = frozenset(
+    {"case_id", "classification", "expected", "source"}
+)
+_UTILITY_TASK_EXPECTED_FIELDS = frozenset(
+    {"effect", "intact", "next_code", "primary_reason", "verdict"}
+)
+_UTILITY_TASK_SOURCE_FIELDS = {
+    "adversarial_case": frozenset({"kind", "path"}),
+    "bundle_policy": frozenset({"bundle", "kind", "policy"}),
+    "decision_record": frozenset({"kind", "path"}),
+}
 
 _INDEPENDENT_LABEL_SOURCES = frozenset({"external_user", "independent_review_history"})
 _LABELED_OUTCOMES = frozenset({"actionable_gap", "noise"})
@@ -552,6 +586,174 @@ def _validate_product_readiness(value: dict[str, Any]) -> None:
         )
 
 
+def _validate_utility_readiness(value: dict[str, Any]) -> None:
+    if value.get("schema_version") != UTILITY_READINESS_SCHEMA:
+        raise ValueError(f"expected {UTILITY_READINESS_SCHEMA}")
+    if set(value) != _UTILITY_READINESS_FIELDS:
+        raise ValueError(
+            f"utility readiness fields do not match {UTILITY_READINESS_SCHEMA}"
+        )
+    for field in ("boundary", "captured_at"):
+        if not isinstance(value[field], str) or not value[field]:
+            raise ValueError(f"utility readiness {field} must be non-empty")
+
+    corpus = value["task_corpus"]
+    if not isinstance(corpus, dict) or set(corpus) != _UTILITY_CORPUS_FIELDS:
+        raise ValueError("utility readiness task_corpus is invalid")
+    _validate_relative_artifact_path(
+        corpus["path"], "utility readiness task_corpus.path"
+    )
+    _validate_digest(corpus["digest"], "utility readiness task_corpus.digest")
+    for field in ("case_count", "negative_controls", "positive_controls"):
+        _require_nonnegative_int(
+            corpus[field],
+            f"utility readiness task_corpus.{field}",
+            positive=True,
+        )
+    if (
+        corpus["negative_controls"] + corpus["positive_controls"]
+        != corpus["case_count"]
+    ):
+        raise ValueError("utility readiness task_corpus counts are inconsistent")
+
+    checks = value["checks"]
+    if not isinstance(checks, list):
+        raise ValueError("utility readiness checks must be a list")
+    observed_ids: set[str] = set()
+    for index, check in enumerate(checks):
+        path = f"utility_readiness.checks[{index}]"
+        if not isinstance(check, dict) or set(check) != _PRODUCT_CHECK_FIELDS:
+            raise ValueError(f"{path} fields are invalid")
+        check_id = check["id"]
+        if not isinstance(check_id, str) or not check_id:
+            raise ValueError(f"{path}.id must be non-empty")
+        if check_id in observed_ids:
+            raise ValueError(f"{path}.id is duplicated")
+        observed_ids.add(check_id)
+        if check["status"] not in {"met", "not_met"}:
+            raise ValueError(f"{path}.status is invalid")
+        evidence = check["evidence"]
+        if (
+            not isinstance(evidence, list)
+            or not evidence
+            or any(not isinstance(item, str) or not item for item in evidence)
+            or evidence != sorted(set(evidence))
+        ):
+            raise ValueError(f"{path}.evidence must be a sorted unique string list")
+    if observed_ids != _REQUIRED_UTILITY_CHECKS:
+        raise ValueError(
+            "utility readiness checks must equal the frozen required check set"
+        )
+
+
+def _validate_relative_artifact_path(value: Any, path: str) -> str:
+    if (
+        not isinstance(value, str)
+        or not value
+        or Path(value).is_absolute()
+        or "\\" in value
+        or ".." in Path(value).parts
+    ):
+        raise ValueError(f"{path} is invalid")
+    return value
+
+
+def _validate_utility_task_corpus(value: dict[str, Any]) -> None:
+    if value.get("schema_version") != UTILITY_TASK_CORPUS_SCHEMA:
+        raise ValueError(f"expected {UTILITY_TASK_CORPUS_SCHEMA}")
+    if set(value) != _UTILITY_TASK_TOP_FIELDS:
+        raise ValueError(
+            f"utility task corpus fields do not match {UTILITY_TASK_CORPUS_SCHEMA}"
+        )
+    if not isinstance(value["boundary"], str) or not value["boundary"]:
+        raise ValueError("utility task corpus boundary must be non-empty")
+
+    cases = value["cases"]
+    if not isinstance(cases, list) or not cases:
+        raise ValueError("utility task corpus cases must be a non-empty list")
+    case_ids: list[str] = []
+    classifications: set[str] = set()
+    verdicts: set[str] = set()
+    for index, case in enumerate(cases):
+        path = f"utility_task_corpus.cases[{index}]"
+        if not isinstance(case, dict) or set(case) != _UTILITY_TASK_CASE_FIELDS:
+            raise ValueError(f"{path} fields are invalid")
+        case_id = case["case_id"]
+        if not isinstance(case_id, str) or not case_id:
+            raise ValueError(f"{path}.case_id must be non-empty")
+        case_ids.append(case_id)
+
+        classification = case["classification"]
+        if classification not in {"negative_control", "positive_control"}:
+            raise ValueError(f"{path}.classification is invalid")
+        classifications.add(classification)
+
+        expected = case["expected"]
+        if (
+            not isinstance(expected, dict)
+            or set(expected) != _UTILITY_TASK_EXPECTED_FIELDS
+        ):
+            raise ValueError(f"{path}.expected fields are invalid")
+        verdict = expected["verdict"]
+        if verdict not in {"BLOCK", "PASS", "WARN"}:
+            raise ValueError(f"{path}.expected.verdict is invalid")
+        verdicts.add(verdict)
+        if expected["effect"] != "advisory":
+            raise ValueError(f"{path}.expected.effect must be advisory")
+        if not isinstance(expected["intact"], bool):
+            raise ValueError(f"{path}.expected.intact must be boolean")
+        if not isinstance(expected["next_code"], str) or not expected["next_code"]:
+            raise ValueError(f"{path}.expected.next_code must be non-empty")
+        primary_reason = expected["primary_reason"]
+        if verdict == "PASS":
+            if primary_reason is not None or classification != "positive_control":
+                raise ValueError(f"{path} PASS must be a reason-free positive control")
+        elif (
+            not isinstance(primary_reason, str)
+            or not primary_reason
+            or classification != "negative_control"
+        ):
+            raise ValueError(f"{path} non-PASS must name a negative-control reason")
+
+        source = case["source"]
+        if not isinstance(source, dict):
+            raise ValueError(f"{path}.source must be an object")
+        kind = source.get("kind")
+        expected_fields = (
+            _UTILITY_TASK_SOURCE_FIELDS.get(kind) if isinstance(kind, str) else None
+        )
+        if expected_fields is None or set(source) != expected_fields:
+            raise ValueError(f"{path}.source fields are invalid")
+        for field in expected_fields - {"kind"}:
+            _validate_relative_artifact_path(source[field], f"{path}.source.{field}")
+
+    if len(case_ids) != len(set(case_ids)) or case_ids != sorted(case_ids):
+        raise ValueError("utility task corpus case IDs must be sorted and unique")
+    if classifications != {"negative_control", "positive_control"}:
+        raise ValueError("utility task corpus must contain both control classes")
+    if verdicts != {"BLOCK", "PASS", "WARN"}:
+        raise ValueError("utility task corpus must cover PASS, WARN, and BLOCK")
+
+
+def _validate_utility_binding(
+    readiness: dict[str, Any],
+    task_corpus: dict[str, Any],
+) -> None:
+    _validate_utility_task_corpus(task_corpus)
+    binding = readiness["task_corpus"]
+    if canonical.digest(task_corpus) != binding["digest"]:
+        raise ValueError("utility task corpus does not match its canonical digest")
+    cases = task_corpus["cases"]
+    positive = sum(case["classification"] == "positive_control" for case in cases)
+    negative = sum(case["classification"] == "negative_control" for case in cases)
+    if (
+        len(cases) != binding["case_count"]
+        or positive != binding["positive_controls"]
+        or negative != binding["negative_controls"]
+    ):
+        raise ValueError("utility task corpus does not match its bound counts")
+
+
 def _require_nonnegative_int(value: Any, path: str, *, positive: bool = False) -> None:
     minimum = 1 if positive else 0
     if not isinstance(value, int) or isinstance(value, bool) or value < minimum:
@@ -687,11 +889,20 @@ def assess(
     corpus: dict[str, Any],
     *,
     product_readiness: dict[str, Any] | None = None,
+    utility_readiness: dict[str, Any] | None = None,
+    utility_task_corpus: dict[str, Any] | None = None,
     contrasts: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if corpus.get("schema_version") != CORPUS_SCHEMA:
         raise ValueError(f"expected {CORPUS_SCHEMA}")
     _validate_corpus(corpus)
+    if utility_readiness is not None:
+        _validate_utility_readiness(utility_readiness)
+        if utility_task_corpus is None:
+            raise ValueError("utility readiness requires its bound task corpus")
+        _validate_utility_binding(utility_readiness, utility_task_corpus)
+    elif utility_task_corpus is not None:
+        raise ValueError("utility task corpus requires a readiness manifest")
     if product_readiness is not None:
         _validate_product_readiness(product_readiness)
 
@@ -714,6 +925,13 @@ def assess(
     readiness_by_id = {
         str(item.get("id")): _mapping(item)
         for item in readiness.get("checks", [])
+        if isinstance(item, dict)
+    }
+    utility = utility_readiness or {}
+    utility_corpus = _mapping(utility.get("task_corpus"))
+    utility_by_id = {
+        str(item.get("id")): _mapping(item)
+        for item in utility.get("checks", [])
         if isinstance(item, dict)
     }
 
@@ -786,6 +1004,10 @@ def assess(
         _mapping(readiness_by_id.get(check_id)).get("status") == "met"
         for check_id in _REQUIRED_PRODUCT_CHECKS
     )
+    utility_checks_met = sum(
+        _mapping(utility_by_id.get(check_id)).get("status") == "met"
+        for check_id in _REQUIRED_UTILITY_CHECKS
+    )
     metrics: dict[str, Any] = {
         "actionable_exact_findings": len(actionable),
         "actionable_exact_repositories": len(actionable_repositories),
@@ -812,6 +1034,15 @@ def assess(
         "labeled_signal_cases": len(exact_labeled),
         "median_comprehension_seconds": median_comprehension,
         "next_action_rate": next_action_rate,
+        "utility_negative_controls": _nonnegative_int(
+            utility_corpus.get("negative_controls")
+        ),
+        "utility_positive_controls": _nonnegative_int(
+            utility_corpus.get("positive_controls")
+        ),
+        "utility_readiness_checks_met": utility_checks_met,
+        "utility_readiness_checks_required": len(_REQUIRED_UTILITY_CHECKS),
+        "utility_task_cases": _nonnegative_int(utility_corpus.get("case_count")),
         "noise_cases": len(noise),
         "precision": precision,
         "product_readiness_checks_met": product_checks_met,
@@ -899,6 +1130,14 @@ def assess(
         )
         for check_id in sorted(_REQUIRED_PRODUCT_CHECKS)
     ]
+    utility_test = [
+        _state_criterion(
+            f"utility_{check_id}",
+            _mapping(utility_by_id.get(check_id)).get("status"),
+            "met",
+        )
+        for check_id in sorted(_REQUIRED_UTILITY_CHECKS)
+    ]
     external_usability = [
         _state_criterion(
             "controlled_comparative_study",
@@ -933,6 +1172,7 @@ def assess(
 
     mechanism_ready = all(item["met"] for item in mechanism_evidence)
     signal_ready = all(item["met"] for item in signal_validity)
+    utility_test_ready = all(item["met"] for item in utility_test)
     product_test_ready = all(item["met"] for item in product_test)
     usability_ready = all(item["met"] for item in external_usability)
 
@@ -970,50 +1210,81 @@ def assess(
         if teams_available
         else "FIELD_VALIDATION_PENDING"
     )
-    external_study_status = (
-        "EXTERNAL_STUDY_READY"
-        if mechanism_ready and signal_ready and product_test_ready
-        else "EXTERNAL_STUDY_NOT_READY"
+    utility_status = (
+        "UTILITY_TEST_READY" if utility_test_ready else "UTILITY_TEST_INCOMPLETE"
+    )
+    external_test_ready = (
+        mechanism_ready
+        and product_test_ready
+        and utility_test_ready
+        and signal_status != "SIGNAL_NOT_SUPPORTED"
+    )
+    external_test_status = (
+        "READY_FOR_EXTERNAL_VALIDATION"
+        if external_test_ready
+        else "NOT_READY_FOR_EXTERNAL_VALIDATION"
+    )
+    participant_access_status = (
+        "PARTICIPANTS_AVAILABLE" if participants_available else "RECRUITMENT_PENDING"
     )
     status = (
         "GO"
-        if mechanism_ready and signal_ready and product_test_ready and usability_ready
+        if (
+            mechanism_ready
+            and signal_ready
+            and product_test_ready
+            and utility_test_ready
+            and usability_ready
+        )
         else "NO_GO"
     )
 
     mechanism_blockers = [item["id"] for item in mechanism_evidence if not item["met"]]
     signal_blockers = [item["id"] for item in signal_validity if not item["met"]]
     product_blockers = [item["id"] for item in product_test if not item["met"]]
+    utility_blockers = [item["id"] for item in utility_test if not item["met"]]
     usability_blockers = [item["id"] for item in external_usability if not item["met"]]
+    external_test_blockers = (
+        mechanism_blockers
+        + product_blockers
+        + utility_blockers
+        + (["signal_not_supported"] if signal_status == "SIGNAL_NOT_SUPPORTED" else [])
+    )
     return {
         "blockers": (
-            mechanism_blockers + signal_blockers + product_blockers + usability_blockers
+            mechanism_blockers
+            + signal_blockers
+            + product_blockers
+            + utility_blockers
+            + usability_blockers
         ),
         "boundary": (
             "This is a product-publication decision, not a merge-readiness "
             "verdict. Exact-SHA contrast can establish only a semantic "
-            "difference from GitHub. Signal validity, internal product-test "
-            "readiness, external usability, and field utility are separate "
-            "claims. Internal tests and public repository history are never "
-            "user evidence."
+            "difference from GitHub. Internal utility tasks establish only "
+            "testability of the diagnosis, not practical usefulness. Signal "
+            "validity, product testability, external usability, and field "
+            "utility are separate claims. Internal tests and public repository "
+            "history are never user evidence."
         ),
         "criteria": {
             "external_usability": external_usability,
             "mechanism_evidence": mechanism_evidence,
+            "practical_utility_testability": utility_test,
             "product_test_readiness": product_test,
             "signal_validity": signal_validity,
         },
-        "external_study_blockers": (
-            mechanism_blockers + signal_blockers + product_blockers
-        ),
+        "external_test_blockers": external_test_blockers,
         "metrics": metrics,
         "schema_version": ASSESSMENT_SCHEMA,
         "status": status,
         "tracks": {
-            "external_study": external_study_status,
+            "external_test_readiness": external_test_status,
             "external_usability": external_status,
             "field_utility": field_status,
             "mechanism_evidence": mechanism_status,
+            "participant_access": participant_access_status,
+            "practical_utility_testability": utility_status,
             "product_test_readiness": product_status,
             "signal_validity": signal_status,
         },
@@ -1035,7 +1306,10 @@ def render_markdown(assessment: dict[str, Any]) -> str:
         f"- Mechanism evidence: `{tracks['mechanism_evidence']}`.",
         f"- Signal validity: `{tracks['signal_validity']}`.",
         f"- Internal product test: `{tracks['product_test_readiness']}`.",
-        f"- External study: `{tracks['external_study']}`.",
+        f"- Practical-utility testability: "
+        f"`{tracks['practical_utility_testability']}`.",
+        f"- External-test readiness: `{tracks['external_test_readiness']}`.",
+        f"- Participant access: `{tracks['participant_access']}`.",
         f"- External usability: `{tracks['external_usability']}`.",
         f"- Field utility: `{tracks['field_utility']}`.",
         "",
@@ -1085,6 +1359,17 @@ def render_markdown(assessment: dict[str, Any]) -> str:
         "- Internal checks can establish only PRODUCT_TEST_READY; they cannot "
         "establish product usefulness, adoption, retention, or willingness to pay.",
         "",
+        "## Practical-utility testability",
+        "",
+        f"- Frozen internal tasks: **{metrics['utility_task_cases']}**; "
+        f"positive controls: **{metrics['utility_positive_controls']}**; "
+        f"negative controls: **{metrics['utility_negative_controls']}**.",
+        f"- Internal checks: **{metrics['utility_readiness_checks_met']}**/"
+        f"**{metrics['utility_readiness_checks_required']}** met.",
+        "- These tasks verify deterministic diagnosis and one actionable Next. "
+        "They do not measure whether an external developer understands, trusts, "
+        "uses, retains, or pays for the product.",
+        "",
         "## Acceptance criteria",
         "",
         "| Track | Criterion | Observed | Required | Result |",
@@ -1095,6 +1380,7 @@ def render_markdown(assessment: dict[str, Any]) -> str:
         "mechanism_evidence",
         "signal_validity",
         "product_test_readiness",
+        "practical_utility_testability",
         "external_usability",
     ):
         for item in criteria.get(group, []):
@@ -1111,9 +1397,14 @@ def render_markdown(assessment: dict[str, Any]) -> str:
             "",
             "- `MECHANISM_CONFIRMED` proves only that AOS can produce "
             "decision-relevant information absent from the observed GitHub baseline.",
-            "- `MECHANISM_CONFIRMED + SIGNAL_SUPPORTED + PRODUCT_TEST_READY` "
-            "permits only a controlled external study; it does not permit publication.",
-            "- `GO` additionally requires `EXTERNAL_USABILITY_SUPPORTED`.",
+            "- `READY_FOR_EXTERNAL_VALIDATION` requires confirmed mechanism, "
+            "internal product readiness, and the frozen utility-task corpus. "
+            "`SIGNAL_INCONCLUSIVE` may be studied; `SIGNAL_NOT_SUPPORTED` blocks it.",
+            "- `READY_FOR_EXTERNAL_VALIDATION` permits only recruitment and a "
+            "controlled advisory study. It is not `PRODUCT_USEFUL`, pilot readiness, "
+            "or publication approval.",
+            "- `GO` additionally requires `SIGNAL_SUPPORTED` and independently "
+            "supported external usability.",
             "- Commercialization remains unvalidated until a separate field "
             "study establishes practical utility and retention.",
             "- `NO_GO` blocks publication, marketing, production "
@@ -1245,6 +1536,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus")
     parser.add_argument("--product-readiness")
+    parser.add_argument("--utility-readiness")
     parser.add_argument("--contrast-corpus")
     parser.add_argument("--discovery-manifest")
     parser.add_argument("--discovery-analysis")
@@ -1280,10 +1572,22 @@ def main(argv: list[str] | None = None) -> int:
     product_readiness = (
         _load(Path(args.product_readiness)) if args.product_readiness else None
     )
+    utility_readiness: dict[str, Any] | None = None
+    utility_task_corpus: dict[str, Any] | None = None
+    if args.utility_readiness:
+        utility_readiness = _load(Path(args.utility_readiness))
+        _validate_utility_readiness(utility_readiness)
+        task_path = _validate_relative_artifact_path(
+            utility_readiness["task_corpus"]["path"],
+            "utility readiness task_corpus.path",
+        )
+        utility_task_corpus = _load(Path(task_path))
     contrasts = _load(Path(args.contrast_corpus)) if args.contrast_corpus else None
     assessment = assess(
         corpus,
         product_readiness=product_readiness,
+        utility_readiness=utility_readiness,
+        utility_task_corpus=utility_task_corpus,
         contrasts=contrasts,
     )
     if args.json_out:

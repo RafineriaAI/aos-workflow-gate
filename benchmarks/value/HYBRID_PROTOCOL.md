@@ -1,11 +1,12 @@
 # Hybrid Signal and Product Study
 
-**Status: preregistered execution framework; external validation pending.**
+**Status: ready for controlled external validation; recruitment pending.**
 
-No external developers or teams are currently available. This does not block
-signal research or internal product-test readiness. It is a hard boundary
-against claims about product usefulness, adoption, retention, or willingness
-to pay.
+No external developers or teams are currently available. Internal evidence
+now establishes that the product and its practical-utility hypotheses are
+testable. It does not establish comprehension, usefulness, low noise,
+adoption, retention, ROI, or willingness to pay. Publication and pilot intake
+remain closed.
 
 ## Independent tracks
 
@@ -55,12 +56,27 @@ participant:
 Passing B0 yields `PRODUCT_TEST_READY`. Automated tests, maintainers, and AI
 agents are not users and cannot yield `PRODUCT_USEFUL`.
 
-### B1. Formative usability - deferred
+### B0.5. Practical-utility testability
 
-Recruit 8-12 independent developers after A and B0 permit a controlled
-study. Use frozen, balanced tasks. Measure comprehension, correct next
-action, time, and trust calibration. Findings are formative and do not prove
-market demand.
+The content-addressed `utility-task-corpus-v0` freezes eight internal tasks:
+two positive controls and six non-PASS controls spanning required-check
+success, zero requirements, missing/failed/unverifiable controls, incomplete
+collection, and exact-SHA verifier non-independence. Each task binds the
+expected verdict, advisory effect, primary reason, remediation code, evidence
+integrity, and exactly one `Next`.
+
+Passing B0.5 yields `UTILITY_TEST_READY`. It means only that an external
+participant can be tested against stable product output. Simulated tasks,
+maintainers, tests, and AI agents cannot yield `PRODUCT_USEFUL`.
+
+### B1. Formative usability - recruitment pending
+
+Entry requires `MECHANISM_CONFIRMED`, `PRODUCT_TEST_READY`,
+`UTILITY_TEST_READY`, and no `SIGNAL_NOT_SUPPORTED` result. This deliberately
+allows `SIGNAL_INCONCLUSIVE`: independent outcomes from the study are needed
+to resolve it. Recruit 8-12 independent developers when access exists. Use
+frozen, balanced tasks; measure comprehension, correct next action, time, and
+trust calibration. Findings are formative and do not prove market demand.
 
 ### B2. Comparative usability - deferred
 
@@ -81,13 +97,14 @@ or transaction evidence and remains separate from usability.
 
 ## Decision firewall
 
-| Mechanism | Signal | Product test | External usability | Decision |
-| --- | --- | --- | --- | --- |
-| confirmed | supported | ready | pending | controlled external study only |
-| confirmed | supported | ready | supported | limited-release candidate |
-| incomplete | any | any | any | `NO_GO` |
-| any | unsupported | any | any | `NO_GO` |
-| any | inconclusive | any | any | extend the frozen study; no claim |
+| Mechanism | Signal | Product test | Utility test | Participants | Decision |
+| --- | --- | --- | --- | --- | --- |
+| confirmed | inconclusive | ready | ready | unavailable | `READY_FOR_EXTERNAL_VALIDATION`; `RECRUITMENT_PENDING`; publication `NO_GO` |
+| confirmed | inconclusive/supported | ready | ready | available | controlled advisory study only; publication `NO_GO` |
+| confirmed | supported | ready | ready | usability supported | limited-release candidate |
+| incomplete | any | any | any | any | `NO_GO` |
+| any | unsupported | any | any | any | external test and publication `NO_GO` |
+| any | any | incomplete | incomplete/any | any | external test and publication `NO_GO` |
 
 Commercialization remains unvalidated until field utility and retention are
 observed. Availability of source code, a green test suite, replayable
@@ -98,6 +115,9 @@ evidence, or historical review agreement cannot open publication by itself.
 - Mechanism evidence: `MECHANISM_CONFIRMED`.
 - Signal validity: `SIGNAL_INCONCLUSIVE`.
 - Internal product test: `PRODUCT_TEST_READY`.
+- Practical-utility testability: `UTILITY_TEST_READY`.
+- External-test readiness: `READY_FOR_EXTERNAL_VALIDATION`.
+- Participant access: `RECRUITMENT_PENDING`.
 - External participants: unavailable.
 - External teams: unavailable.
 - External usability: `EXTERNAL_VALIDATION_PENDING`.

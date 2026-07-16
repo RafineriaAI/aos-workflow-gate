@@ -11,14 +11,14 @@ Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals.
 
 This repository is the workflow layer around `aos-kernel`. Its job is to make a pull request or release gate explainable and replayable: collect workflow signals, apply an explicit policy, and produce a `PASS`, `WARN`, or `BLOCK` decision with evidence.
 
-> **Pre-pilot validation:** the implementation is available for internal,
-> advisory technical evaluation. The committed
-> [Hybrid Value Gate assessment](benchmarks/value/ASSESSMENT.md) is `NO_GO`:
-> exact-SHA mechanism evidence is confirmed for three bounded cases, signal
-> validity remains inconclusive, internal product-test readiness passes, and
-> external usability and field utility remain untested. External
-> onboarding, marketing, production recommendations, and paid pilot intake
-> remain closed.
+> **Pre-pilot validation:** the committed
+> [Hybrid Value Gate assessment](benchmarks/value/ASSESSMENT.md) is `NO_GO`.
+> Exact-SHA mechanism evidence is confirmed for three bounded cases. Internal
+> product and utility-test readiness pass, so a controlled external study is
+> technically ready; participant access is `RECRUITMENT_PENDING`. Signal
+> validity remains inconclusive, and external usability and field utility
+> remain untested. Public onboarding, marketing, production recommendations,
+> and paid pilot intake remain closed.
 
 
 ## Technical evaluation (zero config)
@@ -134,8 +134,9 @@ replayed by the test suite on every CI run.
 These examples do not prove incremental market value, production
 effectiveness, or low false-positive rates. The separate
 [Hybrid Value Gate](benchmarks/value/README.md) keeps mechanism evidence,
-signal validity, internal product-test readiness, external usability, and
-field utility as separate claims. Its current publication decision is
+signal validity, internal product readiness, practical-utility testability,
+external usability, and field utility as separate claims. Its current
+publication decision is
 [`NO_GO`](benchmarks/value/ASSESSMENT.md).
 
 ## Current status
