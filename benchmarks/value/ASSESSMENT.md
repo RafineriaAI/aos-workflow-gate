@@ -1,15 +1,18 @@
 # Hybrid Value Gate
 
-**Publication status: `NO_GO`**
+**Product-claim status: `NO_GO`**
 
-This is a product-publication decision, not a merge-readiness verdict. Exact-SHA contrast can establish only a semantic difference from GitHub. Signal validity, internal product-test readiness, external usability, and field utility are separate claims. Internal tests and public repository history are never user evidence.
+This is a product-claim decision, not a merge-readiness verdict. A free advisory release is a validation channel, not evidence of usefulness or market demand. Exact-SHA contrast can establish only a semantic difference from GitHub. Internal utility tasks establish only testability of the diagnosis, not practical usefulness. Signal validity, product testability, external usability, and field utility are separate claims. Internal tests and public repository history are never user evidence.
 
 ## Track status
 
 - Mechanism evidence: `MECHANISM_CONFIRMED`.
 - Signal validity: `SIGNAL_INCONCLUSIVE`.
 - Internal product test: `PRODUCT_TEST_READY`.
-- External study: `EXTERNAL_STUDY_NOT_READY`.
+- Practical-utility testability: `UTILITY_TEST_READY`.
+- External-test readiness: `READY_FOR_EXTERNAL_VALIDATION`.
+- Participant access: `RECRUITMENT_PENDING`.
+- Validation distribution: `FREE_SELF_SERVE_VALIDATION`.
 - External usability: `EXTERNAL_VALIDATION_PENDING`.
 - Field utility: `FIELD_VALIDATION_PENDING`.
 
@@ -35,7 +38,14 @@ This is a product-publication decision, not a merge-readiness verdict. Exact-SHA
 - External participants currently available: **no**.
 - External teams currently available: **no**.
 - Qualified external users observed: **0**.
+- Free self-serve validation available: **yes** (`advisory`, telemetry: `none`).
 - Internal checks can establish only PRODUCT_TEST_READY; they cannot establish product usefulness, adoption, retention, or willingness to pay.
+
+## Practical-utility testability
+
+- Frozen internal tasks: **8**; positive controls: **2**; negative controls: **6**.
+- Internal checks: **7**/**7** met.
+- These tasks verify deterministic diagnosis and one actionable Next. They do not measure whether an external developer understands, trusts, uses, retains, or pays for the product.
 
 ## Acceptance criteria
 
@@ -55,6 +65,13 @@ This is a product-publication decision, not a merge-readiness verdict. Exact-SHA
 | `product_test_readiness` | `product_external_protocol_frozen` | `met` | `== met` | **met** |
 | `product_test_readiness` | `product_first_run_path` | `met` | `== met` | **met** |
 | `product_test_readiness` | `product_verdict_task_corpus` | `met` | `== met` | **met** |
+| `practical_utility_testability` | `utility_advisory_effect` | `met` | `== met` | **met** |
+| `practical_utility_testability` | `utility_claim_firewall` | `met` | `== met` | **met** |
+| `practical_utility_testability` | `utility_contrast_task` | `met` | `== met` | **met** |
+| `practical_utility_testability` | `utility_deterministic_replay` | `met` | `== met` | **met** |
+| `practical_utility_testability` | `utility_low_noise_controls` | `met` | `== met` | **met** |
+| `practical_utility_testability` | `utility_single_next_action` | `met` | `== met` | **met** |
+| `practical_utility_testability` | `utility_verdict_coverage` | `met` | `== met` | **met** |
 | `external_usability` | `controlled_comparative_study` | `not_run` | `== verified` | **not met** |
 | `external_usability` | `qualified_external_users` | `0` | `>= 8` | **not met** |
 | `external_usability` | `next_action_clarity` | `unavailable` | `>= 1.000` | **not met** |
@@ -64,9 +81,11 @@ This is a product-publication decision, not a merge-readiness verdict. Exact-SHA
 ## Decision rule
 
 - `MECHANISM_CONFIRMED` proves only that AOS can produce decision-relevant information absent from the observed GitHub baseline.
-- `MECHANISM_CONFIRMED + SIGNAL_SUPPORTED + PRODUCT_TEST_READY` permits only a controlled external study; it does not permit publication.
-- `GO` additionally requires `EXTERNAL_USABILITY_SUPPORTED`.
+- `READY_FOR_EXTERNAL_VALIDATION` requires confirmed mechanism, internal product readiness, and the frozen utility-task corpus. `SIGNAL_INCONCLUSIVE` may be studied; `SIGNAL_NOT_SUPPORTED` blocks it.
+- `READY_FOR_EXTERNAL_VALIDATION` permits recruitment and a controlled advisory study. It is not `PRODUCT_USEFUL`, paid-pilot readiness, or a production recommendation.
+- `FREE_SELF_SERVE_VALIDATION` permits a public, no-cost advisory technical preview with no telemetry. Availability, installs, and downloads are funnel observations, not usefulness evidence.
+- `GO` additionally requires `SIGNAL_SUPPORTED` and independently supported external usability.
 - Commercialization remains unvalidated until a separate field study establishes practical utility and retention.
-- `NO_GO` blocks publication, marketing, production recommendations, and paid pilot intake.
+- `NO_GO` blocks efficacy or value claims, production recommendations, and paid pilot intake. It does not block the declared free advisory validation channel.
 
-Current publication blockers: `exact_incremental_findings`, `precision_sample`, `observed_precision`, `controlled_comparative_study`, `qualified_external_users`, `next_action_clarity`, `retention`, `comprehension_time`.
+Current product-claim blockers: `exact_incremental_findings`, `precision_sample`, `observed_precision`, `controlled_comparative_study`, `qualified_external_users`, `next_action_clarity`, `retention`, `comprehension_time`.

@@ -1,10 +1,18 @@
 name: Feedback
 description: >-
-  Two minutes of feedback after trying the gate. No confidential material
-  in this public form, please.
+  Short, structured feedback after trying the free advisory gate. Do not
+  include code, secrets, logs, or other confidential material.
 title: "[Feedback] "
 labels: ["feedback"]
 body:
+  - type: input
+    id: version
+    attributes:
+      label: Exact AOS version tested
+      description: Release tag or pinned Action commit SHA; do not include secrets.
+      placeholder: v0.36.0 or a 40-character commit SHA
+    validations:
+      required: true
   - type: dropdown
     id: outcome
     attributes:
@@ -15,6 +23,14 @@ body:
         - Blocked - it failed or I gave up
     validations:
       required: true
+  - type: input
+    id: decision
+    attributes:
+      label: Verdict and primary reason
+      description: Use No verdict if the run did not reach a decision.
+      placeholder: WARN - non_independent_evidence
+    validations:
+      required: true
   - type: textarea
     id: goal
     attributes:
@@ -22,10 +38,60 @@ body:
       placeholder: e.g. AI-agent PRs before merge; release candidates
     validations:
       required: true
+  - type: dropdown
+    id: added_value
+    attributes:
+      label: What did AOS add beyond the existing CI or review?
+      options:
+        - Found an actionable gap not visible in existing CI
+        - Made an already known gap easier to understand
+        - Added no useful information
+        - Produced a misleading or false alert
+        - Could not assess
+    validations:
+      required: true
+  - type: dropdown
+    id: action_taken
+    attributes:
+      label: What did you do after the result?
+      options:
+        - Changed code, tests, workflow, or policy before merge
+        - Investigated and accepted no change
+        - Dismissed the alert
+        - No action was possible
+        - Not applicable
+    validations:
+      required: true
+  - type: dropdown
+    id: keep_enabled
+    attributes:
+      label: Would you keep the advisory Action enabled?
+      options:
+        - "Yes"
+        - "No"
+        - Undecided
+    validations:
+      required: true
   - type: textarea
     id: friction
     attributes:
       label: Biggest friction or missing piece
+    validations:
+      required: true
+  - type: input
+    id: evidence_url
+    attributes:
+      label: Public evidence link (optional)
+      description: Link only to a public Action run or sanitized decision record.
+      placeholder: https://github.com/owner/repository/actions/runs/...
+  - type: dropdown
+    id: research_use
+    attributes:
+      label: May this response be used as product-research evidence?
+      description: No means operational feedback only.
+      options:
+        - "Yes"
+        - "No"
     validations:
       required: true
   - type: dropdown

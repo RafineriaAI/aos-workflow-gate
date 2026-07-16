@@ -1,0 +1,127 @@
+{
+  "boundary": "Internal deterministic fixtures only. This corpus tests whether the product emits a stable, bounded and actionable diagnosis. It does not measure external comprehension, practical usefulness, false-positive rate, adoption, retention or willingness to pay.",
+  "cases": [
+    {
+      "case_id": "clean-app-bound-checks",
+      "classification": "positive_control",
+      "expected": {
+        "effect": "advisory",
+        "intact": true,
+        "next_code": "enable_enforcement",
+        "primary_reason": null,
+        "verdict": "PASS"
+      },
+      "source": {
+        "kind": "adversarial_case",
+        "path": "benchmarks/adversarial/cases/same-context-apps-both-satisfied.json"
+      }
+    },
+    {
+      "case_id": "duplicate-provenance-control",
+      "classification": "positive_control",
+      "expected": {
+        "effect": "advisory",
+        "intact": true,
+        "next_code": "enable_enforcement",
+        "primary_reason": null,
+        "verdict": "PASS"
+      },
+      "source": {
+        "kind": "adversarial_case",
+        "path": "benchmarks/adversarial/cases/duplicate-provenance-single-control.json"
+      }
+    },
+    {
+      "case_id": "failed-required-control",
+      "classification": "negative_control",
+      "expected": {
+        "effect": "advisory",
+        "intact": true,
+        "next_code": "required_source_failed",
+        "primary_reason": "failed_required_source",
+        "verdict": "BLOCK"
+      },
+      "source": {
+        "kind": "decision_record",
+        "path": "benchmarks/cases/v0110-incident-counterfactual/gate-decision.json"
+      }
+    },
+    {
+      "case_id": "github-green-self-validating",
+      "classification": "negative_control",
+      "expected": {
+        "effect": "advisory",
+        "intact": true,
+        "next_code": "require_independent_evidence",
+        "primary_reason": "non_independent_evidence",
+        "verdict": "WARN"
+      },
+      "source": {
+        "bundle": "benchmarks/value/exact/hardware-abstraction-ir-62/bundle.json",
+        "kind": "bundle_policy",
+        "policy": "benchmarks/value/exact/hardware-abstraction-ir-62/policy.json"
+      }
+    },
+    {
+      "case_id": "incomplete-collection",
+      "classification": "negative_control",
+      "expected": {
+        "effect": "advisory",
+        "intact": true,
+        "next_code": "collection_wait_timeout",
+        "primary_reason": "incomplete_collection",
+        "verdict": "WARN"
+      },
+      "source": {
+        "kind": "adversarial_case",
+        "path": "benchmarks/adversarial/cases/incomplete-collection-clean.json"
+      }
+    },
+    {
+      "case_id": "missing-exact-sha-control",
+      "classification": "negative_control",
+      "expected": {
+        "effect": "advisory",
+        "intact": true,
+        "next_code": "required_source_missing",
+        "primary_reason": "missing_required_source",
+        "verdict": "BLOCK"
+      },
+      "source": {
+        "kind": "adversarial_case",
+        "path": "benchmarks/adversarial/cases/cross-sha-observation-fail-closed.json"
+      }
+    },
+    {
+      "case_id": "unverifiable-app-identity",
+      "classification": "negative_control",
+      "expected": {
+        "effect": "advisory",
+        "intact": true,
+        "next_code": "required_source_unverifiable",
+        "primary_reason": "missing_required_source",
+        "verdict": "BLOCK"
+      },
+      "source": {
+        "kind": "adversarial_case",
+        "path": "benchmarks/adversarial/cases/imposter-app-unverifiable.json"
+      }
+    },
+    {
+      "case_id": "zero-required-green",
+      "classification": "negative_control",
+      "expected": {
+        "effect": "advisory",
+        "intact": true,
+        "next_code": "define_required_sources",
+        "primary_reason": "no_required_sources",
+        "verdict": "WARN"
+      },
+      "source": {
+        "kind": "adversarial_case",
+        "path": "benchmarks/adversarial/cases/zero-required-all-green.json"
+      }
+    }
+  ],
+  "schema_version": "utility-task-corpus-v0"
+}

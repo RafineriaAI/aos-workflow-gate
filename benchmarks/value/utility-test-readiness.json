@@ -1,0 +1,69 @@
+{
+  "boundary": "Internal red-team evidence only. Passing this manifest establishes that practical-utility hypotheses are testable with deterministic tasks. It cannot establish user comprehension, usefulness, low false-positive rate, adoption, retention, ROI or willingness to pay.",
+  "captured_at": "2026-07-16T00:00:00Z",
+  "checks": [
+    {
+      "evidence": [
+        "tests/test_utility_test_readiness.py::test_utility_task_corpus_replays_expected_diagnoses"
+      ],
+      "id": "advisory_effect",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_utility_test_readiness.py::test_internal_evidence_never_proves_product_usefulness"
+      ],
+      "id": "claim_firewall",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_utility_test_readiness.py::test_utility_corpus_contains_exact_github_contrast"
+      ],
+      "id": "contrast_task",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_utility_test_readiness.py::test_utility_task_corpus_is_deterministic"
+      ],
+      "id": "deterministic_replay",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_utility_test_readiness.py::test_positive_controls_stay_quiet_pass"
+      ],
+      "id": "low_noise_controls",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_utility_test_readiness.py::test_utility_task_corpus_replays_expected_diagnoses"
+      ],
+      "id": "single_next_action",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_utility_test_readiness.py::test_utility_corpus_has_frozen_taxonomy"
+      ],
+      "id": "verdict_coverage",
+      "status": "met"
+    }
+  ],
+  "schema_version": "utility-test-readiness-v0",
+  "validation_release": {
+    "access": "free",
+    "channel": "public_self_serve",
+    "mode": "advisory",
+    "telemetry": "none"
+  },
+  "task_corpus": {
+    "case_count": 8,
+    "digest": "sha256:74e750ad4859bf3c5fb48d84f7fb9227c54be4cf700fa6dcfbcda500ee919e73",
+    "negative_controls": 6,
+    "path": "benchmarks/value/utility-task-corpus.json",
+    "positive_controls": 2
+  }
+}
