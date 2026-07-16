@@ -137,7 +137,10 @@ def evaluate(bundle: Any, policy: Policy) -> Decision:
             if isinstance(entry, dict) and isinstance(
                 entry.get("context"), str
             ):
-                requirement_states[entry["context"]] = str(
+                source_id = entry.get("source_id", entry["context"])
+                if not isinstance(source_id, str):
+                    continue
+                requirement_states[source_id] = str(
                     entry.get("state", "")
                 )
 

@@ -18,7 +18,7 @@ from typing import Any
 from . import canonical
 from .errors import InputError
 from .evaluate import evaluate
-from .evidence import verify_record
+from .evidence import subject_identity, verify_record
 from .policy import load_policy
 
 VERDICTS = ("PASS", "WARN", "BLOCK")
@@ -524,7 +524,14 @@ def verify_bindings(
     """
     results: dict[str, str] = {}
     if bundle is not None:
-        ok = record.get("input_bundle_digest") == canonical.digest(bundle)
+        bundle_subject = (
+            bundle.get("subject") if isinstance(bundle, dict) else None
+        )
+        ok = (
+            record.get("input_bundle_digest") == canonical.digest(bundle)
+            and subject_identity(record.get("subject"))
+            == subject_identity(bundle_subject)
+        )
         results["bundle_binding"] = "OK" if ok else "FAILED"
     policy = None
     if policy_path is not None:

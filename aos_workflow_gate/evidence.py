@@ -13,12 +13,23 @@ from typing import Any
 
 from . import canonical
 from .evaluate import Decision
-from .manifest import verifier_manifest_digest
+from .manifest import verifier_manifest
 from .policy import Policy
 from .version import __version__
 
 SCHEMA_VERSION = "aos-workflow-gate-decision/v0"
 RECORD_DIGEST_FIELD = "record_digest"
+
+
+def subject_identity(value: Any) -> dict[str, Any] | None:
+    """Normalize optional subject fields for cross-artifact correlation."""
+    if not isinstance(value, dict):
+        return None
+    return {
+        key: value[key]
+        for key in ("repository", "sha", "ref", "pull_request")
+        if value.get(key) is not None
+    }
 
 
 def observation_from_bundle(bundle: Any) -> dict[str, Any] | None:
@@ -40,11 +51,21 @@ def observation_from_bundle(bundle: Any) -> dict[str, Any] | None:
         "status",
         "observed_at",
         "github_baseline",
+        "observation_scope",
         "protection_source",
         "strict_up_to_date_required",
     ):
         if key in collection:
             observation[key] = collection[key]
+    subject_context = collection.get("subject_context")
+    if (
+        "observation_scope" not in observation
+        and isinstance(subject_context, dict)
+    ):
+        observation["observation_scope"] = {
+            "repository": subject_context.get("repository"),
+            "head_sha": subject_context.get("sha"),
+        }
     verifier = collection.get("verifier_change")
     if isinstance(verifier, dict):
         compact_verifier: dict[str, Any] = {
@@ -103,6 +124,7 @@ def build_record(
     part of the digested record, so scope and freshness statements are
     tamper-evident like everything else.
     """
+    manifest = verifier_manifest()
     record: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "generator": {
@@ -111,7 +133,8 @@ def build_record(
             # content address of the exact verifier that derived this
             # decision: substitution becomes detectable, with no signing
             # or authorship claim (see docs, verifier manifest)
-            "verifier_manifest_digest": verifier_manifest_digest(),
+            "verifier_manifest_digest": manifest["manifest_digest"],
+            "verifier_manifest": manifest,
         },
         "subject": decision.subject.as_dict(),
         "policy": {

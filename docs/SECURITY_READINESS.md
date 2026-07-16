@@ -99,21 +99,27 @@ rejection.
 
 ## Zero-trust signalling
 
-- **Verifier artifact binding.** Every record carries the content
-  address of the exact verifier that derived it (sha256 of every
-  packaged file, digested as one manifest). `verify` discloses
-  whether the current installation matches — verifier substitution
-  is detectable, never silent. Content addressing only: no signing,
-  no provenance, no authorship claim, and records replay across
-  verifier versions (digest replay is forever; semantic replay is
-  version-scoped with additive-rule divergence disclosed).
-- **App-bound requirement identity.** `check-pr` builds on a shared,
-  SHA-pinned requirement snapshot: when the branch rules bind a required
-  check to a specific app (`integration_id`), only a check run reporting
-  that app id can satisfy it. A same-named run from another app — or a
-  legacy commit status, which carries no app identity — is classified
-  `unverifiable`, excluded from the bundleable sources, and fails closed
-  as missing. Requirement states
+- **Verifier artifact binding.** New records embed a content-addressed
+  manifest (packaged path → sha256) and its canonical digest. Each file
+  hash uses its bytes after canonicalizing CRLF and bare CR line endings
+  to LF, making artifact identity platform-independent. `verify`
+  recomputes the manifest before comparing it with the current
+  installation; verifier substitution
+  is detectable, never silent. Digest-only and pre-manifest records
+  remain replayable with their weaker binding stated explicitly.
+  Compatibility boundary: digest replay is forever; semantic replay is
+  version-scoped and additive divergence remains disclosed.
+  Content addressing only:
+  no signing, provenance, authorship, or operator-identity claim.
+- **App-bound requirement identity.** `check-pr` uses three concepts:
+  control identity is `(context, integration_id)`; `required_by[]` is
+  deterministic requirement provenance; `repository + head_sha` is the
+  observation scope. Equal identities merge provenance, while different
+  app bindings for one context remain separate controls. Only a check run
+  reporting the bound app id can satisfy an app-bound control. A legacy
+  commit status has no app identity and can satisfy only an unbound
+  control. Same-name imposters are classified `unverifiable`, excluded
+  from that control's source, and fail closed as missing. Requirement states
   (`satisfied`/`failed`/`missing`/`pending`/`unverifiable`) are recorded
   as evidence in the bundle's `collection.requirements`. Scope: required
   status checks only, deliberately not full merge-readiness.
@@ -141,10 +147,14 @@ rejection.
   run id and attempt, event name, actor, server URL) into the bundle with
   its own canonical `context_digest`. A snapshot that fails its digest
   check is an operational error (exit 2).
+  The resolved `subject_context` or requirement `observation_scope` binds
+  the exact repository and evaluated SHA separately from raw environment
+  variables.
 - **Context match.** With `--github-context-match` (set automatically in
   Self-Test Mode) the bundle subject must match the current GitHub context
   through the same resolution code path the collector uses; a mismatch is
-  an operational error (exit 2), never a verdict.
+  an operational error (exit 2), never a verdict. `verify --bundle` also
+  rejects record–bundle subject or observation-scope mismatches.
 - **Strict token demarcation.** The API token is read from the environment
   at request time and exists only in the request header; it is never
   written into bundles, records, policies, summaries, warnings, or error

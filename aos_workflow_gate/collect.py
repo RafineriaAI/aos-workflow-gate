@@ -255,12 +255,15 @@ def wait_for_required(
     wait_seconds: float = 0.0,
     poll_interval: float = 10.0,
     budget: Budget | None = None,
+    required_controls: list[dict[str, Any]] | None = None,
 ) -> tuple[list[dict[str, Any]], bool, list[str], float]:
     """Collect check runs, polling until required checks complete.
 
-    Polls only for the named required checks — waiting on "everything"
-    has no stop condition because the gate's own job never completes while
-    it waits. Returns ``(runs, truncated, incomplete_required, waited)``.
+    With ``required_controls``, completion is matched by exact
+    ``(context, integration_id)`` on ``sha``; otherwise legacy callers use
+    names. Waiting on "everything" has no stop condition because the gate's
+    own job is still running. Returns
+    ``(runs, truncated, incomplete_required, waited)``.
     A wait that ends with incomplete required checks is reported, not
     raised: the policy then fails closed on the missing check, and the
     bundle's collection status records why.
@@ -277,7 +280,38 @@ def wait_for_required(
             max_pages=max_pages,
             budget=budget,
         )
-        completed = _completed_names(runs)
+        if required_controls is None:
+            completed = _completed_names(runs)
+        else:
+            completed = set()
+            for control in required_controls:
+                context = control.get("context")
+                integration_id = control.get("integration_id")
+                source_id = str(control.get("source_id", context))
+                for run in runs:
+                    app = run.get("app")
+                    raw_app_id = (
+                        app.get("id")
+                        if isinstance(app, dict)
+                        else None
+                    )
+                    run_app_id = (
+                        raw_app_id
+                        if isinstance(raw_app_id, int)
+                        and not isinstance(raw_app_id, bool)
+                        else None
+                    )
+                    if (
+                        run.get("name") == context
+                        and run.get("head_sha") == sha
+                        and run.get("status") == "completed"
+                        and (
+                            integration_id is None
+                            or run_app_id == integration_id
+                        )
+                    ):
+                        completed.add(source_id)
+                        break
         incomplete = [name for name in required if name not in completed]
         if not incomplete or not required:
             return runs, truncated, incomplete, waited
@@ -312,17 +346,34 @@ def build_bundle(
     latest: dict[str, dict[str, Any]] = {}
     for run in runs:
         name = run.get("name")
-        if not isinstance(name, str) or name in excluded:
+        source_id = run.get("_aos_source_id", name)
+        if (
+            not isinstance(name, str)
+            or not isinstance(source_id, str)
+            or name in excluded
+            or source_id in excluded
+        ):
             continue
         if run.get("status") != "completed":
             continue
-        current = latest.get(name)
+        current = latest.get(source_id)
+        if current is not None and (
+            current.get("name") != name
+            or current.get("_aos_control_identity")
+            != run.get("_aos_control_identity")
+        ):
+            raise InputError(
+                f"collected source id {source_id!r} maps to multiple "
+                "control identities; collection cannot continue "
+                "without an unambiguous source id"
+            )
         if current is None or _completed_at(run) > _completed_at(current):
-            latest[name] = run
+            latest[source_id] = run
 
     sources = []
-    for name in sorted(latest):
-        run = latest[name]
+    for source_id in sorted(latest):
+        run = latest[source_id]
+        name = run["name"]
         conclusion = run.get("conclusion")
         source_status = conclusion if isinstance(conclusion, str) else "unknown"
         identity = {
@@ -334,13 +385,16 @@ def build_bundle(
             "status": source_status,
             "completed_at": run.get("completed_at"),
         }
+        requirement_identity = run.get("_aos_control_identity")
+        if isinstance(requirement_identity, dict):
+            identity["requirement_identity"] = requirement_identity
         sources.append(
             {
-                "id": name,
+                "id": source_id,
                 "kind": "github_check",
                 "signal_source": "github_check_runs_api",
                 "status": source_status,
-                "required": name in required_names,
+                "required": source_id in required_names,
                 "observed_at": run.get("completed_at"),
                 "summary": f"GitHub check run {run.get('id')} "
                 f"concluded {conclusion}.",

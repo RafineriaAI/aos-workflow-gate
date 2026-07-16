@@ -149,23 +149,35 @@ def test_merge_protection_controls_union() -> None:
         [
             {"context": "ci", "integration_id": None},
             {"context": "lint", "integration_id": APP},
+            {"context": "shared", "integration_id": APP},
         ],
         [
             {"context": "ci", "integration_id": APP},
             {"context": "legacy", "integration_id": None},
+            {"context": "shared", "integration_id": APP},
         ],
     )
-    by_context = {control["context"]: control for control in merged}
-    assert set(by_context) == {"ci", "lint", "legacy"}
-    assert by_context["ci"]["required_by"] == [
-        "rulesets", "classic_branch_protection",
-    ]
-    # an app binding declared by either mechanism is kept
-    assert by_context["ci"]["integration_id"] == APP
-    assert by_context["lint"]["required_by"] == ["rulesets"]
-    assert by_context["legacy"]["required_by"] == [
+    by_identity = {
+        (control["context"], control["integration_id"]): control
+        for control in merged
+    }
+    assert set(by_identity) == {
+        ("ci", None), ("ci", APP), ("lint", APP), ("legacy", None),
+        ("shared", APP),
+    }
+    # Same context with a different app binding remains a separate control.
+    assert by_identity[("ci", None)]["required_by"] == ["rulesets"]
+    assert by_identity[("ci", APP)]["required_by"] == [
         "classic_branch_protection"
     ]
+    assert by_identity[("ci", None)]["source_id"] != (
+        by_identity[("ci", APP)]["source_id"]
+    )
+    # Only an identical tuple merges deterministic provenance.
+    assert by_identity[("shared", APP)]["required_by"] == [
+        "rulesets", "classic_branch_protection",
+    ]
+    assert by_identity[("shared", APP)]["source_id"] == "shared"
     digest_a = protection_digest(merged, strict=False)
     assert digest_a != protection_digest(merged, strict=True)
     assert digest_a != protection_digest(merged[:2], strict=False)
@@ -239,6 +251,8 @@ def _install(
 def _run_gate(tmp_path: Path) -> tuple[int, dict[str, Any], dict[str, Any]]:
     rc = cli.main(
         ["run", "--github-context",
+         "--wait-seconds", "0.01",
+         "--poll-interval", "0.01",
          "--out", str(tmp_path / "record.json"),
          "--bundle-out", str(tmp_path / "bundle.json"),
          "--policy-out", str(tmp_path / "policy.json")]
@@ -277,6 +291,69 @@ def test_discovery_unions_rulesets_and_classic(
     assert collection["protection_digest"].startswith("sha256:")
     by_id = {source["id"]: source for source in bundle["sources"]}
     assert by_id["legacy-ci"]["required"] is True
+
+
+def test_same_context_different_apps_cannot_collapse_to_pass(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    rules = [
+        {
+            "type": "required_status_checks",
+            "parameters": {
+                "required_status_checks": [
+                    {"context": "ci", "integration_id": APP},
+                    {"context": "ci", "integration_id": 99999},
+                ]
+            },
+        }
+    ]
+    _install(monkeypatch, rules=rules, runs=[_run("ci", app_id=APP)])
+    rc, record, bundle = _run_gate(tmp_path)
+
+    assert rc == 0
+    assert record["verdict"] == "BLOCK"
+    requirements = bundle["collection"]["requirements"]
+    by_app = {
+        item["integration_id"]: item
+        for item in requirements
+    }
+    assert by_app[APP]["state"] == "satisfied"
+    assert by_app[99999]["state"] == "unverifiable"
+    assert by_app[APP]["source_id"] != by_app[99999]["source_id"]
+
+    required_sources = {
+        source["id"]: source
+        for source in bundle["sources"]
+        if source["required"]
+    }
+    assert set(required_sources) == {by_app[APP]["source_id"]}
+    missing = next(
+        reason for reason in record["reasons"]
+        if reason["rule"] == "missing_required_source"
+    )
+    assert missing["source_id"] == by_app[99999]["source_id"]
+    assert "unverifiable" in missing["detail"]
+
+
+def test_observation_is_bound_to_exact_head_sha(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    wrong_subject_run = _run("ci")
+    wrong_subject_run["head_sha"] = "f" * 40
+    _install(monkeypatch, rules=RULES, runs=[wrong_subject_run])
+
+    rc, record, bundle = _run_gate(tmp_path)
+
+    assert rc == 0
+    assert record["verdict"] == "BLOCK"
+    collection = bundle["collection"]
+    assert collection["status"] == "subject_mismatch"
+    assert collection["observation_scope"] == {
+        "repository": "octo/repo",
+        "head_sha": SHA,
+    }
+    assert collection["subject_mismatch_runs"] == [1]
+    assert not any(source["id"] == "ci" for source in bundle["sources"])
 
 
 def test_skipped_required_diverges_from_github_baseline(

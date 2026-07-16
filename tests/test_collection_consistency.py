@@ -101,9 +101,11 @@ def _opener(request: Any, timeout: float | None = None) -> _FakeResponse:
     )
 
 
-def _requirements(bundle: dict[str, Any]) -> dict[str, str]:
+def _requirements(
+    bundle: dict[str, Any],
+) -> dict[tuple[str, int | None], str]:
     return {
-        entry["context"]: entry["state"]
+        (entry["context"], entry.get("integration_id")): entry["state"]
         for entry in bundle["collection"]["requirements"]
     }
 
@@ -150,8 +152,8 @@ def test_run_and_check_pr_agree_on_one_github_state(
     # one truth: identical classification of every required control
     assert _requirements(run_bundle) == _requirements(pr_bundle)
     assert _requirements(run_bundle) == {
-        "ci": "satisfied",
-        "absent-control": "missing",
+        ("ci", APP): "satisfied",
+        ("absent-control", APP): "missing",
     }
     assert (
         run_bundle["collection"]["rules_digest"]

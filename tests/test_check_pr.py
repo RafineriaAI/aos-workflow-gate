@@ -66,6 +66,44 @@ def test_required_checks_canonical_identity_and_drift() -> None:
     assert rules_digest(RULES) != rules_digest(RULES[:2])
 
 
+def test_required_checks_preserve_same_context_app_identities() -> None:
+    rules = [
+        {
+            "type": "required_status_checks",
+            "parameters": {
+                "required_status_checks": [
+                    {"context": "ci", "integration_id": 1},
+                    {"context": "ci", "integration_id": 2},
+                    {"context": "ci", "integration_id": 1},
+                    {"context": "ci"},
+                ]
+            },
+        }
+    ]
+    assert required_checks_from_rules(rules) == [
+        {"context": "ci", "integration_id": None},
+        {"context": "ci", "integration_id": 1},
+        {"context": "ci", "integration_id": 2},
+    ]
+    invalid_rules: list[dict[str, Any]] = [
+        {
+            "type": "required_status_checks",
+            "parameters": {
+                "required_status_checks": [
+                    {"context": "ci", "integration_id": True}
+                ]
+            },
+        }
+    ]
+    with pytest.raises(
+        InputError,
+        match="integration_id must be an integer",
+    ):
+        required_checks_from_rules(invalid_rules)
+
+
+
+
 def test_counterfactual_blockers_only_nonrequired_failures() -> None:
     sources = [
         {"id": "a", "kind": "github_check", "required": True, "status": "failure"},
@@ -96,6 +134,24 @@ def test_status_sources_mapping_and_precedence() -> None:
     assert by_id["slow/scan"]["status"] == "pending"
     assert skipped == ["ci / validate"]
     assert all(s["signal_source"] == "github_status_api" for s in sources)
+
+
+def test_status_sources_respect_app_bound_requirement_identity() -> None:
+    statuses = [{"context": "ci", "state": "success"}]
+    sources, skipped = status_sources(
+        statuses,
+        exclude_contexts=set(),
+        source_ids_by_context={"ci": None},
+    )
+    assert sources == []
+    assert skipped == []
+
+    sources, _ = status_sources(
+        statuses,
+        exclude_contexts=set(),
+        source_ids_by_context={"ci": "ci [app:any]"},
+    )
+    assert sources[0]["id"] == "ci [app:any]"
 
 
 def test_strict_and_pending_required() -> None:
