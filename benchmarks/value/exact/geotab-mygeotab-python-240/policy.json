@@ -1,0 +1,33 @@
+{
+  "advisory_sources": [
+    "Analyze (python)",
+    "CodeQL",
+    "Integration tests – Python 3.12",
+    "Live network tests – Python 3.12",
+    "Unit tests – Python 3.10",
+    "Unit tests – Python 3.11",
+    "Unit tests – Python 3.12",
+    "Unit tests – Python 3.13",
+    "Unit tests – Python 3.14",
+    "branch.rules"
+  ],
+  "mode": "advisory",
+  "policy_id": "collected-advisory",
+  "required_sources": [],
+  "rules": {
+    "advisory_warning": "WARN",
+    "failed_required_source": "BLOCK",
+    "incomplete_collection": "WARN",
+    "malformed_input": "BLOCK",
+    "missing_required_source": "BLOCK",
+    "no_required_sources": "WARN",
+    "non_independent_evidence": "WARN",
+    "verifier_change_unavailable": "WARN"
+  },
+  "schema_version": "draft-0",
+  "subject": {
+    "require_repository": true,
+    "require_sha": true
+  },
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

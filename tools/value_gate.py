@@ -21,13 +21,16 @@ from pathlib import Path
 from typing import Any
 
 CORPUS_SCHEMA = "value-corpus-v0"
+CONTRAST_SCHEMA = "value-contrast-v0"
 PRODUCT_READINESS_SCHEMA = "product-test-readiness-v0"
-ASSESSMENT_SCHEMA = "value-assessment-v1"
+ASSESSMENT_SCHEMA = "value-assessment-v2"
 
 THRESHOLDS: dict[str, int | float] = {
     "sample_cases": 100,
     "repositories": 10,
     "collection_complete_ratio": 0.95,
+    "exact_semantic_contrast_cases": 3,
+    "exact_semantic_contrast_repositories": 3,
     "recurring_signal_cases": 3,
     "recurring_signal_repositories": 3,
     "exact_incremental_findings": 3,
@@ -56,9 +59,7 @@ _PRODUCT_READINESS_FIELDS = frozenset(
     {"boundary", "captured_at", "checks", "external_access", "schema_version"}
 )
 _PRODUCT_CHECK_FIELDS = frozenset({"evidence", "id", "status"})
-_EXTERNAL_ACCESS_FIELDS = frozenset(
-    {"participants_available", "teams_available"}
-)
+_EXTERNAL_ACCESS_FIELDS = frozenset({"participants_available", "teams_available"})
 
 _INDEPENDENT_LABEL_SOURCES = frozenset({"external_user", "independent_review_history"})
 _LABELED_OUTCOMES = frozenset({"actionable_gap", "noise"})
@@ -88,6 +89,62 @@ _CASE_FIELDS = frozenset(
         "self_validating_workflows",
         "split",
         "workflow_changed",
+    }
+)
+_CONTRAST_METHOD_FIELDS = frozenset(
+    {
+        "exact_clean_non_draft_cases",
+        "green_self_validating_candidates",
+        "open_at_second_observation",
+        "order",
+        "query",
+        "selection",
+        "selection_trace",
+        "sort",
+        "state",
+        "topn",
+        "workflow_change_candidates",
+    }
+)
+_CONTRAST_TOP_LEVEL_FIELDS = frozenset(
+    {"boundary", "captured_at", "cases", "method", "schema_version"}
+)
+_CONTRAST_CASE_FIELDS = frozenset(
+    {
+        "aos",
+        "captured_at",
+        "evidence_urls",
+        "github",
+        "head_sha",
+        "outcome",
+        "pull_request",
+        "repository",
+        "required_non_independent_sources",
+    }
+)
+_CONTRAST_GITHUB_FIELDS = frozenset(
+    {
+        "all_observed_checks_success",
+        "draft",
+        "exact_sha",
+        "merge_state",
+        "required_checks",
+        "source",
+        "state",
+    }
+)
+_CONTRAST_AOS_FIELDS = frozenset(
+    {
+        "artifact_bundle",
+        "artifact_policy",
+        "artifact_record",
+        "bundle_digest",
+        "execution",
+        "non_independent_sources",
+        "reason_code",
+        "record_digest",
+        "self_validating_workflows",
+        "verdict",
     }
 )
 
@@ -223,6 +280,203 @@ def _validate_outcome(value: Any, path: str) -> None:
         raise ValueError(f"{path}.outcome requires an evidence URL")
 
 
+def _validate_contrasts(contrasts: dict[str, Any]) -> None:
+    if contrasts.get("schema_version") != CONTRAST_SCHEMA:
+        raise ValueError(f"expected {CONTRAST_SCHEMA}")
+    if set(contrasts) != _CONTRAST_TOP_LEVEL_FIELDS:
+        raise ValueError(f"contrast corpus fields do not match {CONTRAST_SCHEMA}")
+    for field in ("boundary", "captured_at"):
+        if not isinstance(contrasts[field], str) or not contrasts[field]:
+            raise ValueError(f"contrast corpus {field} must be a non-empty string")
+    if not isinstance(contrasts["method"], dict):
+        raise ValueError("contrast corpus method must be an object")
+    cases = contrasts["cases"]
+    if not isinstance(cases, list):
+        raise ValueError("contrast corpus cases must be a list")
+
+    _validate_contrast_method(contrasts["method"], len(cases))
+
+    identities: set[tuple[str, int]] = set()
+    for index, case in enumerate(cases):
+        path = f"contrast.cases[{index}]"
+        if not isinstance(case, dict) or set(case) != _CONTRAST_CASE_FIELDS:
+            raise ValueError(f"{path} fields do not match {CONTRAST_SCHEMA}")
+        repository = case["repository"]
+        pull_request = case["pull_request"]
+        if not isinstance(repository, str) or not repository:
+            raise ValueError(f"{path}.repository must be a non-empty string")
+        _require_nonnegative_int(pull_request, f"{path}.pull_request", positive=True)
+        identity = (repository, pull_request)
+        if identity in identities:
+            raise ValueError(f"{path} duplicates {repository}#{pull_request}")
+        identities.add(identity)
+        _validate_sha(case["head_sha"], f"{path}.head_sha")
+        if not isinstance(case["captured_at"], str) or not case["captured_at"]:
+            raise ValueError(f"{path}.captured_at must be a non-empty string")
+        _validate_https_list(case["evidence_urls"], f"{path}.evidence_urls")
+        _validate_contrast_github(case["github"], path)
+        _validate_contrast_aos(case["aos"], path)
+        _validate_outcome(case["outcome"], path)
+
+        overlap = case["required_non_independent_sources"]
+        _validate_string_list(overlap, f"{path}.required_non_independent_sources")
+        required = {item["context"] for item in case["github"]["required_checks"]}
+        affected = set(case["aos"]["non_independent_sources"])
+        if not set(overlap) <= required & affected:
+            raise ValueError(
+                f"{path}.required_non_independent_sources is not a true overlap"
+            )
+
+
+def _validate_contrast_method(value: Any, case_count: int) -> None:
+    if not isinstance(value, dict) or set(value) != _CONTRAST_METHOD_FIELDS:
+        raise ValueError("contrast corpus method fields are invalid")
+    for field in ("query", "selection"):
+        if not isinstance(value[field], str) or not value[field]:
+            raise ValueError(f"contrast corpus method {field} must be non-empty")
+    expected = {
+        "order": "desc",
+        "selection_trace": "counts_only_not_replayable",
+        "sort": "updated",
+        "state": "open",
+    }
+    for field, expected_value in expected.items():
+        if value[field] != expected_value:
+            raise ValueError(f"contrast corpus method {field} is invalid")
+
+    count_fields = (
+        "topn",
+        "workflow_change_candidates",
+        "open_at_second_observation",
+        "green_self_validating_candidates",
+        "exact_clean_non_draft_cases",
+    )
+    for field in count_fields:
+        _require_nonnegative_int(value[field], f"contrast.method.{field}")
+    funnel = [value[field] for field in count_fields]
+    if funnel != sorted(funnel, reverse=True) or funnel[-1] != case_count:
+        raise ValueError("contrast corpus method funnel is inconsistent")
+
+
+def _validate_contrast_github(value: Any, path: str) -> None:
+    if not isinstance(value, dict) or set(value) != _CONTRAST_GITHUB_FIELDS:
+        raise ValueError(f"{path}.github is invalid")
+    for field in ("all_observed_checks_success", "draft", "exact_sha"):
+        if not isinstance(value[field], bool):
+            raise ValueError(f"{path}.github.{field} must be boolean")
+    if value["source"] != "github_rest_snapshot":
+        raise ValueError(f"{path}.github.source is invalid")
+    if value["state"] not in {"open", "closed"}:
+        raise ValueError(f"{path}.github.state is invalid")
+    if value["merge_state"] not in {
+        "behind",
+        "blocked",
+        "clean",
+        "dirty",
+        "draft",
+        "has_hooks",
+        "unknown",
+        "unstable",
+    }:
+        raise ValueError(f"{path}.github.merge_state is invalid")
+    required = value["required_checks"]
+    if not isinstance(required, list):
+        raise ValueError(f"{path}.github.required_checks must be a list")
+    identities: set[tuple[str, int | None]] = set()
+    for index, item in enumerate(required):
+        item_path = f"{path}.github.required_checks[{index}]"
+        if not isinstance(item, dict) or set(item) != {"context", "integration_id"}:
+            raise ValueError(f"{item_path} is invalid")
+        context = item["context"]
+        integration = item["integration_id"]
+        if not isinstance(context, str) or not context:
+            raise ValueError(f"{item_path}.context must be a non-empty string")
+        if integration is not None:
+            _require_nonnegative_int(
+                integration, f"{item_path}.integration_id", positive=True
+            )
+        identity = (context, integration)
+        if identity in identities:
+            raise ValueError(f"{item_path} duplicates a required check")
+        identities.add(identity)
+
+
+def _validate_contrast_aos(value: Any, path: str) -> None:
+    if not isinstance(value, dict) or set(value) != _CONTRAST_AOS_FIELDS:
+        raise ValueError(f"{path}.aos is invalid")
+    if value["execution"] not in {"live_full_cli", "live_api_engine_replay"}:
+        raise ValueError(f"{path}.aos.execution is invalid")
+    if value["verdict"] not in {"PASS", "WARN", "BLOCK"}:
+        raise ValueError(f"{path}.aos.verdict is invalid")
+    if not isinstance(value["reason_code"], str) or not value["reason_code"]:
+        raise ValueError(f"{path}.aos.reason_code must be a non-empty string")
+    for field in ("non_independent_sources", "self_validating_workflows"):
+        _validate_string_list(value[field], f"{path}.aos.{field}", nonempty=True)
+
+    artifacts = (
+        value["artifact_bundle"],
+        value["artifact_policy"],
+        value["artifact_record"],
+    )
+    digests = (value["bundle_digest"], value["record_digest"])
+    if value["execution"] == "live_full_cli":
+        for artifact in artifacts:
+            if (
+                not isinstance(artifact, str)
+                or not artifact
+                or "\\" in artifact
+                or ".." in Path(artifact).parts
+            ):
+                raise ValueError(f"{path}.aos artifact path is invalid")
+        for digest in digests:
+            _validate_digest(digest, f"{path}.aos digest")
+    elif any(item is not None for item in (*artifacts, *digests)):
+        raise ValueError(f"{path}.aos engine replay cannot claim canonical artifacts")
+
+
+def _validate_sha(value: Any, path: str) -> None:
+    if (
+        not isinstance(value, str)
+        or len(value) != 40
+        or any(char not in "0123456789abcdef" for char in value)
+    ):
+        raise ValueError(f"{path} must be a lowercase 40-character hex SHA")
+
+
+def _validate_digest(value: Any, path: str) -> None:
+    if (
+        not isinstance(value, str)
+        or not value.startswith("sha256:")
+        or len(value) != 71
+        or any(char not in "0123456789abcdef" for char in value[7:])
+    ):
+        raise ValueError(f"{path} must be a canonical sha256 digest")
+
+
+def _validate_string_list(value: Any, path: str, *, nonempty: bool = False) -> None:
+    if (
+        not isinstance(value, list)
+        or (nonempty and not value)
+        or any(not isinstance(item, str) or not item for item in value)
+        or len(value) != len(set(value))
+        or value != sorted(value)
+    ):
+        raise ValueError(f"{path} must be a sorted unique string list")
+
+
+def _validate_https_list(value: Any, path: str) -> None:
+    if (
+        not isinstance(value, list)
+        or not value
+        or any(
+            not isinstance(item, str) or not item.startswith("https://")
+            for item in value
+        )
+        or len(value) != len(set(value))
+    ):
+        raise ValueError(f"{path} must be a unique non-empty HTTPS URL list")
+
+
 def _validate_ux_observation(value: Any, index: int) -> None:
     path = f"ux_observations[{index}]"
     required = {
@@ -249,7 +503,6 @@ def _validate_ux_observation(value: Any, index: int) -> None:
         or seconds < 0
     ):
         raise ValueError(f"{path}.understood_seconds is invalid")
-
 
 
 def _validate_product_readiness(value: dict[str, Any]) -> None:
@@ -297,6 +550,7 @@ def _validate_product_readiness(value: dict[str, Any]) -> None:
         raise ValueError(
             "product readiness checks must equal the frozen required check set"
         )
+
 
 def _require_nonnegative_int(value: Any, path: str, *, positive: bool = False) -> None:
     minimum = 1 if positive else 0
@@ -433,12 +687,18 @@ def assess(
     corpus: dict[str, Any],
     *,
     product_readiness: dict[str, Any] | None = None,
+    contrasts: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if corpus.get("schema_version") != CORPUS_SCHEMA:
         raise ValueError(f"expected {CORPUS_SCHEMA}")
     _validate_corpus(corpus)
     if product_readiness is not None:
         _validate_product_readiness(product_readiness)
+
+    contrast_cases: list[dict[str, Any]] = []
+    if contrasts is not None:
+        _validate_contrasts(contrasts)
+        contrast_cases = [_mapping(case) for case in contrasts["cases"]]
 
     raw_cases = corpus.get("cases")
     raw_ux = corpus.get("ux_observations")
@@ -463,7 +723,29 @@ def assess(
     signal_repositories = {str(case.get("repository")) for case in signals}
     bot_signals = [case for case in signals if case.get("author_kind") == "bot"]
 
-    exact_labeled = [case for case in signals if _exact_labeled(case)]
+    mechanical_contrasts = [
+        case for case in contrast_cases if _exact_semantic_contrast(case)
+    ]
+    contrast_repositories = {
+        str(case.get("repository")) for case in mechanical_contrasts
+    }
+    replayable_contrasts = [
+        case
+        for case in mechanical_contrasts
+        if _mapping(case.get("aos")).get("execution") == "live_full_cli"
+    ]
+    required_overlap = [
+        case
+        for case in mechanical_contrasts
+        if case.get("required_non_independent_sources")
+    ]
+    contrast_labeled = [
+        case for case in mechanical_contrasts if _independently_labeled(case)
+    ]
+
+    exact_labeled = [
+        case for case in signals if _exact_labeled(case)
+    ] + contrast_labeled
     actionable = [
         case
         for case in exact_labeled
@@ -520,10 +802,13 @@ def assess(
         ),
         "collection_complete_cases": len(complete),
         "collection_complete_ratio": complete_ratio,
+        "contrast_sample_cases": len(contrast_cases),
+        "exact_semantic_contrast_cases": len(mechanical_contrasts),
+        "exact_semantic_contrast_repositories": len(contrast_repositories),
         "external_participants_available": participants_available,
         "external_teams_available": teams_available,
         "external_users": len(external),
-        "qualified_external_users": len(qualified_external),
+        "independently_labeled_contrast_cases": len(contrast_labeled),
         "labeled_signal_cases": len(exact_labeled),
         "median_comprehension_seconds": median_comprehension,
         "next_action_rate": next_action_rate,
@@ -531,13 +816,32 @@ def assess(
         "precision": precision,
         "product_readiness_checks_met": product_checks_met,
         "product_readiness_checks_required": len(_REQUIRED_PRODUCT_CHECKS),
+        "qualified_external_users": len(qualified_external),
+        "replayable_contrast_cases": len(replayable_contrasts),
         "repositories": len(repositories),
+        "required_non_independent_check_cases": len(required_overlap),
+        "required_non_independent_sources": sum(
+            len(case["required_non_independent_sources"]) for case in required_overlap
+        ),
         "retention_rate": retention_rate,
         "sample_cases": len(cases),
         "self_validating_cases": len(signals),
         "self_validating_repositories": len(signal_repositories),
     }
 
+    mechanism_evidence = [
+        _compound_minimum(
+            "exact_semantic_contrast",
+            {
+                "cases": len(mechanical_contrasts),
+                "repositories": len(contrast_repositories),
+            },
+            {
+                "cases": THRESHOLDS["exact_semantic_contrast_cases"],
+                "repositories": THRESHOLDS["exact_semantic_contrast_repositories"],
+            },
+        )
+    ]
     signal_validity = [
         _criterion("sample_scale", len(cases), ">=", THRESHOLDS["sample_cases"]),
         _criterion(
@@ -627,6 +931,7 @@ def assess(
         ),
     ]
 
+    mechanism_ready = all(item["met"] for item in mechanism_evidence)
     signal_ready = all(item["met"] for item in signal_validity)
     product_test_ready = all(item["met"] for item in product_test)
     usability_ready = all(item["met"] for item in external_usability)
@@ -642,6 +947,9 @@ def assess(
             "precision_sample",
         )
     )
+    mechanism_status = (
+        "MECHANISM_CONFIRMED" if mechanism_ready else "MECHANISM_INCOMPLETE"
+    )
     signal_status = (
         "SIGNAL_SUPPORTED"
         if signal_ready
@@ -650,9 +958,7 @@ def assess(
         else "SIGNAL_INCONCLUSIVE"
     )
     product_status = (
-        "PRODUCT_TEST_READY"
-        if product_test_ready
-        else "PRODUCT_TEST_INCOMPLETE"
+        "PRODUCT_TEST_READY" if product_test_ready else "PRODUCT_TEST_INCOMPLETE"
     )
     external_status = (
         "EXTERNAL_VALIDATION_PENDING"
@@ -666,36 +972,40 @@ def assess(
     )
     external_study_status = (
         "EXTERNAL_STUDY_READY"
-        if signal_ready and product_test_ready
+        if mechanism_ready and signal_ready and product_test_ready
         else "EXTERNAL_STUDY_NOT_READY"
     )
     status = (
         "GO"
-        if signal_ready and product_test_ready and usability_ready
+        if mechanism_ready and signal_ready and product_test_ready and usability_ready
         else "NO_GO"
     )
 
-    signal_blockers = [
-        item["id"] for item in signal_validity if not item["met"]
-    ]
+    mechanism_blockers = [item["id"] for item in mechanism_evidence if not item["met"]]
+    signal_blockers = [item["id"] for item in signal_validity if not item["met"]]
     product_blockers = [item["id"] for item in product_test if not item["met"]]
-    usability_blockers = [
-        item["id"] for item in external_usability if not item["met"]
-    ]
+    usability_blockers = [item["id"] for item in external_usability if not item["met"]]
     return {
-        "blockers": signal_blockers + product_blockers + usability_blockers,
+        "blockers": (
+            mechanism_blockers + signal_blockers + product_blockers + usability_blockers
+        ),
         "boundary": (
             "This is a product-publication decision, not a merge-readiness "
-            "verdict. Signal validity, internal product-test readiness, "
-            "external usability, and field utility are separate claims. "
-            "Internal tests and public repository history are never user evidence."
+            "verdict. Exact-SHA contrast can establish only a semantic "
+            "difference from GitHub. Signal validity, internal product-test "
+            "readiness, external usability, and field utility are separate "
+            "claims. Internal tests and public repository history are never "
+            "user evidence."
         ),
         "criteria": {
             "external_usability": external_usability,
+            "mechanism_evidence": mechanism_evidence,
             "product_test_readiness": product_test,
             "signal_validity": signal_validity,
         },
-        "external_study_blockers": signal_blockers + product_blockers,
+        "external_study_blockers": (
+            mechanism_blockers + signal_blockers + product_blockers
+        ),
         "metrics": metrics,
         "schema_version": ASSESSMENT_SCHEMA,
         "status": status,
@@ -703,10 +1013,12 @@ def assess(
             "external_study": external_study_status,
             "external_usability": external_status,
             "field_utility": field_status,
+            "mechanism_evidence": mechanism_status,
             "product_test_readiness": product_status,
             "signal_validity": signal_status,
         },
     }
+
 
 def render_markdown(assessment: dict[str, Any]) -> str:
     metrics = _mapping(assessment.get("metrics"))
@@ -720,6 +1032,7 @@ def render_markdown(assessment: dict[str, Any]) -> str:
         "",
         "## Track status",
         "",
+        f"- Mechanism evidence: `{tracks['mechanism_evidence']}`.",
         f"- Signal validity: `{tracks['signal_validity']}`.",
         f"- Internal product test: `{tracks['product_test_readiness']}`.",
         f"- External study: `{tracks['external_study']}`.",
@@ -744,6 +1057,21 @@ def render_markdown(assessment: dict[str, Any]) -> str:
         f"**{metrics['actionable_exact_findings']}**; independently "
         f"labeled signal cases: **{metrics['labeled_signal_cases']}**.",
         "",
+        "## Exact-SHA semantic contrast",
+        "",
+        f"- GitHub `clean` plus AOS `WARN/non_independent_evidence`: "
+        f"**{metrics['exact_semantic_contrast_cases']}** cases across "
+        f"**{metrics['exact_semantic_contrast_repositories']}** repositories.",
+        f"- Full canonical bundle/policy/record replay: "
+        f"**{metrics['replayable_contrast_cases']}** cases.",
+        f"- A required GitHub check was non-independent: "
+        f"**{metrics['required_non_independent_check_cases']}** case(s), "
+        f"**{metrics['required_non_independent_sources']}** source(s).",
+        f"- Independently adjudicated contrast outcomes: "
+        f"**{metrics['independently_labeled_contrast_cases']}**.",
+        "- Interpretation: semantic difference is demonstrated; usefulness "
+        "and precision remain unproven until outcomes are independently labeled.",
+        "",
         "## Product-test readiness",
         "",
         f"- Internal checks: **{metrics['product_readiness_checks_met']}**/"
@@ -764,13 +1092,15 @@ def render_markdown(assessment: dict[str, Any]) -> str:
     ]
     criteria = _mapping(assessment.get("criteria"))
     for group in (
+        "mechanism_evidence",
         "signal_validity",
         "product_test_readiness",
         "external_usability",
     ):
         for item in criteria.get(group, []):
             lines.append(
-                f"| `{group}` | `{item['id']}` | `{_display(item['observed'])}` | "
+                f"| `{group}` | `{item['id']}` | "
+                f"`{_display(item['observed'])}` | "
                 f"`{item['operator']} {_display(item['required'])}` | "
                 f"**{'met' if item['met'] else 'not met'}** |"
             )
@@ -779,8 +1109,10 @@ def render_markdown(assessment: dict[str, Any]) -> str:
             "",
             "## Decision rule",
             "",
-            "- `SIGNAL_SUPPORTED + PRODUCT_TEST_READY` permits only a "
-            "controlled external study; it does not permit publication.",
+            "- `MECHANISM_CONFIRMED` proves only that AOS can produce "
+            "decision-relevant information absent from the observed GitHub baseline.",
+            "- `MECHANISM_CONFIRMED + SIGNAL_SUPPORTED + PRODUCT_TEST_READY` "
+            "permits only a controlled external study; it does not permit publication.",
             "- `GO` additionally requires `EXTERNAL_USABILITY_SUPPORTED`.",
             "- Commercialization remains unvalidated until a separate field "
             "study establishes practical utility and retention.",
@@ -794,6 +1126,7 @@ def render_markdown(assessment: dict[str, Any]) -> str:
         ]
     )
     return "\n".join(lines)
+
 
 def _mapping(value: Any) -> dict[str, Any]:
     return value if isinstance(value, dict) else {}
@@ -817,6 +1150,31 @@ def _exact_labeled(case: dict[str, Any]) -> bool:
         and baseline.get("exact_sha") is True
         and baseline.get("merge_ready") is True
         and outcome.get("source") in _INDEPENDENT_LABEL_SOURCES
+        and outcome.get("classification") in _LABELED_OUTCOMES
+    )
+
+
+def _exact_semantic_contrast(case: dict[str, Any]) -> bool:
+    github = _mapping(case.get("github"))
+    aos = _mapping(case.get("aos"))
+    return bool(
+        github.get("source") == "github_rest_snapshot"
+        and github.get("exact_sha") is True
+        and github.get("state") == "open"
+        and github.get("draft") is False
+        and github.get("merge_state") == "clean"
+        and github.get("all_observed_checks_success") is True
+        and aos.get("verdict") == "WARN"
+        and aos.get("reason_code") == "non_independent_evidence"
+        and aos.get("non_independent_sources")
+        and aos.get("self_validating_workflows")
+    )
+
+
+def _independently_labeled(case: dict[str, Any]) -> bool:
+    outcome = _mapping(case.get("outcome"))
+    return bool(
+        outcome.get("source") in _INDEPENDENT_LABEL_SOURCES
         and outcome.get("classification") in _LABELED_OUTCOMES
     )
 
@@ -845,7 +1203,6 @@ def _criterion(
     }
 
 
-
 def _state_criterion(
     criterion_id: str,
     observed: Any,
@@ -858,6 +1215,7 @@ def _state_criterion(
         "operator": "==",
         "required": required,
     }
+
 
 def _compound_minimum(
     criterion_id: str,
@@ -887,6 +1245,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus")
     parser.add_argument("--product-readiness")
+    parser.add_argument("--contrast-corpus")
     parser.add_argument("--discovery-manifest")
     parser.add_argument("--discovery-analysis")
     parser.add_argument("--corpus-out")
@@ -921,7 +1280,12 @@ def main(argv: list[str] | None = None) -> int:
     product_readiness = (
         _load(Path(args.product_readiness)) if args.product_readiness else None
     )
-    assessment = assess(corpus, product_readiness=product_readiness)
+    contrasts = _load(Path(args.contrast_corpus)) if args.contrast_corpus else None
+    assessment = assess(
+        corpus,
+        product_readiness=product_readiness,
+        contrasts=contrasts,
+    )
     if args.json_out:
         _write(Path(args.json_out), assessment)
     markdown = render_markdown(assessment)

@@ -1,0 +1,216 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+      "repository": "Alan-Jowett/HardwareAbstractionIR"
+    },
+    "observed_at": "2026-07-14T20:25:45Z",
+    "pr": {
+      "draft": false,
+      "from_fork": false,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:4d98d38c08ff7daae3655de8659f11b7d114301d04a40e80e8d8088f89fce391",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [],
+        "test_harness": [],
+        "workflow": [
+          ".github/workflows/generated-artifacts.yml",
+          ".github/workflows/verify-generated-mcu.yml"
+        ]
+      },
+      "complete": true,
+      "non_independent_sources": [
+        "ch32v203g6u6 / Verify ch32v203g6u6",
+        "custom-qemu",
+        "esp32c3fn4",
+        "lm3s6965 / Verify lm3s6965",
+        "stm32f405rgt6 / Verify stm32f405rgt6"
+      ],
+      "non_independent_suites": [
+        79485171850
+      ],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [
+        ".github/workflows/generated-artifacts.yml"
+      ],
+      "subject": {
+        "base_sha": "016d9b284aa033a7da816138f3770131bf5b7fc5",
+        "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+        "pull_request": 62,
+        "repository": "Alan-Jowett/HardwareAbstractionIR"
+      },
+      "unchanged_workflow_runs": 1,
+      "verifier_change": true
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 67,
+          "app_slug": "travis-ci",
+          "check_suite_id": 79485158423,
+          "conclusion": null,
+          "source": "check_suites",
+          "state": "pending",
+          "status": "queued"
+        }
+      ],
+      "states": {
+        "action_required": 0,
+        "completed": 2,
+        "pending": 1
+      },
+      "units_total": 3
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:4d98d38c08ff7daae3655de8659f11b7d114301d04a40e80e8d8088f89fce391",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: copilot_code_reviewx1, deletionx1, non_fast_forwardx1, pull_requestx1; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:76269a1d554f7d46250f1e08ed5576bd652209715c3b20c73f7f265f7c31aae4",
+      "id": "ch32v203g6u6 / Verify ch32v203g6u6",
+      "identity": {
+        "check_run_id": 87194966275,
+        "completed_at": "2026-07-14T20:21:04Z",
+        "conclusion": "success",
+        "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+        "name": "ch32v203g6u6 / Verify ch32v203g6u6",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:21:04Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194966275 concluded success."
+    },
+    {
+      "digest": "sha256:a8fe8d6a09ef8defcbb445c27d3acb9e15f39c192b601d5116d439bb81625c0c",
+      "id": "copilot-pull-request-reviewer",
+      "identity": {
+        "check_run_id": 87194991818,
+        "completed_at": "2026-07-14T20:22:47Z",
+        "conclusion": "success",
+        "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+        "name": "copilot-pull-request-reviewer",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:22:47Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194991818 concluded success."
+    },
+    {
+      "digest": "sha256:d942ece6c8b6cf0e2d7ba57f76d255f7a23b0c4cff85e2c01606f6db054d7c0c",
+      "id": "custom-qemu",
+      "identity": {
+        "check_run_id": 87194966145,
+        "completed_at": "2026-07-14T20:19:04Z",
+        "conclusion": "success",
+        "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+        "name": "custom-qemu",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:04Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194966145 concluded success."
+    },
+    {
+      "digest": "sha256:675aceb5cf491368b67322bf302c225d34089087eefb9bb1c57da611bd80d562",
+      "id": "esp32c3fn4",
+      "identity": {
+        "check_run_id": 87194966116,
+        "completed_at": "2026-07-14T20:19:34Z",
+        "conclusion": "success",
+        "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+        "name": "esp32c3fn4",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:19:34Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87194966116 concluded success."
+    },
+    {
+      "digest": "sha256:05171902a5e6e29b7f2e969af39ab46cd97e4009322359915335a9f451875c58",
+      "id": "lm3s6965 / Verify lm3s6965",
+      "identity": {
+        "check_run_id": 87195026374,
+        "completed_at": "2026-07-14T20:21:03Z",
+        "conclusion": "success",
+        "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+        "name": "lm3s6965 / Verify lm3s6965",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:21:03Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87195026374 concluded success."
+    },
+    {
+      "digest": "sha256:4c8ddc41cc792ef503d101778deaf218ca7c656c7896258b1f9d490bb03f7d53",
+      "id": "stm32f405rgt6 / Verify stm32f405rgt6",
+      "identity": {
+        "check_run_id": 87195026359,
+        "completed_at": "2026-07-14T20:21:18Z",
+        "conclusion": "success",
+        "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+        "name": "stm32f405rgt6 / Verify stm32f405rgt6",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-14T20:21:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 87195026359 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 62,
+    "ref": "refs/pull/62/head",
+    "repository": "Alan-Jowett/HardwareAbstractionIR",
+    "sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4"
+  }
+}

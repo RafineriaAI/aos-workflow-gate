@@ -9,7 +9,7 @@
     "retention",
     "comprehension_time"
   ],
-  "boundary": "This is a product-publication decision, not a merge-readiness verdict. Signal validity, internal product-test readiness, external usability, and field utility are separate claims. Internal tests and public repository history are never user evidence.",
+  "boundary": "This is a product-publication decision, not a merge-readiness verdict. Exact-SHA contrast can establish only a semantic difference from GitHub. Signal validity, internal product-test readiness, external usability, and field utility are separate claims. Internal tests and public repository history are never user evidence.",
   "criteria": {
     "external_usability": [
       {
@@ -46,6 +46,21 @@
         "observed": null,
         "operator": "<=",
         "required": 30
+      }
+    ],
+    "mechanism_evidence": [
+      {
+        "id": "exact_semantic_contrast",
+        "met": true,
+        "observed": {
+          "cases": 3,
+          "repositories": 3
+        },
+        "operator": ">= each",
+        "required": {
+          "cases": 3,
+          "repositories": 3
+        }
       }
     ],
     "product_test_readiness": [
@@ -169,9 +184,13 @@
     "ci_related_review_prs": 12,
     "collection_complete_cases": 100,
     "collection_complete_ratio": 1.0,
+    "contrast_sample_cases": 3,
+    "exact_semantic_contrast_cases": 3,
+    "exact_semantic_contrast_repositories": 3,
     "external_participants_available": false,
     "external_teams_available": false,
     "external_users": 0,
+    "independently_labeled_contrast_cases": 0,
     "labeled_signal_cases": 0,
     "median_comprehension_seconds": null,
     "next_action_rate": null,
@@ -180,18 +199,22 @@
     "product_readiness_checks_met": 6,
     "product_readiness_checks_required": 6,
     "qualified_external_users": 0,
+    "replayable_contrast_cases": 2,
     "repositories": 10,
+    "required_non_independent_check_cases": 1,
+    "required_non_independent_sources": 1,
     "retention_rate": null,
     "sample_cases": 100,
     "self_validating_cases": 7,
     "self_validating_repositories": 5
   },
-  "schema_version": "value-assessment-v1",
+  "schema_version": "value-assessment-v2",
   "status": "NO_GO",
   "tracks": {
     "external_study": "EXTERNAL_STUDY_NOT_READY",
     "external_usability": "EXTERNAL_VALIDATION_PENDING",
     "field_utility": "FIELD_VALIDATION_PENDING",
+    "mechanism_evidence": "MECHANISM_CONFIRMED",
     "product_test_readiness": "PRODUCT_TEST_READY",
     "signal_validity": "SIGNAL_INCONCLUSIVE"
   }

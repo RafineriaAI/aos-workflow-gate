@@ -2,10 +2,11 @@
 
 **Publication status: `NO_GO`**
 
-This is a product-publication decision, not a merge-readiness verdict. Signal validity, internal product-test readiness, external usability, and field utility are separate claims. Internal tests and public repository history are never user evidence.
+This is a product-publication decision, not a merge-readiness verdict. Exact-SHA contrast can establish only a semantic difference from GitHub. Signal validity, internal product-test readiness, external usability, and field utility are separate claims. Internal tests and public repository history are never user evidence.
 
 ## Track status
 
+- Mechanism evidence: `MECHANISM_CONFIRMED`.
 - Signal validity: `SIGNAL_INCONCLUSIVE`.
 - Internal product test: `PRODUCT_TEST_READY`.
 - External study: `EXTERNAL_STUDY_NOT_READY`.
@@ -20,6 +21,14 @@ This is a product-publication decision, not a merge-readiness verdict. Signal va
 - Keyword-matched CI/test inline review comments: **22** across **12** PRs.
 - Exact-baseline actionable findings: **0**; independently labeled signal cases: **0**.
 
+## Exact-SHA semantic contrast
+
+- GitHub `clean` plus AOS `WARN/non_independent_evidence`: **3** cases across **3** repositories.
+- Full canonical bundle/policy/record replay: **2** cases.
+- A required GitHub check was non-independent: **1** case(s), **1** source(s).
+- Independently adjudicated contrast outcomes: **0**.
+- Interpretation: semantic difference is demonstrated; usefulness and precision remain unproven until outcomes are independently labeled.
+
 ## Product-test readiness
 
 - Internal checks: **6**/**6** met.
@@ -32,6 +41,7 @@ This is a product-publication decision, not a merge-readiness verdict. Signal va
 
 | Track | Criterion | Observed | Required | Result |
 | --- | --- | --- | --- | --- |
+| `mechanism_evidence` | `exact_semantic_contrast` | `cases=3, repositories=3` | `>= each cases=3, repositories=3` | **met** |
 | `signal_validity` | `sample_scale` | `100` | `>= 100` | **met** |
 | `signal_validity` | `repository_diversity` | `10` | `>= 10` | **met** |
 | `signal_validity` | `collection_completeness` | `1.000` | `>= 0.950` | **met** |
@@ -53,7 +63,8 @@ This is a product-publication decision, not a merge-readiness verdict. Signal va
 
 ## Decision rule
 
-- `SIGNAL_SUPPORTED + PRODUCT_TEST_READY` permits only a controlled external study; it does not permit publication.
+- `MECHANISM_CONFIRMED` proves only that AOS can produce decision-relevant information absent from the observed GitHub baseline.
+- `MECHANISM_CONFIRMED + SIGNAL_SUPPORTED + PRODUCT_TEST_READY` permits only a controlled external study; it does not permit publication.
 - `GO` additionally requires `EXTERNAL_USABILITY_SUPPORTED`.
 - Commercialization remains unvalidated until a separate field study establishes practical utility and retention.
 - `NO_GO` blocks publication, marketing, production recommendations, and paid pilot intake.

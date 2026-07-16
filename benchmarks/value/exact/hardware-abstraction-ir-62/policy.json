@@ -1,0 +1,30 @@
+{
+  "advisory_sources": [
+    "branch.rules",
+    "ch32v203g6u6 / Verify ch32v203g6u6",
+    "copilot-pull-request-reviewer",
+    "custom-qemu",
+    "esp32c3fn4",
+    "lm3s6965 / Verify lm3s6965",
+    "stm32f405rgt6 / Verify stm32f405rgt6"
+  ],
+  "mode": "advisory",
+  "policy_id": "collected-advisory",
+  "required_sources": [],
+  "rules": {
+    "advisory_warning": "WARN",
+    "failed_required_source": "BLOCK",
+    "incomplete_collection": "WARN",
+    "malformed_input": "BLOCK",
+    "missing_required_source": "BLOCK",
+    "no_required_sources": "WARN",
+    "non_independent_evidence": "WARN",
+    "verifier_change_unavailable": "WARN"
+  },
+  "schema_version": "draft-0",
+  "subject": {
+    "require_repository": true,
+    "require_sha": true
+  },
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

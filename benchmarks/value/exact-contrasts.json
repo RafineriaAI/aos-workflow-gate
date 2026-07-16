@@ -1,0 +1,180 @@
+{
+  "boundary": "Prospective, read-only public GitHub observations. CLEAN plus successful observed check runs is compared with AOS non_independent_evidence on the same head SHA. The snapshot is not signed by GitHub and does not prove user value, defect prevention, precision, ROI, or market demand.",
+  "captured_at": "2026-07-14T20:25:45Z",
+  "cases": [
+    {
+      "aos": {
+        "artifact_bundle": "benchmarks/value/exact/geotab-mygeotab-python-240/bundle.json",
+        "artifact_policy": "benchmarks/value/exact/geotab-mygeotab-python-240/policy.json",
+        "artifact_record": "benchmarks/value/exact/geotab-mygeotab-python-240/gate-decision.json",
+        "bundle_digest": "sha256:b77a94aad51ca759e95227cb526db79196ad7987a681b77ea4519b0ec286515c",
+        "execution": "live_full_cli",
+        "non_independent_sources": [
+          "Integration tests – Python 3.12",
+          "Live network tests – Python 3.12",
+          "Unit tests – Python 3.10",
+          "Unit tests – Python 3.11",
+          "Unit tests – Python 3.12",
+          "Unit tests – Python 3.13",
+          "Unit tests – Python 3.14"
+        ],
+        "reason_code": "non_independent_evidence",
+        "record_digest": "sha256:5419b73e02ff47244d5262792390d4c0350513e86a29a0e1f3e03d81aabb1255",
+        "self_validating_workflows": [
+          ".github/workflows/pythonpackage.yml"
+        ],
+        "verdict": "WARN"
+      },
+      "captured_at": "2026-07-14T20:25:10Z",
+      "evidence_urls": [
+        "https://github.com/Geotab/mygeotab-python/pull/240",
+        "https://github.com/Geotab/mygeotab-python/actions/runs/29365222739",
+        "https://github.com/Geotab/mygeotab-python/actions/runs/29365222768"
+      ],
+      "github": {
+        "all_observed_checks_success": true,
+        "draft": false,
+        "exact_sha": true,
+        "merge_state": "clean",
+        "required_checks": [],
+        "source": "github_rest_snapshot",
+        "state": "open"
+      },
+      "head_sha": "22d6a517c50a1fd7284c50565c53b69daa1e9fd7",
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 240,
+      "repository": "Geotab/mygeotab-python",
+      "required_non_independent_sources": []
+    },
+    {
+      "aos": {
+        "artifact_bundle": "benchmarks/value/exact/hardware-abstraction-ir-62/bundle.json",
+        "artifact_policy": "benchmarks/value/exact/hardware-abstraction-ir-62/policy.json",
+        "artifact_record": "benchmarks/value/exact/hardware-abstraction-ir-62/gate-decision.json",
+        "bundle_digest": "sha256:9db56de60abcd8d28c5f3db8992642dcf68e2bcf7130286f322ecdd08902505d",
+        "execution": "live_full_cli",
+        "non_independent_sources": [
+          "ch32v203g6u6 / Verify ch32v203g6u6",
+          "custom-qemu",
+          "esp32c3fn4",
+          "lm3s6965 / Verify lm3s6965",
+          "stm32f405rgt6 / Verify stm32f405rgt6"
+        ],
+        "reason_code": "non_independent_evidence",
+        "record_digest": "sha256:377fecb99cd892e236523d2e48415c0f4263c5dc7147a7816196e52469c53727",
+        "self_validating_workflows": [
+          ".github/workflows/generated-artifacts.yml"
+        ],
+        "verdict": "WARN"
+      },
+      "captured_at": "2026-07-14T20:25:45Z",
+      "evidence_urls": [
+        "https://github.com/Alan-Jowett/HardwareAbstractionIR/pull/62",
+        "https://github.com/Alan-Jowett/HardwareAbstractionIR/actions/runs/29365217760",
+        "https://github.com/Alan-Jowett/HardwareAbstractionIR/pull/62#discussion_r3582261342"
+      ],
+      "github": {
+        "all_observed_checks_success": true,
+        "draft": false,
+        "exact_sha": true,
+        "merge_state": "clean",
+        "required_checks": [],
+        "source": "github_rest_snapshot",
+        "state": "open"
+      },
+      "head_sha": "c46f3abe0857828c8fc10f013a7b07b5ef3533a4",
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 62,
+      "repository": "Alan-Jowett/HardwareAbstractionIR",
+      "required_non_independent_sources": []
+    },
+    {
+      "aos": {
+        "artifact_bundle": null,
+        "artifact_policy": null,
+        "artifact_record": null,
+        "bundle_digest": null,
+        "execution": "live_api_engine_replay",
+        "non_independent_sources": [
+          "Ansible Dry Run (Check Mode)",
+          "Ansible Lint",
+          "Ansible Syntax Check",
+          "Shell Script Syntax Check",
+          "Validate Ansible Configuration",
+          "actionlint",
+          "build-summary",
+          "flake8 + pydocstyle (scripts/)",
+          "yamllint"
+        ],
+        "reason_code": "non_independent_evidence",
+        "record_digest": null,
+        "self_validating_workflows": [
+          ".github/workflows/ansible-check.yaml",
+          ".github/workflows/robot-manager-lint.yaml",
+          ".github/workflows/ros2-build-test-skipped.yaml",
+          ".github/workflows/workflow-lint.yaml"
+        ],
+        "verdict": "WARN"
+      },
+      "captured_at": "2026-07-14T20:24:00Z",
+      "evidence_urls": [
+        "https://github.com/scramble-robot/questix/pull/99",
+        "https://github.com/scramble-robot/questix/actions/runs/29365218730",
+        "https://github.com/scramble-robot/questix/actions/runs/29365218563",
+        "https://github.com/scramble-robot/questix/actions/runs/29365218274",
+        "https://github.com/scramble-robot/questix/actions/runs/29365218294"
+      ],
+      "github": {
+        "all_observed_checks_success": true,
+        "draft": false,
+        "exact_sha": true,
+        "merge_state": "clean",
+        "required_checks": [
+          {
+            "context": "build-summary",
+            "integration_id": 15368
+          },
+          {
+            "context": "semantic-pull-request / semantic-pull-request",
+            "integration_id": 15368
+          }
+        ],
+        "source": "github_rest_snapshot",
+        "state": "open"
+      },
+      "head_sha": "2356e85056a62d60b963519ee940b81b8ee57284",
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 99,
+      "repository": "scramble-robot/questix",
+      "required_non_independent_sources": [
+        "build-summary"
+      ]
+    }
+  ],
+  "method": {
+    "exact_clean_non_draft_cases": 3,
+    "green_self_validating_candidates": 6,
+    "open_at_second_observation": 18,
+    "order": "desc",
+    "query": "workflow",
+    "selection": "100 most recently updated open pull requests returned by a global GitHub workflow query, then filtered by changed workflow paths, exact-head workflow runs, successful check runs, non-draft state and GitHub clean merge state",
+    "selection_trace": "counts_only_not_replayable",
+    "sort": "updated",
+    "state": "open",
+    "topn": 100,
+    "workflow_change_candidates": 22
+  },
+  "schema_version": "value-contrast-v0"
+}

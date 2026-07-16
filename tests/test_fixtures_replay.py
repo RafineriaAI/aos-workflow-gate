@@ -54,6 +54,16 @@ FIXTURES = [
         "examples/zero-required-policy.json",
         "examples/zero-required-record.json",
     ),
+    (
+        "benchmarks/value/exact/geotab-mygeotab-python-240/bundle.json",
+        "benchmarks/value/exact/geotab-mygeotab-python-240/policy.json",
+        "benchmarks/value/exact/geotab-mygeotab-python-240/gate-decision.json",
+    ),
+    (
+        "benchmarks/value/exact/hardware-abstraction-ir-62/bundle.json",
+        "benchmarks/value/exact/hardware-abstraction-ir-62/policy.json",
+        "benchmarks/value/exact/hardware-abstraction-ir-62/gate-decision.json",
+    ),
 ]
 
 

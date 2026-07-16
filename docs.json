@@ -39,6 +39,7 @@
     "benchmarks/value/README.md",
     "benchmarks/value/ASSESSMENT.md",
     "benchmarks/value/HYBRID_PROTOCOL.md",
+    "benchmarks/value/EXACT_CONTRAST.md",
     "ROADMAP.md",
     "SECURITY.md",
     "CONTRIBUTING.md",
@@ -105,7 +106,14 @@
     "benchmarks/contrast/CONTRAST.md",
     "benchmarks/value/corpus.json",
     "benchmarks/value/assessment.json",
-    "benchmarks/value/product-test-readiness.json"
+    "benchmarks/value/product-test-readiness.json",
+    "benchmarks/value/exact-contrasts.json",
+    "benchmarks/value/exact/geotab-mygeotab-python-240/bundle.json",
+    "benchmarks/value/exact/geotab-mygeotab-python-240/policy.json",
+    "benchmarks/value/exact/geotab-mygeotab-python-240/gate-decision.json",
+    "benchmarks/value/exact/hardware-abstraction-ir-62/bundle.json",
+    "benchmarks/value/exact/hardware-abstraction-ir-62/policy.json",
+    "benchmarks/value/exact/hardware-abstraction-ir-62/gate-decision.json"
   ],
   "policies": [
     "policies/default.yml",

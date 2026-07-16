@@ -14,8 +14,9 @@ This repository is the workflow layer around `aos-kernel`. Its job is to make a 
 > **Pre-pilot validation:** the implementation is available for internal,
 > advisory technical evaluation. The committed
 > [Hybrid Value Gate assessment](benchmarks/value/ASSESSMENT.md) is `NO_GO`:
-> signal validity is inconclusive, internal product-test readiness passes,
-> and external usability and field utility remain untested. External
+> exact-SHA mechanism evidence is confirmed for three bounded cases, signal
+> validity remains inconclusive, internal product-test readiness passes, and
+> external usability and field utility remain untested. External
 > onboarding, marketing, production recommendations, and paid pilot intake
 > remain closed.
 
@@ -132,9 +133,9 @@ replayed by the test suite on every CI run.
 
 These examples do not prove incremental market value, production
 effectiveness, or low false-positive rates. The separate
-[Hybrid Value Gate](benchmarks/value/README.md) keeps signal validity,
-internal product-test readiness, external usability, and field utility as
-separate claims. Its current publication decision is
+[Hybrid Value Gate](benchmarks/value/README.md) keeps mechanism evidence,
+signal validity, internal product-test readiness, external usability, and
+field utility as separate claims. Its current publication decision is
 [`NO_GO`](benchmarks/value/ASSESSMENT.md).
 
 ## Current status
