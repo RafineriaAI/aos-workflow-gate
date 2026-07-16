@@ -81,6 +81,39 @@ def test_missing_required_source_blocks() -> None:
     assert any(r.rule == "missing_required_source" for r in decision.reasons)
 
 
+@pytest.mark.parametrize("state", ["missing", "pending", "unverifiable"])
+def test_missing_required_source_carries_structural_state(
+    state: str,
+) -> None:
+    bundle = _bundle([])
+    bundle["collection"] = {
+        "status": "complete",
+        "requirements": [
+            {"context": "ci.validate", "state": state},
+        ],
+    }
+
+    decision = evaluate(bundle, _policy())
+    reason = next(
+        item
+        for item in decision.reasons
+        if item.rule == "missing_required_source"
+    )
+
+    assert reason.state == state
+    assert reason.as_dict()["state"] == state
+
+
+def test_missing_required_source_defaults_to_structural_missing() -> None:
+    decision = evaluate(_bundle([]), _policy())
+    reason = next(
+        item
+        for item in decision.reasons
+        if item.rule == "missing_required_source"
+    )
+
+    assert reason.state == "missing"
+    assert "requirement state" not in reason.detail
 def test_failed_required_source_blocks() -> None:
     decision = evaluate(
         _bundle([_source("ci.validate", "failure", required=True)]), _policy()

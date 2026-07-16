@@ -465,8 +465,13 @@ def _bundle(status: str | None) -> dict[str, Any]:
 def test_incomplete_collection_never_passes(status: str) -> None:
     decision = evaluate(_bundle(status), _policy())
     assert decision.verdict == "WARN"
-    rules = {reason.rule for reason in decision.reasons}
-    assert "incomplete_collection" in rules
+    reason = next(
+        item
+        for item in decision.reasons
+        if item.rule == "incomplete_collection"
+    )
+    assert reason.state == status
+    assert reason.as_dict()["state"] == status
 
 
 def test_complete_or_unrecorded_collection_passes() -> None:

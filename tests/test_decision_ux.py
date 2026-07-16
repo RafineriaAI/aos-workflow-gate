@@ -12,6 +12,8 @@ from __future__ import annotations
 
 from typing import Any
 
+import pytest
+
 from aos_workflow_gate import canonical
 from aos_workflow_gate.summarize import diagnose, render_html, render_markdown
 
@@ -45,17 +47,20 @@ def _record(
         "verification_status": "UNSIGNED_NOT_OFFICIAL",
         "summary": f"Gate {verdict}: test.",
         "reasons": reasons or [],
-        "inputs": inputs
-        or [
-            {
-                "id": "ci",
-                "kind": "github_check",
-                "status": "success",
-                "required": True,
-                "digest": None,
-                "signal_source": None,
-            }
-        ],
+        "inputs": (
+            inputs
+            if inputs is not None
+            else [
+                {
+                    "id": "ci",
+                    "kind": "github_check",
+                    "status": "success",
+                    "required": True,
+                    "digest": None,
+                    "signal_source": None,
+                }
+            ]
+        ),
         "input_bundle_digest": "sha256:" + "1" * 64,
     }
     if observation is not None:
@@ -65,14 +70,22 @@ def _record(
 
 
 def _reason(
-    rule: str, severity: str, source_id: str | None, detail: str = "d"
+    rule: str,
+    severity: str,
+    source_id: str | None,
+    detail: str = "d",
+    *,
+    state: str | None = None,
 ) -> dict[str, Any]:
-    return {
+    value: dict[str, Any] = {
         "rule": rule,
         "severity": severity,
         "source_id": source_id,
         "detail": detail,
     }
+    if state is not None:
+        value["state"] = state
+    return value
 
 
 # --- quiet PASS ------------------------------------------------------------
@@ -218,6 +231,135 @@ def test_scope_shows_protection_source_and_strict() -> None:
     assert "up to date" in diag["scope"]
 
 
+# --- state-precise remediation ---------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("state", "code", "count_key"),
+    [
+        ("missing", "required_source_missing", "required_missing"),
+        ("pending", "required_source_pending", "required_pending"),
+        (
+            "unverifiable",
+            "required_source_unverifiable",
+            "required_unverifiable",
+        ),
+    ],
+)
+def test_required_gap_remediation_uses_structural_state(
+    state: str, code: str, count_key: str
+) -> None:
+    reason = _reason(
+        "missing_required_source",
+        "BLOCK",
+        "ci",
+        "opaque display text",
+        state=state,
+    )
+
+    diag = diagnose(_record(verdict="BLOCK", reasons=[reason], inputs=[]))
+
+    assert diag["remediation"]["code"] == code
+    assert diag["remediation"]["state"] == state
+    assert diag["remediation"]["source_id"] == "ci"
+    assert diag["counts"]["required_total"] == 1
+    assert diag["counts"]["advisory_total"] == 0
+    assert diag["counts"][count_key] == 1
+    assert "1 required" in diag["scope"]
+    assert diag["gaps"][0]["remediation"] == diag["remediation"]
+    assert diag["next"] == diag["remediation"]["action"]
+
+
+def test_legacy_detail_is_never_parsed_as_operational_state() -> None:
+    reason = _reason(
+        "missing_required_source",
+        "BLOCK",
+        "ci",
+        "display only (requirement state: pending)",
+    )
+
+    diag = diagnose(_record(verdict="BLOCK", reasons=[reason], inputs=[]))
+
+    assert diag["remediation"]["code"] == "required_source_unclassified"
+    assert "state" not in diag["remediation"]
+    assert diag["counts"]["required_missing"] == 1
+    assert diag["counts"]["required_pending"] == 0
+
+
+@pytest.mark.parametrize(
+    ("status", "code"),
+    [
+        ("failure", "required_source_failed"),
+        ("cancelled", "required_source_cancelled"),
+        ("timed_out", "required_source_timed_out"),
+        ("skipped", "required_source_skipped"),
+        ("neutral", "required_source_neutral"),
+        ("action_required", "required_source_action_required"),
+        ("stale", "required_source_stale"),
+        ("startup_failure", "required_source_startup_failure"),
+        ("tampered", "required_source_tampered"),
+        ("subject_mismatch", "required_source_subject_mismatch"),
+        ("bounded_duplicate", "required_source_bounded_duplicate"),
+        ("freshness_unverified", "required_source_freshness_unverified"),
+    ],
+)
+def test_failed_check_remediation_uses_structured_input_status(
+    status: str, code: str
+) -> None:
+    inputs = [
+        {
+            "id": "ci",
+            "kind": "github_check",
+            "status": status,
+            "required": True,
+            "digest": None,
+            "signal_source": None,
+        }
+    ]
+    reason = _reason(
+        "failed_required_source",
+        "BLOCK",
+        "ci",
+        "same display text for every status",
+    )
+
+    diag = diagnose(
+        _record(verdict="BLOCK", reasons=[reason], inputs=inputs)
+    )
+
+    assert diag["remediation"]["code"] == code
+    assert diag["remediation"]["state"] == status
+    assert "ci" in diag["next"]
+
+
+@pytest.mark.parametrize(
+    ("status", "code"),
+    [
+        ("wait_timeout", "collection_wait_timeout"),
+        ("subject_mismatch", "collection_subject_mismatch"),
+        ("truncated", "collection_truncated"),
+    ],
+)
+def test_collection_remediation_uses_structured_observation_status(
+    status: str, code: str
+) -> None:
+    reason = _reason(
+        "incomplete_collection",
+        "WARN",
+        None,
+        "same display text for every collection status",
+    )
+
+    diag = diagnose(
+        _record(
+            verdict="WARN",
+            reasons=[reason],
+            observation={"status": status},
+        )
+    )
+
+    assert diag["remediation"]["code"] == code
+    assert diag["remediation"]["state"] == status
 # --- one projection, two views ----------------------------------------------
 
 
