@@ -1,4 +1,4 @@
-"""Deterministic pre-publication signal and product-evidence gate.
+"""Deterministic signal and product-evidence claim gate.
 
 This maintainer tool evaluates evidence about *incremental* product value.
 It never participates in a merge-readiness verdict. Signal validity,
@@ -77,11 +77,19 @@ _REQUIRED_UTILITY_CHECKS = frozenset(
     }
 )
 _UTILITY_READINESS_FIELDS = frozenset(
-    {"boundary", "captured_at", "checks", "schema_version", "task_corpus"}
+    {
+        "boundary",
+        "captured_at",
+        "checks",
+        "schema_version",
+        "task_corpus",
+        "validation_release",
+    }
 )
 _UTILITY_CORPUS_FIELDS = frozenset(
     {"case_count", "digest", "negative_controls", "path", "positive_controls"}
 )
+_VALIDATION_RELEASE_FIELDS = frozenset({"access", "channel", "mode", "telemetry"})
 _UTILITY_TASK_TOP_FIELDS = frozenset({"boundary", "cases", "schema_version"})
 _UTILITY_TASK_CASE_FIELDS = frozenset(
     {"case_id", "classification", "expected", "source"}
@@ -616,6 +624,21 @@ def _validate_utility_readiness(value: dict[str, Any]) -> None:
     ):
         raise ValueError("utility readiness task_corpus counts are inconsistent")
 
+    release = value["validation_release"]
+    if not isinstance(release, dict) or set(release) != _VALIDATION_RELEASE_FIELDS:
+        raise ValueError("utility readiness validation_release is invalid")
+    expected_release = {
+        "access": "free",
+        "channel": "public_self_serve",
+        "mode": "advisory",
+        "telemetry": "none",
+    }
+    if release != expected_release:
+        raise ValueError(
+            "utility readiness validation_release must be free, public_self_serve, "
+            "advisory, and telemetry-free"
+        )
+
     checks = value["checks"]
     if not isinstance(checks, list):
         raise ValueError("utility readiness checks must be a list")
@@ -929,6 +952,13 @@ def assess(
     }
     utility = utility_readiness or {}
     utility_corpus = _mapping(utility.get("task_corpus"))
+    validation_release = _mapping(utility.get("validation_release"))
+    free_validation_declared = validation_release == {
+        "access": "free",
+        "channel": "public_self_serve",
+        "mode": "advisory",
+        "telemetry": "none",
+    }
     utility_by_id = {
         str(item.get("id")): _mapping(item)
         for item in utility.get("checks", [])
@@ -1043,6 +1073,10 @@ def assess(
         "utility_readiness_checks_met": utility_checks_met,
         "utility_readiness_checks_required": len(_REQUIRED_UTILITY_CHECKS),
         "utility_task_cases": _nonnegative_int(utility_corpus.get("case_count")),
+        "validation_access": validation_release.get("access"),
+        "validation_channel": validation_release.get("channel"),
+        "validation_mode": validation_release.get("mode"),
+        "validation_telemetry": validation_release.get("telemetry"),
         "noise_cases": len(noise),
         "precision": precision,
         "product_readiness_checks_met": product_checks_met,
@@ -1219,6 +1253,8 @@ def assess(
         and utility_test_ready
         and signal_status != "SIGNAL_NOT_SUPPORTED"
     )
+    free_validation_available = external_test_ready and free_validation_declared
+    metrics["free_self_serve_validation_available"] = free_validation_available
     external_test_status = (
         "READY_FOR_EXTERNAL_VALIDATION"
         if external_test_ready
@@ -1226,6 +1262,11 @@ def assess(
     )
     participant_access_status = (
         "PARTICIPANTS_AVAILABLE" if participants_available else "RECRUITMENT_PENDING"
+    )
+    validation_distribution_status = (
+        "FREE_SELF_SERVE_VALIDATION"
+        if free_validation_available
+        else "VALIDATION_DISTRIBUTION_CLOSED"
     )
     status = (
         "GO"
@@ -1259,13 +1300,14 @@ def assess(
             + usability_blockers
         ),
         "boundary": (
-            "This is a product-publication decision, not a merge-readiness "
-            "verdict. Exact-SHA contrast can establish only a semantic "
-            "difference from GitHub. Internal utility tasks establish only "
-            "testability of the diagnosis, not practical usefulness. Signal "
-            "validity, product testability, external usability, and field "
-            "utility are separate claims. Internal tests and public repository "
-            "history are never user evidence."
+            "This is a product-claim decision, not a merge-readiness verdict. "
+            "A free advisory release is a validation channel, not evidence of "
+            "usefulness or market demand. Exact-SHA contrast can establish only "
+            "a semantic difference from GitHub. Internal utility tasks establish "
+            "only testability of the diagnosis, not practical usefulness. Signal "
+            "validity, product testability, external usability, and field utility "
+            "are separate claims. Internal tests and public repository history "
+            "are never user evidence."
         ),
         "criteria": {
             "external_usability": external_usability,
@@ -1287,6 +1329,7 @@ def assess(
             "practical_utility_testability": utility_status,
             "product_test_readiness": product_status,
             "signal_validity": signal_status,
+            "validation_distribution": validation_distribution_status,
         },
     }
 
@@ -1297,7 +1340,7 @@ def render_markdown(assessment: dict[str, Any]) -> str:
     lines = [
         "# Hybrid Value Gate",
         "",
-        f"**Publication status: `{assessment['status']}`**",
+        f"**Product-claim status: `{assessment['status']}`**",
         "",
         str(assessment["boundary"]),
         "",
@@ -1310,6 +1353,7 @@ def render_markdown(assessment: dict[str, Any]) -> str:
         f"`{tracks['practical_utility_testability']}`.",
         f"- External-test readiness: `{tracks['external_test_readiness']}`.",
         f"- Participant access: `{tracks['participant_access']}`.",
+        f"- Validation distribution: `{tracks['validation_distribution']}`.",
         f"- External usability: `{tracks['external_usability']}`.",
         f"- Field utility: `{tracks['field_utility']}`.",
         "",
@@ -1356,6 +1400,10 @@ def render_markdown(assessment: dict[str, Any]) -> str:
         f"**{'yes' if metrics['external_teams_available'] else 'no'}**.",
         f"- Qualified external users observed: "
         f"**{metrics['qualified_external_users']}**.",
+        f"- Free self-serve validation available: "
+        f"**{'yes' if metrics['free_self_serve_validation_available'] else 'no'}** "
+        f"(`{metrics['validation_mode']}`, telemetry: "
+        f"`{metrics['validation_telemetry']}`).",
         "- Internal checks can establish only PRODUCT_TEST_READY; they cannot "
         "establish product usefulness, adoption, retention, or willingness to pay.",
         "",
@@ -1400,17 +1448,21 @@ def render_markdown(assessment: dict[str, Any]) -> str:
             "- `READY_FOR_EXTERNAL_VALIDATION` requires confirmed mechanism, "
             "internal product readiness, and the frozen utility-task corpus. "
             "`SIGNAL_INCONCLUSIVE` may be studied; `SIGNAL_NOT_SUPPORTED` blocks it.",
-            "- `READY_FOR_EXTERNAL_VALIDATION` permits only recruitment and a "
-            "controlled advisory study. It is not `PRODUCT_USEFUL`, pilot readiness, "
-            "or publication approval.",
+            "- `READY_FOR_EXTERNAL_VALIDATION` permits recruitment and a controlled "
+            "advisory study. It is not `PRODUCT_USEFUL`, paid-pilot readiness, or a "
+            "production recommendation.",
+            "- `FREE_SELF_SERVE_VALIDATION` permits a public, no-cost advisory "
+            "technical preview with no telemetry. Availability, installs, and "
+            "downloads are funnel observations, not usefulness evidence.",
             "- `GO` additionally requires `SIGNAL_SUPPORTED` and independently "
             "supported external usability.",
             "- Commercialization remains unvalidated until a separate field "
             "study establishes practical utility and retention.",
-            "- `NO_GO` blocks publication, marketing, production "
-            "recommendations, and paid pilot intake.",
+            "- `NO_GO` blocks efficacy or value claims, production recommendations, "
+            "and paid pilot intake. It does not block the declared free advisory "
+            "validation channel.",
             "",
-            "Current publication blockers: "
+            "Current product-claim blockers: "
             + ", ".join(f"`{item}`" for item in assessment["blockers"])
             + ".",
             "",

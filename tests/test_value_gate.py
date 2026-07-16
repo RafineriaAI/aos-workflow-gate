@@ -202,9 +202,15 @@ def test_current_evidence_separates_all_tracks() -> None:
         "practical_utility_testability": "UTILITY_TEST_READY",
         "product_test_readiness": "PRODUCT_TEST_READY",
         "signal_validity": "SIGNAL_INCONCLUSIVE",
+        "validation_distribution": "FREE_SELF_SERVE_VALIDATION",
     }
     assert result["metrics"]["utility_task_cases"] == 8
     assert result["metrics"]["utility_readiness_checks_met"] == 7
+    assert result["metrics"]["free_self_serve_validation_available"] is True
+    assert result["metrics"]["validation_access"] == "free"
+    assert result["metrics"]["validation_channel"] == "public_self_serve"
+    assert result["metrics"]["validation_mode"] == "advisory"
+    assert result["metrics"]["validation_telemetry"] == "none"
     assert result["external_test_blockers"] == []
     assert "exact_incremental_findings" in result["blockers"]
     assert "qualified_external_users" in result["blockers"]
@@ -233,6 +239,7 @@ def test_signal_and_internal_readiness_open_only_external_validation() -> None:
         "READY_FOR_EXTERNAL_VALIDATION"
     )
     assert result["tracks"]["practical_utility_testability"] == ("UTILITY_TEST_READY")
+    assert result["tracks"]["validation_distribution"] == ("FREE_SELF_SERVE_VALIDATION")
     assert result["tracks"]["external_usability"] == "EXTERNAL_VALIDATION_PENDING"
     assert result["external_test_blockers"] == []
     assert result["blockers"] == [
@@ -291,6 +298,9 @@ def test_product_readiness_failure_blocks_external_validation() -> None:
         "NOT_READY_FOR_EXTERNAL_VALIDATION"
     )
     assert "product_adversarial_ux" in result["external_test_blockers"]
+    assert result["tracks"]["validation_distribution"] == (
+        "VALIDATION_DISTRIBUTION_CLOSED"
+    )
 
 
 def test_missing_utility_readiness_blocks_external_validation() -> None:
@@ -306,6 +316,9 @@ def test_missing_utility_readiness_blocks_external_validation() -> None:
         "NOT_READY_FOR_EXTERNAL_VALIDATION"
     )
     assert "utility_advisory_effect" in result["external_test_blockers"]
+    assert result["tracks"]["validation_distribution"] == (
+        "VALIDATION_DISTRIBUTION_CLOSED"
+    )
 
 
 def test_operator_label_cannot_create_precision() -> None:
@@ -366,6 +379,9 @@ def test_precision_below_threshold_is_signal_not_supported() -> None:
         "NOT_READY_FOR_EXTERNAL_VALIDATION"
     )
     assert result["external_test_blockers"] == ["signal_not_supported"]
+    assert result["tracks"]["validation_distribution"] == (
+        "VALIDATION_DISTRIBUTION_CLOSED"
+    )
     assert result["status"] == "NO_GO"
 
 
@@ -429,6 +445,16 @@ def test_malformed_inputs_fail_closed() -> None:
     unknown_utility["unexpected"] = True
     with pytest.raises(ValueError, match="fields do not match"):
         assess(_corpus(), utility_readiness=unknown_utility)
+
+    invalid_release_fields = _utility_readiness()
+    invalid_release_fields["validation_release"]["unexpected"] = True
+    with pytest.raises(ValueError, match="validation_release is invalid"):
+        assess(_corpus(), utility_readiness=invalid_release_fields)
+
+    invalid_release_mode = _utility_readiness()
+    invalid_release_mode["validation_release"]["mode"] = "enforce"
+    with pytest.raises(ValueError, match="must be free, public_self_serve"):
+        assess(_corpus(), utility_readiness=invalid_release_mode)
 
     malformed_utility_digest = _utility_readiness()
     malformed_utility_digest["task_corpus"]["digest"] = "sha256:nope"

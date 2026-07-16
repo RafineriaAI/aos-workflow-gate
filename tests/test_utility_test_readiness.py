@@ -230,6 +230,7 @@ def test_internal_evidence_never_proves_product_usefulness() -> None:
         "READY_FOR_EXTERNAL_VALIDATION"
     )
     assert result["tracks"]["participant_access"] == "RECRUITMENT_PENDING"
+    assert result["tracks"]["validation_distribution"] == ("FREE_SELF_SERVE_VALIDATION")
     assert result["tracks"]["external_usability"] == "EXTERNAL_VALIDATION_PENDING"
     assert result["status"] == "NO_GO"
     assert "PRODUCT_USEFUL" not in set(result["tracks"].values())

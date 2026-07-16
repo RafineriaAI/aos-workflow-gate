@@ -41,6 +41,8 @@ REQUIRED_SNIPPETS = {
         "docs/GUIDED_PILOT.md",
         "Pre-pilot validation",
         "## External availability",
+        "FREE_SELF_SERVE_VALIDATION",
+        "collects no\ntelemetry",
         "benchmarks/value/ASSESSMENT.md",
         ".github/workflows/aos-workflow-gate-self.yml",
     ],
@@ -61,6 +63,13 @@ REQUIRED_SNIPPETS = {
         "mutual NDA before any non-public material",
         "does not deliver a security audit",
     ],
+    ".github/ISSUE_TEMPLATE/feedback.yml": [
+        "Exact AOS version tested",
+        "What did AOS add beyond the existing CI or review?",
+        "Would you keep the advisory Action enabled?",
+        "May this response be used as product-research evidence?",
+        "include code, secrets, logs, or other confidential material",
+    ],
     "docs/MARKETPLACE_LISTING.md": [
         "UI-only",
         "UNSIGNED_NOT_OFFICIAL",
@@ -75,7 +84,7 @@ REQUIRED_SNIPPETS = {
         'property="og:image"',
     ],
     "benchmarks/value/README.md": [
-        "pre-publication product gate",
+        "product-evidence claim gate",
         "## Current result",
         "`NO_GO`",
         "Mechanism evidence: `MECHANISM_CONFIRMED`",
@@ -84,15 +93,17 @@ REQUIRED_SNIPPETS = {
         "Practical-utility testability: `UTILITY_TEST_READY`",
         "External-test readiness: `READY_FOR_EXTERNAL_VALIDATION`",
         "Participant access: `RECRUITMENT_PENDING`",
+        "Validation distribution: `FREE_SELF_SERVE_VALIDATION`",
         "External participants: currently unavailable",
         "Internal tests establish only",
         "## Advancement rule",
-        "formative usability requires 8-12\nindependent developers",
+        "Formative usability requires 8-12\nindependent developers",
         "versioned comparative-study contract",
         "bounded discovery sample, not a market study",
+        "free self-serve channel is open",
     ],
     "benchmarks/value/ASSESSMENT.md": [
-        "**Publication status: `NO_GO`**",
+        "**Product-claim status: `NO_GO`**",
         "Cases: **100** across **10** repositories",
         "Mechanism evidence: `MECHANISM_CONFIRMED`",
         "GitHub `clean` plus AOS `WARN/non_independent_evidence`",
@@ -100,13 +111,16 @@ REQUIRED_SNIPPETS = {
         "Practical-utility testability: `UTILITY_TEST_READY`",
         "External-test readiness: `READY_FOR_EXTERNAL_VALIDATION`",
         "Participant access: `RECRUITMENT_PENDING`",
+        "Validation distribution: `FREE_SELF_SERVE_VALIDATION`",
         "External participants currently available: **no**",
-        "`READY_FOR_EXTERNAL_VALIDATION` permits only recruitment",
-        "`NO_GO` blocks publication",
+        "Free self-serve validation available: **yes**",
+        "`FREE_SELF_SERVE_VALIDATION` permits a public, no-cost advisory",
+        "`NO_GO` blocks efficacy or value claims",
     ],
     "benchmarks/value/HYBRID_PROTOCOL.md": [
-        "ready for controlled external validation; recruitment pending",
-        "No external developers or teams are currently available",
+        "free self-serve validation available; qualified recruitment pending",
+        "No external developers or teams are currently enrolled",
+        "FREE_SELF_SERVE_VALIDATION",
         "MECHANISM_CONFIRMED",
         "UTILITY_TEST_READY",
         "READY_FOR_EXTERNAL_VALIDATION",
@@ -129,6 +143,10 @@ REQUIRED_SNIPPETS = {
         '"case_count": 8',
         '"positive_controls": 2',
         '"negative_controls": 6',
+        '"access": "free"',
+        '"channel": "public_self_serve"',
+        '"mode": "advisory"',
+        '"telemetry": "none"',
     ],
     "benchmarks/value/EXACT_CONTRAST.md": [
         "Three prospective, read-only cases across three public repositories",
@@ -468,6 +486,7 @@ def check_pilot_intake_closed() -> None:
     for path in ["action.yml", *data.get("documents", [])]:
         if active_link in read_text(path):
             fail(f"closed pilot intake link remains in {path}")
+
 
 def check_examples() -> None:
     bundle = json.loads(read_text("examples/github-pr-signal-bundle.json"))

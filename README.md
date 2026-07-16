@@ -14,11 +14,12 @@ This repository is the workflow layer around `aos-kernel`. Its job is to make a 
 > **Pre-pilot validation:** the committed
 > [Hybrid Value Gate assessment](benchmarks/value/ASSESSMENT.md) is `NO_GO`.
 > Exact-SHA mechanism evidence is confirmed for three bounded cases. Internal
-> product and utility-test readiness pass, so a controlled external study is
-> technically ready; participant access is `RECRUITMENT_PENDING`. Signal
-> validity remains inconclusive, and external usability and field utility
-> remain untested. Public onboarding, marketing, production recommendations,
-> and paid pilot intake remain closed.
+> product and utility-test readiness pass. `FREE_SELF_SERVE_VALIDATION` permits
+> free public advisory use with no telemetry; feedback is opt-in. Qualified
+> participant evidence is `RECRUITMENT_PENDING`, signal validity remains
+> inconclusive, and external usability and field utility remain untested.
+> Efficacy or value claims, production recommendations, and paid pilot intake
+> remain closed.
 
 
 ## Technical evaluation (zero config)
@@ -136,7 +137,7 @@ effectiveness, or low false-positive rates. The separate
 [Hybrid Value Gate](benchmarks/value/README.md) keeps mechanism evidence,
 signal validity, internal product readiness, practical-utility testability,
 external usability, and field utility as separate claims. Its current
-publication decision is
+product-claim decision is
 [`NO_GO`](benchmarks/value/ASSESSMENT.md).
 
 ## Current status
@@ -258,11 +259,16 @@ fail the step. This repository runs the action on itself in
 
 ## External availability
 
-External onboarding and paid pilot intake are closed while the
-[Value Gate](benchmarks/value/ASSESSMENT.md) is `NO_GO`. The repository
-remains Apache-2.0 for reproducible technical evaluation, but no external
-user should infer a production recommendation or validated product value
-from availability of the source. [GUIDED_PILOT](docs/GUIDED_PILOT.md) and
+Free self-serve validation is open through the Apache-2.0 source, CLI, and
+GitHub Action in advisory mode. It requires no account and collects no
+telemetry. Feedback and evidence submission are opt-in through the
+[feedback issue form](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=feedback.yml).
+Availability, installs, downloads, and unsolicited reactions are funnel
+observations, not evidence of usefulness or market demand.
+
+The [Value Gate](benchmarks/value/ASSESSMENT.md) remains `NO_GO` for efficacy
+or value claims, production recommendations, and paid pilot intake.
+[GUIDED_PILOT](docs/GUIDED_PILOT.md) and
 [PILOT_PACKAGE](docs/PILOT_PACKAGE.md) are future engagement specifications,
 not active offers.
 

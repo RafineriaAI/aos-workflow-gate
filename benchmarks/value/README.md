@@ -1,6 +1,6 @@
 # Hybrid Value Gate
 
-This directory is the pre-publication product gate. It keeps six claims
+This directory is the product-evidence claim gate. It keeps six claims
 separate:
 
 1. whether AOS computes information absent from the observed GitHub baseline;
@@ -22,6 +22,7 @@ It does not issue a merge-readiness verdict.
 - Practical-utility testability: `UTILITY_TEST_READY`.
 - External-test readiness: `READY_FOR_EXTERNAL_VALIDATION`.
 - Participant access: `RECRUITMENT_PENDING`.
+- Validation distribution: `FREE_SELF_SERVE_VALIDATION`.
 - External participants: currently unavailable.
 - External teams: currently unavailable.
 - External usability: `EXTERNAL_VALIDATION_PENDING`.
@@ -53,7 +54,8 @@ utility-test readiness. They are never user evidence.
 - `EXACT_CONTRAST.md` states the mechanism proof and claim boundary.
 - `product-test-readiness.json` binds B0 checks to executable evidence.
 - `utility-task-corpus.json` freezes eight diagnosis tasks and controls.
-- `utility-test-readiness.json` binds B0.5 checks to that corpus and tests.
+- `utility-test-readiness.json` binds B0.5 checks to that corpus and tests and
+  declares the free, public, advisory, telemetry-free validation channel.
 - `HYBRID_PROTOCOL.md` freezes claim separation and deferred B1-B3 design.
 - `assessment.json` is the deterministic machine-readable gate result.
 - `ASSESSMENT.md` is its human-readable projection.
@@ -73,7 +75,7 @@ python tools/value_gate.py \
   --markdown-out benchmarks/value/ASSESSMENT.md
 ```
 
-`--require-go` returns non-zero until publication criteria pass.
+`--require-go` returns non-zero until product-claim criteria pass.
 
 ## Advancement rule
 
@@ -82,17 +84,25 @@ python tools/value_gate.py \
 - `MECHANISM_CONFIRMED + PRODUCT_TEST_READY + UTILITY_TEST_READY`, with
   no `SIGNAL_NOT_SUPPORTED` result, yields `READY_FOR_EXTERNAL_VALIDATION`.
   `SIGNAL_INCONCLUSIVE` may be resolved by that study.
-- `READY_FOR_EXTERNAL_VALIDATION` permits only recruitment and a controlled
-  advisory study. It is not `PRODUCT_USEFUL`, pilot readiness, or publication.
+- `READY_FOR_EXTERNAL_VALIDATION` permits recruitment and a controlled advisory
+  study. It is not `PRODUCT_USEFUL`, paid-pilot readiness, or a production claim.
+- `FREE_SELF_SERVE_VALIDATION` permits a public, no-cost advisory technical
+  preview with no account or telemetry. Feedback and evidence submission are
+  opt-in and user-controlled.
 - `GO` additionally requires `SIGNAL_SUPPORTED` and independently supported
   external usability.
 - Commercialization remains unvalidated until a separate field study
   establishes practical utility and retention.
-- `NO_GO` blocks publication, marketing, production recommendations, and
-  paid pilot intake.
+- `NO_GO` blocks efficacy or value claims, production recommendations, and paid
+  pilot intake. It does not block free advisory validation.
 
-Participant access is currently `RECRUITMENT_PENDING`; no public intake is
-open. When access becomes available, formative usability requires 8-12
+The free self-serve channel is open, while qualified participant evidence is
+currently `RECRUITMENT_PENDING`. Availability, installs, downloads, and
+unsolicited reactions are funnel observations, not evidence of usefulness or
+market demand. A result qualifies only through a frozen external-study
+contract with opt-in evidence bound to the tested version and task.
+
+Formative usability requires 8-12
 independent developers. Comparative testing and a 30-day, 5-10-team field
 pilot remain
 separate later stages. One-off reactions, maintainer dogfooding, AI-agent

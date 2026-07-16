@@ -53,6 +53,12 @@
     }
   ],
   "schema_version": "utility-test-readiness-v0",
+  "validation_release": {
+    "access": "free",
+    "channel": "public_self_serve",
+    "mode": "advisory",
+    "telemetry": "none"
+  },
   "task_corpus": {
     "case_count": 8,
     "digest": "sha256:74e750ad4859bf3c5fb48d84f7fb9227c54be4cf700fa6dcfbcda500ee919e73",

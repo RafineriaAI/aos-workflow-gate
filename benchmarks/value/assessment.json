@@ -9,7 +9,7 @@
     "retention",
     "comprehension_time"
   ],
-  "boundary": "This is a product-publication decision, not a merge-readiness verdict. Exact-SHA contrast can establish only a semantic difference from GitHub. Internal utility tasks establish only testability of the diagnosis, not practical usefulness. Signal validity, product testability, external usability, and field utility are separate claims. Internal tests and public repository history are never user evidence.",
+  "boundary": "This is a product-claim decision, not a merge-readiness verdict. A free advisory release is a validation channel, not evidence of usefulness or market demand. Exact-SHA contrast can establish only a semantic difference from GitHub. Internal utility tasks establish only testability of the diagnosis, not practical usefulness. Signal validity, product testability, external usability, and field utility are separate claims. Internal tests and public repository history are never user evidence.",
   "criteria": {
     "external_usability": [
       {
@@ -237,6 +237,7 @@
     "external_participants_available": false,
     "external_teams_available": false,
     "external_users": 0,
+    "free_self_serve_validation_available": true,
     "independently_labeled_contrast_cases": 0,
     "labeled_signal_cases": 0,
     "median_comprehension_seconds": null,
@@ -258,7 +259,11 @@
     "utility_positive_controls": 2,
     "utility_readiness_checks_met": 7,
     "utility_readiness_checks_required": 7,
-    "utility_task_cases": 8
+    "utility_task_cases": 8,
+    "validation_access": "free",
+    "validation_channel": "public_self_serve",
+    "validation_mode": "advisory",
+    "validation_telemetry": "none"
   },
   "schema_version": "value-assessment-v3",
   "status": "NO_GO",
@@ -270,6 +275,7 @@
     "participant_access": "RECRUITMENT_PENDING",
     "practical_utility_testability": "UTILITY_TEST_READY",
     "product_test_readiness": "PRODUCT_TEST_READY",
-    "signal_validity": "SIGNAL_INCONCLUSIVE"
+    "signal_validity": "SIGNAL_INCONCLUSIVE",
+    "validation_distribution": "FREE_SELF_SERVE_VALIDATION"
   }
 }
