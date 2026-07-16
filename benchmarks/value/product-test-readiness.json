@@ -1,0 +1,53 @@
+{
+  "boundary": "Internal automated evidence only. These checks establish testability, not user comprehension, practical utility, adoption, retention, or willingness to pay.",
+  "captured_at": "2026-07-15T00:00:00Z",
+  "checks": [
+    {
+      "evidence": [
+        "tests/test_adversarial_corpus.py::test_decision_corpus_taxonomy_and_coverage"
+      ],
+      "id": "adversarial_ux",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_product_test_readiness.py::test_wheel_installs_in_isolated_target"
+      ],
+      "id": "clean_room_install",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_golden_summaries.py::test_summary_has_one_dominant_next"
+      ],
+      "id": "deterministic_diagnosis",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "benchmarks/value/HYBRID_PROTOCOL.md"
+      ],
+      "id": "external_protocol_frozen",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_run.py::test_run_one_command_generated_policy"
+      ],
+      "id": "first_run_path",
+      "status": "met"
+    },
+    {
+      "evidence": [
+        "tests/test_benchmark_cases.py::test_verdict_spine_matches_the_public_claim"
+      ],
+      "id": "verdict_task_corpus",
+      "status": "met"
+    }
+  ],
+  "external_access": {
+    "participants_available": false,
+    "teams_available": false
+  },
+  "schema_version": "product-test-readiness-v0"
+}

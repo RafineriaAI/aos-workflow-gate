@@ -1,22 +1,23 @@
 # Guided Pilot
 
-A scoped, paid engagement that takes one of your real workflows from
-"green checks" to a replayable, enforceable gate decision. Self-serve use
-of the repository stays free (Apache-2.0) with no feature gates — the
-pilot pays for guidance, policy design, and evaluation on your data.
+**Status: intake closed.** This is a future engagement specification.
+The [Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) is
+`NO_GO`; no paid pilot or design-partner offer is active.
 
-## Path
 
-0. **Readiness check (optional)** — the
-   [browser-only wizard](https://rafineriaai.github.io/aos-workflow-gate/pilot-wizard/)
-   qualifies the fit in two minutes and drafts a Decision-Gap Report that
-   prefills the scoping form. Nothing leaves your browser until you open
-   the form.
-1. **Scoping** — you submit the
-   [scoping form](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml)
-   (platform, scale, what the gate should protect). We agree scope, price,
-   and timeline in writing before anything starts. Submitting the form
-   commits neither side.
+The future engagement would take one real workflow from "green checks"
+to a replayable, enforceable gate decision. The repository remains
+Apache-2.0 with no feature gates; any future fee would cover guidance,
+policy design, and evaluation on customer-controlled data.
+
+## Future path
+
+0. **Internal readiness gate** — maintainers reproduce the
+   [Value Gate](../benchmarks/value/README.md). No external qualification
+   or intake path opens before `GO`.
+1. **Scoping** — intake opens only after the Value Gate reaches `GO`.
+   Scope, price, timeline, and data boundaries would be agreed in writing
+   before any work starts.
 2. **Policy design** — we translate how you already protect the workflow
    (required checks, scanners, agent review) into an explicit, inspectable
    gate policy.
@@ -35,13 +36,11 @@ defined in [PILOT_PACKAGE.md](PILOT_PACKAGE.md); the report follows
 [a fixed template](templates/PILOT_REPORT_TEMPLATE.md) where every number
 links to a replayable artifact.
 
-## Design Partner variant
+## Future design-partner variant
 
-A limited number of design-partner engagements run at reduced scope fee
-in exchange for structured feedback and, only with separate written
-approval, a referenceable case study. Same path and boundaries as the
-guided pilot; priority influence on the adapter and policy-pack roadmap.
-Select "Design partner" in the scoping form.
+After `GO`, a bounded design-partner engagement may exchange structured
+feedback for reduced scope. A referenceable case study would still require
+separate written approval. No design-partner intake is active.
 
 ## Boundaries
 

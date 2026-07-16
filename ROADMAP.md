@@ -77,13 +77,15 @@ Status: locked. The MVP command and contract surface — `preflight`,
 `verify`, `summarize`, `export`, `bench-verify`, with the `source-v0`,
 `agent-action-v0`, and `benchmark-case-v0` contracts and the
 retrospective real-history governance benchmark — is complete and
-frozen for the pilot phase. Until a pilot or design-partner engagement
-produces a concrete requirement, changes are limited to hardening,
-correctness fixes, documentation, and claim-boundary corrections: no
-new commands, contracts, or integrations. The gate is pilot-ready in
-the only sense this repository claims: every advertised behavior is
-implemented, tested, replayable offline, and bounded by an explicit
-claim boundary.
+frozen for pre-publication validation. Changes remain limited to
+hardening, correctness fixes, documentation, and claim-boundary
+corrections: no new commands, contracts, or integrations.
+
+The gate is technically self-contained: advertised mechanics are
+implemented, tested, replayable offline, and bounded by explicit claims.
+That does not establish incremental user value, acceptable noise, or
+pilot readiness. External onboarding and pilot intake remain closed until
+the [Hybrid Value Gate](benchmarks/value/ASSESSMENT.md) reaches `GO`.
 
 ## Pre-pilot correctness and trust program (v0.30+)
 

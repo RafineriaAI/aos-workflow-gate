@@ -1,0 +1,938 @@
+"""Deterministic pre-publication signal and product-evidence gate.
+
+This maintainer tool evaluates evidence about *incremental* product value.
+It never participates in a merge-readiness verdict. Signal validity,
+internal product-test readiness, external usability, and field utility are
+reported independently so one kind of evidence cannot stand in for another.
+
+The gate can reduce a discovery capture to a public-metadata-only corpus,
+then assess that corpus against predeclared thresholds. Retrospective check
+conclusions are never promoted to an exact historical GitHub baseline, and
+an operator opinion is never promoted to an independent usefulness label.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import math
+import statistics
+from pathlib import Path
+from typing import Any
+
+CORPUS_SCHEMA = "value-corpus-v0"
+PRODUCT_READINESS_SCHEMA = "product-test-readiness-v0"
+ASSESSMENT_SCHEMA = "value-assessment-v1"
+
+THRESHOLDS: dict[str, int | float] = {
+    "sample_cases": 100,
+    "repositories": 10,
+    "collection_complete_ratio": 0.95,
+    "recurring_signal_cases": 3,
+    "recurring_signal_repositories": 3,
+    "exact_incremental_findings": 3,
+    "exact_incremental_repositories": 3,
+    "precision_labeled_cases": 20,
+    "precision": 0.95,
+    "qualified_external_users": 8,
+    "minimum_user_runs": 3,
+    "minimum_retention_days": 7,
+    "next_action_rate": 1.0,
+    "retention_rate": 1.0,
+    "median_comprehension_seconds": 30,
+}
+
+_REQUIRED_PRODUCT_CHECKS = frozenset(
+    {
+        "adversarial_ux",
+        "clean_room_install",
+        "deterministic_diagnosis",
+        "external_protocol_frozen",
+        "first_run_path",
+        "verdict_task_corpus",
+    }
+)
+_PRODUCT_READINESS_FIELDS = frozenset(
+    {"boundary", "captured_at", "checks", "external_access", "schema_version"}
+)
+_PRODUCT_CHECK_FIELDS = frozenset({"evidence", "id", "status"})
+_EXTERNAL_ACCESS_FIELDS = frozenset(
+    {"participants_available", "teams_available"}
+)
+
+_INDEPENDENT_LABEL_SOURCES = frozenset({"external_user", "independent_review_history"})
+_LABELED_OUTCOMES = frozenset({"actionable_gap", "noise"})
+_TOP_LEVEL_FIELDS = frozenset(
+    {
+        "boundary",
+        "captured_at",
+        "cases",
+        "method",
+        "repositories",
+        "schema_version",
+        "ux_observations",
+    }
+)
+_CASE_FIELDS = frozenset(
+    {
+        "author_kind",
+        "check_conclusions",
+        "collection_complete",
+        "github_baseline",
+        "head_sha",
+        "independent_workflow_runs",
+        "outcome",
+        "pull_request",
+        "repository",
+        "review_comments",
+        "self_validating_workflows",
+        "split",
+        "workflow_changed",
+    }
+)
+
+
+def _reject_nonfinite_json(token: str) -> Any:
+    raise ValueError(f"non-finite JSON number is forbidden: {token}")
+
+
+def _validate_corpus(corpus: dict[str, Any]) -> None:
+    unknown = set(corpus) - _TOP_LEVEL_FIELDS
+    if unknown:
+        raise ValueError(f"value corpus has unknown fields: {sorted(unknown)}")
+    for field in ("boundary", "captured_at"):
+        if not isinstance(corpus.get(field), str) or not corpus[field]:
+            raise ValueError(f"value corpus {field} must be a non-empty string")
+    if not isinstance(corpus.get("method"), dict):
+        raise ValueError("value corpus method must be an object")
+
+    raw_cases = corpus.get("cases")
+    raw_repositories = corpus.get("repositories")
+    raw_ux = corpus.get("ux_observations")
+    if not isinstance(raw_cases, list):
+        raise ValueError("value corpus cases must be a list")
+    if not isinstance(raw_repositories, list) or any(
+        not isinstance(repo, str) or not repo for repo in raw_repositories
+    ):
+        raise ValueError("value corpus repositories must be non-empty strings")
+    if not isinstance(raw_ux, list):
+        raise ValueError("value corpus ux_observations must be a list")
+
+    identities: set[tuple[str, int]] = set()
+    observed_repositories: set[str] = set()
+    for index, raw_case in enumerate(raw_cases):
+        path = f"cases[{index}]"
+        if not isinstance(raw_case, dict):
+            raise ValueError(f"{path} must be an object")
+        if set(raw_case) != _CASE_FIELDS:
+            raise ValueError(f"{path} fields do not match {CORPUS_SCHEMA}")
+
+        repository = raw_case["repository"]
+        pull_request = raw_case["pull_request"]
+        if not isinstance(repository, str) or not repository:
+            raise ValueError(f"{path}.repository must be a non-empty string")
+        _require_nonnegative_int(pull_request, f"{path}.pull_request", positive=True)
+        identity = (repository, pull_request)
+        if identity in identities:
+            raise ValueError(f"{path} duplicates {repository}#{pull_request}")
+        identities.add(identity)
+        observed_repositories.add(repository)
+
+        head_sha = raw_case["head_sha"]
+        if (
+            not isinstance(head_sha, str)
+            or len(head_sha) != 40
+            or any(char not in "0123456789abcdefABCDEF" for char in head_sha)
+        ):
+            raise ValueError(f"{path}.head_sha must be a 40-character hex SHA")
+        if raw_case["author_kind"] not in {"human", "bot"}:
+            raise ValueError(f"{path}.author_kind is invalid")
+        if raw_case["split"] not in {"discovery", "holdout"}:
+            raise ValueError(f"{path}.split is invalid")
+        for field in ("collection_complete", "workflow_changed"):
+            if not isinstance(raw_case[field], bool):
+                raise ValueError(f"{path}.{field} must be boolean")
+        for field in (
+            "independent_workflow_runs",
+            "self_validating_workflows",
+        ):
+            _require_nonnegative_int(raw_case[field], f"{path}.{field}")
+
+        conclusions = raw_case["check_conclusions"]
+        if not isinstance(conclusions, dict) or any(
+            not isinstance(name, str) or not name for name in conclusions
+        ):
+            raise ValueError(f"{path}.check_conclusions is invalid")
+        for name, count in conclusions.items():
+            _require_nonnegative_int(count, f"{path}.check_conclusions[{name!r}]")
+
+        _validate_baseline(raw_case["github_baseline"], path)
+        _validate_outcome(raw_case["outcome"], path)
+        comments = raw_case["review_comments"]
+        if not isinstance(comments, dict) or set(comments) != {
+            "ci_related",
+            "total",
+        }:
+            raise ValueError(f"{path}.review_comments is invalid")
+        for field in ("ci_related", "total"):
+            _require_nonnegative_int(comments[field], f"{path}.{field}")
+        if comments["ci_related"] > comments["total"]:
+            raise ValueError(f"{path}.ci_related cannot exceed total")
+
+    if raw_repositories != sorted(observed_repositories):
+        raise ValueError("repositories must equal the sorted case repository set")
+    for index, item in enumerate(raw_ux):
+        _validate_ux_observation(item, index)
+
+
+def _validate_baseline(value: Any, path: str) -> None:
+    if not isinstance(value, dict) or set(value) != {
+        "exact_sha",
+        "merge_ready",
+        "source",
+    }:
+        raise ValueError(f"{path}.github_baseline is invalid")
+    if not isinstance(value["exact_sha"], bool):
+        raise ValueError(f"{path}.github_baseline.exact_sha must be boolean")
+    if value["merge_ready"] is not None and not isinstance(value["merge_ready"], bool):
+        raise ValueError(f"{path}.github_baseline.merge_ready is invalid")
+    if value["source"] not in {
+        "github_api_snapshot",
+        "unverified_historical",
+    }:
+        raise ValueError(f"{path}.github_baseline.source is invalid")
+
+
+def _validate_outcome(value: Any, path: str) -> None:
+    if not isinstance(value, dict) or set(value) != {
+        "classification",
+        "evidence_url",
+        "source",
+    }:
+        raise ValueError(f"{path}.outcome is invalid")
+    if value["classification"] not in {"unresolved", *_LABELED_OUTCOMES}:
+        raise ValueError(f"{path}.outcome.classification is invalid")
+    if value["source"] not in {"none", "operator", *_INDEPENDENT_LABEL_SOURCES}:
+        raise ValueError(f"{path}.outcome.source is invalid")
+    evidence_url = value["evidence_url"]
+    if evidence_url is not None and (
+        not isinstance(evidence_url, str) or not evidence_url.startswith("https://")
+    ):
+        raise ValueError(f"{path}.outcome.evidence_url is invalid")
+    if value["classification"] in _LABELED_OUTCOMES and evidence_url is None:
+        raise ValueError(f"{path}.outcome requires an evidence URL")
+
+
+def _validate_ux_observation(value: Any, index: int) -> None:
+    path = f"ux_observations[{index}]"
+    required = {
+        "external",
+        "completed_runs",
+        "retained_days",
+        "kept_enabled",
+        "next_action_clear",
+        "understood_seconds",
+    }
+    if not isinstance(value, dict) or set(value) != required:
+        raise ValueError(f"{path} fields do not match {CORPUS_SCHEMA}")
+    for field in ("external", "kept_enabled", "next_action_clear"):
+        if not isinstance(value[field], bool):
+            raise ValueError(f"{path}.{field} must be boolean")
+    for field in ("completed_runs", "retained_days"):
+        _require_nonnegative_int(value[field], f"{path}.{field}")
+
+    seconds = value["understood_seconds"]
+    if (
+        not isinstance(seconds, (int, float))
+        or isinstance(seconds, bool)
+        or not math.isfinite(seconds)
+        or seconds < 0
+    ):
+        raise ValueError(f"{path}.understood_seconds is invalid")
+
+
+
+def _validate_product_readiness(value: dict[str, Any]) -> None:
+    if value.get("schema_version") != PRODUCT_READINESS_SCHEMA:
+        raise ValueError(f"expected {PRODUCT_READINESS_SCHEMA}")
+    if set(value) != _PRODUCT_READINESS_FIELDS:
+        raise ValueError(
+            f"product readiness fields do not match {PRODUCT_READINESS_SCHEMA}"
+        )
+    for field in ("boundary", "captured_at"):
+        if not isinstance(value[field], str) or not value[field]:
+            raise ValueError(f"product readiness {field} must be non-empty")
+
+    access = value["external_access"]
+    if not isinstance(access, dict) or set(access) != _EXTERNAL_ACCESS_FIELDS:
+        raise ValueError("product readiness external_access is invalid")
+    if any(not isinstance(access[field], bool) for field in access):
+        raise ValueError("product readiness external_access values must be boolean")
+
+    checks = value["checks"]
+    if not isinstance(checks, list):
+        raise ValueError("product readiness checks must be a list")
+    observed_ids: set[str] = set()
+    for index, check in enumerate(checks):
+        path = f"product_readiness.checks[{index}]"
+        if not isinstance(check, dict) or set(check) != _PRODUCT_CHECK_FIELDS:
+            raise ValueError(f"{path} fields are invalid")
+        check_id = check["id"]
+        if not isinstance(check_id, str) or not check_id:
+            raise ValueError(f"{path}.id must be non-empty")
+        if check_id in observed_ids:
+            raise ValueError(f"{path}.id is duplicated")
+        observed_ids.add(check_id)
+        if check["status"] not in {"met", "not_met"}:
+            raise ValueError(f"{path}.status is invalid")
+        evidence = check["evidence"]
+        if (
+            not isinstance(evidence, list)
+            or not evidence
+            or any(not isinstance(item, str) or not item for item in evidence)
+            or evidence != sorted(set(evidence))
+        ):
+            raise ValueError(f"{path}.evidence must be a sorted unique string list")
+    if observed_ids != _REQUIRED_PRODUCT_CHECKS:
+        raise ValueError(
+            "product readiness checks must equal the frozen required check set"
+        )
+
+def _require_nonnegative_int(value: Any, path: str, *, positive: bool = False) -> None:
+    minimum = 1 if positive else 0
+    if not isinstance(value, int) or isinstance(value, bool) or value < minimum:
+        qualifier = "positive" if positive else "non-negative"
+        raise ValueError(f"{path} must be a {qualifier} integer")
+
+
+def _load(path: Path) -> dict[str, Any]:
+    payload = json.loads(
+        path.read_text(encoding="utf-8"),
+        parse_constant=_reject_nonfinite_json,
+    )
+    if not isinstance(payload, dict):
+        raise ValueError(f"{path} must contain a JSON object")
+    return payload
+
+
+def _write(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            payload,
+            allow_nan=False,
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+
+def build_corpus(manifest: dict[str, Any], analysis: dict[str, Any]) -> dict[str, Any]:
+    """Reduce a discovery capture without inventing unavailable truth."""
+    manifest_pulls = manifest.get("pulls")
+    analysis_pulls = analysis.get("pulls")
+    if not isinstance(manifest_pulls, list) or not isinstance(analysis_pulls, list):
+        raise ValueError("discovery manifest and analysis need pull lists")
+
+    membership = {
+        (pull.get("repo"), pull.get("number"))
+        for pull in manifest_pulls
+        if isinstance(pull, dict)
+    }
+    analyzed = {
+        (pull.get("repo"), pull.get("number"))
+        for pull in analysis_pulls
+        if isinstance(pull, dict)
+    }
+    if membership != analyzed:
+        raise ValueError("discovery manifest and analysis membership differ")
+
+    cases: list[dict[str, Any]] = []
+    for pull in analysis_pulls:
+        if not isinstance(pull, dict):
+            raise ValueError("analysis pull entries must be objects")
+        files = _mapping(pull.get("files"))
+        checks = _mapping(pull.get("checks"))
+        workflows = _mapping(pull.get("workflow_runs"))
+        comments = _mapping(pull.get("review_comments"))
+        complete = all(
+            stream.get("retrievable") is True
+            for stream in (files, checks, workflows, comments)
+        )
+        conclusions = {
+            str(name): int(value)
+            for name, value in _mapping(checks.get("conclusions")).items()
+            if isinstance(value, int) and value >= 0
+        }
+        cases.append(
+            {
+                "author_kind": (
+                    "bot"
+                    if _mapping(pull.get("author")).get("bot") is True
+                    else "human"
+                ),
+                "check_conclusions": dict(sorted(conclusions.items())),
+                "collection_complete": complete,
+                "github_baseline": {
+                    "exact_sha": False,
+                    "merge_ready": None,
+                    "source": "unverified_historical",
+                },
+                "head_sha": str(pull.get("head_sha") or ""),
+                "independent_workflow_runs": _nonnegative_int(
+                    workflows.get("independent")
+                ),
+                "outcome": {
+                    "classification": "unresolved",
+                    "evidence_url": None,
+                    "source": "none",
+                },
+                "pull_request": int(pull["number"]),
+                "repository": str(pull["repo"]),
+                "review_comments": {
+                    "ci_related": _nonnegative_int(comments.get("ci_related")),
+                    "total": _nonnegative_int(comments.get("total")),
+                },
+                "self_validating_workflows": _nonnegative_int(
+                    workflows.get("self_validating")
+                ),
+                "split": str(pull.get("split") or "unknown"),
+                "workflow_changed": bool(files.get("workflow")),
+            }
+        )
+
+    repositories = sorted({case["repository"] for case in cases})
+    return {
+        "boundary": (
+            "public metadata only; no code, diffs, logs, annotations, "
+            "comment bodies, or commit messages are stored or executed; "
+            "retrospective check conclusions are not an exact historical "
+            "GitHub merge-readiness baseline"
+        ),
+        "captured_at": manifest.get("captured_at"),
+        "cases": sorted(
+            cases,
+            key=lambda case: (case["repository"], case["pull_request"]),
+        ),
+        "method": {
+            "discovery_analysis_schema": analysis.get("schema_version"),
+            "discovery_manifest_schema": manifest.get("schema_version"),
+            "selection": _mapping(manifest.get("method")).get("selection"),
+        },
+        "repositories": repositories,
+        "schema_version": CORPUS_SCHEMA,
+        "ux_observations": [],
+    }
+
+
+def assess(
+    corpus: dict[str, Any],
+    *,
+    product_readiness: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    if corpus.get("schema_version") != CORPUS_SCHEMA:
+        raise ValueError(f"expected {CORPUS_SCHEMA}")
+    _validate_corpus(corpus)
+    if product_readiness is not None:
+        _validate_product_readiness(product_readiness)
+
+    raw_cases = corpus.get("cases")
+    raw_ux = corpus.get("ux_observations")
+    if not isinstance(raw_cases, list) or not isinstance(raw_ux, list):
+        raise ValueError("value corpus needs cases and ux_observations lists")
+    cases = [_mapping(case) for case in raw_cases]
+    ux = [_mapping(item) for item in raw_ux]
+
+    readiness = product_readiness or {}
+    access = _mapping(readiness.get("external_access"))
+    participants_available = access.get("participants_available") is True
+    teams_available = access.get("teams_available") is True
+    readiness_by_id = {
+        str(item.get("id")): _mapping(item)
+        for item in readiness.get("checks", [])
+        if isinstance(item, dict)
+    }
+
+    repositories = {str(case.get("repository")) for case in cases}
+    complete = [case for case in cases if case.get("collection_complete") is True]
+    signals = [case for case in cases if _signal(case)]
+    signal_repositories = {str(case.get("repository")) for case in signals}
+    bot_signals = [case for case in signals if case.get("author_kind") == "bot"]
+
+    exact_labeled = [case for case in signals if _exact_labeled(case)]
+    actionable = [
+        case
+        for case in exact_labeled
+        if _mapping(case.get("outcome")).get("classification") == "actionable_gap"
+    ]
+    noise = [
+        case
+        for case in exact_labeled
+        if _mapping(case.get("outcome")).get("classification") == "noise"
+    ]
+    precision = len(actionable) / len(exact_labeled) if exact_labeled else None
+
+    external = [item for item in ux if item.get("external") is True]
+    if external and not participants_available:
+        raise ValueError(
+            "external usability observations contradict unavailable participants"
+        )
+    qualified_external = [
+        item
+        for item in external
+        if item["completed_runs"] >= THRESHOLDS["minimum_user_runs"]
+        and item["retained_days"] >= THRESHOLDS["minimum_retention_days"]
+    ]
+    next_action_rate = _boolean_rate(qualified_external, "next_action_clear")
+    retention_rate = _boolean_rate(qualified_external, "kept_enabled")
+    comprehension = [
+        float(item["understood_seconds"])
+        for item in qualified_external
+        if isinstance(item.get("understood_seconds"), (int, float))
+        and not isinstance(item.get("understood_seconds"), bool)
+        and float(item["understood_seconds"]) >= 0
+    ]
+    median_comprehension = statistics.median(comprehension) if comprehension else None
+
+    complete_ratio = len(complete) / len(cases) if cases else 0.0
+    actionable_repositories = {str(case.get("repository")) for case in actionable}
+    product_checks_met = sum(
+        _mapping(readiness_by_id.get(check_id)).get("status") == "met"
+        for check_id in _REQUIRED_PRODUCT_CHECKS
+    )
+    metrics: dict[str, Any] = {
+        "actionable_exact_findings": len(actionable),
+        "actionable_exact_repositories": len(actionable_repositories),
+        "bot_signal_cases": len(bot_signals),
+        "ci_related_review_comments": sum(
+            _nonnegative_int(_mapping(case.get("review_comments")).get("ci_related"))
+            for case in cases
+        ),
+        "ci_related_review_prs": sum(
+            1
+            for case in cases
+            if _nonnegative_int(_mapping(case.get("review_comments")).get("ci_related"))
+            > 0
+        ),
+        "collection_complete_cases": len(complete),
+        "collection_complete_ratio": complete_ratio,
+        "external_participants_available": participants_available,
+        "external_teams_available": teams_available,
+        "external_users": len(external),
+        "qualified_external_users": len(qualified_external),
+        "labeled_signal_cases": len(exact_labeled),
+        "median_comprehension_seconds": median_comprehension,
+        "next_action_rate": next_action_rate,
+        "noise_cases": len(noise),
+        "precision": precision,
+        "product_readiness_checks_met": product_checks_met,
+        "product_readiness_checks_required": len(_REQUIRED_PRODUCT_CHECKS),
+        "repositories": len(repositories),
+        "retention_rate": retention_rate,
+        "sample_cases": len(cases),
+        "self_validating_cases": len(signals),
+        "self_validating_repositories": len(signal_repositories),
+    }
+
+    signal_validity = [
+        _criterion("sample_scale", len(cases), ">=", THRESHOLDS["sample_cases"]),
+        _criterion(
+            "repository_diversity",
+            len(repositories),
+            ">=",
+            THRESHOLDS["repositories"],
+        ),
+        _criterion(
+            "collection_completeness",
+            complete_ratio,
+            ">=",
+            THRESHOLDS["collection_complete_ratio"],
+        ),
+        _compound_minimum(
+            "recurring_signal",
+            {
+                "cases": len(signals),
+                "repositories": len(signal_repositories),
+            },
+            {
+                "cases": THRESHOLDS["recurring_signal_cases"],
+                "repositories": THRESHOLDS["recurring_signal_repositories"],
+            },
+        ),
+        _compound_minimum(
+            "exact_incremental_findings",
+            {
+                "cases": len(actionable),
+                "repositories": len(actionable_repositories),
+            },
+            {
+                "cases": THRESHOLDS["exact_incremental_findings"],
+                "repositories": THRESHOLDS["exact_incremental_repositories"],
+            },
+        ),
+        _criterion(
+            "precision_sample",
+            len(exact_labeled),
+            ">=",
+            THRESHOLDS["precision_labeled_cases"],
+        ),
+        _criterion(
+            "observed_precision",
+            precision,
+            ">=",
+            THRESHOLDS["precision"],
+        ),
+    ]
+    product_test = [
+        _state_criterion(
+            f"product_{check_id}",
+            _mapping(readiness_by_id.get(check_id)).get("status"),
+            "met",
+        )
+        for check_id in sorted(_REQUIRED_PRODUCT_CHECKS)
+    ]
+    external_usability = [
+        _state_criterion(
+            "controlled_comparative_study",
+            "not_run",
+            "verified",
+        ),
+        _criterion(
+            "qualified_external_users",
+            len(qualified_external),
+            ">=",
+            THRESHOLDS["qualified_external_users"],
+        ),
+        _criterion(
+            "next_action_clarity",
+            next_action_rate,
+            ">=",
+            THRESHOLDS["next_action_rate"],
+        ),
+        _criterion(
+            "retention",
+            retention_rate,
+            ">=",
+            THRESHOLDS["retention_rate"],
+        ),
+        _criterion(
+            "comprehension_time",
+            median_comprehension,
+            "<=",
+            THRESHOLDS["median_comprehension_seconds"],
+        ),
+    ]
+
+    signal_ready = all(item["met"] for item in signal_validity)
+    product_test_ready = all(item["met"] for item in product_test)
+    usability_ready = all(item["met"] for item in external_usability)
+
+    signal_by_id = {item["id"]: item for item in signal_validity}
+    signal_evidence_sufficient = all(
+        signal_by_id[criterion_id]["met"]
+        for criterion_id in (
+            "sample_scale",
+            "repository_diversity",
+            "collection_completeness",
+            "recurring_signal",
+            "precision_sample",
+        )
+    )
+    signal_status = (
+        "SIGNAL_SUPPORTED"
+        if signal_ready
+        else "SIGNAL_NOT_SUPPORTED"
+        if signal_evidence_sufficient
+        else "SIGNAL_INCONCLUSIVE"
+    )
+    product_status = (
+        "PRODUCT_TEST_READY"
+        if product_test_ready
+        else "PRODUCT_TEST_INCOMPLETE"
+    )
+    external_status = (
+        "EXTERNAL_VALIDATION_PENDING"
+        if not external
+        else "EXTERNAL_VALIDATION_INCONCLUSIVE"
+    )
+    field_status = (
+        "FIELD_VALIDATION_NOT_STARTED"
+        if teams_available
+        else "FIELD_VALIDATION_PENDING"
+    )
+    external_study_status = (
+        "EXTERNAL_STUDY_READY"
+        if signal_ready and product_test_ready
+        else "EXTERNAL_STUDY_NOT_READY"
+    )
+    status = (
+        "GO"
+        if signal_ready and product_test_ready and usability_ready
+        else "NO_GO"
+    )
+
+    signal_blockers = [
+        item["id"] for item in signal_validity if not item["met"]
+    ]
+    product_blockers = [item["id"] for item in product_test if not item["met"]]
+    usability_blockers = [
+        item["id"] for item in external_usability if not item["met"]
+    ]
+    return {
+        "blockers": signal_blockers + product_blockers + usability_blockers,
+        "boundary": (
+            "This is a product-publication decision, not a merge-readiness "
+            "verdict. Signal validity, internal product-test readiness, "
+            "external usability, and field utility are separate claims. "
+            "Internal tests and public repository history are never user evidence."
+        ),
+        "criteria": {
+            "external_usability": external_usability,
+            "product_test_readiness": product_test,
+            "signal_validity": signal_validity,
+        },
+        "external_study_blockers": signal_blockers + product_blockers,
+        "metrics": metrics,
+        "schema_version": ASSESSMENT_SCHEMA,
+        "status": status,
+        "tracks": {
+            "external_study": external_study_status,
+            "external_usability": external_status,
+            "field_utility": field_status,
+            "product_test_readiness": product_status,
+            "signal_validity": signal_status,
+        },
+    }
+
+def render_markdown(assessment: dict[str, Any]) -> str:
+    metrics = _mapping(assessment.get("metrics"))
+    tracks = _mapping(assessment.get("tracks"))
+    lines = [
+        "# Hybrid Value Gate",
+        "",
+        f"**Publication status: `{assessment['status']}`**",
+        "",
+        str(assessment["boundary"]),
+        "",
+        "## Track status",
+        "",
+        f"- Signal validity: `{tracks['signal_validity']}`.",
+        f"- Internal product test: `{tracks['product_test_readiness']}`.",
+        f"- External study: `{tracks['external_study']}`.",
+        f"- External usability: `{tracks['external_usability']}`.",
+        f"- Field utility: `{tracks['field_utility']}`.",
+        "",
+        "## Measured signal sample",
+        "",
+        f"- Cases: **{metrics['sample_cases']}** across "
+        f"**{metrics['repositories']}** repositories.",
+        f"- Complete metadata streams: "
+        f"**{metrics['collection_complete_cases']}** "
+        f"({metrics['collection_complete_ratio']:.0%}).",
+        f"- Self-validating workflow signal: "
+        f"**{metrics['self_validating_cases']}** cases across "
+        f"**{metrics['self_validating_repositories']}** repositories; "
+        f"**{metrics['bot_signal_cases']}** bot-authored.",
+        f"- Keyword-matched CI/test inline review comments: "
+        f"**{metrics['ci_related_review_comments']}** across "
+        f"**{metrics['ci_related_review_prs']}** PRs.",
+        f"- Exact-baseline actionable findings: "
+        f"**{metrics['actionable_exact_findings']}**; independently "
+        f"labeled signal cases: **{metrics['labeled_signal_cases']}**.",
+        "",
+        "## Product-test readiness",
+        "",
+        f"- Internal checks: **{metrics['product_readiness_checks_met']}**/"
+        f"**{metrics['product_readiness_checks_required']}** met.",
+        f"- External participants currently available: "
+        f"**{'yes' if metrics['external_participants_available'] else 'no'}**.",
+        f"- External teams currently available: "
+        f"**{'yes' if metrics['external_teams_available'] else 'no'}**.",
+        f"- Qualified external users observed: "
+        f"**{metrics['qualified_external_users']}**.",
+        "- Internal checks can establish only PRODUCT_TEST_READY; they cannot "
+        "establish product usefulness, adoption, retention, or willingness to pay.",
+        "",
+        "## Acceptance criteria",
+        "",
+        "| Track | Criterion | Observed | Required | Result |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    criteria = _mapping(assessment.get("criteria"))
+    for group in (
+        "signal_validity",
+        "product_test_readiness",
+        "external_usability",
+    ):
+        for item in criteria.get(group, []):
+            lines.append(
+                f"| `{group}` | `{item['id']}` | `{_display(item['observed'])}` | "
+                f"`{item['operator']} {_display(item['required'])}` | "
+                f"**{'met' if item['met'] else 'not met'}** |"
+            )
+    lines.extend(
+        [
+            "",
+            "## Decision rule",
+            "",
+            "- `SIGNAL_SUPPORTED + PRODUCT_TEST_READY` permits only a "
+            "controlled external study; it does not permit publication.",
+            "- `GO` additionally requires `EXTERNAL_USABILITY_SUPPORTED`.",
+            "- Commercialization remains unvalidated until a separate field "
+            "study establishes practical utility and retention.",
+            "- `NO_GO` blocks publication, marketing, production "
+            "recommendations, and paid pilot intake.",
+            "",
+            "Current publication blockers: "
+            + ", ".join(f"`{item}`" for item in assessment["blockers"])
+            + ".",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+def _mapping(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
+def _nonnegative_int(value: Any) -> int:
+    if isinstance(value, int) and not isinstance(value, bool) and value >= 0:
+        return value
+    return 0
+
+
+def _signal(case: dict[str, Any]) -> bool:
+    return _nonnegative_int(case.get("self_validating_workflows")) > 0
+
+
+def _exact_labeled(case: dict[str, Any]) -> bool:
+    baseline = _mapping(case.get("github_baseline"))
+    outcome = _mapping(case.get("outcome"))
+    return bool(
+        baseline.get("source") == "github_api_snapshot"
+        and baseline.get("exact_sha") is True
+        and baseline.get("merge_ready") is True
+        and outcome.get("source") in _INDEPENDENT_LABEL_SOURCES
+        and outcome.get("classification") in _LABELED_OUTCOMES
+    )
+
+
+def _boolean_rate(items: list[dict[str, Any]], field: str) -> float | None:
+    if not items or any(not isinstance(item.get(field), bool) for item in items):
+        return None
+    return sum(item[field] is True for item in items) / len(items)
+
+
+def _criterion(
+    criterion_id: str,
+    observed: Any,
+    operator: str,
+    required: int | float,
+) -> dict[str, Any]:
+    met = False
+    if isinstance(observed, (int, float)) and not isinstance(observed, bool):
+        met = observed >= required if operator == ">=" else observed <= required
+    return {
+        "id": criterion_id,
+        "met": met,
+        "observed": observed,
+        "operator": operator,
+        "required": required,
+    }
+
+
+
+def _state_criterion(
+    criterion_id: str,
+    observed: Any,
+    required: str,
+) -> dict[str, Any]:
+    return {
+        "id": criterion_id,
+        "met": observed == required,
+        "observed": observed,
+        "operator": "==",
+        "required": required,
+    }
+
+def _compound_minimum(
+    criterion_id: str,
+    observed: dict[str, int],
+    required: dict[str, int | float],
+) -> dict[str, Any]:
+    return {
+        "id": criterion_id,
+        "met": all(observed[key] >= required[key] for key in required),
+        "observed": observed,
+        "operator": ">= each",
+        "required": required,
+    }
+
+
+def _display(value: Any) -> str:
+    if value is None:
+        return "unavailable"
+    if isinstance(value, float):
+        return f"{value:.3f}"
+    if isinstance(value, dict):
+        return ", ".join(f"{key}={value[key]}" for key in sorted(value))
+    return str(value)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--corpus")
+    parser.add_argument("--product-readiness")
+    parser.add_argument("--discovery-manifest")
+    parser.add_argument("--discovery-analysis")
+    parser.add_argument("--corpus-out")
+    parser.add_argument("--json-out")
+    parser.add_argument("--markdown-out")
+    parser.add_argument("--require-go", action="store_true")
+    args = parser.parse_args(argv)
+
+    corpus: dict[str, Any]
+    build_args = (
+        args.discovery_manifest,
+        args.discovery_analysis,
+        args.corpus_out,
+    )
+    if any(build_args):
+        if not all(build_args):
+            parser.error(
+                "--discovery-manifest, --discovery-analysis, and "
+                "--corpus-out must be provided together"
+            )
+        corpus = build_corpus(
+            _load(Path(args.discovery_manifest)),
+            _load(Path(args.discovery_analysis)),
+        )
+        _validate_corpus(corpus)
+        _write(Path(args.corpus_out), corpus)
+    elif args.corpus:
+        corpus = _load(Path(args.corpus))
+    else:
+        parser.error("provide --corpus or the three discovery build arguments")
+
+    product_readiness = (
+        _load(Path(args.product_readiness)) if args.product_readiness else None
+    )
+    assessment = assess(corpus, product_readiness=product_readiness)
+    if args.json_out:
+        _write(Path(args.json_out), assessment)
+    markdown = render_markdown(assessment)
+    if args.markdown_out:
+        path = Path(args.markdown_out)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(markdown, encoding="utf-8", newline="\n")
+    else:
+        print(markdown, end="")
+    return 1 if args.require_go and assessment["status"] != "GO" else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -39,8 +39,9 @@ REQUIRED_SNIPPETS = {
         "docs/TRUST.md",
         "docs/BUYER_FAQ.md",
         "docs/GUIDED_PILOT.md",
-        "issues/new?template=feedback.yml",
-        "## Pilots and design partners",
+        "Pre-pilot validation",
+        "## External availability",
+        "benchmarks/value/ASSESSMENT.md",
         ".github/workflows/aos-workflow-gate-self.yml",
     ],
     "docs/VALUE.md": [
@@ -50,13 +51,13 @@ REQUIRED_SNIPPETS = {
     ],
     "docs/ONE_PAGER.md": [
         "deterministic evidence infrastructure for",
-        "Proof, not promises",
-        "commits neither side",
+        "Status: pre-pilot validation; external intake closed",
+        "## Technical proof",
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/GUIDED_PILOT.md": [
-        "Submitting the form\n   commits neither side",
-        "## Design Partner variant",
+        "Status: intake closed",
+        "## Future design-partner variant",
         "mutual NDA before any non-public material",
         "does not deliver a security audit",
     ],
@@ -73,18 +74,40 @@ REQUIRED_SNIPPETS = {
         'name="description"',
         'property="og:image"',
     ],
-    "docs/pilot-wizard/index.html": [
-        "Runs entirely in your browser",
-        "No cookies, no\nanalytics, no network calls",
-        "UNSIGNED_NOT_OFFICIAL",
-        "commits neither side",
-        "guided-pilot-scoping.yml",
-        "aos-self-test.yml",
-        "Copy workflow",
+    "benchmarks/value/README.md": [
+        "pre-publication product gate",
+        "## Current result",
+        "`NO_GO`",
+        "Signal validity: `SIGNAL_INCONCLUSIVE`",
+        "Internal product test: `PRODUCT_TEST_READY`",
+        "External participants: currently unavailable",
+        "Internal tests can establish only",
+        "## Advancement rule",
+        "8-12 independent",
+        "versioned comparative-study contract",
+        "bounded discovery sample, not a market study",
+    ],
+    "benchmarks/value/ASSESSMENT.md": [
+        "**Publication status: `NO_GO`**",
+        "Cases: **100** across **10** repositories",
+        "Exact-baseline actionable findings",
+        "External participants currently available: **no**",
+        "`SIGNAL_SUPPORTED + PRODUCT_TEST_READY`",
+        "`NO_GO` blocks publication",
+    ],
+    "benchmarks/value/HYBRID_PROTOCOL.md": [
+        "external validation pending",
+        "No external developers or teams are currently available",
+        "Automated tests, maintainers, and AI",
+        "8-12 independent developers",
+        "5-10 independent teams",
+        "versioned\nobservation and analysis contract",
+        "`NO_GO`",
     ],
     "docs/PILOT_PACKAGE.md": [
+        "Status: intake closed",
         "file by file",
-        "can replay\nwithout us",
+        "can replay without us",
         "## Handover checklist",
         "nothing\n      is retained on our side",
         "not a security audit",
@@ -97,9 +120,9 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/FUNNEL.md": [
-        "human enters exactly once",
+        "Status: inactive specification",
         "## Where a human is required",
-        "no telemetry reporting you were ever here",
+        "no account, trial clock, or telemetry",
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/COMPARISON.md": [
@@ -193,7 +216,7 @@ REQUIRED_SNIPPETS = {
         "Apache-2.0",
         "It is not a security audit",
         "AOS Verdict Seal",
-        "guided-pilot-scoping.yml",
+        "active paid offering",
     ],
     "docs/ADAPTERS.md": [
         "mechanical, never judgmental",
@@ -333,8 +356,8 @@ REQUIRED_SNIPPETS = {
         "## Phase 2: GitHub Action advisory mode",
         "## Phase 3: signal adapters and policy packs",
         "## MVP scope lock (v0.22)",
-        "no\nnew commands, contracts, or integrations",
-        "pilot-ready in\nthe only sense this repository claims",
+        "no new commands, contracts, or integrations",
+        "technically self-contained",
         "These are future layers, not current claims.",
     ],
 }
@@ -397,6 +420,21 @@ def check_claim_boundary() -> None:
             if match:
                 fail(f"unsupported positive claim in {path}: {match.group(0)!r}")
 
+
+def check_pilot_intake_closed() -> None:
+    retired_paths = (
+        ".github/ISSUE_TEMPLATE/guided-pilot-scoping.yml",
+        "docs/pilot-wizard/index.html",
+    )
+    for path in retired_paths:
+        if (ROOT / path).exists():
+            fail(f"closed pilot intake surface still exists: {path}")
+
+    active_link = "issues/new?template=guided-pilot-scoping.yml"
+    data = json.loads(read_text("docs.json"))
+    for path in ["action.yml", *data.get("documents", [])]:
+        if active_link in read_text(path):
+            fail(f"closed pilot intake link remains in {path}")
 
 def check_examples() -> None:
     bundle = json.loads(read_text("examples/github-pr-signal-bundle.json"))
@@ -533,7 +571,7 @@ def check_action_surface() -> None:
         "python3 -m aos_workflow_gate summarize",
         "--policy-pack",
         "GATE_MODE: ${{ inputs.mode }}",
-        "issues/new?template=guided-pilot-scoping.yml",
+        "Keep the gate advisory until",
         "Self-Test Mode",
         "must not contain control characters",
         "AOS_GATE_WORKSPACE: ${{ github.workspace }}",
@@ -574,6 +612,7 @@ def main() -> None:
     check_docs_index()
     check_required_snippets()
     check_claim_boundary()
+    check_pilot_intake_closed()
     check_examples()
     check_decision_fixture()
     check_repository_hygiene()

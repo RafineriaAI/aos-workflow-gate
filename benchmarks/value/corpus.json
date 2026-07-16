@@ -1,0 +1,2916 @@
+{
+  "boundary": "public metadata only; no code, diffs, logs, annotations, comment bodies, or commit messages are stored or executed; retrospective check conclusions are not an exact historical GitHub merge-readiness baseline",
+  "captured_at": "2026-07-14T18:45:05Z",
+  "cases": [
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 16
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "93f33157ac53de2b10083300085d358843300164",
+      "independent_workflow_runs": 6,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2031,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 1,
+        "total": 30
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 13
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "0c2a2bdef170ae7701ec3339017aa89affd91dc4",
+      "independent_workflow_runs": 6,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2032,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 6,
+        "total": 12
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 13
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "1a27108757e5ffd523335e73988f84e4d9e3c195",
+      "independent_workflow_runs": 6,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2033,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "skipped": 1,
+        "success": 12
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "e6838ef54cff366518e7b5c4ff6297181a6fe25f",
+      "independent_workflow_runs": 6,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2034,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "skipped": 1,
+        "success": 12
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "4b8e7b3aa721d3533a9f5695778f06d70a7d28c7",
+      "independent_workflow_runs": 6,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2035,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 12
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "834d8836d6f3001d8550dc9f6731c89e8e9f00a0",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2036,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 2
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 2,
+        "skipped": 1,
+        "success": 10
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "10b9d4667b0509ca3ab201d55629bbb3d863efda",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2037,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 12
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "3627cb6d0acc9cf01b9941a5cb45b4f721c56b76",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2038,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 3
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 12
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "73d2334a35afd28a3157d2cca2cc9548bf7c0ab4",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2039,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 1
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 13
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "6544f0824a58b37ef28ce4d97135625082c68672",
+      "independent_workflow_runs": 6,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 2040,
+      "repository": "allegro/hermes",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "cancelled": 5,
+        "neutral": 1,
+        "skipped": 54,
+        "success": 40
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "fd8eb34095a8a53d5179135c0ebdefb2e6316c14",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69824,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 39,
+        "success": 25
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "065d36cc21a50106be76c5d63323015fc7c4d242",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69829,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "skipped": 37,
+        "success": 39
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "4c8eb5e3b37584954e8fd3c6c4775cd811cd9804",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69835,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "success": 2
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "948418b1efa4a3bf2ce68d0e0d5e4fffed7ad3c2",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69837,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "neutral": 1,
+        "skipped": 40,
+        "success": 47
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "cfde723135c1fa5c4ab59a74f3fd529595d98aa0",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69844,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "skipped": 37,
+        "success": 30
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "1fffb9af8db0b8a15511f8a1972f74de7955dd16",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69851,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 8,
+        "success": 92
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "48ebabf57068b986ef9e4b661f157a13d9117a2f",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69860,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 12,
+        "success": 88
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "1ae45d6608e18985c006eb8c5eb1cdce939eb16c",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69863,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 10,
+        "success": 90
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "802692cca8b8ca0cd2fc6c0b47e7f667099991fd",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69866,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 1,
+        "total": 2
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "neutral": 1,
+        "skipped": 29,
+        "success": 70
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "3eb33e761c2464472381d7fc53f5846d67653da9",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 69871,
+      "repository": "apache/airflow",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 16,
+        "success": 46
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "018ee75fd6a567316e99050a6e39fc0af5bdf730",
+      "independent_workflow_runs": 4,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26774,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 1
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 19,
+        "success": 44
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "9ce78bfe5cc6c0d1c26e2434cc102f7551d0ae7b",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26775,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 20,
+        "success": 34
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "5d42dc07c3545e9024b702b9ec8f800382df77d6",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26777,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 19,
+        "success": 44
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "cbda89de81a40c8a242ee33595ce842ad1e3e106",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26782,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "skipped": 38,
+        "success": 61
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "db5e4e18f23c9f4596fdb12f0dcd63f95eaa9e10",
+      "independent_workflow_runs": 10,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26791,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 19,
+        "success": 44
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "386b41dcc74f2df77b8edf67c43c675a23b23b65",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26792,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 18,
+        "success": 45
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "70a0f2debdeff7417d2a0bc2614fd70ad244d435",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26796,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 1,
+        "total": 3
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 20,
+        "success": 34
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "95a03a8e5fda551801fe40f0dc105a073c9ba966",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26800,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 20,
+        "success": 43
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "615ff1c398636f3d4baec77b78eca3bd4a6515c7",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26801,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 16,
+        "success": 47
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "a9be77dc6e643c8110e6401378988fcd9c16544d",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 26802,
+      "repository": "astral-sh/ruff",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 100
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "44e22c7173ac848bac14e3460357ef47ef80a7de",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10366,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 4,
+        "total": 14
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "success": 100
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "98d8469e48e2a3ab7c65d19073d3ae2558c3b45b",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10368,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 100
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "6441c26d381c2e09bc4676f3b89bc627786ac285",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10369,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 1,
+        "total": 3
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 4
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "35ca8c6acf239bba7618ca698ba7ab1cdd93bfa6",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10378,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 100
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "e6b196c1c20c1e71c23b135986e8c498d2e4b491",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10382,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 1,
+        "total": 2
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 100
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "7a0c7a4aa3c8c47868a5124ecbb265bbc66dea3d",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10383,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 100
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "5af351c85ae6ce3c9bc4072c7f4d5b3c10ebeaab",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10385,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 100
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "0e250efbadb41d537a89a4aa63ff08a86283a817",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10397,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 1
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 100
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "fae77fe104cb336d085bb0345b7831161a8b817b",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10401,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 100
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "8b3ca0738528e147ab01e65c534bc27bcfc3e8e8",
+      "independent_workflow_runs": 5,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 10410,
+      "repository": "celery/celery",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 7,
+        "success": 16
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "c2c81ed6ac0045b7f3a32ed3c18e4e98fd421d21",
+      "independent_workflow_runs": 13,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21580,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 2,
+        "success": 5
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "169f8e62bf5f4d7805734a7516558be9a83397a7",
+      "independent_workflow_runs": 6,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21582,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 2,
+        "success": 3
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "d7d94b59eb3882e4700d73afbc5860c38e681bdf",
+      "independent_workflow_runs": 4,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21587,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 9
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 2,
+        "success": 5
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "7694ea9e2a7ba3b7c6852383bc507b38823aa599",
+      "independent_workflow_runs": 6,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21588,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 3,
+        "success": 6
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "a3a01fb3eeae7280c05906ba07b1e3df36413ebb",
+      "independent_workflow_runs": 7,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21593,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 3,
+        "success": 6
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "1e111ea2d3e8420868144b3f4b71dffaca9ded43",
+      "independent_workflow_runs": 7,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21599,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 9,
+        "success": 10
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "5a1d92dcb2c46c0b6f66b113c2f98ff8544e6e16",
+      "independent_workflow_runs": 10,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21601,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 1,
+        "total": 1
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": true
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 9,
+        "success": 11
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "ad4fe40592fabfeec655efdfa37e97b726a89144",
+      "independent_workflow_runs": 11,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21606,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 2,
+        "total": 2
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "cancelled": 5,
+        "skipped": 15,
+        "success": 23
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "817cf94433f6d5fde0d5f72733b714fe6bc414d1",
+      "independent_workflow_runs": 4,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21609,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 33,
+      "split": "holdout",
+      "workflow_changed": true
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 16,
+        "success": 14
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "a31e768c20ba4d2363b8d68193343aeb49ef1238",
+      "independent_workflow_runs": 18,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 21626,
+      "repository": "django/django",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 4
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "b9caf388d7f7e2c4b43e21312e61ec816734c090",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4738,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 4
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "6e7b72e125b21c9acad08e863cadc14d4c9c1fa4",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4739,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 6
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 4
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "817b9efbf9cca95579bcaa5979368f119e39eed1",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4740,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 4
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "33b21e19d22b6382ac0613f741bf758f12dab5b9",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4741,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 2
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 4
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "0514b08168b98ab6a8040c3cc3de40c689c2ff85",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4742,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "success": 19
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "3f5deca700b10a02ccf7013b189f65b26725853c",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4743,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 1
+      },
+      "self_validating_workflows": 1,
+      "split": "holdout",
+      "workflow_changed": true
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 4
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "284d049a0411053fb20e35e525bc3345e604368c",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4745,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "success": 3
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "561886441092645afbe62a73d86808312d98aea5",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4746,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 4
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "81aaad241ca854b8f615aa0575a28ef6f21d6aa3",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4747,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 1,
+        "total": 2
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 4
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "b9075887158116f20b1a18360c7fdf66926ebc82",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 4748,
+      "repository": "esl/MongooseIM",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 6,
+        "success": 24
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "e8ae36e8356e5337562963580df52c85f4c88a2a",
+      "independent_workflow_runs": 13,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15933,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 2,
+      "split": "discovery",
+      "workflow_changed": true
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "skipped": 4,
+        "success": 37
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "f8335aa7857211fa75add173d71b46620481303e",
+      "independent_workflow_runs": 15,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15947,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "neutral": 1,
+        "skipped": 3,
+        "success": 58
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "ddc0c4883f711dc4e61f7ff2a721e75a60420ff3",
+      "independent_workflow_runs": 28,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15950,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 1,
+      "split": "discovery",
+      "workflow_changed": true
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "neutral": 1,
+        "skipped": 1,
+        "success": 65
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "1b4ada1880d52267461256ccdb7bbf69c0a7f5b1",
+      "independent_workflow_runs": 24,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15952,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "neutral": 1,
+        "skipped": 1,
+        "success": 50
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "d90ef86a49cd5541d2dce5a9125306f04f9e40fa",
+      "independent_workflow_runs": 13,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15981,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "neutral": 1,
+        "skipped": 1,
+        "success": 65
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "e6a7f507675f5761445a551431956f8d539edef6",
+      "independent_workflow_runs": 24,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15982,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "bot",
+      "check_conclusions": {
+        "neutral": 1,
+        "skipped": 1,
+        "success": 49
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "e0aa7fa6174ff8c1f4082f262a7ff27604c05c13",
+      "independent_workflow_runs": 6,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15983,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 6,
+      "split": "holdout",
+      "workflow_changed": true
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 6,
+        "success": 26
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "1eee654efbc98affa5743598eb2c44b300a57e87",
+      "independent_workflow_runs": 16,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15984,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": true
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 6,
+        "success": 34
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "65bc4f0cf55bc9ddeba58771c3ccc37fd5a6268e",
+      "independent_workflow_runs": 22,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15985,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 4,
+        "success": 41
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "37273399c88bfda2e3e8b350152f6b5cc7fc672a",
+      "independent_workflow_runs": 17,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 15990,
+      "repository": "fastapi/fastapi",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 12,
+        "success": 27
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "ee98f7f580401ad5f2cb6eefadf46296eea40cfe",
+      "independent_workflow_runs": 10,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64423,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 1
+      },
+      "self_validating_workflows": 2,
+      "split": "discovery",
+      "workflow_changed": true
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 12,
+        "success": 31
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "e65f9befafb92366c0e3ec9c9e48de66e9b63148",
+      "independent_workflow_runs": 15,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64431,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 24,
+        "success": 31
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "ba053a6f100a02fbf24d3e0ab49b1871cb704483",
+      "independent_workflow_runs": 21,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64432,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 12,
+        "success": 31
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "edc1ee24c5ea5c2221e73e0e7d98b65544346d94",
+      "independent_workflow_runs": 15,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64435,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 20,
+        "success": 32
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "ac9500c0c974f78ce35b0b0b78e647640b15754a",
+      "independent_workflow_runs": 20,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64436,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 16,
+        "success": 19
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "9449399b6942c25a3b3676a4bd0634d970375f63",
+      "independent_workflow_runs": 15,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64438,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 28,
+        "success": 20
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "49326f73b5644aad469fedfa45f206eaf9c2c7b5",
+      "independent_workflow_runs": 22,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64439,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 16,
+        "success": 15
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "4ebea13ea805a0ce4d3a5103145b9a993d50298f",
+      "independent_workflow_runs": 13,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64458,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 23,
+        "success": 16
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "07a946be28952d0bad76102d541f3a25b9f43e76",
+      "independent_workflow_runs": 17,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64466,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 8,
+        "success": 30
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "ac80a3be43e55283dd64d4b90246da630342972d",
+      "independent_workflow_runs": 13,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 64475,
+      "repository": "nodejs/node",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 13
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "eca5fd1dfdc614c2df876cc32018a7d71f84ea82",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 5898,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 13
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "c77a5203438fe772d41f6a47303ad3f57a4efe6d",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 5899,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 1
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "ac5664d2281533eacafd64f5cc7d5edcdaccab60",
+      "independent_workflow_runs": 1,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 5900,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 13
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "3d03098a97ddc6a908aa4a50c2ef7381f8297d0a",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 5903,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "success": 12
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "e82db2ca3a22c9614c1987392c9cfaa8c6ce99ad",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 5917,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "success": 16
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "22d924701a6ae2e4cd01e9a15bbaf3946094af65",
+      "independent_workflow_runs": 3,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 5924,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 13
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "fbb6f0bc4c60a0bada0e03c3480d0ccf30a3c1df",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 5928,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "success": 14
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "560c119e3dc33b35b9c57172fae521d99c2a1421",
+      "independent_workflow_runs": 0,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 5945,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 3,
+      "split": "discovery",
+      "workflow_changed": true
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "success": 13
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "91c6b3fecf36b1f04554e57cc4060ccb737a445d",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 5962,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "failure": 1,
+        "success": 12
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "9368fb3f3c52d74534d14c1bef03c79c103356cd",
+      "independent_workflow_runs": 2,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 6013,
+      "repository": "pallets/flask",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 11
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "a5939c373b861550de8d5545bdb8463eb8dc6642",
+      "independent_workflow_runs": 10,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9926,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 1,
+        "total": 2
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 10
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "bf8ae30eb81ee4b52f0ddaa2013ed99be403f2bc",
+      "independent_workflow_runs": 7,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9927,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 2,
+        "success": 8
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "4be529752e0ce7ce8c273317a5ddcb052faa2f6a",
+      "independent_workflow_runs": 7,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9928,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 2,
+        "total": 2
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 7
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "6f70efccbce27bc49ebb14ab60e6713fd337e588",
+      "independent_workflow_runs": 7,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9934,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 12
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "8e6c348f7f62aab4b3fbc3216669127c670fef76",
+      "independent_workflow_runs": 9,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9938,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 15
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "606b81818a6a573d728e8741803f3871a935878f",
+      "independent_workflow_runs": 10,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9939,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 7
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "068e72949e37d559e3f94b88f05ac78f132f36d7",
+      "independent_workflow_runs": 8,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9946,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 2,
+        "success": 9
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "eaa78c7c893e5504c32c502862ef39dd193b5919",
+      "independent_workflow_runs": 8,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9947,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 2,
+        "success": 9
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "9d9578ff15b86d0682eca44f3bf8421ddb88994b",
+      "independent_workflow_runs": 8,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9948,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "holdout",
+      "workflow_changed": false
+    },
+    {
+      "author_kind": "human",
+      "check_conclusions": {
+        "skipped": 1,
+        "success": 18
+      },
+      "collection_complete": true,
+      "github_baseline": {
+        "exact_sha": false,
+        "merge_ready": null,
+        "source": "unverified_historical"
+      },
+      "head_sha": "eacc4621fb61e68ba89015b5d5ec21b84d498271",
+      "independent_workflow_runs": 13,
+      "outcome": {
+        "classification": "unresolved",
+        "evidence_url": null,
+        "source": "none"
+      },
+      "pull_request": 9951,
+      "repository": "software-mansion/react-native-reanimated",
+      "review_comments": {
+        "ci_related": 0,
+        "total": 0
+      },
+      "self_validating_workflows": 0,
+      "split": "discovery",
+      "workflow_changed": false
+    }
+  ],
+  "method": {
+    "discovery_analysis_schema": "discovery-analysis-v0",
+    "discovery_manifest_schema": "discovery-manifest-v0",
+    "selection": "most recently created merged pull requests per repository at capture time"
+  },
+  "repositories": [
+    "allegro/hermes",
+    "apache/airflow",
+    "astral-sh/ruff",
+    "celery/celery",
+    "django/django",
+    "esl/MongooseIM",
+    "fastapi/fastapi",
+    "nodejs/node",
+    "pallets/flask",
+    "software-mansion/react-native-reanimated"
+  ],
+  "schema_version": "value-corpus-v0",
+  "ux_observations": []
+}

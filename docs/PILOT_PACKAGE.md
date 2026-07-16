@@ -1,8 +1,13 @@
 # Evidence-Led Pilot Package
 
-What a guided pilot hands over, file by file. "Evidence-led" means every
-claim in the final report is a committed artifact the customer can replay
-without us — the package is verifiable the same way this repository is.
+**Status: intake closed.** This is the future handover specification,
+not an active offer. Pilot publication remains blocked by the
+[`NO_GO` Value Gate](../benchmarks/value/ASSESSMENT.md).
+
+
+What a future guided pilot would hand over, file by file. "Evidence-led"
+means every claim in the final report would be an artifact the customer
+can replay without us.
 
 ## Deliverables
 

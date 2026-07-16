@@ -14,12 +14,12 @@ Explicit-bundle mode needs no API access at all.
 
 **What is free and what is paid?**
 The repository, CLI, and GitHub Action are free under Apache-2.0, for
-private and commercial use, with no feature gates. The paid offering is the
-guided pilot: a scoped engagement where we design the gate policy for one
-of your real workflows and hand over measured, replayable results. Request
-scoping through the
-[guided-pilot form](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=guided-pilot-scoping.yml);
-submitting it commits neither side.
+private and commercial use, with no feature gates. There is currently no
+active paid offering: external onboarding and pilot intake remain closed
+while the
+[Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) is `NO_GO`.
+The future pilot specification describes policy design and replayable
+handover, but it is not an offer and has no active intake path.
 
 **What happens if RafineriaAI disappears?**
 Your gate keeps working. The code is Apache-2.0, has zero runtime
