@@ -1,0 +1,18 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "record-observation-scope-mismatch",
+  "classification": "negative_control",
+  "description": "A self-consistent record is rejected when its own observation scope names another SHA.",
+  "mechanism": "observation_scope",
+  "mutation": "record_observation_scope_mismatch",
+  "expected": {
+    "exit_code": 1,
+    "outcome": "REJECT",
+    "output_contains": [
+      "TAMPERED"
+    ]
+  }
+}

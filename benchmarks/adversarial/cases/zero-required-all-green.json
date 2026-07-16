@@ -19,7 +19,9 @@
     }
   },
   "case_id": "zero-required-all-green",
+  "classification": "negative_control",
   "description": "Nothing required, everything green: honest WARN, never PASS.",
+  "mechanism": "empty_policy",
   "expected": {
     "detail_contains": "requires nothing",
     "reason_rules": [

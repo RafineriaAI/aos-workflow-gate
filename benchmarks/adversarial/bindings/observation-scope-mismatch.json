@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "observation-scope-mismatch",
+  "classification": "negative_control",
+  "description": "A redigested bundle whose observation scope names another SHA fails subject-context verification.",
+  "mechanism": "observation_scope",
+  "mutation": "observation_scope_mismatch",
+  "expected": {
+    "binding_detail": "observation scope does not match bundle subject",
+    "exit_code": 1,
+    "outcome": "REJECT",
+    "output_contains": [
+      "TAMPERED"
+    ]
+  }
+}

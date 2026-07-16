@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "exact-subject-context",
+  "classification": "positive_control",
+  "description": "A complete context snapshot and observation scope bound to the exact repository and SHA verify.",
+  "mechanism": "context_snapshot_binding",
+  "mutation": "exact_subject_context",
+  "expected": {
+    "exit_code": 0,
+    "outcome": "ACCEPT",
+    "output_contains": [
+      "OK",
+      "subject context: exact repository and SHA match"
+    ]
+  }
+}

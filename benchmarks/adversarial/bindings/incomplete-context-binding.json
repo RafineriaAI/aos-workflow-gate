@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "incomplete-context-binding",
+  "classification": "negative_control",
+  "description": "A context snapshot without its digest is incomplete and cannot verify.",
+  "mechanism": "context_snapshot_binding",
+  "mutation": "incomplete_context_binding",
+  "expected": {
+    "binding_detail": "context snapshot binding is incomplete",
+    "exit_code": 1,
+    "outcome": "REJECT",
+    "output_contains": [
+      "TAMPERED"
+    ]
+  }
+}

@@ -1,14 +1,21 @@
 {
   "bundle": {
     "collection": {
+      "observation_scope": {
+        "head_sha": "ffffffffffffffffffffffffffffffffffffffff",
+        "repository": "octo/repo"
+      },
       "requirements": [
         {
           "context": "ci",
-          "integration_id": 15368,
-          "state": "unverifiable"
+          "integration_id": 101,
+          "state": "missing"
         }
       ],
-      "status": "complete"
+      "status": "subject_mismatch",
+      "subject_mismatch_runs": [
+        777
+      ]
     },
     "schema_version": "draft-0",
     "sources": [],
@@ -17,13 +24,14 @@
       "sha": "ffffffffffffffffffffffffffffffffffffffff"
     }
   },
-  "case_id": "imposter-app-unverifiable",
+  "case_id": "cross-sha-observation-fail-closed",
   "classification": "negative_control",
-  "description": "A same-named run from a foreign app was excluded as unverifiable; the requirement must fail closed with the state named.",
-  "mechanism": "control_identity",
+  "description": "A check observed for another SHA is excluded and the incomplete observation fails closed.",
+  "mechanism": "observation_scope",
   "expected": {
-    "detail_contains": "requirement state: unverifiable",
+    "detail_contains": "subject_mismatch",
     "reason_rules": [
+      "incomplete_collection",
       "missing_required_source"
     ],
     "verdict": "BLOCK"
@@ -37,6 +45,7 @@
     "rules": {
       "advisory_warning": "WARN",
       "failed_required_source": "BLOCK",
+      "incomplete_collection": "BLOCK",
       "malformed_input": "BLOCK",
       "missing_required_source": "BLOCK",
       "no_required_sources": "WARN"

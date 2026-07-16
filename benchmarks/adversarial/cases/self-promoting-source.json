@@ -17,7 +17,9 @@
     }
   },
   "case_id": "self-promoting-source",
+  "classification": "negative_control",
   "description": "A source-v0 source tries to mark itself required.",
+  "mechanism": "policy_ownership",
   "expected": {
     "detail_contains": "policy-owned",
     "reason_rules": [

@@ -1,0 +1,68 @@
+{
+  "bundle": {
+    "collection": {
+      "requirements": [
+        {
+          "context": "ci",
+          "integration_id": 101,
+          "required_by": [
+            "rulesets"
+          ],
+          "source_id": "ci [app:101]",
+          "state": "satisfied"
+        },
+        {
+          "context": "ci",
+          "integration_id": 202,
+          "required_by": [
+            "classic_branch_protection"
+          ],
+          "source_id": "ci [app:202]",
+          "state": "satisfied"
+        }
+      ],
+      "status": "complete"
+    },
+    "schema_version": "draft-0",
+    "sources": [
+      {
+        "id": "ci [app:101]",
+        "kind": "github_check",
+        "status": "success"
+      },
+      {
+        "id": "ci [app:202]",
+        "kind": "github_check",
+        "status": "success"
+      }
+    ],
+    "subject": {
+      "repository": "octo/repo",
+      "sha": "ffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "case_id": "same-context-apps-both-satisfied",
+  "classification": "positive_control",
+  "description": "Two app-bound controls sharing one context remain distinct and both satisfy policy.",
+  "mechanism": "control_identity",
+  "expected": {
+    "reason_rules": [],
+    "verdict": "PASS"
+  },
+  "policy": {
+    "advisory_sources": [],
+    "policy_id": "adversarial",
+    "required_sources": [
+      "ci [app:101]",
+      "ci [app:202]"
+    ],
+    "rules": {
+      "advisory_warning": "WARN",
+      "failed_required_source": "BLOCK",
+      "malformed_input": "BLOCK",
+      "missing_required_source": "BLOCK",
+      "no_required_sources": "WARN"
+    },
+    "schema_version": "draft-0"
+  }
+}

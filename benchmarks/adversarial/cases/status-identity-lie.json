@@ -19,7 +19,9 @@
     }
   },
   "case_id": "status-identity-lie",
+  "classification": "negative_control",
   "description": "Source claims success while its identity says warning.",
+  "mechanism": "source_identity",
   "expected": {
     "detail_contains": "does not match",
     "reason_rules": [

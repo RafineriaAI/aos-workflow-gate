@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "digest-only-record",
+  "classification": "neutral_control",
+  "description": "A valid digest-only record remains replayable while its weaker verifier binding is disclosed.",
+  "mechanism": "backward_compatibility",
+  "mutation": "digest_only_record",
+  "expected": {
+    "exit_code": 0,
+    "outcome": "ACCEPT_WITH_DISCLOSURE",
+    "output_contains": [
+      "OK",
+      "verifier: digest-only record"
+    ]
+  }
+}

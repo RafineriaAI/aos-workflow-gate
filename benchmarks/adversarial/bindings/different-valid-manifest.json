@@ -1,0 +1,19 @@
+{
+  "base": {
+    "bundle": "examples/github-pr-signal-bundle.json",
+    "record": "examples/gate-decision.json"
+  },
+  "case_id": "different-valid-manifest",
+  "classification": "neutral_control",
+  "description": "A different internally valid verifier manifest remains replayable and is explicitly disclosed.",
+  "mechanism": "verifier_manifest_binding",
+  "mutation": "different_valid_manifest",
+  "expected": {
+    "exit_code": 0,
+    "outcome": "ACCEPT_WITH_DISCLOSURE",
+    "output_contains": [
+      "OK",
+      "valid embedded DIFFERENT manifest"
+    ]
+  }
+}

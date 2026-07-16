@@ -1,17 +1,16 @@
-"""Adversarial regression corpus + committed contrast integrity.
+"""Adversarial regression corpus and public proof integrity.
 
-Every corpus case is a frozen attack or failure shape the gate must
-keep deciding correctly: the expected verdict lives ONLY here, as a
-test assertion over corpus data — it is never an input to the
-evaluator, and a guard asserts the evaluator code cannot even name it.
-The contrast artifacts must regenerate byte-identically from committed
-evidence.
+Decision cases freeze policy outcomes. Binding cases separately exercise
+record, subject, observation-scope, and verifier-manifest correlation.
+Expected outcomes remain test assertions and are never passed to product
+evaluation or verification code.
 """
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -19,20 +18,41 @@ from aos_workflow_gate.evaluate import evaluate
 from aos_workflow_gate.policy import Policy
 
 ROOT = Path(__file__).resolve().parents[1]
-CASES = sorted((ROOT / "benchmarks" / "adversarial" / "cases").glob("*.json"))
+CORPUS = ROOT / "benchmarks" / "adversarial"
+CASES = sorted((CORPUS / "cases").glob("*.json"))
+
+CLASSIFICATIONS = {
+    "positive_control",
+    "negative_control",
+    "neutral_control",
+}
+REQUIRED_MECHANISMS = {
+    "control_identity",
+    "requirement_provenance",
+    "legacy_status_boundary",
+    "observation_scope",
+}
+
+
+def _load(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 @pytest.mark.parametrize(
     "case_path", CASES, ids=[path.stem for path in CASES]
 )
 def test_adversarial_case_replays(case_path: Path) -> None:
-    case = json.loads(case_path.read_text(encoding="utf-8"))
-    decision = evaluate(case["bundle"], Policy.from_dict(case["policy"]))
+    case = _load(case_path)
+    decision = evaluate(
+        case["bundle"],
+        Policy.from_dict(case["policy"]),
+    )
     expected = case["expected"]
+
     assert decision.verdict == expected["verdict"], case["case_id"]
-    rules = {reason.rule for reason in decision.reasons}
-    for rule in expected["reason_rules"]:
-        assert rule in rules, (case["case_id"], rule)
+    assert [reason.rule for reason in decision.reasons] == expected[
+        "reason_rules"
+    ], case["case_id"]
     if expected.get("detail_contains"):
         assert any(
             expected["detail_contains"] in reason.detail
@@ -40,17 +60,25 @@ def test_adversarial_case_replays(case_path: Path) -> None:
         ), (case["case_id"], expected["detail_contains"])
 
 
-def test_corpus_is_nonempty_and_covers_both_failing_verdicts() -> None:
-    assert len(CASES) >= 8
-    verdicts = {
-        json.loads(path.read_text(encoding="utf-8"))["expected"]["verdict"]
-        for path in CASES
+def test_decision_corpus_taxonomy_and_coverage() -> None:
+    assert len(CASES) >= 14
+    cases = [_load(path) for path in CASES]
+    assert {case["case_id"] for case in cases} == {
+        path.stem for path in CASES
     }
-    assert {"BLOCK", "WARN"} <= verdicts
+    assert {case["classification"] for case in cases} == CLASSIFICATIONS
+    assert {case["expected"]["verdict"] for case in cases} == {
+        "PASS",
+        "WARN",
+        "BLOCK",
+    }
+    assert REQUIRED_MECHANISMS <= {
+        case["mechanism"] for case in cases
+    }
 
 
-def test_expected_verdict_never_reaches_the_evaluator() -> None:
-    """The corpus 'expected' block is a test assertion, not an input."""
+def test_expected_outcome_never_reaches_product_code() -> None:
+    """Corpus expectations are test assertions, never verifier inputs."""
     package = ROOT / "aos_workflow_gate"
     for path in package.glob("*.py"):
         text = path.read_text(encoding="utf-8")
@@ -58,7 +86,15 @@ def test_expected_verdict_never_reaches_the_evaluator() -> None:
         assert "adversarial" not in text, path.name
 
 
-def test_contrast_artifacts_regenerate_identically(tmp_path: Path) -> None:
+def test_adversarial_matrix_regenerates_identically() -> None:
+    import tools.adversarial_matrix as matrix_module
+
+    committed = (CORPUS / "MATRIX.md").read_text(encoding="utf-8")
+    rows = matrix_module.build_rows()
+    assert matrix_module.render_markdown(rows) == committed
+
+
+def test_contrast_artifacts_regenerate_identically() -> None:
     import tools.contrast as contrast_module
 
     committed_json = (
@@ -74,6 +110,7 @@ def test_contrast_artifacts_regenerate_identically(tmp_path: Path) -> None:
     )
     assert regenerated_json == committed_json
     assert contrast_module.render_markdown(contrast) == committed_md
+    assert "../adversarial/MATRIX.md" in committed_md
 
 
 def test_contrast_rows_match_committed_records() -> None:
