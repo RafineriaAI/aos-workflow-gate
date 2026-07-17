@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aos-workflow-gate"
-version = "0.36.0"
+version = "0.37.0"
 description = "Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -21,6 +21,8 @@ dev = [
     "mypy>=1.10,<2",
     "pytest>=8.2,<10",
     "ruff>=0.6,<1",
+    "setuptools>=69",
+    "wheel",
 ]
 
 [tool.setuptools]

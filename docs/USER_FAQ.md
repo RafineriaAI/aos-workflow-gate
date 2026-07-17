@@ -4,18 +4,20 @@ First-run answers for operators. Buyer and security-reviewer questions live
 in [BUYER_FAQ.md](BUYER_FAQ.md); verification steps in [TRUST.md](TRUST.md).
 
 **Why did my first run say WARN or show few signals?**
-Self-Test Mode collects only *completed* check runs, and on a fresh push
-your other checks may still be running. Set `wait-for-checks: "120"` with
-`required-checks` so the gate polls until the checks that matter have
-finished. The gate never waits for "everything" — its own job would never
-complete while waiting.
+Decision sources contain completed check runs; queued and approval-required
+execution remains visible in collection evidence. With automatic GitHub
+requirement discovery, the gate stabilizes discovered required controls for
+up to 120 seconds by default. A positive `wait-for-checks` value overrides
+that budget. With explicit `required-checks`, the default `"0"` performs no
+polling, so set a budget when those checks are slow. The gate never waits for
+unrequired work or for its own job.
 
 **Why does the summary say the gate "cannot BLOCK yet"?**
-Two switches control blocking. `required-checks` decides *what* can block
-(a missing or failed required check makes the verdict `BLOCK`), and
-`enforce: "true"` decides whether a `BLOCK` verdict *fails the job*. The
-summary's Coverage section suggests a starting `required-checks` value
-from your detected checks.
+Policy decides *what* produces a `BLOCK` verdict. GitHub requirements are
+discovered automatically unless explicit `required-checks` replaces them.
+Action `mode: "enforce"` decides whether that verdict fails the job; advisory
+reports it with exit 0. The Coverage section shows the controls represented in
+the evaluated policy.
 
 **How do I see and keep the evidence?**
 The decision record is written to the path in the `record` output;
@@ -73,7 +75,7 @@ aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
 | Exit 0, verdict `PASS` | Policy satisfied. | Nothing. |
 | Exit 0, verdict `WARN` | AOS found a non-blocking merge-control gap. | Read **What AOS found** and perform the single **Next** action. |
 | A non-required check failed or skipped, but AOS returned `PASS` | Zero-config records non-required results but does not repeat GitHub-visible failures as AOS warnings. | Use an explicit policy only if that result should affect the AOS verdict. |
-| Exit 0, verdict `BLOCK` | Policy would block, but nothing enforces it. | Set `enforce: "true"` (or a blocking policy) if you want the job to fail. |
+| Exit 0, verdict `BLOCK` | Policy found a blocking gap, but Action mode is advisory. | Set `mode: "enforce"` only after measuring noise; a blocking policy also fails the CLI process. |
 | Exit 1 after `evaluate` | Policy `BLOCK` under enforcement. | Follow the hints under Reasons: fix or re-run the failed required check, or correct the check name. |
 | Exit 1 after `verify` | Record or bundle changed since it was written. | Regenerate from source; investigate the mutation. |
 | Exit 2 | Operational error — malformed input, API failure after retries, budget exhausted, policy-digest or context mismatch. No verdict was produced. | Read the error message; it names the operational cause. Never treat it as a policy decision. |

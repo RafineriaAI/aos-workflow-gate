@@ -1,7 +1,16 @@
 from __future__ import annotations
 
 import json
+import tomllib
 from pathlib import Path
+
+from tools.check_public_surface import (
+    INDEX_SECTIONS,
+    _expected_index_paths,
+    check_action_examples,
+    check_cli_examples,
+    check_local_links,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -21,9 +30,28 @@ def read_text(path: str) -> str:
 
 def test_docs_json_paths_exist() -> None:
     data = json.loads(read_text("docs.json"))
-    for section in ("documents", "examples", "policies", "tools", "ci"):
+    for section in INDEX_SECTIONS:
         for item in data.get(section, []):
             assert (ROOT / item).exists(), f"docs.json references missing {item}"
+
+
+def test_docs_index_covers_the_complete_public_surface() -> None:
+    data = json.loads(read_text("docs.json"))
+    indexed = [
+        item
+        for section in INDEX_SECTIONS
+        for item in data.get(section, [])
+    ]
+
+    assert data["status"] == "public-advisory-preview"
+    assert len(indexed) == len(set(indexed))
+    assert _expected_index_paths() <= set(indexed)
+
+
+def test_documentation_links_and_examples_match_the_product() -> None:
+    check_local_links()
+    check_cli_examples()
+    check_action_examples()
 
 
 def test_readme_license_and_local_check_are_renderable() -> None:
@@ -110,8 +138,39 @@ def test_standards_compatibility_is_indexed_and_bounded() -> None:
         "SPDX",
         "CycloneDX",
         "SARIF 2.1.0",
-        "in-toto attestations",
+        "in-toto Statement v1",
         "OpenSSF Scorecard",
         "UNSIGNED_NOT_OFFICIAL",
     ):
         assert snippet in standards
+
+
+def test_dev_extra_is_a_complete_clean_room_environment() -> None:
+    pyproject = tomllib.loads(read_text("pyproject.toml"))
+    dev = pyproject["project"]["optional-dependencies"]["dev"]
+
+    for package in ("mypy", "pytest", "ruff", "setuptools", "wheel"):
+        assert any(requirement.startswith(package) for requirement in dev)
+
+
+def test_contributor_onboarding_and_ownership_are_explicit() -> None:
+    contributing = read_text("CONTRIBUTING.md")
+    development = read_text("docs/DEVELOPMENT.md")
+    codeowners = read_text(".github/CODEOWNERS")
+    template = read_text(".github/pull_request_template.md")
+
+    assert 'python -m pip install -e ".[dev]"' in contributing
+    assert "## Repository map" in development
+    assert "## Non-negotiable invariants" in development
+    assert "* @RafineriaAI" in codeowners
+    assert "## Verification" in template
+    assert "## Compatibility" in template
+
+
+def test_current_status_docs_do_not_describe_the_bootstrap_phase() -> None:
+    assert "public bootstrap" not in read_text("SECURITY.md")
+    assert "planned architecture" not in read_text("docs/ARCHITECTURE.md")
+    assert "once implementation starts" not in read_text("CONTRIBUTING.md")
+    assert "## Next milestone: external value validation" in read_text(
+        "ROADMAP.md"
+    )

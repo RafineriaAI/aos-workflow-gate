@@ -11,7 +11,7 @@
         "bench.py": "8ce3f344dca713d938e8535efd1fc5fb3cb663d01e1b66cc319eefcc1bbfe4a8",
         "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
         "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
-        "cli.py": "0990cc7a67636209cb968ddc2964b2991d1c25c520094b51b5467ed7a6e7ffbf",
+        "cli.py": "2e7d5a05f8f40c93330f23ca4c0263329737af877c63126394a1b0d8f6173a81",
         "collect.py": "aad0b62b9e79dbadbeb765bfd2e122100a77f79d304d765353d6693f6facfefa",
         "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
         "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
@@ -30,14 +30,14 @@
         "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
         "summarize.py": "fba4533df631a7579f53846b6b513ab9096b57c035299aeae5382e4704200e18",
         "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
-        "version.py": "37b6869f406948037183d89e869b4f92139964fdb9ce342c834a2f5a46bb7296",
+        "version.py": "aa13c5e5e56545c0cb1df25ca7d167888980dca7fa5b782518e9f739eae72854",
         "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
       },
-      "manifest_digest": "sha256:53cd636076a33e38690c3047c914b8e195ff7a4f47f440165c660d67372e84ff",
+      "manifest_digest": "sha256:37ca5914bac9b1e6bb28e7ef86de60b6e05ef38bb0e91bc052b407161c5287a4",
       "schema_version": "verifier-manifest-v0"
     },
-    "verifier_manifest_digest": "sha256:53cd636076a33e38690c3047c914b8e195ff7a4f47f440165c660d67372e84ff",
-    "version": "0.36.0"
+    "verifier_manifest_digest": "sha256:37ca5914bac9b1e6bb28e7ef86de60b6e05ef38bb0e91bc052b407161c5287a4",
+    "version": "0.37.0"
   },
   "input_bundle_digest": "sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837",
   "inputs": [
@@ -109,7 +109,7 @@
       "source_id": "AOS Workflow Gate Self / zero-config"
     }
   ],
-  "record_digest": "sha256:fbcd7fff1e8f0d1d5beef8e5ceb7a050ea5e873012cebaa0c2c7d133fe2d908f",
+  "record_digest": "sha256:09f07e19aafaa9ba8915e0b5654e3fe36dc66df52a69024555d8be961e2c732d",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": null,

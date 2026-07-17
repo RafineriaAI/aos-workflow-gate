@@ -321,7 +321,10 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     run_parser.add_argument(
         "--wait-seconds", type=float, default=0.0,
-        help="poll until required checks complete (default 0)",
+        help=(
+            "required-control polling budget; 0 uses 120 seconds for "
+            "autodiscovery and no wait for explicit --require names"
+        ),
     )
     run_parser.add_argument(
         "--poll-interval", type=float, default=10.0,

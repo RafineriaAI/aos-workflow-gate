@@ -69,11 +69,12 @@ rejection.
   exits with code 2 and produces no decision record — it cannot be
   mistaken for a policy `BLOCK` (exit 1 under enforcement) or for any
   verdict at all.
-- **Polling waits only for required checks.** `wait-for-checks` polls
-  until the named required checks complete; waiting on "everything" has no
-  stop condition because the gate's own job never completes while it
-  waits. A wait that ends incomplete is not an error: the missing required
-  check fails closed, and the reason is recorded.
+- **Polling waits only for required controls.** Zero-config discovery gives
+  active GitHub requirements a built-in 120-second stabilization window; a
+  positive `wait-for-checks` value overrides it. With explicit
+  `required-checks`, `"0"` performs no polling. The gate never waits on
+  unrequired work or on its own job. A wait that ends incomplete is evidence:
+  the required control fails closed and the reason is recorded.
 - **Collection status is evidence.** The bundle carries a `collection`
   object (status complete/truncated/wait_timeout, an `observed_at`
   freshness timestamp, API calls used, seconds waited, incomplete

@@ -15,14 +15,16 @@ Every claim below comes with a way to check it without trusting us.
 - **Zero runtime dependencies.** The package depends on the Python standard
   library only, so there is no transitive supply chain to audit. Verify:
   `dependencies = []` in [pyproject.toml](../pyproject.toml).
-- **Small enough to read.** The whole package is a few hundred lines of
-  typed Python (mypy strict). Reading it end to end is an afternoon, not a
-  project.
+- **Reviewable boundaries.** Collection, contracts, evaluation, evidence, and
+  presentation are separate typed modules under `aos_workflow_gate/`.
+  [Architecture](ARCHITECTURE.md) and the
+  [development map](DEVELOPMENT.md) identify each owner; CI runs strict mypy.
 
 ## What the evidence provides
 
-- **Deterministic.** The same bundle and policy always produce the same
-  record. Verify: run `evaluate` twice and compare the files.
+- **Deterministic.** The same canonical bundle, policy, and verifier artifact
+  produce the same record. Verify: run `evaluate` twice with one installed
+  version and compare the files.
 - **Tamper-evident.** Any change to a record breaks its self-digest.
   Verify: edit one character in a record and run `verify` (exit 1,
   `TAMPERED`).
@@ -48,7 +50,7 @@ officially verified.
 
 The repository's public-surface guard
 ([tools/check_public_surface.py](../tools/check_public_surface.py)) fails
-CI when documentation drifts from implementation: phase status, version
-references, permission examples, claim-boundary wording, and the committed
-replayable fixtures are all pinned. The honesty of this page is itself a
-guarded surface.
+CI when documentation drifts from implementation: the document and artifact
+index, local links, CLI examples, release pins, permission examples,
+claim-boundary wording, contributor controls, and committed replayable
+fixtures are checked. The honesty of this page is itself a guarded surface.

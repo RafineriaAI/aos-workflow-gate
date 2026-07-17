@@ -1,35 +1,57 @@
 # Use Cases
 
-## Use case 1: pull request release gate
+These are supported decision patterns, not claims that every repository should
+enforce them.
 
-A maintainer wants one decision record for a pull request instead of manually reading CI checks, scanner output, dependency updates, and agent comments.
+## Use case 1: required-control gap
 
-The gate should:
+A maintainer needs one exact-SHA decision instead of manually reconciling
+branch rules, check runs, workflow runs, and commit statuses.
 
-- `BLOCK` when required checks are missing, failed, stale, or ambiguous.
-- `WARN` when required checks pass but advisory evidence contains known risks.
-- `PASS` when required evidence is present and policy requirements are satisfied.
+The gate:
 
-The result should include the reason, policy identity, input identities, and verification status.
+- `BLOCK`s when explicit required evidence is missing, failed, pending,
+  stale, malformed, or unverifiable;
+- `WARN`s when the policy declares an advisory gap, including zero enforced
+  checks or non-independent verifier evidence;
+- `PASS`es when every declared requirement is satisfied.
+
+The record includes the subject, policy and input identities, structured
+reason, verifier manifest, `can_block`, and digests. It does not claim full
+merge-readiness.
 
 ## Use case 2: advisory rollout
 
-A team wants to evaluate the gate without blocking contributors.
+A team wants visibility without blocking contributors. The Action runs in
+advisory mode, publishes one dominant finding and next action, and uploads the
+record, bundle, policy, and static HTML evidence. A `BLOCK` verdict still
+returns process success until enforcement is explicit.
 
-The gate should run in advisory mode, publish a summary, and collect decision artifacts. Only after repeated stable behavior should the team make `BLOCK` enforceable.
+Promotion to enforcement follows repeated stable runs, measured noise, owner
+agreement, and a tested rollback path.
 
-## Use case 3: AI-agent review governance
+## Use case 3: context-aware evidence policy
 
-A repository uses AI-agent review comments. The gate should not treat an agent comment as authority by itself. It should treat the agent result as one signal with provenance, severity, and policy role.
+A repository requires evidence that GitHub branch rules do not model directly,
+such as an independent verifier when the same PR changes the verifier itself.
+AOS represents that condition as a structured signal and lets the repository
+policy decide whether it is advisory or required.
 
-For example:
+The verifier-change mechanism is deterministic and advisory by default. It
+does not infer intent, authorship, correctness, or approval.
 
-- Agent found no issue: informational signal.
-- Agent found a release-blocking policy violation: possible `BLOCK` only if the policy says that source is authoritative for that rule.
-- Agent output is malformed or missing: `WARN` or `BLOCK` depending on policy.
+## Use case 4: agent-action governance
 
-## Use case 4: release candidate replay
+An agent action declaration is validated for canonical digests, repository and
+base-SHA binding, subject, freshness, and bounded duplication. The resulting
+`source-v0` item is evidence a policy may consume, never execution authority
+or semantic approval.
 
-A release manager wants to explain why a release candidate was allowed or blocked.
+## Use case 5: release decision replay
 
-The gate should preserve enough evidence to replay the same decision from the same input bundle and policy. Replayability is more important than a broad claim that the release is safe.
+A release maintainer preserves the decision record, bundle, and policy for the
+tagged commit. Another operator can verify digests, disclose verifier mismatch,
+render the same diagnosis, and replay the policy offline.
+
+Replay proves consistency with recorded artifacts. It does not prove that the
+release was safe or defect-free.

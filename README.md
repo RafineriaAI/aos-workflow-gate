@@ -224,6 +224,14 @@ Feedback is opt-in through the
 
 ## Local development
 
+Start with the [Contributing guide](CONTRIBUTING.md) and the
+[Development guide](docs/DEVELOPMENT.md). After creating and activating a
+fresh Python 3.11+ virtual environment as documented there:
+
+```bash
+python -m pip install -e ".[dev]"
+```
+
 Run the local hygiene checks with:
 
 ```bash
