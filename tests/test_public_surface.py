@@ -43,7 +43,11 @@ def test_readme_leads_with_product_value_before_validation_detail() -> None:
 
     assert proof < first_run < validation < documentation
     assert "docs/assets/readme-contrast.png" in readme
+    assert "docs/assets/readme-contrast-mobile.png" in readme
+    assert '<source media="(max-width: 600px)"' in readme
     assert readme.count("uses: RafineriaAI/aos-workflow-gate@v") == 1
+    assert (ROOT / "docs/assets/readme-contrast.png").exists()
+    assert (ROOT / "docs/assets/readme-contrast-mobile.png").exists()
     for stale_heading in (
         "## Current status",
         "## Core idea",

@@ -12,7 +12,10 @@ merge controls actually ran for the exact head commit, then returns `PASS`,
 
 **Read-only · Advisory by default · No source-code upload**
 
-![Exact-SHA contrast: GitHub reports clean while AOS warns that the required evidence is non-independent](docs/assets/readme-contrast.png)
+<picture>
+  <source media="(max-width: 600px)" srcset="docs/assets/readme-contrast-mobile.png">
+  <img src="docs/assets/readme-contrast.png" alt="Exact-SHA contrast: GitHub reports clean while AOS warns that the required evidence is non-independent">
+</picture>
 
 Observed public case:
 [`scramble-robot/questix#99`](https://github.com/scramble-robot/questix/pull/99).

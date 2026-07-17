@@ -21,6 +21,7 @@ REQUIRED_SNIPPETS = {
         "Green checks can still miss a merge-control gap.",
         "Read-only · Advisory by default · No source-code upload",
         "docs/assets/readme-contrast.png",
+        "docs/assets/readme-contrast-mobile.png",
         "scramble-robot/questix#99",
         "## Try it on any public PR",
         "## What AOS catches",
