@@ -15,7 +15,7 @@
   "policy_id": "collected-advisory",
   "required_sources": [],
   "rules": {
-    "advisory_warning": "WARN",
+    "advisory_warning": "PASS",
     "failed_required_source": "BLOCK",
     "incomplete_collection": "WARN",
     "malformed_input": "BLOCK",

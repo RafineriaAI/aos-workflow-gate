@@ -1,10 +1,11 @@
-## Gate decision: PASS
+## AOS Workflow Gate: PASS
 
-**What happened:** Gate PASS: all required checks satisfied; no advisory warnings.
-**Scope:** 1 required and policy-named advisory source(s) on RafineriaAI/aos-kernel@3c00cddf59eb; not full merge-readiness
-**Freshness:** not recorded (offline or pre-freshness bundle)
-**Effect:** advisory — recorded evidence only; a BLOCK verdict does not fail the job
-**Signals:** 1 required (1 successful) · 4 advisory (0 warning(s))
+**What AOS found:** Every required check AOS evaluated completed successfully for this commit.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
 **Next:** set enforce: "true" (or a blocking policy) so a BLOCK verdict fails the job
 
-Record `sha256:d67fc73427a3c9f4efce49fd889a687eb75f64b22462526784c0553bd0b5a285` · bundle `sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22` · self-check OK · UNSIGNED\_NOT\_OFFICIAL
+**Signals:** 1 required (1 successful); 4 other observation(s)
+**Scope:** 1 required check(s) plus recorded workflow signals on RafineriaAI/aos-kernel@3c00cddf59eb; not full merge-readiness
+**Freshness:** not recorded (offline or pre-freshness bundle)
+
+Record `sha256:cad3ac5ab92318ee9474966122855dc3dd6611d907539dcbb7eb764a34c40feb` | bundle `sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22` | self-check OK | UNSIGNED\_NOT\_OFFICIAL

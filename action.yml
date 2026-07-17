@@ -1,8 +1,8 @@
 name: AOS Workflow Gate
 description: >-
-  Evidence-based workflow gate: turn a signal bundle plus an explicit policy
-  into a deterministic PASS/WARN/BLOCK decision record that is replayable and
-  tamper-evident. Advisory by default. Decision records carry
+  Find merge-control gaps that a green GitHub view can miss. Get a
+  PASS/WARN/BLOCK verdict, one next action, and a replayable decision.
+  Read-only and advisory by default. Decision records carry
   UNSIGNED_NOT_OFFICIAL verification status; no production, compliance,
   signing, SLSA, or security-audit claim is made.
 branding:
@@ -89,7 +89,7 @@ outputs:
       BLOCK verdict ("true"/"false").
     value: ${{ steps.evaluate.outputs.can-block }}
   diagnosis:
-    description: One line - the verdict and what happened.
+    description: One line - the verdict and what AOS found.
     value: ${{ steps.evaluate.outputs.diagnosis }}
   next-action:
     description: The single dominant next step for the operator.
@@ -181,6 +181,8 @@ runs:
         if [ -f "$GATE_OUT" ]; then
           python3 -m aos_workflow_gate summarize --input "$GATE_OUT" \
             >> "$GITHUB_STEP_SUMMARY" || true
+          python3 -c 'import json,os;from aos_workflow_gate.summarize import render_github_annotation;value=render_github_annotation(json.load(open(os.environ["GATE_OUT"])));print(value) if value else None' \
+            || true
           if [ -f .aos-gate/bundle.json ]; then
             python3 -c 'import json; c = json.load(open(".aos-gate/bundle.json")).get("collection", {}); inc = c.get("incomplete_required") or []; extra = " - still running when the wait ended: " + ", ".join(str(n) for n in inc) if inc else ""; print("Collection: " + str(c.get("status", "unknown")) + extra)' \
               >> "$GITHUB_STEP_SUMMARY" || true
@@ -224,7 +226,7 @@ runs:
             echo "record-digest=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['record_digest'])")"
             echo "can-block=$(python3 -c "import json,os;print(str(json.load(open(os.environ['GATE_OUT']))['can_block']).lower())")"
           } >> "$GITHUB_OUTPUT"
-          python3 -c "import json,os;from aos_workflow_gate.summarize import diagnose;d=diagnose(json.load(open(os.environ['GATE_OUT'])));c=d['counts'];out=open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8');out.write('diagnosis='+str(d['verdict'])+': '+str(d['summary']).replace('\n',' ')+'\n');out.write('next-action='+str(d['next']).replace('\n',' ')+'\n');out.write('required-total=%d\nrequired-successful=%d\nrequired-missing=%d\nrequired-pending=%d\nrequired-unverifiable=%d\nrequired-failed=%d\nadvisory-warnings=%d\n'%(c['required_total'],c['required_successful'],c['required_missing'],c['required_pending'],c['required_unverifiable'],c['required_failed'],c['advisory_warnings']))" || true
+          python3 -c "import json,os;from aos_workflow_gate.summarize import diagnose;d=diagnose(json.load(open(os.environ['GATE_OUT'])));c=d['counts'];clean=lambda v:str(v).replace('\r',' ').replace('\n',' ');out=open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8');out.write('diagnosis='+str(d['verdict'])+': '+clean(d['finding'])+'\n');out.write('next-action='+clean(d['next'])+'\n');out.write('required-total=%d\nrequired-successful=%d\nrequired-missing=%d\nrequired-pending=%d\nrequired-unverifiable=%d\nrequired-failed=%d\nadvisory-warnings=%d\n'%(c['required_total'],c['required_successful'],c['required_missing'],c['required_pending'],c['required_unverifiable'],c['required_failed'],c['advisory_warnings']))" || true
         fi
         exit "$rc"
     # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

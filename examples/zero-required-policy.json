@@ -9,10 +9,14 @@
   "policy_id": "collected-advisory",
   "required_sources": [],
   "rules": {
-    "advisory_warning": "WARN",
+    "advisory_warning": "PASS",
     "failed_required_source": "BLOCK",
+    "incomplete_collection": "WARN",
     "malformed_input": "BLOCK",
-    "missing_required_source": "BLOCK"
+    "missing_required_source": "BLOCK",
+    "no_required_sources": "WARN",
+    "non_independent_evidence": "WARN",
+    "verifier_change_unavailable": "WARN"
   },
   "schema_version": "draft-0",
   "subject": {

@@ -23,8 +23,8 @@ def test_render_markdown_covers_decision_fields() -> None:
     record = _record()
     text, intact = render_markdown(record)
     assert intact
-    assert f"## Gate decision: {record['verdict']}" in text
-    assert record["summary"] in text
+    assert f"## AOS Workflow Gate: {record['verdict']}" in text
+    assert "**What AOS found:**" in text
     assert record["subject"]["repository"] in text
     assert record["policy"]["policy_id"] in text
     assert record["record_digest"] in text
@@ -40,12 +40,12 @@ def test_render_markdown_covers_decision_fields() -> None:
 def test_render_markdown_top_block() -> None:
     record = _record()
     text, _ = render_markdown(record)
-    assert "**What happened:**" in text
+    assert "**What AOS found:**" in text
     assert "**Scope:**" in text
     assert "**Freshness:**" in text
     assert "**Effect:** advisory" in text
     assert "**Next:**" in text
-    assert "advisory findings warn but never block" in text
+    assert "review the named non-required check only if it matters" in text
 
 
 def test_next_step_adapts_to_decision_gap() -> None:
@@ -64,7 +64,7 @@ def test_next_step_adapts_to_decision_gap() -> None:
 def test_render_markdown_adds_repair_hints() -> None:
     record = _record()
     text, _ = render_markdown(record)
-    assert "  - Hint: advisory findings warn but never block" in text
+    assert "  - Hint: review the named non-required check only if it matters" in text
 
 
 def test_render_markdown_escapes_pipes_in_table_cells() -> None:

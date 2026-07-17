@@ -521,4 +521,6 @@ def render_report(report: dict[str, Any], *, verbose: bool = False) -> str:
         "never a policy decision; no permission is assumed without "
         "probing (docs/PREFLIGHT.md has the code registry)."
     )
-    return "\n".join(lines) + "\n"
+    text = "\n".join(lines)
+    text = text.replace("\u2013", "-").replace("\u2014", "-")
+    return text + "\n"

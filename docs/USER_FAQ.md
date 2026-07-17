@@ -32,7 +32,7 @@ the record with the same sensitivity as your check names.
 Download the artifacts, then:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.36.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.35.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json
 ```
@@ -71,7 +71,8 @@ aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
 | Symptom | Meaning | Fix |
 | --- | --- | --- |
 | Exit 0, verdict `PASS` | Policy satisfied. | Nothing. |
-| Exit 0, verdict `WARN` | Advisory source not successful; warnings never block. | Review the named source's own report; follow the hint under Reasons. |
+| Exit 0, verdict `WARN` | AOS found a non-blocking merge-control gap. | Read **What AOS found** and perform the single **Next** action. |
+| A non-required check failed or skipped, but AOS returned `PASS` | Zero-config records non-required results but does not repeat GitHub-visible failures as AOS warnings. | Use an explicit policy only if that result should affect the AOS verdict. |
 | Exit 0, verdict `BLOCK` | Policy would block, but nothing enforces it. | Set `enforce: "true"` (or a blocking policy) if you want the job to fail. |
 | Exit 1 after `evaluate` | Policy `BLOCK` under enforcement. | Follow the hints under Reasons: fix or re-run the failed required check, or correct the check name. |
 | Exit 1 after `verify` | Record or bundle changed since it was written. | Regenerate from source; investigate the mutation. |
@@ -80,10 +81,10 @@ aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
 | Collection status `wait_timeout` | Wait budget ended with required checks still running. | Raise `wait-for-checks`, or accept the fail-closed `BLOCK`. |
 | Collection status `truncated` | More check runs existed than the page budget collected. | Raise limits via CLI flags; uncollected required checks fail closed. |
 | Collection `unverifiable_required` (check-pr) | A same-named observation exists, but it cannot be shown to satisfy the app-bound requirement (different or unidentifiable app; legacy statuses carry no app identity). | Make the required app report the check, or unbind the requirement in the branch rules; the control fails closed as missing until then. |
-| `no_required_sources` reason | Nothing is required by the policy, so nothing can block — zero required plus all-green is an honest `WARN`, never a quiet `PASS`. | Name `required-checks`, or rely on zero-config discovery, which reads required checks from branch rules (classic protection included) automatically. |
+| `no_required_sources` reason | GitHub or the explicit policy requires no status check, so green checks enforce nothing. | Configure at least one required status check in GitHub, or pass `required-checks`, then re-run AOS. |
 | `incomplete_collection` reason | The bundle records that its collection did not end `complete` (truncated listing or wait timeout), so signals that exist for the commit may be absent — an otherwise-clean result reads `WARN`, never a plain `PASS`. | Re-collect with a larger wait or API budget; set the `incomplete_collection` rule to `BLOCK` in your policy to fail closed instead. |
 | Requirement `github_equivalent: would_pass` with state `failed` | The required check concluded `skipped` or `neutral`: GitHub's own semantics count that as passing, but no evidence was actually produced. | Decide which reading you want: make the check actually run, or accept GitHub's formal pass and record the divergence. |
-| `non_independent_evidence` reason | The named checks were produced by a workflow definition this same change modifies. Advisory by default; affected sources are listed in `collection.verifier_change`. | Require evidence from a verifier governed outside the change. `--acknowledge-verifier-change "reason"` records context but never changes the verdict; raise the rule to `BLOCK` only with an independently governed policy. |
+| `non_independent_evidence` reason | This PR changed a workflow that also produced checks used to assess the same PR. | Run or require one check whose workflow definition is unchanged by this PR, then re-run AOS. Acknowledgement records context but does not suppress the reason. |
 | `workflow_visibility.not_started` entries | Execution units (check suites) exist on the commit but never produced a check run — `pending` (queued) or `action_required` (awaiting approval, e.g. a fork PR or a deployment gate). They are visible evidence, never a verdict: nothing is `missing` unless something explicitly expected it. | Approve or unblock the listed workflow, or ignore it if it is not part of your policy. |
 
 **Does PASS mean my code is safe?**

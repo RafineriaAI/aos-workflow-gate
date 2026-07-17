@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<title>Gate decision: WARN</title>
-<style>body{font:15px/1.5 system-ui,sans-serif;max-width:46rem;margin:2rem auto;padding:0 1rem;color:#1a1a1a}table{border-collapse:collapse;width:100%;margin:.5rem 0}td,th{border:1px solid #ccc;padding:.3rem .6rem;text-align:left;font-size:.9rem}code{font:.85rem/1.4 ui-monospace,monospace;word-break:break-all}.verdict{display:inline-block;padding:.15rem .6rem;border-radius:6px;font-weight:700}.v-PASS{background:#d7f5dd}.v-WARN{background:#fdeec7}.v-BLOCK{background:#fbd7d7}.tampered{border:2px solid #b00;padding:.5rem .8rem;margin:.8rem 0;font-weight:600}.hint{color:#555;font-size:.85rem}footer{margin-top:1.5rem;color:#777;font-size:.8rem}</style></head><body>
-<h1>Gate decision: <span class="verdict v-WARN">WARN</span></h1>
-<p><strong>What happened:</strong> Gate WARN: required checks satisfied; 1 advisory warning(s).</p>
-<p><strong>Scope:</strong> 1 required and policy-named advisory source(s) on RafineriaAI/aos-workflow-gate@9c064fc8c95d; not full merge-readiness<br><strong>Freshness:</strong> observation time not recorded; collection complete<br><strong>Effect:</strong> advisory — recorded evidence only; a BLOCK verdict does not fail the job<br><strong>Signals:</strong> 1 required (1 successful) · 3 advisory (1 warning(s))<br><strong>Next:</strong> advisory findings warn but never block; review the source&#x27;s own report and decide</p>
+<title>AOS Workflow Gate: WARN</title>
+<style>body{font:15px/1.5 system-ui,sans-serif;max-width:46rem;margin:2rem auto;padding:0 1rem;color:#1a1a1a;background:#fff}table{border-collapse:collapse;width:100%;margin:.5rem 0}td,th{border:1px solid #ccc;padding:.3rem .6rem;text-align:left;font-size:.9rem}code{font:.85rem/1.4 ui-monospace,monospace;word-break:break-all}.verdict{display:inline-block;padding:.15rem .6rem;border-radius:6px;font-weight:700}.v-PASS{background:#d7f5dd}.v-WARN{background:#fdeec7}.v-BLOCK{background:#fbd7d7}.tampered{border:2px solid #b00;padding:.5rem .8rem;margin:.8rem 0;font-weight:600}.hint{color:#555;font-size:.85rem}footer{margin-top:1.5rem;color:#777;font-size:.8rem}</style></head><body>
+<h1>AOS Workflow Gate: <span class="verdict v-WARN">WARN</span></h1>
+<p><strong>What AOS found:</strong> Non-required check &#x27;AOS Workflow Gate Self / no-checkout&#x27; ended as &#x27;skipped&#x27;.<br><strong>Effect:</strong> advisory only; WARN/BLOCK is reported but does not fail this job<br><strong>Next:</strong> review the named non-required check only if it matters to this change; it cannot block this gate</p>
+<p><strong>Signals:</strong> 1 required (1 successful); 3 other observation(s)<br><strong>Scope:</strong> 1 required check(s) plus recorded workflow signals on RafineriaAI/aos-workflow-gate@9c064fc8c95d; not full merge-readiness<br><strong>Freshness:</strong> observation time not recorded; collection complete</p>
+<h2>Technical evidence</h2>
 <table>
 <tr><th>Repository</th><td><code>RafineriaAI/aos-workflow-gate</code></td></tr>
 <tr><th>Ref</th><td><code>refs/pull/22/merge</code></td></tr>
@@ -13,12 +14,12 @@
 <tr><th>Policy</th><td><code>collected-advisory (advisory)</code></td></tr>
 <tr><th>Policy digest</th><td><code>sha256:307c1f8738f94d966f3911f67d927ac749182aa544390fa8928105ddbc8d6237</code></td></tr>
 <tr><th>Input bundle digest</th><td><code>sha256:54949f798a0dbd4e64765c515b0ae828dbc61fb6ed4c9ceb66e174ecc61bfc7f</code></td></tr>
-<tr><th>Record digest</th><td><code>sha256:db9c442a1c593d23a59b7253db1b660ea229cf68b6ce6a3a49d485af8647f677</code></td></tr>
+<tr><th>Record digest</th><td><code>sha256:b5db48077d143b4feb2fedff2a3419be5f9570b1a2654221d0f5f63a2db34015</code></td></tr>
 <tr><th>Record self-check</th><td><code>OK</code></td></tr>
 <tr><th>Verification status</th><td><code>UNSIGNED_NOT_OFFICIAL</code></td></tr>
 </table>
 <h2>Reasons</h2><ul>
-<li>WARN <code>advisory_warning</code> AOS Workflow Gate Self / no-checkout: advisory source status is &#x27;skipped&#x27;<br><span class="hint">Hint: advisory findings warn but never block; review the source&#x27;s own report and decide</span></li>
+<li>WARN <code>advisory_warning</code> AOS Workflow Gate Self / no-checkout: advisory source status is &#x27;skipped&#x27;<br><span class="hint">Hint: review the named non-required check only if it matters to this change; it cannot block this gate</span></li>
 </ul>
 <h2>Inputs</h2><table><tr><th>Id</th><th>Kind</th><th>Required</th><th>Status</th></tr>
 <tr><td>AOS Workflow Gate CI / validate</td><td>github_check</td><td>yes</td><td>success</td></tr>

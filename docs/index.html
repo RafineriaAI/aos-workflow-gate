@@ -3,43 +3,58 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AOS Workflow Gate — replayable PASS/WARN/BLOCK decisions for CI</title>
-<meta name="description" content="Zero-config GitHub Action and CLI that turn checks, scanners, and AI-agent signals into deterministic, tamper-evident PASS/WARN/BLOCK decision records you can replay offline. Read-only, zero dependencies, Apache-2.0.">
+<title>AOS Workflow Gate - find merge-control gaps before merge</title>
+<meta name="description" content="Read-only GitHub Action and CLI that find required checks that did not run and workflow changes that assess themselves. Plain PASS/WARN/BLOCK, one next action, and an exact-commit record.">
 <link rel="canonical" href="https://rafineriaai.github.io/aos-workflow-gate/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="AOS Workflow Gate — replayable gate decisions for CI">
-<meta property="og:description" content="Deterministic, tamper-evident PASS/WARN/BLOCK records for pull requests and releases. Zero-config Self-Test, read-only, Apache-2.0.">
+<meta property="og:title" content="AOS Workflow Gate - find merge-control gaps before merge">
+<meta property="og:description" content="GitHub can be green while required controls are absent or self-validating. AOS names the gap and the next action without blocking by default.">
 <meta property="og:url" content="https://rafineriaai.github.io/aos-workflow-gate/">
 <meta property="og:image" content="https://rafineriaai.github.io/aos-workflow-gate/assets/banner.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
 :root{color-scheme:light dark}
 *{box-sizing:border-box}
-body{font:16px/1.55 system-ui,sans-serif;max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+body{font:16px/1.55 system-ui,sans-serif;max-width:52rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
 h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .6rem}
-.tag{color:#888;margin:0 0 1.6rem}
+h2{font-size:1.25rem;margin:2rem 0 .6rem}
+.tag{font-size:1.15rem;font-weight:600;margin:0 0 .8rem}
+.lead{color:#666;margin:0 0 1.6rem}
 .chips span{display:inline-block;font:600 13px/1 ui-monospace,monospace;color:#fff;border-radius:8px;padding:.45rem .7rem;margin-right:.5rem}
 .pass{background:#238636}.warn{background:#9e6a03}.block{background:#da3633}
-pre{background:#8881;border:1px solid #8883;border-radius:10px;padding:1rem;overflow-x:auto;font-size:13px}
+pre{background:#8881;border:1px solid #8883;border-radius:6px;padding:1rem;overflow-x:auto;font-size:13px}
+pre.result{border-left:4px solid #9e6a03}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:.8rem;margin:1.4rem 0}
-.card{border:1px solid #8883;border-radius:12px;padding:1rem}
+.card{border:1px solid #8883;border-radius:8px;padding:1rem}
 .card h3{margin:.1rem 0 .4rem;font-size:1rem}
 .card p{margin:0;color:#888;font-size:.9rem}
-a.btn{display:inline-block;border:1px solid #8886;border-radius:10px;padding:.6rem 1rem;text-decoration:none;font-weight:600;margin:.2rem .4rem .2rem 0}
+a.btn{display:inline-block;border:1px solid #8886;border-radius:6px;padding:.6rem 1rem;text-decoration:none;font-weight:600;margin:.2rem .4rem .2rem 0}
 .muted{color:#888;font-size:.85rem}
 </style>
 </head>
 <body>
 <h1>AOS Workflow Gate</h1>
-<p class="tag">Deterministic evidence for CI, PR, and release decisions —
+<p class="tag">GitHub can show green when no check is required, or when a
+PR changes the workflow that produced its own green checks.</p>
+<p class="lead">AOS is a read-only pre-merge control check. It compares
+active branch requirements with checks on the exact commit, then returns
 <span class="chips"><span class="pass">PASS</span><span class="warn">WARN</span><span class="block">BLOCK</span></span>
-records that are replayable, tamper-evident, and verifiable offline.</p>
+with one reason and one next action.</p>
 
-<p>A CI dashboard tells you <em>which</em> checks passed. The gate answers a
-stricter question at decision time: <strong>why did the gate decide, for
-this exact commit, policy, and set of signals</strong> — including controls
-that never ran and would otherwise hide behind a green dashboard.</p>
+<pre class="result"><code>AOS Workflow Gate: WARN
 
+What AOS found:
+This PR changed a workflow that also produced checks used to assess
+the same PR.
+
+Effect: advisory only; this result does not fail the job.
+Next: run or require one unchanged workflow check, then re-run AOS.</code></pre>
+
+<p><strong>Not another AI reviewer.</strong> AOS does not judge code or guess
+who wrote it. Existing tools produce check results; AOS checks whether the
+repository merge controls actually ran and preserves the decision.</p>
+
+<h2>First value in one PR</h2>
 <pre><code>permissions:
   contents: read
   checks: read
@@ -51,27 +66,32 @@ steps:
   - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
     with:
       python-version: "3.11"
-  - uses: RafineriaAI/aos-workflow-gate@v0.36.0</code></pre>
+  - uses: RafineriaAI/aos-workflow-gate@v0.35.0</code></pre>
 
 <p>
-<a class="btn" href="https://github.com/RafineriaAI/aos-workflow-gate">Repository &amp; docs</a>
-<a class="btn" href="https://github.com/RafineriaAI/aos-workflow-gate/blob/main/benchmarks/value/ASSESSMENT.md">Value Gate: NO_GO</a>
+<a class="btn" href="https://github.com/RafineriaAI/aos-workflow-gate#first-value-in-one-pr">Install free</a>
+<a class="btn" href="https://github.com/RafineriaAI/aos-workflow-gate/blob/main/benchmarks/value/EXACT_CONTRAST.md">See exact-commit cases</a>
 </p>
-<p class="muted">External onboarding and pilot intake are closed until the
-pre-publication Value Gate reaches GO. This page exposes technical evidence,
-not a production recommendation or validated product-value claim.</p>
 
+<h2>Useful in daily work</h2>
 <div class="grid">
-<div class="card"><h3>Zero-config Self-Test</h3><p>No checkout, no setup: one step collects your commit's checks and writes a replayable decision record.</p></div>
-<div class="card"><h3>Verify, don't trust</h3><p>Read-only scopes, no telemetry, zero runtime dependencies — every claim has a <a href="https://github.com/RafineriaAI/aos-workflow-gate/blob/main/docs/TRUST.md">self-verification step</a>.</p></div>
-<div class="card"><h3>Real-data proof</h3><p>Two committed case studies replay offline, including a green dashboard <a href="https://github.com/RafineriaAI/aos-workflow-gate/blob/main/docs/case-studies/green-but-incomplete.md">hiding a control that never ran</a>.</p></div>
-<div class="card"><h3>Enforce on your terms</h3><p>Advisory by default; name required checks and switch to enforce when the evidence convinces you.</p></div>
+<div class="card"><h3>PR author</h3><p>Check whether required controls actually completed before asking for review.</p></div>
+<div class="card"><h3>Maintainer</h3><p>See one dominant gap and one repair action instead of cross-checking several GitHub views.</p></div>
+<div class="card"><h3>Platform team</h3><p>Detect missing controls and workflow changes that assess themselves without replacing CI.</p></div>
+<div class="card"><h3>Security review</h3><p>No code upload, no write scopes, no telemetry; reproduce the exact-commit decision offline.</p></div>
 </div>
+
+<h2>Claim boundary</h2>
+<p>Mechanism, integrity, and replay are tested. External daily usefulness,
+low-noise performance, incident reduction, retention, and willingness to pay
+are not yet independently validated. This is therefore a free advisory
+preview, not a production recommendation or a validated ROI claim.</p>
+<p><a href="https://github.com/RafineriaAI/aos-workflow-gate/blob/main/benchmarks/value/ASSESSMENT.md">Read the current NO_GO assessment and open questions.</a></p>
 
 <p class="muted">This page and the wizard run without cookies, analytics,
 or network calls. Decision records carry UNSIGNED_NOT_OFFICIAL status; no
-production, compliance, or security-audit claim is made.
-RafineriaAI builds deterministic evidence infrastructure for AI-controlled
-workflows — starting with replayable CI and release-gate decisions.</p>
+production, compliance, or security-audit claim is made. The tool is
+Apache-2.0, read-only, advisory by default, and available without an
+account.</p>
 </body>
 </html>

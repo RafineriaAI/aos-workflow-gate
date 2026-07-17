@@ -80,6 +80,7 @@ def test_generated_policy_lists_all_sources_and_validates_required() -> None:
     policy = build_generated_policy(bundle, required=["a"])
     assert policy["required_sources"] == ["a"]
     assert policy["advisory_sources"] == ["b"]
+    assert policy["rules"]["advisory_warning"] == "PASS"
     with pytest.raises(InputError):
         build_generated_policy(bundle, required=["missing-check"])
 
@@ -203,11 +204,13 @@ def test_cli_collect_then_evaluate_offline(
     assert "api_calls" in bundle_data["collection"]
 
     record = json.loads(record_path.read_text(encoding="utf-8"))
-    assert record["verdict"] == "WARN"
+    assert record["verdict"] == "PASS"
     assert record["can_block"] is False
     assert record["policy"]["policy_id"] == "collected-advisory"
-    reasons = {(r["rule"], r["source_id"]) for r in record["reasons"]}
-    assert ("advisory_warning", "scanner") in reasons
+    reasons = {
+        (r["rule"], r["source_id"], r["severity"]) for r in record["reasons"]
+    }
+    assert ("advisory_warning", "scanner", "PASS") in reasons
     required_flags = {i["id"]: i["required"] for i in record["inputs"]}
     assert required_flags == {"ci / validate": True, "scanner": False}
 

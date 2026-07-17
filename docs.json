@@ -171,6 +171,7 @@
     "tests/test_utility_test_readiness.py"
   ],
   "assets": [
-    "docs/assets/banner.png"
+    "docs/assets/banner.png",
+    "docs/assets/aos-warn-evidence.png"
   ]
 }

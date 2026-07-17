@@ -46,14 +46,13 @@ GENERIC_REMEDIATIONS: dict[str, RemediationSpec] = {
     ),
     "advisory_warning": RemediationSpec(
         "review_advisory_source",
-        "advisory findings warn but never block; review the source's own "
-        "report and decide",
+        "review the named non-required check only if it matters to this "
+        "change; it cannot block this gate",
     ),
     "no_required_sources": RemediationSpec(
         "define_required_sources",
-        "nothing is required, so nothing can block; name required "
-        "checks (see the suggestion under Coverage) to close the "
-        "decision gap",
+        "configure at least one required status check in GitHub, or pass "
+        "required-checks explicitly, then re-run AOS",
     ),
     "malformed_input": RemediationSpec(
         "repair_signal_bundle",
@@ -68,9 +67,8 @@ GENERIC_REMEDIATIONS: dict[str, RemediationSpec] = {
     ),
     "non_independent_evidence": RemediationSpec(
         "require_independent_evidence",
-        "the named checks were produced by a workflow this change "
-        "modifies; require evidence from a verifier governed outside "
-        "the change",
+        "run or require one check whose workflow definition is unchanged "
+        "by this PR, then re-run AOS",
     ),
     "verifier_change_unavailable": RemediationSpec(
         "restore_verifier_change_analysis",
@@ -230,7 +228,10 @@ def diagnose(record: Any) -> dict[str, Any]:
         "required_unverifiable": missing_states.count("unverifiable"),
         "advisory_total": len(inputs) - len(required),
         "advisory_warnings": sum(
-            1 for reason in reasons if reason.get("severity") == "WARN"
+            1
+            for reason in reasons
+            if reason.get("rule") == "advisory_warning"
+            and reason.get("severity") == "WARN"
         ),
         "blocking_reasons": sum(
             1 for reason in reasons if reason.get("severity") == "BLOCK"
@@ -247,6 +248,9 @@ def diagnose(record: Any) -> dict[str, Any]:
     gap_views = [
         _reason_view(reason, inputs, observation) for reason in ranked
     ]
+    finding = _plain_finding(
+        record, ranked, inputs, observation, intact=intact
+    )
     if not intact:
         remediation = _remediation(
             "record_integrity_failed",
@@ -265,6 +269,7 @@ def diagnose(record: Any) -> dict[str, Any]:
         "can_block": bool(record.get("can_block")),
         "counts": counts,
         "next": remediation["action"],
+        "finding": finding,
         "remediation": remediation,
         "scope": _scope_statement(record, observation, required_total),
         "freshness": _freshness_statement(observation),
@@ -329,6 +334,122 @@ def _reason_state(
     return None
 
 
+def _plain_finding(
+    record: dict[str, Any],
+    gaps: list[dict[str, Any]],
+    inputs: list[dict[str, Any]],
+    observation: dict[str, Any],
+    *,
+    intact: bool,
+) -> str:
+    """Translate the dominant structured reason into first-run language."""
+    if not intact:
+        return "The saved AOS decision was modified after it was created."
+    if not gaps:
+        if record.get("verdict") == "PASS":
+            return (
+                "Every required check AOS evaluated completed "
+                "successfully for this commit."
+            )
+        return "AOS returned a non-PASS verdict without a structured reason."
+
+    gap = gaps[0]
+    rule = str(gap.get("rule") or "")
+    source = _display_source(gap.get("source_id"), fallback="the check")
+    state = _reason_state(gap, inputs, observation)
+
+    if rule == "no_required_sources":
+        if observation.get("github_baseline") == "no_required_checks":
+            return (
+                "GitHub has no required status checks for this branch, "
+                "so green checks do not enforce a merge gate."
+            )
+        return (
+            "This policy requires no checks, so no check result can "
+            "block the gate."
+        )
+    if rule == "non_independent_evidence":
+        return (
+            "This PR changed a workflow that also produced checks used "
+            "to assess the same PR."
+        )
+    if rule == "verifier_change_unavailable":
+        return (
+            "AOS could not verify whether this PR changed the workflow "
+            "that assessed it."
+        )
+    if rule == "incomplete_collection":
+        return (
+            "AOS could not observe every relevant check for this exact "
+            "commit."
+        )
+    if rule == "missing_required_source":
+        if state == "pending":
+            return f"Required check '{source}' has not finished."
+        if state == "unverifiable":
+            return f"AOS could not verify required check '{source}'."
+        return f"Required check '{source}' did not run for this commit."
+    if rule == "failed_required_source":
+        result = state or "non-success"
+        if result != "success":
+            return f"Required check '{source}' ended as '{result}', not success."
+        return f"Required check '{source}' did not satisfy the gate."
+    if rule == "advisory_warning":
+        result = state or "non-success"
+        return (
+            f"Non-required check '{source}' ended as '{result}'."
+        )
+    if rule == "malformed_input":
+        return "AOS could not evaluate the input because its format is invalid."
+    return "AOS found a repository-rule condition that needs review."
+
+
+def _display_source(value: Any, *, fallback: str) -> str:
+    text = fallback if value is None else str(value)
+    text = " ".join(text.replace("\r", " ").replace("\n", " ").split())
+    if not text:
+        return fallback
+    if len(text) > 120:
+        return text[:117].rstrip() + "..."
+    return text
+
+
+def render_github_annotation(record: Any) -> str | None:
+    """Render one safe native Actions annotation for a non-PASS verdict."""
+    diag = diagnose(record)
+    verdict = str(diag["verdict"])
+    if verdict == "PASS":
+        return None
+
+    enforced_block = verdict == "BLOCK" and bool(diag["can_block"])
+    level = "error" if enforced_block else "warning"
+    effect = "enforced" if enforced_block else "non-blocking"
+    title = f"AOS {verdict} ({effect})"
+    body = _bounded_text(
+        f"{diag['finding']} Next: {diag['next']}",
+        limit=1200,
+    )
+    return (
+        f"::{level} title={title}::"
+        f"{_github_command_data(body)}"
+    )
+
+
+def _bounded_text(value: Any, *, limit: int) -> str:
+    text = str(value)
+    if len(text) <= limit:
+        return text
+    return text[: limit - 3].rstrip() + "..."
+
+
+def _github_command_data(value: str) -> str:
+    return (
+        value.replace("%", "%25")
+        .replace("\r", "%0D")
+        .replace("\n", "%0A")
+    )
+
+
 def _reason_view(
     reason: dict[str, Any],
     inputs: list[dict[str, Any]],
@@ -360,11 +481,7 @@ def _remediation_for_reason(
         )
 
     source_id = reason.get("source_id")
-    source = (
-        str(source_id).replace("\r", " ").replace("\n", " ")
-        if source_id is not None
-        else "the required check"
-    )
+    source = _display_source(source_id, fallback="the required check")
     return _remediation(
         spec.code,
         spec.action.format(source=source),
@@ -433,12 +550,14 @@ _SEVERITY_RANK = {"BLOCK": 0, "WARN": 1, "PASS": 2}
 
 
 def _rank_gaps(reasons: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Every reason, ranked most-decision-relevant first.
+    """Non-PASS reasons, ranked most-decision-relevant first.
 
     Severity dominates (a blocking gap always outranks a warning), then
     the rule's diagnostic priority, then the source id for a stable
-    order. The projection keeps the full count but shows at most three.
+    order. PASS-level observations remain in the record but are not gaps.
     """
+    active = [r for r in reasons if r.get("severity") in {"BLOCK", "WARN"}]
+
     def key(reason: dict[str, Any]) -> tuple[int, int, str]:
         return (
             _SEVERITY_RANK.get(str(reason.get("severity")), 9),
@@ -446,7 +565,7 @@ def _rank_gaps(reasons: list[dict[str, Any]]) -> list[dict[str, Any]]:
             str(reason.get("source_id") or ""),
         )
 
-    return sorted(reasons, key=key)
+    return sorted(active, key=key)
 
 
 def _dominant_problem(gaps: list[dict[str, Any]]) -> str | None:
@@ -470,8 +589,8 @@ def _scope_statement(
     sha = str(subject.get("sha") or "")
     target = f"{repository}@{sha[:12]}" if sha else str(repository)
     parts = [
-        f"{required_total} required and policy-named advisory source(s) on "
-        f"{target}"
+        f"{required_total} required check(s) plus recorded workflow "
+        f"signals on {target}"
     ]
     protection = observation.get("protection_source")
     if isinstance(protection, str) and protection not in ("", "none"):
@@ -507,10 +626,10 @@ def _freshness_statement(observation: dict[str, Any]) -> str:
 def _effect_statement(record: dict[str, Any]) -> str:
     """What this verdict can actually do to the pipeline."""
     if record.get("can_block"):
-        return "enforcing — a BLOCK verdict fails the calling job"
+        return "enforcing - a BLOCK verdict fails this job"
     return (
-        "advisory — recorded evidence only; a BLOCK verdict does not "
-        "fail the job"
+        "advisory only; WARN/BLOCK is reported but does not fail "
+        "this job"
     )
 
 
@@ -528,21 +647,20 @@ def render_markdown(record: Any) -> tuple[str, bool]:
     policy = diag["policy"]
     counts = diag["counts"]
 
-    lines: list[str] = [f"## Gate decision: {verdict}", ""]
-    summary = diag["summary"]
-    if isinstance(summary, str) and summary:
-        lines.append(f"**What happened:** {_escape(summary)}")
-    lines.append(f"**Scope:** {_escape(diag['scope'])}")
-    lines.append(f"**Freshness:** {_escape(diag['freshness'])}")
+    lines: list[str] = [f"## AOS Workflow Gate: {verdict}", ""]
+    lines.append(f"**What AOS found:** {_escape(diag['finding'])}")
     lines.append(f"**Effect:** {_escape(diag['effect'])}")
+    lines.append(f"**Next:** {_escape(diag['next'])}")
+    lines.append("")
     lines.append(
         "**Signals:** "
         f"{counts['required_total']} required "
-        f"({counts['required_successful']} successful) · "
-        f"{counts['advisory_total']} advisory "
-        f"({counts['advisory_warnings']} warning(s))"
+        f"({counts['required_successful']} successful); "
+        f"{counts['advisory_total']} other observation(s)"
     )
-    lines += [f"**Next:** {_escape(diag['next'])}", ""]
+    lines.append(f"**Scope:** {_escape(diag['scope'])}")
+    lines.append(f"**Freshness:** {_escape(diag['freshness'])}")
+    lines.append("")
     if not intact:
         lines += [
             "> **Warning:** record content does not match its self-digest. "
@@ -556,18 +674,19 @@ def render_markdown(record: Any) -> tuple[str, bool]:
     if (
         verdict == "PASS"
         and intact
-        and not diag["reasons"]
+        and not diag["gaps"]
         and counts["required_total"] > 0
     ):
         lines += [
-            f"Record {_code(record.get('record_digest', '-'))} · "
-            f"bundle {_code(record.get('input_bundle_digest', '-'))} · "
-            "self-check OK · "
+            f"Record {_code(record.get('record_digest', '-'))} | "
+            f"bundle {_code(record.get('input_bundle_digest', '-'))} | "
+            "self-check OK | "
             f"{_escape(record.get('verification_status', '-'))}",
             "",
         ]
         return "\n".join(lines), intact
 
+    lines += ["### Technical evidence", ""]
     lines += ["| Field | Value |", "| --- | --- |"]
     lines += _subject_rows(subject)
     policy_id = _code(policy.get("policy_id", "-"))
@@ -607,7 +726,7 @@ def render_markdown(record: Any) -> tuple[str, bool]:
         remainder = diag["gaps_total"] - len(diag["gaps"])
         if remainder > 0:
             lines.append(
-                f"- …and {remainder} more reason(s) — every one is in "
+                f"- ...and {remainder} more reason(s) - every one is in "
                 "the record JSON and the HTML evidence view."
             )
         lines.append("")
@@ -687,7 +806,7 @@ def _coverage_lines(inputs: list[Any]) -> list[str]:
 
 _HTML_STYLE = (
     "body{font:15px/1.5 system-ui,sans-serif;max-width:46rem;"
-    "margin:2rem auto;padding:0 1rem;color:#1a1a1a}"
+    "margin:2rem auto;padding:0 1rem;color:#1a1a1a;background:#fff}"
     "table{border-collapse:collapse;width:100%;margin:.5rem 0}"
     "td,th{border:1px solid #ccc;padding:.3rem .6rem;text-align:left;"
     "font-size:.9rem}"
@@ -786,9 +905,9 @@ def render_html(
     parts: list[str] = [
         "<!doctype html>",
         '<html lang="en"><head><meta charset="utf-8">',
-        f"<title>Gate decision: {_h(verdict)}</title>",
+        f"<title>AOS Workflow Gate: {_h(verdict)}</title>",
         f"<style>{_HTML_STYLE}</style></head><body>",
-        f'<h1>Gate decision: <span class="verdict v-{_h(verdict)}">'
+        f'<h1>AOS Workflow Gate: <span class="verdict v-{_h(verdict)}">'
         f"{_h(verdict)}</span></h1>",
     ]
     if not diag["intact"]:
@@ -796,20 +915,20 @@ def render_html(
             '<p class="tampered">Record content does not match its '
             "self-digest. Do not trust this record.</p>"
         )
-    summary = diag["summary"]
-    if isinstance(summary, str) and summary:
-        parts.append(f"<p><strong>What happened:</strong> {_h(summary)}</p>")
     parts.append(
-        f"<p><strong>Scope:</strong> {_h(diag['scope'])}<br>"
-        f"<strong>Freshness:</strong> {_h(diag['freshness'])}<br>"
+        f"<p><strong>What AOS found:</strong> {_h(diag['finding'])}<br>"
         f"<strong>Effect:</strong> {_h(diag['effect'])}<br>"
-        "<strong>Signals:</strong> "
-        f"{counts['required_total']} required "
-        f"({counts['required_successful']} successful) · "
-        f"{counts['advisory_total']} advisory "
-        f"({counts['advisory_warnings']} warning(s))<br>"
         f"<strong>Next:</strong> {_h(diag['next'])}</p>"
     )
+    parts.append(
+        "<p><strong>Signals:</strong> "
+        f"{counts['required_total']} required "
+        f"({counts['required_successful']} successful); "
+        f"{counts['advisory_total']} other observation(s)<br>"
+        f"<strong>Scope:</strong> {_h(diag['scope'])}<br>"
+        f"<strong>Freshness:</strong> {_h(diag['freshness'])}</p>"
+    )
+    parts.append("<h2>Technical evidence</h2>")
 
     rows = [("Repository", subject.get("repository", "-"))]
     if subject.get("ref"):
@@ -885,6 +1004,14 @@ def render_html(
 
 
 _ESCAPE_CHARS = "\\`*_[]<>|"
+_ASCII_PUNCTUATION = str.maketrans(
+    {
+        "\u00b7": ";",
+        "\u2013": "-",
+        "\u2014": "-",
+        "\u2026": "...",
+    }
+)
 
 
 def _escape(value: Any) -> str:
@@ -894,7 +1021,8 @@ def _escape(value: Any) -> str:
     pull request can rename a job), so links, emphasis, HTML, code spans,
     and table breaks are all escaped before the value reaches a summary.
     """
-    text = str(value).replace("\r", " ").replace("\n", " ")
+    text = str(value).translate(_ASCII_PUNCTUATION)
+    text = text.replace("\r", " ").replace("\n", " ")
     for ch in _ESCAPE_CHARS:
         text = text.replace(ch, "\\" + ch)
     return text
@@ -902,7 +1030,8 @@ def _escape(value: Any) -> str:
 
 def _code(value: Any) -> str:
     """Render an untrusted value as an inline code span, safely."""
-    text = str(value).replace("\r", " ").replace("\n", " ")
+    text = str(value).translate(_ASCII_PUNCTUATION)
+    text = text.replace("\r", " ").replace("\n", " ")
     text = text.replace("`", "'")
     return f"`{text}`"
 

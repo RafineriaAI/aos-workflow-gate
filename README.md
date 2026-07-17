@@ -7,31 +7,71 @@
 [![Release](https://img.shields.io/github/v/release/RafineriaAI/aos-workflow-gate)](https://github.com/RafineriaAI/aos-workflow-gate/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals.
+**GitHub can show green even when no check is required, or when a PR
+changes the workflow that produced its own green checks.**
 
-This repository is the workflow layer around `aos-kernel`. Its job is to make a pull request or release gate explainable and replayable: collect workflow signals, apply an explicit policy, and produce a `PASS`, `WARN`, or `BLOCK` decision with evidence.
+`aos-workflow-gate` is a read-only pre-merge control check. It compares
+active branch requirements with the checks observed on the exact commit,
+then returns `PASS`, `WARN`, or `BLOCK` with one plain-language reason
+and one concrete next action.
 
-> **Pre-pilot validation:** the committed
-> [Hybrid Value Gate assessment](benchmarks/value/ASSESSMENT.md) is `NO_GO`.
-> Exact-SHA mechanism evidence is confirmed for three bounded cases. Internal
-> product and utility-test readiness pass. `FREE_SELF_SERVE_VALIDATION` permits
-> free public advisory use with no telemetry; feedback is opt-in. Qualified
-> participant evidence is `RECRUITMENT_PENDING`, signal validity remains
-> inconclusive, and external usability and field utility remain untested.
-> Efficacy or value claims, production recommendations, and paid pilot intake
-> remain closed.
+Not another AI reviewer: AOS does not judge code or guess whether AI wrote
+it. Existing tools produce check results. AOS checks whether the configured
+merge controls actually ran and whether the decision can be reproduced.
 
+```text
+AOS Workflow Gate: WARN
 
-## Technical evaluation (zero config)
+What AOS found:
+This PR changed a workflow that also produced checks used to assess
+the same PR.
 
+Effect:
+Advisory only; this result does not fail the job.
 
-Self-Test Mode (zero-config) — an advisory self-test of your pipeline,
-without writing any bundle or policy. The action collects the completed
-check runs of the current commit, generates an explicit advisory policy
-over them, and writes a replayable decision record plus a Markdown summary
-to the job page. This is a complete workflow file — copy it as
-`.github/workflows/aos-self-test.yml`. No checkout is needed: Self-Test
-Mode reads check runs through the API and installs from the action itself:
+Next:
+Run or require one check whose workflow definition is unchanged by
+this PR, then re-run AOS.
+```
+
+![AOS WARN evidence report showing a self-validating workflow gap](docs/assets/aos-warn-evidence.png)
+
+That is the product boundary: **required-check integrity for one exact
+commit, not full merge-readiness and not another code review.**
+
+## Daily use
+
+- **Before requesting review:** run `check-pr` against a public PR and see
+  whether required controls are missing, pending, failed, or unverifiable.
+- **On every PR:** keep the Action advisory and get one visible diagnosis
+  plus one `Next`, without changing the existing CI.
+- **When a workflow changes:** detect when the PR also changes the workflow
+  that produced its checks, then require an unchanged check before merge.
+- **After the decision:** retain the exact-commit record so a maintainer can
+  verify later what AOS saw and why it returned that verdict.
+
+For an individual developer this reduces manual cross-checking before
+review. For a team it makes the same repository rule produce the same
+decision. For platform, security, and audit owners it preserves a bounded
+record without uploading source code.
+
+Try any public PR locally:
+
+```bash
+python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.35.0"
+aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
+```
+
+## First value in one PR
+
+Self-Test Mode (zero-config) is an advisory check of the current pull
+request. No manual policy, bundle, or `required-checks` list is needed.
+The Action reads GitHub branch rules, check runs, workflow runs, and commit
+statuses for the exact head commit. It writes the same diagnosis to the job
+summary and saves the decision for offline verification.
+
+This is a complete workflow file. Add it as
+`.github/workflows/aos-self-test.yml`. No checkout is needed:
 
 ```yaml
 name: AOS Self-Test
@@ -55,7 +95,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.36.0
+        uses: RafineriaAI/aos-workflow-gate@v0.35.0
 ```
 
 A `permissions:` block sets every unlisted scope to `none`. Zero-config
@@ -72,8 +112,10 @@ surface is recorded as unverifiable, never interpreted as zero
 requirements), enforces their app-bound identity, and waits
 briefly for them to stabilize. Name `required-checks` only to
 override the discovery; named checks become required (missing or
-failed means `BLOCK`), every other collected check is advisory. Set
-`wait-for-checks: "120"` to poll until the required checks complete (only
+failed means `BLOCK`). Every other result stays in the record but does not
+change the zero-config verdict; an explicit policy can promote it to a
+warning. Set `wait-for-checks: "120"` to poll until the required checks
+complete (only
 required checks are waited for; a wait that ends incomplete fails closed
 and is recorded in the bundle's collection status). The generated bundle
 and policy are written to `.aos-gate/` so the decision stays replayable.
@@ -114,7 +156,7 @@ gates and attaches its own release evidence that way).
 decision offline:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.36.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.35.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json --html --out evidence.html
 ```
@@ -132,13 +174,19 @@ evaluation, evidence integrity, and offline replay:
 [BLOCK](benchmarks/cases/v0110-incident-counterfactual/). Each artifact is
 replayed by the test suite on every CI run.
 
-These examples do not prove incremental market value, production
-effectiveness, or low false-positive rates. The separate
-[Hybrid Value Gate](benchmarks/value/README.md) keeps mechanism evidence,
-signal validity, internal product readiness, practical-utility testability,
-external usability, and field utility as separate claims. Its current
-product-claim decision is
-[`NO_GO`](benchmarks/value/ASSESSMENT.md).
+### Claim boundary
+
+**Pre-pilot validation:** deterministic evaluation, exact-commit binding,
+tamper detection, and offline reproduction are tested. Daily usefulness,
+low-noise performance in external teams, incident reduction, retention, and
+willingness to pay are not yet independently validated.
+
+The internal research status therefore remains
+[`NO_GO`](benchmarks/value/ASSESSMENT.md) for efficacy, production, and
+commercial claims. `FREE_SELF_SERVE_VALIDATION` means the Action and CLI are
+available as a free advisory preview so external users can test those open
+questions without an account or telemetry. The full protocol is in the
+[Hybrid Value Gate](benchmarks/value/README.md).
 
 ## Current status
 
@@ -180,13 +228,13 @@ aos-workflow-gate verify \
   --bundle examples/github-pr-signal-bundle.json
 ```
 
-Instant merge-protection check for any pull request URL — a read-only
+Instant merge-control check for any pull request URL. The read-only
 observer that fetches the head SHA, the base branch's active rules, and
 the head's check runs, then evaluates a policy generated from the rules'
 required status checks (missing required checks fail closed to `BLOCK`;
-failing non-required checks are listed as counterfactual blockers; the
-bundle's `rules_digest` makes protection drift between two records
-detectable):
+non-required results stay in the record without changing the default
+verdict; the bundle's `rules_digest` makes protection drift between two
+records detectable):
 
 ```bash
 aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
@@ -241,7 +289,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.36.0
+    uses: RafineriaAI/aos-workflow-gate@v0.35.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.
@@ -296,6 +344,9 @@ collector and the Action are GitHub-specific by design.
 - Not a signing or provenance authority.
 
 ## Documentation map
+<details>
+<summary>Open the full technical documentation index</summary>
+
 
 - [Scope](docs/SCOPE.md) defines claim boundaries and non-goals.
 - [Architecture](docs/ARCHITECTURE.md) defines the layers and what each phase implements.
@@ -321,17 +372,20 @@ collector and the Action are GitHub-specific by design.
 - [One-pager](docs/ONE_PAGER.md) is the technical summary and claim boundary.
 - [Hybrid Value Gate](benchmarks/value/README.md) defines the evidence required before publication or external pilots.
 - [Guided pilot](docs/GUIDED_PILOT.md) is a future engagement specification; intake is closed.
-- [Funnel](docs/FUNNEL.md) is retained as a future activation specification while external intake is closed.
+- [Funnel](docs/FUNNEL.md) defines the open free self-serve path and the still-closed guided or paid path.
 - [Pilot package](docs/PILOT_PACKAGE.md) is the future evidence handover specification.
 - [Marketplace listing](docs/MARKETPLACE_LISTING.md) holds draft copy; publication is blocked by the Value Gate.
 - [Real-repository replay case study](docs/case-studies/aos-kernel-release-surface-replay.md) runs the gate on real workflow signals at a pinned commit and replays the committed decision offline.
-- [Green, but incomplete](docs/case-studies/green-but-incomplete.md) shows a fully green dashboard hiding a control that never ran — and the gate recording it as a named, replayable `WARN`.
-- [Merge-ready with zero enforced evidence](docs/case-studies/zero-required-checks.md) is the main aha case: GitHub permits the merge while zero checks are required at the gate, and the default first run answers `WARN` with the decision gap and both real failures named — replayable from committed files.
+- [Green, but incomplete](docs/case-studies/green-but-incomplete.md) is a historical explicit-policy example showing how a non-required skipped check can be promoted to a replayable `WARN`; current zero-config keeps it recorded but quiet.
+- [Exact-SHA contrast](benchmarks/value/EXACT_CONTRAST.md) is the canonical public aha case: GitHub records zero required checks while AOS names a self-validating workflow and preserves replayable evidence.
+- [Merge-ready with zero enforced evidence](docs/case-studies/zero-required-checks.md) is a historical explicit-policy case: failed checks remain visible in evidence while the single AOS `WARN` identifies the empty-policy gap.
 - [Roadmap](ROADMAP.md) defines the phased plan.
 - [Release governance](docs/RELEASE_GOVERNANCE.md) defines branch, ruleset, tag, and release policy.
 - [Draft signal bundle](examples/github-pr-signal-bundle.json) and [draft policy](policies/default.yml) make the first use case concrete.
 - [Security policy](SECURITY.md) defines responsible reporting boundaries.
 - [Contributing](CONTRIBUTING.md) defines contribution expectations.
+
+</details>
 
 ## Local check
 

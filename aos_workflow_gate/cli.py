@@ -1204,6 +1204,7 @@ def _print_verifier_change(analysis: dict[str, Any]) -> None:
             "Advisory by default; see collection.verifier_change."
         )
 
+
 def _print_workflow_visibility(report: dict[str, Any]) -> None:
     """One line, only when there is something the dashboard cannot show."""
     if not report.get("available"):
@@ -1396,7 +1397,7 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         print(
             "GitHub baseline: every required status check would pass "
             "under GitHub's own semantics (neutral and skipped count as "
-            "passing there); this gate grades the evidence instead — "
+            "passing there); this gate grades the evidence instead - "
             "the divergence is recorded per control in "
             "collection.requirements."
         )
@@ -1438,7 +1439,7 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         )
     if unverifiable:
         print(
-            "Unverifiable (cannot be shown to satisfy the requirement — "
+            "Unverifiable (cannot be shown to satisfy the requirement - "
             "app-bound requirement identity mismatch or unreadable "
             "stream; fails closed as missing): " + ", ".join(unverifiable)
         )
@@ -1940,7 +1941,7 @@ def _cmd_verify(args: argparse.Namespace) -> int:
                 print("verifier: same manifest as this installation")
             else:
                 print(
-                    "verifier: valid embedded DIFFERENT manifest — "
+                    "verifier: valid embedded DIFFERENT manifest - "
                     "the record was "
                     f"produced by {recorded[:23]}..., this installation "
                     f"is {current[:23]}... (content address only; no "

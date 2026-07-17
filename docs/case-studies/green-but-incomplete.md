@@ -1,5 +1,12 @@
 # Case Study: Green, but Incomplete
 
+> **Historical explicit-policy example.** This committed record uses a
+> policy that promotes every non-success advisory result to `WARN`. Current
+> zero-config behavior still records a non-required skipped check but leaves
+> it out of the verdict because GitHub already exposes it. A skipped check
+> affects the default verdict only when it is required. This page proves
+> policy-controlled visibility and replay, not the current first-run value
+> proposition.
 ## The 60-second version
 
 - Subject: this repository's own pull request head, pinned commit
