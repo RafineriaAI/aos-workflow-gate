@@ -20,6 +20,11 @@ REQUIRED_SNIPPETS = {
     "README.md": [
         "Phase 2: the local `evaluate` CLI and the advisory GitHub Action "
         "are implemented.",
+        "GitHub can show green even when no check is required",
+        "Not another AI reviewer",
+        "## First value in one PR",
+        "What AOS found:",
+        "docs/assets/aos-warn-evidence.png",
         "Phase 3 has started: the zero-config GitHub check-runs collector "
         "is implemented",
         "UNSIGNED_NOT_OFFICIAL",
@@ -52,11 +57,14 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/ONE_PAGER.md": [
-        "deterministic evidence infrastructure for",
-        "Status: pre-pilot validation; external intake closed",
+        "free self-serve advisory validation is open",
+        "Find merge-control gaps that a green GitHub view can miss",
+        "Immediate developer value",
+        "external utility and market value remain unvalidated",
         "## Technical proof",
         "UNSIGNED_NOT_OFFICIAL",
     ],
+    "docs/PUBLISHED_VERSION": ["0.35.0"],
     "docs/GUIDED_PILOT.md": [
         "Status: intake closed",
         "## Future design-partner variant",
@@ -79,7 +87,10 @@ REQUIRED_SNIPPETS = {
         "without cookies, analytics,\nor network calls",
         "UNSIGNED_NOT_OFFICIAL",
         "no\nproduction, compliance, or security-audit claim",
-        "deterministic evidence infrastructure for AI-controlled",
+        "GitHub can show green when no check is required",
+        "Not another AI reviewer",
+        "Useful in daily work",
+        "free advisory\npreview",
         'name="description"',
         'property="og:image"',
     ],
@@ -171,9 +182,10 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/FUNNEL.md": [
-        "Status: inactive specification",
+        "free self-serve advisory validation is open",
+        "No human is required to install or evaluate",
         "## Where a human is required",
-        "no account, trial clock, or telemetry",
+        "no\naccount, trial clock, or telemetry",
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/COMPARISON.md": [
@@ -191,14 +203,13 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/case-studies/zero-required-checks.md": [
-        "required status checks permitted the merge while zero checks "
-        "were\nrequired at the gate",
-        "Scope: required status checks, not\nfull merge-readiness",
-        "the state every fresh adopter starts in",
-        "zero required\nsources",
-        "never\na quiet `PASS`",
-        "shows visibility, not a vulnerability",
-        "makes no security claim",
+        "GitHub\nrequired one status check and permitted the merge",
+        "Scope is required status checks, not full merge-readiness",
+        "Current zero-config collection instead discovers active\n"
+        "GitHub branch requirements",
+        "The only alert is the decision gap itself",
+        "remain visible in the evidence table",
+        "not a vulnerability, product\nutility",
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/case-studies/green-but-incomplete.md": [
@@ -593,10 +604,30 @@ def check_version_consistency() -> None:
     if f'version = "{version}"' not in read_text("pyproject.toml"):
         fail(f"pyproject.toml version does not match version.py ({version})")
 
-    expected = f"aos-workflow-gate@v{version}"
+    published_version = read_text("docs/PUBLISHED_VERSION").strip()
+    candidate_match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", version)
+    published_match = re.fullmatch(
+        r"(\d+)\.(\d+)\.(\d+)", published_version
+    )
+    if candidate_match is None or published_match is None:
+        fail(
+            "version.py and docs/PUBLISHED_VERSION must use X.Y.Z"
+        )
+        return
+    candidate_key = tuple(int(part) for part in candidate_match.groups())
+    published_key = tuple(int(part) for part in published_match.groups())
+    if published_key > candidate_key:
+        fail(
+            "published version cannot be newer than the package candidate"
+        )
+
+    expected = f"aos-workflow-gate@v{published_version}"
     data = json.loads(read_text("docs.json"))
-    documents = list(data.get("documents", []))
-    found_current = False
+    documents = [
+        "README.md",
+        ".github/ISSUE_TEMPLATE/feedback.yml",
+        *data.get("documents", []),
+    ]
     for path in documents:
         text = read_text(path)
         for match in re.finditer(
@@ -605,11 +636,8 @@ def check_version_consistency() -> None:
             if match.group(0) != expected:
                 fail(
                     f"{path} references stale version {match.group(0)!r}; "
-                    f"current is {expected!r}"
+                    f"published is {expected!r}"
                 )
-            found_current = True
-    if not found_current:
-        fail(f"no document references the current version tag {expected!r}")
 
 
 def check_action_surface() -> None:
@@ -632,6 +660,8 @@ def check_action_surface() -> None:
         "Replay path:",
         "can-block=",
         "diagnosis=",
+        "render_github_annotation",
+        "clean(d['finding'])",
         "next-action=",
         "required-unverifiable=",
         ".aos-gate/evidence.html",

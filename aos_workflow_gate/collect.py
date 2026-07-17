@@ -436,12 +436,14 @@ def build_generated_policy(
     required: list[str] | None = None,
     allow_missing_required: bool = False,
 ) -> dict[str, Any]:
-    """Build an explicit advisory policy covering every collected source.
+    """Build a low-noise advisory policy covering every collected source.
 
     Sources named in ``required`` become required; every other collected
-    source is advisory, so a non-success check surfaces as a warning instead
-    of silently passing. The same names should be passed to ``build_bundle``
-    so the bundle's per-source ``required`` flags agree with the policy.
+    source remains visible in the evidence but does not change the verdict.
+    GitHub already exposes those non-required results; repeating them as AOS
+    warnings would add noise without identifying a merge-control gap. The same
+    names should be passed to ``build_bundle`` so the bundle's per-source
+    ``required`` flags agree with the policy.
     """
     source_ids = [source["id"] for source in bundle.get("sources", [])]
     required_ids = list(required or [])
@@ -462,7 +464,7 @@ def build_generated_policy(
             "missing_required_source": "BLOCK",
             "failed_required_source": "BLOCK",
             "malformed_input": "BLOCK",
-            "advisory_warning": "WARN",
+            "advisory_warning": "PASS",
             "no_required_sources": "WARN",
             "incomplete_collection": "WARN",
             "non_independent_evidence": "WARN",

@@ -49,6 +49,7 @@ def test_html_is_deterministic_and_self_contained() -> None:
     for banned in ("<script", "http://", "https://", "src=", "@import"):
         assert banned not in lowered, banned
     assert "UNSIGNED_NOT_OFFICIAL" in first
+    assert "background:#fff" in first
 
 
 def test_html_says_the_same_as_markdown() -> None:

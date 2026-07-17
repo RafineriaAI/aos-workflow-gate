@@ -19,7 +19,7 @@
           "Unit tests – Python 3.14"
         ],
         "reason_code": "non_independent_evidence",
-        "record_digest": "sha256:5419b73e02ff47244d5262792390d4c0350513e86a29a0e1f3e03d81aabb1255",
+        "record_digest": "sha256:4ff9ae9bece36e6d11b0f44bb7fb268434e39046d995c82bbfdcfe1e950380a0",
         "self_validating_workflows": [
           ".github/workflows/pythonpackage.yml"
         ],
@@ -65,7 +65,7 @@
           "stm32f405rgt6 / Verify stm32f405rgt6"
         ],
         "reason_code": "non_independent_evidence",
-        "record_digest": "sha256:377fecb99cd892e236523d2e48415c0f4263c5dc7147a7816196e52469c53727",
+        "record_digest": "sha256:7b5ffc7770f0ad2765d99f102128310a15408a38c054aec238e1def1e18100d8",
         "self_validating_workflows": [
           ".github/workflows/generated-artifacts.yml"
         ],

@@ -10,7 +10,7 @@ body:
     attributes:
       label: Exact AOS version tested
       description: Release tag or pinned Action commit SHA; do not include secrets.
-      placeholder: v0.36.0 or a 40-character commit SHA
+      placeholder: v0.35.0 or a 40-character commit SHA
     validations:
       required: true
   - type: dropdown

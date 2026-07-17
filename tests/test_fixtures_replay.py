@@ -99,8 +99,11 @@ def test_expected_verdicts() -> None:
 
 
 def test_zero_required_aha_case_shape() -> None:
-    """The main aha case: merge-ready on GitHub, zero required at the
-    gate, real failures visible only as advisory warnings."""
+    """The main aha case: GitHub permits merge with zero required checks.
+
+    Non-required failures remain visible as observations without becoming
+    duplicate AOS warnings.
+    """
     record = json.loads(
         (ROOT / "examples/zero-required-record.json").read_text(
             encoding="utf-8"
@@ -109,16 +112,23 @@ def test_zero_required_aha_case_shape() -> None:
     assert record["verdict"] == "WARN"
     assert record["can_block"] is False
     assert all(not source["required"] for source in record["inputs"])
-    failures = {
-        reason["source_id"]
+    statuses = {source["id"]: source["status"] for source in record["inputs"]}
+    assert statuses["AOS Workflow Gate Self / advisory"] == "failure"
+    assert statuses["AOS Workflow Gate Self / zero-config"] == "failure"
+    assert any(
+        reason["rule"] == "no_required_sources"
+        and reason["severity"] == "WARN"
         for reason in record["reasons"]
-        if "failure" in reason["detail"]
-    }
-    assert "AOS Workflow Gate Self / advisory" in failures
-    assert "AOS Workflow Gate Self / zero-config" in failures
+    )
+    assert all(
+        reason["rule"] != "advisory_warning"
+        or reason["severity"] != "WARN"
+        for reason in record["reasons"]
+    )
     policy = json.loads(
         (ROOT / "examples/zero-required-policy.json").read_text(
             encoding="utf-8"
         )
     )
     assert policy["required_sources"] == []
+    assert policy["rules"]["advisory_warning"] == "PASS"

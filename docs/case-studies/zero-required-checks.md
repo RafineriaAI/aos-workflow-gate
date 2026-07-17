@@ -1,19 +1,21 @@
 # Merge-ready with zero enforced evidence
 
-The main aha case, from this repository's own history: **GitHub's
-required status checks permitted the merge while zero checks were
-required at the gate — and the gate's very first advisory record says
-so, with the failures named.** (Scope: required status checks, not
-full merge-readiness — reviews, merge queues, and bypass actors are
-outside what is evaluated.)
+A historical evidence-gap case from this repository's own history. GitHub
+required one status check and permitted the merge because that check passed.
+The retrospective AOS policy intentionally requires zero checks and makes
+that policy gap explicit. This fixture demonstrates empty-policy semantics;
+it is not evidence that current autodiscovery would ignore an active GitHub
+requirement.
+
+Scope is required status checks, not full merge-readiness. Reviews, merge
+queues, and bypass actors are outside what is evaluated.
 
 ## The real state
 
 Commit
 [`f8c6517`](https://github.com/RafineriaAI/aos-workflow-gate/commit/f8c6517bef32e68d3150d2954cc4c445b6fb1642)
-is the merge that shipped as `v0.11.0` — the release where a broken
-`action.yml` went out. At that commit, GitHub's persisted check runs
-show:
+is the merge that shipped as `v0.11.0`, the release where a broken
+`action.yml` went out. At that commit, GitHub's persisted check runs show:
 
 | Check | Conclusion |
 | --- | --- |
@@ -22,57 +24,57 @@ show:
 | `AOS Workflow Gate Self / zero-config` | **failure** |
 | `AOS Workflow Gate Self / no-checkout` | skipped |
 
-The one required check was green, so the pull request was merge-ready
-and the merge went through. Both self-test jobs — the ones that
-actually exercised the broken file — failed, and nothing required them.
+The one GitHub-required check was green, so GitHub permitted the merge.
+Both self-test jobs that exercised the broken file failed, but GitHub did
+not require them.
 
-## What the default gate run says
+## What the zero-required policy says
 
-This is exactly the state every fresh adopter starts in: the
-zero-config first run generates an advisory policy with **zero required
-sources**. Against the same real commit it produces
-([record](../../examples/zero-required-record.json),
-[bundle](../../examples/zero-required-bundle.json),
-[policy](../../examples/zero-required-policy.json)):
+The retrospective fixture applies an explicit zero-required advisory policy
+to the same commit. Current zero-config collection instead discovers active
+GitHub branch requirements whenever that surface is readable.
+
+The committed [record](../../examples/zero-required-record.json),
+[bundle](../../examples/zero-required-bundle.json), and
+[policy](../../examples/zero-required-policy.json) produce:
 
 ```text
-WARN  Gate WARN: the policy requires nothing, so nothing can block; 4 warning(s).
-Signals: 0 required (0 successful) · 4 advisory (3 warning(s))
-Can block this job: no
+AOS Workflow Gate: WARN
+What AOS found: This policy requires no checks, so no check result can block the gate.
+Effect: advisory only; WARN/BLOCK is reported but does not fail this job
+Next: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+Signals: 0 required (0 successful); 4 other observation(s)
 ```
 
-with the decision gap itself raised as an explicit `no_required_sources`
-warning — zero required plus green checks would still be `WARN`, never
-a quiet `PASS` — the two real failures named as reasons, and the
-Coverage section stating the gap in one sentence: *no source is required, so a
-missing or failed check cannot make this gate BLOCK — the record is
-evidence, not enforcement.*
+The only alert is the decision gap itself: `no_required_sources`. The two
+real failures and the skipped check remain visible in the evidence table,
+but do not become duplicate AOS warnings. An explicit policy can still
+promote a non-required result when that is intentional.
 
-A `WARN` is the honest verdict here — under a policy that requires
-nothing, nothing can block, and the gate says that instead of
-pretending. The repair is one line (`required-checks:` naming the
-self-test), and the
+`WARN` is the honest verdict for this policy: nothing is required, so
+nothing can block. The repair is to configure a required GitHub status
+check or pass `required-checks`. The
 [governance benchmark's counterfactual case](../../benchmarks/cases/v0110-incident-counterfactual/)
-shows the same commit turning into a named `BLOCK` once the self-test
-is required.
+shows the same commit turning into a named `BLOCK` once the self-test is
+required.
 
 ## Replay it yourself
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.36.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.35.0"
 aos-workflow-gate verify \
   --input examples/zero-required-record.json \
   --bundle examples/zero-required-bundle.json
 aos-workflow-gate summarize --input examples/zero-required-record.json
 ```
 
-The record replays offline from the committed files; the test suite
-replays it on every CI run.
+The record replays offline from the committed files; the test suite replays
+it on every CI run.
 
 ## Boundary
 
-The signals are real and persisted by GitHub for the exact commit; the
-gate run is retrospective (collected at case-assembly time). `WARN`
-here shows visibility, not a vulnerability, and makes no security claim
-about the repository. Decision records carry `UNSIGNED_NOT_OFFICIAL`
-status.
+The check results are real and persisted by GitHub for the exact commit.
+The AOS decision is retrospective and uses an explicit empty policy. It
+shows deterministic policy-gap handling, not a vulnerability, product
+utility, or a claim about current repository settings. Decision records
+carry `UNSIGNED_NOT_OFFICIAL` status.

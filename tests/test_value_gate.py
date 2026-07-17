@@ -548,3 +548,5 @@ def test_action_uses_shared_diagnosis_for_required_total() -> None:
     assert "if i.get('required')" not in action
     assert "diagnose(json.load(" in action
     assert "['counts']['required_total']" in action
+    assert "render_github_annotation" in action
+    assert "clean(d['finding'])" in action

@@ -15,7 +15,12 @@ from typing import Any
 import pytest
 
 from aos_workflow_gate import canonical
-from aos_workflow_gate.summarize import diagnose, render_html, render_markdown
+from aos_workflow_gate.summarize import (
+    diagnose,
+    render_github_annotation,
+    render_html,
+    render_markdown,
+)
 
 
 def _record(
@@ -129,6 +134,114 @@ def test_warn_and_block_keep_the_full_view() -> None:
     assert "### Top gaps" in text
 
 
+def test_pass_level_advisory_observation_stays_quiet() -> None:
+    record = _record(
+        reasons=[_reason("advisory_warning", "PASS", "scan")],
+        inputs=[
+            {
+                "id": "ci",
+                "kind": "github_check",
+                "status": "success",
+                "required": True,
+                "digest": None,
+                "signal_source": None,
+            },
+            {
+                "id": "scan",
+                "kind": "github_check",
+                "status": "skipped",
+                "required": False,
+                "digest": None,
+                "signal_source": None,
+            },
+        ],
+    )
+
+    diag = diagnose(record)
+    text, _ = render_markdown(record)
+
+    assert diag["gaps_total"] == 0
+    assert diag["counts"]["advisory_warnings"] == 0
+    assert "Every required check AOS evaluated" in diag["finding"]
+    assert "### Technical evidence" not in text
+
+
+def test_plain_finding_names_zero_required_github_gap() -> None:
+    record = _record(
+        verdict="WARN",
+        reasons=[_reason("no_required_sources", "WARN", None)],
+        inputs=[],
+        observation={"github_baseline": "no_required_checks"},
+    )
+
+    diag = diagnose(record)
+    text, _ = render_markdown(record)
+
+    assert diag["finding"] == (
+        "GitHub has no required status checks for this branch, so green "
+        "checks do not enforce a merge gate."
+    )
+    assert "**What AOS found:**" in text
+    assert diag["finding"] in text
+
+
+def test_plain_finding_explains_self_validating_workflow() -> None:
+    record = _record(
+        verdict="WARN",
+        reasons=[
+            _reason("non_independent_evidence", "WARN", None)
+        ],
+    )
+
+    assert diagnose(record)["finding"] == (
+        "This PR changed a workflow that also produced checks used to "
+        "assess the same PR."
+    )
+
+
+def test_github_annotation_is_nonblocking_and_command_safe() -> None:
+    source = "ci%0A::error injected\r\n"
+    record = _record(
+        verdict="BLOCK",
+        reasons=[
+            _reason(
+                "missing_required_source",
+                "BLOCK",
+                source,
+                state="missing",
+            )
+        ],
+        inputs=[],
+    )
+
+    annotation = render_github_annotation(record)
+
+    assert annotation is not None
+    assert annotation.startswith(
+        "::warning title=AOS BLOCK (non-blocking)::"
+    )
+    assert "%250A" in annotation
+    assert "\n" not in annotation
+    assert "\r" not in annotation
+    assert "Next:" in annotation
+
+
+def test_enforced_block_uses_error_annotation() -> None:
+    record = _record(
+        verdict="BLOCK",
+        can_block=True,
+        reasons=[_reason("missing_required_source", "BLOCK", "ci")],
+        inputs=[],
+    )
+    annotation = render_github_annotation(record)
+    assert annotation is not None
+    assert annotation.startswith("::error title=AOS BLOCK (enforced)::")
+
+
+def test_pass_emits_no_github_annotation() -> None:
+    assert render_github_annotation(_record()) is None
+
+
 # --- gaps: at most three, ranked, one dominant -----------------------------
 
 
@@ -145,7 +258,7 @@ def test_gaps_capped_at_three_with_remainder() -> None:
     assert diag["dominant"] == "'ci': required failed"
     text, _ = render_markdown(record)
     assert "**Dominant problem:**" in text
-    assert "…and 2 more reason(s)" in text
+    assert "...and 2 more reason(s)" in text
     # only the top three are itemized
     assert text.count("- WARN") == 2
 

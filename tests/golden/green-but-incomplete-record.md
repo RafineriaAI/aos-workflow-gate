@@ -1,11 +1,14 @@
-## Gate decision: WARN
+## AOS Workflow Gate: WARN
 
-**What happened:** Gate WARN: required checks satisfied; 1 advisory warning(s).
-**Scope:** 1 required and policy-named advisory source(s) on RafineriaAI/aos-workflow-gate@9c064fc8c95d; not full merge-readiness
+**What AOS found:** Non-required check 'AOS Workflow Gate Self / no-checkout' ended as 'skipped'.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+**Next:** review the named non-required check only if it matters to this change; it cannot block this gate
+
+**Signals:** 1 required (1 successful); 3 other observation(s)
+**Scope:** 1 required check(s) plus recorded workflow signals on RafineriaAI/aos-workflow-gate@9c064fc8c95d; not full merge-readiness
 **Freshness:** observation time not recorded; collection complete
-**Effect:** advisory — recorded evidence only; a BLOCK verdict does not fail the job
-**Signals:** 1 required (1 successful) · 3 advisory (1 warning(s))
-**Next:** advisory findings warn but never block; review the source's own report and decide
+
+### Technical evidence
 
 | Field | Value |
 | --- | --- |
@@ -16,14 +19,14 @@
 | Policy | `collected-advisory` (advisory) |
 | Policy digest | `sha256:307c1f8738f94d966f3911f67d927ac749182aa544390fa8928105ddbc8d6237` |
 | Input bundle digest | `sha256:54949f798a0dbd4e64765c515b0ae828dbc61fb6ed4c9ceb66e174ecc61bfc7f` |
-| Record digest | `sha256:db9c442a1c593d23a59b7253db1b660ea229cf68b6ce6a3a49d485af8647f677` |
+| Record digest | `sha256:b5db48077d143b4feb2fedff2a3419be5f9570b1a2654221d0f5f63a2db34015` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
 ### Top gaps
 
 - WARN `advisory_warning` AOS Workflow Gate Self / no-checkout: advisory source status is 'skipped'
-  - Hint: advisory findings warn but never block; review the source's own report and decide
+  - Hint: review the named non-required check only if it matters to this change; it cannot block this gate
 
 ### Inputs
 

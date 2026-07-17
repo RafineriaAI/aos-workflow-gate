@@ -1,34 +1,30 @@
-## Gate decision: WARN
+## AOS Workflow Gate: WARN
 
-**What happened:** Gate WARN: the policy requires nothing, so nothing can block; 4 warning(s).
-**Scope:** 0 required and policy-named advisory source(s) on RafineriaAI/aos-workflow-gate@f8c6517bef32; not full merge-readiness
+**What AOS found:** This policy requires no checks, so no check result can block the gate.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+**Next:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+**Signals:** 0 required (0 successful); 4 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on RafineriaAI/aos-workflow-gate@f8c6517bef32; not full merge-readiness
 **Freshness:** observation time not recorded; collection complete
-**Effect:** advisory — recorded evidence only; a BLOCK verdict does not fail the job
-**Signals:** 0 required (0 successful) · 4 advisory (4 warning(s))
-**Next:** nothing is required, so nothing can block; name required checks (see the suggestion under Coverage) to close the decision gap
+
+### Technical evidence
 
 | Field | Value |
 | --- | --- |
 | Repository | RafineriaAI/aos-workflow-gate |
 | Commit | `f8c6517bef32e68d3150d2954cc4c445b6fb1642` |
 | Policy | `collected-advisory` (advisory) |
-| Policy digest | `sha256:1ac10c8a010a4e3a9f62894184bfd9ba342626922ac4f6dd987f8ca6f0a06cb0` |
+| Policy digest | `sha256:92018eb3494bb955e306ceaedb8bf6f7f26a9e980fee670b43fd2dc1b8b0c7fa` |
 | Input bundle digest | `sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837` |
-| Record digest | `sha256:b8fe7e35c61108ffa7977cf37e9ce1030a257a52acdb760d84c5d4b4920dc5f9` |
+| Record digest | `sha256:fbcd7fff1e8f0d1d5beef8e5ceb7a050ea5e873012cebaa0c2c7d133fe2d908f` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
-**Dominant problem:** the policy requires nothing, so no missing or failed check can make this gate BLOCK — the record is evidence, not enforcement
-
 ### Top gaps
 
-- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK — the record is evidence, not enforcement
-  - Hint: nothing is required, so nothing can block; name required checks (see the suggestion under Coverage) to close the decision gap
-- WARN `advisory_warning` AOS Workflow Gate Self / advisory: advisory source status is 'failure'
-  - Hint: advisory findings warn but never block; review the source's own report and decide
-- WARN `advisory_warning` AOS Workflow Gate Self / no-checkout: advisory source status is 'skipped'
-  - Hint: advisory findings warn but never block; review the source's own report and decide
-- …and 1 more reason(s) — every one is in the record JSON and the HTML evidence view.
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
 
 ### Inputs
 

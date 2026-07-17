@@ -31,6 +31,26 @@ git tag -a v0.1.0 -m "AOS Workflow Gate v0.1.0"
 git push origin v0.1.0
 ```
 
+## Candidate Version vs Published Version
+
+`aos_workflow_gate/version.py` and `pyproject.toml` identify the current
+package candidate. `docs/PUBLISHED_VERSION` identifies the newest immutable
+GitHub tag that public installation examples may reference. The candidate
+may be newer than the published version; the reverse is invalid.
+
+This separation prevents a merged version bump from breaking the public
+quickstart before its tag exists. `tools/check_public_surface.py` requires
+every public `uses:` and Git install example to match
+`docs/PUBLISHED_VERSION`, not the unreleased candidate.
+
+Release sequence:
+
+1. Merge and verify the candidate without pointing users at a missing tag.
+2. Create the immutable tag and publish the release after all release gates
+   pass.
+3. In a follow-up change, update `docs/PUBLISHED_VERSION` and every public
+   installation example to that tag.
+
 ## Required Repository Controls
 
 Before publishing a public release, manually verify the repository-hosted settings because local validation cannot prove them.

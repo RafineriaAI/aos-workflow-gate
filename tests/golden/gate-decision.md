@@ -1,11 +1,14 @@
-## Gate decision: WARN
+## AOS Workflow Gate: WARN
 
-**What happened:** Gate WARN: required checks satisfied; 1 advisory warning(s).
-**Scope:** 1 required and policy-named advisory source(s) on owner/repo@0123456789ab; not full merge-readiness
+**What AOS found:** Non-required check 'scanner.sarif' ended as 'warning'.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+**Next:** review the named non-required check only if it matters to this change; it cannot block this gate
+
+**Signals:** 1 required (1 successful); 2 other observation(s)
+**Scope:** 1 required check(s) plus recorded workflow signals on owner/repo@0123456789ab; not full merge-readiness
 **Freshness:** not recorded (offline or pre-freshness bundle)
-**Effect:** advisory — recorded evidence only; a BLOCK verdict does not fail the job
-**Signals:** 1 required (1 successful) · 2 advisory (1 warning(s))
-**Next:** advisory findings warn but never block; review the source's own report and decide
+
+### Technical evidence
 
 | Field | Value |
 | --- | --- |
@@ -16,14 +19,14 @@
 | Policy | `default` (advisory) |
 | Policy digest | `sha256:3f33e4ad37f96d56f5a132d95b4c673aa774d410611111bfef235832aad81272` |
 | Input bundle digest | `sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19` |
-| Record digest | `sha256:7b2ca626a4b79515d4f9be2ef460d71f451a69b00cc4a9c5430a5e3f38114589` |
+| Record digest | `sha256:f22c05dfeee89beab9f46199f234dbf9b92a82f9ab31453562a11a53dffa15af` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
 ### Top gaps
 
 - WARN `advisory_warning` scanner.sarif: advisory source status is 'warning'
-  - Hint: advisory findings warn but never block; review the source's own report and decide
+  - Hint: review the named non-required check only if it matters to this change; it cannot block this gate
 
 ### Inputs
 

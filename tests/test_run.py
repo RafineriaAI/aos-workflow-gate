@@ -44,7 +44,7 @@ def test_run_one_command_generated_policy(
         == 0
     )
     out = capsys.readouterr().out
-    assert "## Gate decision: PASS" in out
+    assert "## AOS Workflow Gate: PASS" in out
     record = json.loads((tmp_path / "gate-decision.json").read_text("utf-8"))
     assert record["verdict"] == "PASS"
     assert (tmp_path / ".aos-gate" / "bundle.json").is_file()
