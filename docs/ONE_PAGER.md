@@ -30,7 +30,7 @@ exact-commit records without source-code upload, write scopes, or telemetry.
 ## First-run flow
 
 1. Add the Action - no checkout, policy, or required-check list
-   (`uses: RafineriaAI/aos-workflow-gate@v0.35.0`).
+   (`uses: RafineriaAI/aos-workflow-gate@v0.36.0`).
 2. AOS reads branch rules and exact-commit checks, then answers: what is
    missing, what this verdict can do, and what to do next.
 3. Keep advisory while measuring noise. Enable enforcement only after the

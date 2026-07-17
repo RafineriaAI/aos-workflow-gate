@@ -58,7 +58,7 @@ record without uploading source code.
 Try any public PR locally:
 
 ```bash
-python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.35.0"
+python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.36.0"
 aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
 ```
 
@@ -95,7 +95,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.35.0
+        uses: RafineriaAI/aos-workflow-gate@v0.36.0
 ```
 
 A `permissions:` block sets every unlisted scope to `none`. Zero-config
@@ -156,7 +156,7 @@ gates and attaches its own release evidence that way).
 decision offline:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.35.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.36.0"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json --html --out evidence.html
 ```
@@ -289,7 +289,7 @@ steps:
       python-version: "3.11"
   - name: Run gate (advisory)
     id: gate
-    uses: RafineriaAI/aos-workflow-gate@v0.35.0
+    uses: RafineriaAI/aos-workflow-gate@v0.36.0
     with:
       input: examples/github-pr-signal-bundle.json
   # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

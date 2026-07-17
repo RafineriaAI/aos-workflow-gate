@@ -64,7 +64,7 @@ REQUIRED_SNIPPETS = {
         "## Technical proof",
         "UNSIGNED_NOT_OFFICIAL",
     ],
-    "docs/PUBLISHED_VERSION": ["0.35.0"],
+    "docs/PUBLISHED_VERSION": ["0.36.0"],
     "docs/GUIDED_PILOT.md": [
         "Status: intake closed",
         "## Future design-partner variant",
