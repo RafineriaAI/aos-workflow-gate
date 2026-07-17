@@ -34,6 +34,29 @@ def test_readme_license_and_local_check_are_renderable() -> None:
     assert "MIT. See [LICENSE](LICENSE)." not in readme
 
 
+def test_readme_leads_with_product_value_before_validation_detail() -> None:
+    readme = read_text("README.md")
+    proof = readme.index("Green checks can still miss a merge-control gap.")
+    first_run = readme.index("## Try it on any public PR")
+    validation = readme.index("## Validation status")
+    documentation = readme.index("## Documentation")
+
+    assert proof < first_run < validation < documentation
+    assert "docs/assets/readme-contrast.png" in readme
+    assert "docs/assets/readme-contrast-mobile.png" in readme
+    assert '<source media="(max-width: 600px)"' in readme
+    assert readme.count("uses: RafineriaAI/aos-workflow-gate@v") == 1
+    assert (ROOT / "docs/assets/readme-contrast.png").exists()
+    assert (ROOT / "docs/assets/readme-contrast-mobile.png").exists()
+    for stale_heading in (
+        "## Current status",
+        "## Core idea",
+        "## Practical use case",
+        "## Documentation map",
+    ):
+        assert stale_heading not in readme
+
+
 def test_ci_uses_pinned_actions_and_no_persisted_credentials() -> None:
     workflow = read_text(".github/workflows/aos-workflow-gate-ci.yml")
     checkout = "uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd"
