@@ -41,7 +41,7 @@ The Action accepts existing local SARIF files without executing a scanner:
 - name: Scan GitHub workflows
   run: zizmor --format=sarif . > zizmor.sarif.json
 - name: AOS decision
-  uses: RafineriaAI/aos-workflow-gate@v0.36.0
+  uses: RafineriaAI/aos-workflow-gate@v0.37.1
   with:
     sarif: zizmor.sarif.json
 ```

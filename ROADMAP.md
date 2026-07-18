@@ -2,7 +2,7 @@
 
 ## Current status
 
-Current public release: `v0.36.0`.
+Current public release: `v0.37.1`.
 
 The CLI and GitHub Action are available as a free, self-serve advisory preview.
 The mechanism is deterministic, exact-SHA bound, tamper-evident, and replayable.

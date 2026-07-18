@@ -52,7 +52,7 @@ pre-review clarity.
 ## First-run flow
 
 1. Add the Action - no checkout, policy, or required-check list
-   (`uses: RafineriaAI/aos-workflow-gate@v0.36.0`).
+   (`uses: RafineriaAI/aos-workflow-gate@v0.37.1`).
 2. AOS reads branch rules and exact-commit checks, then names the dominant
    control gap, effect, and next action.
 3. Keep advisory while measuring acceptance and repeated noise. Enable
