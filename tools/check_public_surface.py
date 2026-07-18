@@ -4,6 +4,7 @@ import argparse
 import json
 import re
 import shlex
+import subprocess
 import sys
 import tomllib
 from pathlib import Path
@@ -11,6 +12,12 @@ from typing import NoReturn
 from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
+
+_BRANCH_LEAKING_MERGE_RE = re.compile(
+    r"^(?:Merge pull request #\d+ from \S+|"
+    r"Merge (?:remote-tracking )?branch ['\"]\S+['\"])",
+    re.MULTILINE,
+)
 
 README_LOCAL_HYGIENE_BLOCK = """Run the local hygiene checks with:
 
@@ -422,6 +429,12 @@ REQUIRED_SNIPPETS = {
         '"AOS Verdict Seal" is a reserved product designation',
         "no right to\nuse that designation is granted",
     ],
+    "docs/ARCHITECTURE.md": [
+        "standalone Python package with zero runtime",
+        "does not prove this package's source-status rules",
+        "kernel-backed claim requires an explicit shared contract",
+    ],
+
     "docs/SCOPE.md": [
         "pre-merge control assurance",
         "No active paid product",
@@ -429,6 +442,7 @@ REQUIRED_SNIPPETS = {
         "## Decision boundary",
         "UNSIGNED_NOT_OFFICIAL",
         "It does not mean the underlying source signals are complete",
+        "No artifact produced here is kernel-generated or kernel-verified",
     ],
     "docs/ADOPTION_GUIDE.md": [
         "AOS verifies the gate, not the code",
@@ -454,7 +468,13 @@ REQUIRED_SNIPPETS = {
     "docs/RELEASE_GOVERNANCE.md": [
         "AOS Workflow Gate CI / validate",
         "no Lean build is required",
+        "does not prove this repository's\nworkflow evaluator",
+        "A future kernel-backed claim requires a versioned shared contract",
+        "standalone workflow gate, not a kernel proof or kernel-backed verdict",
         "Do not delete, recreate, or force-push a published `v*` tag",
+        "## Public Merge Metadata",
+        "--subject \"<public outcome>\"",
+        "tools/check_public_surface.py --check-head-commit",
         (
             "no production, compliance, security-audit, signing, SBOM, SLSA, "
             "or attestation claim"
@@ -772,6 +792,32 @@ def fail(message: str) -> NoReturn:
     raise SystemExit(1)
 
 
+def merge_metadata_issues(message: str) -> list[str]:
+    """Return public-hygiene violations in a merge commit message."""
+    issues: list[str] = []
+    if _BRANCH_LEAKING_MERGE_RE.search(message):
+        issues.append("default merge subject exposes a branch")
+    return issues
+
+
+def check_head_commit_metadata() -> None:
+    result = subprocess.run(
+        ["git", "log", "-1", "--format=%B"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    issues = merge_metadata_issues(result.stdout)
+    if issues:
+        fail(
+            "HEAD commit metadata is not public-safe: "
+            + "; ".join(issues)
+        )
+
+
 def read_text(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
@@ -951,6 +997,7 @@ def check_repository_hygiene() -> None:
         "python -m mypy",
         "python -m pytest",
         "python tools/check_public_surface.py",
+        "python tools/check_public_surface.py --check-head-commit",
         "yaml.safe_load(open('action.yml'))",
     )
     for snippet in required_workflow_snippets:
@@ -1077,6 +1124,18 @@ def check_action_surface() -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--check-head-commit",
+        action="store_true",
+        help="also reject branch-leaking metadata in the current commit",
+    )
+    args = parser.parse_args()
+
+    if args.check_head_commit:
+        check_head_commit_metadata()
+        return
+
     check_docs_index()
     check_local_links()
     check_cli_examples()

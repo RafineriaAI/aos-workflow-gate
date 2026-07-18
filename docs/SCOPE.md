@@ -68,6 +68,9 @@ The package shares the public verdict vocabulary and design lineage of
 `aos-kernel`, but the current Python implementation has no runtime dependency
 on the kernel and makes no formal-proof claim. Workflow semantics, contracts,
 digests, and integration behavior are owned and tested in this repository.
+No artifact produced here is kernel-generated or kernel-verified. A future
+kernel-backed claim requires a versioned shared contract and conformance
+vectors executed in both repositories.
 
 ## Verification status
 

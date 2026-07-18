@@ -10,6 +10,7 @@ from tools.check_public_surface import (
     check_action_examples,
     check_cli_examples,
     check_local_links,
+    merge_metadata_issues,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -132,6 +133,22 @@ def test_business_positioning_is_consistent_and_bounded() -> None:
     )
 
 
+def test_kernel_relationship_is_standalone_and_bounded() -> None:
+    architecture = read_text("docs/ARCHITECTURE.md")
+    scope = read_text("docs/SCOPE.md")
+    governance = read_text("docs/RELEASE_GOVERNANCE.md")
+
+    assert "does not prove this package's source-status rules" in architecture
+    assert "No artifact produced here is kernel-generated" in scope
+    assert "shared vocabulary and\ndesign lineage are not sufficient" in governance
+
+    for stale in (
+        "workflow gate layer around `aos-kernel`",
+        "Formal verdict semantics remain in the kernel",
+    ):
+        assert stale not in governance
+
+
 def test_ci_uses_pinned_actions_and_no_persisted_credentials() -> None:
     workflow = read_text(".github/workflows/aos-workflow-gate-ci.yml")
     checkout = "uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd"
@@ -149,6 +166,24 @@ def test_release_governance_names_required_check() -> None:
     assert "AOS Workflow Gate CI / validate" in governance
     assert "no Lean build is required" in governance
     assert "Do not delete, recreate, or force-push a published `v*` tag" in governance
+
+    assert "--subject" in governance
+    assert "--body" in governance
+
+
+def test_merge_metadata_hygiene_rejects_branch_leaks() -> None:
+    clean = (
+        "Release metadata integrity and v0.37.1\n\n"
+        "Enforce public metadata."
+    )
+    default = "Merge pull request #71 from acme/temporary-release-branch"
+
+    assert merge_metadata_issues(clean) == []
+    assert merge_metadata_issues(default) == [
+        "default merge subject exposes a branch",
+    ]
+
+    assert merge_metadata_issues("Merge branch 'temporary-release-branch'")
 
 
 def test_action_and_self_workflow_are_bounded() -> None:

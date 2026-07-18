@@ -37,6 +37,10 @@ jobs:
       - name: Public surface
         run: python tools/check_public_surface.py
 
+      - name: Public merge metadata
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: python tools/check_public_surface.py --check-head-commit
+
   latest-python:
     name: AOS Workflow Gate CI / Python 3.14
     runs-on: ubuntu-latest
