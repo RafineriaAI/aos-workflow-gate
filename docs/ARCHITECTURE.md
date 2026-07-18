@@ -1,84 +1,131 @@
 # Architecture
 
-This document describes the planned architecture. Phase 1 implements the
-policy-evaluation and evidence-writer layers for the local `evaluate` CLI;
-Phase 2 implements the advisory GitHub Action around the same evaluation;
-Phase 3 has the read-only GitHub check-runs collector plus the SARIF and
-Scorecard file adapters implemented; the GitLab collector remains planned. Sections below that are not yet implemented
-are not implementation claims.
+Status: implemented public advisory surface. This document describes the code
+that exists in the current package candidate; planned integrations are named
+explicitly.
 
-## Layers
+## System boundary
+
+`aos-workflow-gate` is a standalone Python package with zero runtime
+dependencies. It shares the `PASS/WARN/BLOCK` verdict vocabulary and design
+lineage of `aos-kernel`, but it does not import, execute, or require the
+kernel at runtime. This repository owns workflow collection, policy evaluation,
+decision records, replay, and presentation.
+
+## Decision flow
 
 ```mermaid
 flowchart LR
-  A[Workflow signals] --> B[Adapters]
-  B --> C[Normalized signal bundle]
-  C --> D[Policy evaluation]
-  D --> E[Kernel verdict contract]
-  E --> F[Evidence writer]
-  F --> G[CI summary and JSON output]
+  A[CLI or GitHub Action] --> B[Preflight]
+  A --> C[Read-only collectors]
+  D[Files or stdin] --> E[Adapters and contracts]
+  B --> C
+  C --> F[Signal bundle]
+  E --> F
+  F --> G[Explicit policy]
+  G --> H[Deterministic evaluator]
+  H --> I[Decision record and digests]
+  I --> J[Markdown, HTML, outputs]
+  I --> K[Verify, replay, export]
 ```
 
-## Signal adapters
+Preflight reports capability and environment diagnostics only. It never emits
+a policy verdict. Collection failures stay operational evidence and cannot be
+reinterpreted as successful controls.
 
-Adapters convert external workflow data into a normalized internal bundle. Early adapters should be read-only and deterministic.
+## Entry surfaces
 
-Initial adapter candidates:
+| Surface | Responsibility |
+| --- | --- |
+| `preflight` | Probe repository, pull request, rules, checks, statuses, and runtime context without a verdict. |
+| `collect`, `import`, `agent-action` | Build or extend normalized evidence from GitHub, files, or stdin. |
+| `evaluate` | Apply one explicit policy to one existing bundle. |
+| `run` | Collect, evaluate, record, and summarize in one local or Actions flow. |
+| `check-pr` | Inspect a public or authorized GitHub PR and compare exact-SHA observations with active branch requirements. |
+| `verify`, `summarize`, `export` | Verify records, render deterministic views, and create an unsigned in-toto Statement projection. |
+| `bench-verify` | Replay declared benchmark artifacts without arbitrary command execution. |
 
-- GitHub check suite summary.
-- GitLab pipeline jobs summary.
-- Pull request metadata summary.
-- SARIF/code scanning summary.
-- OpenSSF Scorecard summary.
-- Dependency update summary.
-- AI-agent review summary.
+The zero-config Action invokes the same `run` path as the CLI. Explicit
+`required-checks` replaces GitHub requirement discovery; it does not merge
+with autodiscovery.
 
-Adapters must preserve source identity and enough digest information for replay. They must not silently reinterpret severity, trust, or ownership.
+## Collection and identity
+
+Built-in GitHub collection reads active rulesets or classic branch protection,
+check runs, workflow runs, check suites, and commit statuses for the exact head
+SHA. File adapters currently normalize SARIF 2.1.0 and OpenSSF Scorecard
+documents. External integrations use the versioned
+[`source-v0` contract](SOURCE_CONTRACT.md).
+
+Three identities remain separate:
+
+- control identity: `(context, integration_id)`;
+- requirement provenance: deterministic `required_by[]`;
+- observation scope: repository plus exact `head_sha`.
+
+A shared context does not collapse app-bound controls. Provenance can have
+multiple rule sources without creating duplicate controls. Subject or
+freshness mismatches remain visible evidence.
 
 ## Policy evaluation
 
-A policy maps normalized signals into gate requirements. The first policy format should be simple YAML or JSON before introducing a heavier policy engine.
+Policies are operator-controlled JSON or a restricted YAML subset. They define
+subject requirements, required and advisory source IDs, rule severities, mode,
+and verification status. Sources report observations; they cannot mark
+themselves required or issue a verdict.
 
-Example policy concepts:
+Evaluation is deterministic and fail-closed for missing or malformed mandatory
+evidence. `PASS/WARN/BLOCK` describes policy readiness. Process exit behavior
+is separate: advisory returns success for a `BLOCK`; explicit enforcement or
+a blocking policy may return exit code 1.
 
-- Required checks must be present and successful.
-- Missing mandatory evidence blocks the gate.
-- Advisory scanner findings may warn but not block.
-- Ambiguous or malformed input fails closed.
+See [Policy Packs](POLICY_PACKS.md) and
+[Source Contract](SOURCE_CONTRACT.md).
 
-## Kernel verdict contract
+## Evidence and replay
 
-The workflow gate should depend on the public verdict semantics of `aos-kernel`, not on private repository internals. Any future integration must keep a clear distinction between kernel verdict semantics and workflow adapter behavior.
+A decision record binds:
 
-## Evidence writer
+- normalized subject identity;
+- policy ID, mode, digest, and verification status;
+- source identities and digests;
+- canonical input-bundle digest;
+- compact observation scope and freshness;
+- content-addressed verifier manifest;
+- verdict, structured reason codes, and `can_block`;
+- self-verifying `record_digest`.
 
-The evidence writer emits a stable decision artifact with:
+Canonical JSON rejects non-finite numbers. The verifier manifest hashes every
+packaged Python module and policy pack after line-ending normalization.
+Content addressing detects mutation or verifier substitution; it does not
+prove authorship, operator identity, or code correctness.
 
-- Subject identity: repository, ref, commit, pull request or release candidate.
-- Policy identity: policy id and version or digest.
-- Input identity: source ids and digests.
-- Verdict: `PASS`, `WARN`, or `BLOCK`.
-- Verification status: initially `UNSIGNED_NOT_OFFICIAL`.
-- Human-readable summary.
-
-## Diagnosis and remediation
-
-The decision record remains the source of truth; `diagnose()` is a
-deterministic presentation projection. Remediation selection uses only
-structured fields:
-
-- `reason.rule` selects the rule-level fallback;
-- optional `reason.state` records the exact emitted operational state;
-- `inputs[].status` recovers failed-source state when reading a
-  historical record without `reason.state`;
-- `observation.status` recovers incomplete-collection state when reading
-  a historical record without `reason.state`.
-
-`reason.detail` is display-only and is never parsed. Historical records
-without a structural state remain readable and receive the conservative
-rule-level fallback. Remediation codes guide the operator; they do not
-change the policy verdict or CI exit behavior.
+The JSON record is the source of truth. Markdown, HTML, annotations, Action
+outputs, and remediation are deterministic projections. `reason.detail` is
+display-only and is never parsed to recover semantics.
 
 ## Security posture
 
-Early releases should run with least privilege, avoid secrets when possible, and treat external workflow data as untrusted input. GitHub Action integration should start in advisory mode and use read-only permissions by default.
+GitHub access is read-only. Tokens are environment-only and never written into
+evidence. Repository output paths are constrained to the configured workspace.
+External files and API responses are untrusted, size- and budget-bounded
+inputs. No source checkout is required for zero-config collection, and no code
+is uploaded to RafineriaAI.
+
+See [Security Readiness](SECURITY_READINESS.md) for the threat and data model.
+
+## Implementation ownership
+
+The package is split by responsibility: collection, contracts, policy,
+evaluation, evidence, and presentation. The CLI wires those modules together;
+maintainer research tools under `tools/` do not participate in a merge
+verdict. The canonical module and test map is in the
+[Development Guide](DEVELOPMENT.md).
+
+## Deferred surfaces
+
+Not implemented: a GitLab API collector or Catalog component, signed
+RafineriaAI decisions, hosted policy service, dashboard, telemetry, SBOM
+generation, provenance generation, compliance automation, or an LLM verdict
+path. The unsigned in-toto Statement export is a projection, not a signed
+attestation.

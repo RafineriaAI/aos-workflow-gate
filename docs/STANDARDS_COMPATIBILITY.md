@@ -1,75 +1,90 @@
 # Standards Compatibility
 
-This document defines the intended compatibility surface for industry standards. It is a planning and integration reference, not a compliance claim.
-
-`aos-workflow-gate` should integrate with existing ecosystem formats by consuming, preserving, and referencing their evidence. It should not rebrand a gate decision as a security certification, supply-chain attestation, SBOM, SLSA level, or scanner verdict.
+This is an interoperability reference, not a compliance claim.
+`aos-workflow-gate` consumes or preserves ecosystem-shaped evidence without
+rebranding a decision record as a scanner result, security certification,
+SBOM, provenance statement, SLSA level, or signed attestation.
 
 ## Current status
 
-Phase 1 implements the local `evaluate` and `verify` CLI with deterministic replay; Phase 2 implements the advisory GitHub Action around the same evaluation; Phase 3 has the read-only GitHub check-runs collector plus the SARIF and Scorecard file adapters; the unsigned in-toto Statement export is implemented (pulled forward from Phase 4). The repository does not yet implement signed evidence issued by RafineriaAI, provenance generation, SBOM export, SARIF upload, or compliance automation.
+Implemented:
 
-Any early output remains `UNSIGNED_NOT_OFFICIAL` until signing, publication, and verification controls exist.
+- read-only GitHub rules, Checks, Check Suites, Workflow Runs, pull-request
+  metadata, and commit-status collection;
+- SARIF 2.1.0 file reduction with a fixed documented status mapping;
+- OpenSSF Scorecard presence-and-integrity input;
+- canonical source, subject, policy, record, and verifier digests;
+- unsigned in-toto Statement v1 export containing the verified decision record.
+
+Not implemented: RafineriaAI signing, provenance generation, SBOM generation,
+SARIF upload, SLSA conformance, SPDX or CycloneDX validation, OPA/Rego
+execution, or compliance automation. Outputs remain
+`UNSIGNED_NOT_OFFICIAL`.
 
 ## Compatibility principles
 
-- Prefer existing formats over custom workflow evidence whenever a stable ecosystem format exists.
-- Preserve source identity, subject identity, digests, timestamps, tool names, and tool versions.
-- Normalize only the fields needed for policy evaluation; keep a reference to the original source artifact when possible.
-- Treat all external inputs as untrusted until their origin and integrity are explicitly verified.
-- Keep scanner, SBOM, provenance, and attestation systems as signal sources, not as hidden authorities.
+- Prefer a stable ecosystem format when one exists.
+- Preserve source and subject identity, native identifiers, digests,
+  timestamps, tool names, and tool versions when available.
+- Normalize only decision-relevant observations and retain an artifact
+  reference where possible.
+- Keep adapter status separate from policy verdict.
+- Treat external inputs as untrusted; a file format does not prove origin or
+  correctness.
 - Fail closed for malformed mandatory evidence.
-- Do not claim compliance with a standard unless the required implementation, tests, release controls, and audit evidence exist.
+- Do not claim conformance without the implementation, conformance tests,
+  release controls, and auditable evidence required by that standard.
 
 ## Integration map
 
-| Standard or ecosystem format | Intended role | Early boundary |
+| Standard or ecosystem | Current role | Boundary |
 | --- | --- | --- |
-| GitHub Checks and pull request metadata | Input signals for required checks, review state, subject identity, and commit identity. | Read-only collection first; no claim that GitHub state is complete or tamper-proof. |
-| SARIF 2.1.0 | Implemented: `collect --sarif` reduces a SARIF file to a mechanical source (fixed level-to-status mapping, digest over the identity subset; `docs/ADAPTERS.md`). | The gate consumes and summarizes scanner output; it does not present its decision as a SARIF finding and does not verify file authenticity. |
-| OpenSSF Scorecard | Implemented as a presence-and-integrity adapter (`collect --scorecard`): the score travels as data, not as a verdict. | Never a single final authority; score thresholds are deliberately not adapter logic. |
-| SPDX | Future SBOM presence, license, package, and security metadata signal. | Do not generate or certify SBOMs in early releases. Preserve SBOM identity and digest if supplied. |
-| CycloneDX | Future SBOM, VEX, formulation, declaration, or supply-chain metadata signal. | Do not claim CycloneDX conformance until a concrete export or validation path exists. |
-| in-toto attestations | Statement (v1) export is implemented: `export` wraps a verified decision record as the predicate and binds it to the gated commit (`gitCommit` digest). Operators may sign it with their own keys. | The exported Statement is unsigned and unofficial; do not call it an attestation until it is signed. |
-| SLSA | Future provenance and verification-summary alignment. | No SLSA level or SLSA compliance claim until build/source requirements and provenance verification are implemented. |
-| OPA/Rego or other policy engines | Possible future policy execution backend. | Start with explicit YAML or JSON policies to keep the MVP inspectable. |
+| GitHub rules, Checks, Actions, and Statuses | Built-in exact-SHA requirement and observation source. | Read-only metadata collection; not full merge-readiness and not proof GitHub is truthful or complete. |
+| SARIF 2.1.0 | `collect --sarif` maps result levels to one mechanical `source-v0` status. | No SARIF upload, authenticity check, or scanner reinterpretation. |
+| OpenSSF Scorecard | `collect --scorecard` preserves presence, score data, and source digest. | A score is data, never a hidden gate authority. |
+| `source-v0` | Versioned extension contract for external evidence. | No plugin runtime; the source cannot mark itself required. |
+| in-toto Statement v1 | `export` wraps a verified record and binds the gated commit digest. | Unsigned projection; it must not be called an attestation until signed. |
+| SPDX | Possible future SBOM evidence input. | No current parser, generator, validation, or certification. |
+| CycloneDX | Possible future SBOM, VEX, or formulation evidence input. | No current parser, generator, validation, or conformance claim. |
+| SLSA | Possible future provenance or verification-summary mapping. | No current level, provenance, or compliance claim. |
+| OPA/Rego | Possible future policy backend. | Current policy is explicit JSON or restricted YAML; no Rego execution. |
 
 ## Minimum evidence fields
 
-A standards-aware signal bundle should preserve these fields when available:
+When available, a standards-shaped source should preserve:
 
-- Source id and source type.
-- Source URL or artifact reference.
-- Subject repository, ref, commit SHA, pull request, or release candidate id.
-- Artifact digest or source payload digest.
-- Tool name and tool version.
-- Native rule, check, package, vulnerability, or attestation identifiers.
-- Collection timestamp.
-- Policy id and policy digest.
-- Verdict and reason emitted by `aos-workflow-gate`.
-- Verification status, initially `UNSIGNED_NOT_OFFICIAL`.
+- source ID, type, URL or artifact reference;
+- repository, ref, exact commit SHA, pull request, or release subject;
+- source payload or artifact digest;
+- native tool, version, rule, check, package, or finding identifiers;
+- collection timestamp and completeness state;
+- policy ID and digest;
+- verdict, reason code, and verifier manifest digest;
+- verification status.
+
+The normative `source-v0` identity-completeness rule is documented in
+[Source Contract](SOURCE_CONTRACT.md).
 
 ## Adoption sequence
 
-1. Local JSON fixture evaluation with deterministic replay.
-2. Read-only GitHub Action advisory mode.
-3. Minimal adapters for GitHub Checks, PR metadata, SARIF summaries, Scorecard summaries, and dependency update signals.
-4. Optional SBOM/provenance presence checks using SPDX, CycloneDX, in-toto, or SLSA-aligned evidence only after the core decision record is stable.
-5. Signed decision artifacts and stronger attestation mapping only after release controls and verification tooling exist.
+Existing scanners, SBOM tools, and CI remain in place. Start with read-only
+GitHub metadata, add an explicit external source only for a recurring decision
+gap, keep the gate advisory while measuring noise, and enable enforcement only
+after repository owners accept the policy and rollback path.
 
 ## Market-entry effect
 
-This compatibility surface reduces adoption friction because teams can keep their existing scanners, SBOM tools, CI checks, and policy vocabulary. `aos-workflow-gate` should act as a replayable decision layer over those signals, not as a replacement for them.
-
-For commercial use, the safest public position is interoperability first, certification later. A buyer or auditor should be able to see exactly which standard-shaped inputs were used, which policy consumed them, and why the final gate verdict was produced.
+Interoperability lowers switching cost: AOS can consume existing signals
+without replacing their producers. That is a product hypothesis, not proof of
+demand or economic value. Public claims remain bounded by the
+[Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md).
 
 ## Source references
-
-These links define the standards and ecosystem surfaces this repository intends to align with over time:
 
 - SLSA specification: https://slsa.dev/spec/v1.2/
 - SPDX specifications: https://spdx.dev/use/specifications/
 - CycloneDX specification overview: https://cyclonedx.org/specification/overview/
-- SARIF support in GitHub code scanning: https://docs.github.com/en/code-security/reference/code-scanning/sarif-files/sarif-support
+- GitHub SARIF support: https://docs.github.com/en/code-security/reference/code-scanning/sarif-files/sarif-support
 - OASIS SARIF 2.1.0: https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html
 - in-toto Attestation Framework: https://github.com/in-toto/attestation/blob/main/spec/README.md
 - OpenSSF Scorecard: https://github.com/ossf/scorecard

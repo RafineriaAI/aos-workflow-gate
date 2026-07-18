@@ -12,9 +12,12 @@ pack is exactly what `evaluate --policy` reads.
 | `agent-review-advisory` | advisory | `ci`, `agent.review` | `scanner.sarif`, `scorecard` | AI-agent changes: agent review must have run |
 | `evidence-integrity` | **blocking** | `ci` | — | blocks on evidence-integrity conditions branch protection cannot express: incomplete collection and non-independent evidence (the change judges itself) |
 
-Both the CLI (`run --policy-pack NAME`) and the GitHub Action select a pack
-by name; `evaluate --policy` takes any file path directly. `release-candidate` is `mode: blocking`, so a
-`BLOCK` verdict fails the process even without `--enforce`.
+Both the CLI (`run --policy-pack NAME`) and the GitHub Action can select a
+pack by name; `evaluate --policy` takes any file path directly. Pack source
+IDs are literal. Action selection is useful only when repository check IDs
+match the pack; otherwise copy the pack, edit its IDs, and pass it through
+`policy`. `release-candidate` is `mode: blocking`, so a `BLOCK` verdict
+fails the process even without `--enforce`.
 
 Boundary: packs encode structure, not judgment about your tools; a pack
 passing does not make a repository secure, compliant, or release-worthy.

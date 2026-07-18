@@ -1,0 +1,10 @@
+# Initial ownership is explicit while the maintainer team is still one person.
+# Replace the user with a team slug as soon as a second maintainer is onboarded.
+* @RafineriaAI
+
+/.github/ @RafineriaAI
+/action.yml @RafineriaAI
+/aos_workflow_gate/ @RafineriaAI
+/docs/ @RafineriaAI
+/pyproject.toml @RafineriaAI
+/tools/ @RafineriaAI

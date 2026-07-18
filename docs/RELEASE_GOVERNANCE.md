@@ -2,6 +2,19 @@
 
 This repository publishes the workflow gate layer around `aos-kernel`. Release process controls are intentionally narrow: they protect the public workflow-gate surface without claiming production readiness, compliance, official signing, supply-chain attestation, or correctness of external CI/scanner/agent systems.
 
+## Current Release Boundary
+
+The current line is a free public advisory preview. It may claim deterministic
+policy evaluation, exact-SHA collection, canonical digests, tamper detection,
+content-addressed verifier disclosure, and offline replay because those
+mechanisms are implemented and tested.
+
+It must not claim independently validated precision, practical usefulness,
+incident reduction, production suitability, retention, or willingness to pay.
+Those claims remain controlled by the
+[Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md), currently `NO_GO`.
+The phase sections below preserve the release history and cumulative boundary.
+
 ## Phase 0 Release Boundary
 
 Phase 0 is repository hygiene and public boundary work only. It may define documents, examples, policies, tests, and CI checks, but it must not claim an implemented gate, production enforcement, signed evidence, SLSA compliance, or security-audit certification.
@@ -14,7 +27,7 @@ Phase 1 adds the local `evaluate` and `verify` CLI. A release may now claim a lo
 
 ## Phase 2 Release Boundary
 
-Phase 2 adds the advisory GitHub Action around the Phase 1 evaluation. A release may now claim an advisory pull-request gate with a Markdown summary and a replayable decision artifact. Advisory mode must stay the default; a release must not claim production enforcement, and enforcement remains an explicit per-workflow opt-in (`enforce: "true"` or a blocking policy). All Phase 1 boundary limits continue to apply.
+Phase 2 adds the advisory GitHub Action around the Phase 1 evaluation. A release may now claim an advisory pull-request gate with a Markdown summary and a replayable decision artifact. Advisory mode must stay the default; a release must not claim production enforcement, and enforcement remains an explicit per-workflow opt-in (`mode: "enforce"` or a blocking policy; `enforce: "true"` is a deprecated Action alias). All Phase 1 boundary limits continue to apply.
 
 ## Immutable Release Tags
 

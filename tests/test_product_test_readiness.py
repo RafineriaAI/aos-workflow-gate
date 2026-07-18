@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from aos_workflow_gate.version import __version__
 from tools.value_gate import (
     PRODUCT_READINESS_SCHEMA,
     _validate_product_readiness,
@@ -77,18 +78,22 @@ def test_wheel_installs_in_isolated_target(tmp_path: Path) -> None:
         capture_output=True,
         text=True,
     )
-    probe = site / "_aos_clean_room_probe.py"
-    probe.write_text(
-        "from aos_workflow_gate.cli import main\n"
-        "raise SystemExit(main(['--version']))\n",
-        encoding="utf-8",
-        newline="\n",
-    )
     result = subprocess.run(
-        [sys.executable, "-I", str(probe)],
+        [
+            sys.executable,
+            "-I",
+            "-c",
+            (
+                "import sys\n"
+                "sys.path.insert(0, sys.argv[1])\n"
+                "from aos_workflow_gate.cli import main\n"
+                "raise SystemExit(main(['--version']))\n"
+            ),
+            str(site),
+        ],
         cwd=tmp_path,
         check=True,
         capture_output=True,
         text=True,
     )
-    assert result.stdout.strip() == "0.36.0"
+    assert result.stdout.strip() == __version__

@@ -36,3 +36,21 @@ jobs:
           python -c "import sys,glob,yaml; [yaml.safe_load(open(p)) for p in glob.glob('.github/workflows/*.yml')]; print('workflow yaml OK')"
       - name: Public surface
         run: python tools/check_public_surface.py
+
+  latest-python:
+    name: AOS Workflow Gate CI / Python 3.14
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned from actions/checkout@v5 on 2026-07-03.
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd
+        with:
+          persist-credentials: false
+      # Pinned from actions/setup-python@v6 on 2026-07-03.
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.14"
+          cache: "pip"
+      - name: Install
+        run: python -m pip install -e .[dev]
+      - name: Pytest
+        run: python -m pytest

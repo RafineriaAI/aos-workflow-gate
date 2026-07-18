@@ -1,36 +1,74 @@
 # Scope
 
-`aos-workflow-gate` is the workflow decision layer around `aos-kernel`.
+`aos-workflow-gate` is a deterministic pre-merge decision layer. It consumes
+existing workflow evidence, applies explicit policy-as-code, and emits an
+explainable `PASS`, `WARN`, or `BLOCK` record. It complements CI,
+scanners, and review; it does not replace them.
 
-It is intended to collect CI, pull request, scanner, and AI-agent signals, normalize them into explicit evidence, evaluate them against a policy, and emit a replayable `PASS`, `WARN`, or `BLOCK` decision.
+The current release is a free, self-serve advisory preview. Mechanism behavior
+is tested and replayable. External usefulness, precision, retention, incident
+reduction, and willingness to pay remain unvalidated.
 
-## In scope
+## Implemented scope
 
-- Local CLI evaluation from fixture or exported workflow signal bundles.
-- GitHub pull request and release candidate gate scenarios.
-- Evidence records that preserve input digests, policy identity, subject identity, and decision output.
-- Advisory mode before blocking mode.
-- Clear `PASS`, `WARN`, and `BLOCK` semantics aligned with the kernel verdict model.
-- Minimal adapters for common public signals such as CI status, PR metadata, SARIF summaries, OpenSSF Scorecard summaries, dependency update signals, and AI-agent review summaries.
+- Local `evaluate` and one-command `run` flows for JSON signal bundles.
+- Zero-config GitHub Action collection for the exact head SHA.
+- Active ruleset and classic branch-protection requirement discovery.
+- Check Run, Check Suite, Workflow Run, and commit-status visibility.
+- App-bound control identity, requirement provenance, freshness, collection
+  completeness, and fail-closed evidence states.
+- Versioned `source-v0` and `agent-action-v0` validation.
+- SARIF 2.1.0 and OpenSSF Scorecard file adapters.
+- Explicit JSON or restricted-YAML policy and packaged starter policies.
+- Deterministic Markdown and static HTML diagnosis with one dominant next
+  action.
+- Canonical digests, verifier manifest, tamper detection, offline replay, and
+  unsigned in-toto Statement export.
+- Read-only preflight diagnostics and committed benchmark verification.
 
-## Out of scope for early releases
+External adapters may supply CI, pull-request, scanner, dependency, or agent
+observations through `source-v0`. Their presence is not a claim that AOS
+independently verifies the originating system.
 
-- Compliance certification.
-- Security-audit certification.
-- Runtime proof of GitHub, CI, scanner, or AI-agent correctness.
-- Signing, attestation, SBOM, SLSA, or in-toto claims unless those layers are explicitly implemented and documented later.
-- Workflow orchestration dashboards.
-- Automatic remediation or code generation.
-- Claims that a `PASS` result means the repository is secure, correct, production-ready, or legally compliant.
+## Out of scope
+
+- Full merge-readiness: reviews, conversations, merge queue state, conflicts,
+  deployment safety, business correctness, and every GitHub merge rule.
+- Defect absence, vulnerability absence, or repository security.
+- Compliance or security-audit certification.
+- Runtime proof that GitHub, CI, a scanner, or an agent reported truthfully.
+- Official RafineriaAI signing, hosted provenance, SBOM generation, SLSA level,
+  or attestation service.
+- Workflow orchestration, dashboarding, automatic remediation, or code
+  generation.
+- LLM-based verdicts.
+- A production recommendation or efficacy claim before external validation.
 
 ## Decision boundary
 
-A gate decision means only this:
+A gate decision means only:
 
-> For the stated subject, stated policy, stated input bundle, and stated implementation version, the gate produced this verdict and evidence record.
+> For the stated subject, policy, input bundle, and verifier artifact, the gate
+> produced this verdict and replayable record.
 
-It does not mean the underlying source signals are complete, honest, or independently verified unless a later release adds that verification layer.
+It does not mean the underlying source signals are complete, honest, or
+independently verified unless the record contains evidence for that property.
+`PASS` means every requirement declared by the evaluated policy was
+satisfied; residual unknown risk remains.
+
+A verdict and a process exit code are distinct. The verdict states policy
+readiness. Advisory or enforce mode determines whether a `BLOCK` interrupts
+the calling process.
+
+## Kernel relationship
+
+The package shares the public verdict vocabulary and design lineage of
+`aos-kernel`, but the current Python implementation has no runtime dependency
+on the kernel and makes no formal-proof claim. Workflow semantics, contracts,
+digests, and integration behavior are owned and tested in this repository.
 
 ## Verification status
 
-Early outputs must use `UNSIGNED_NOT_OFFICIAL` until signing and publication controls exist. This status is a claim boundary, not a defect.
+Outputs use `UNSIGNED_NOT_OFFICIAL`. Their structure, digests, verifier
+content address, and replay can be checked; authorship and operator identity
+are not cryptographically proven.
