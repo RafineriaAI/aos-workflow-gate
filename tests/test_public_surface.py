@@ -64,7 +64,7 @@ def test_readme_license_and_local_check_are_renderable() -> None:
 
 def test_readme_leads_with_product_value_before_validation_detail() -> None:
     readme = read_text("README.md")
-    proof = readme.index("Green checks can still miss a merge-control gap.")
+    proof = readme.index("AOS verifies the gate, not the code.")
     first_run = readme.index("## Try it on any public PR")
     validation = readme.index("## Validation status")
     documentation = readme.index("## Documentation")
@@ -83,6 +83,53 @@ def test_readme_leads_with_product_value_before_validation_detail() -> None:
         "## Documentation map",
     ):
         assert stale_heading not in readme
+
+
+def test_business_positioning_is_consistent_and_bounded() -> None:
+    category_paths = (
+        "README.md",
+        "action.yml",
+        "docs/ONE_PAGER.md",
+        "docs/SCOPE.md",
+        "docs/COMPARISON.md",
+    )
+    for path in category_paths:
+        normalized = " ".join(read_text(path).lower().split())
+        assert "pre-merge control assurance" in normalized, path
+
+    core_gap = (
+        "control that is missing, stale, produced by the wrong app, or "
+        "modified by the same PR"
+    )
+    for path in ("README.md", "action.yml", "docs/ONE_PAGER.md", "docs/index.html"):
+        normalized = " ".join(read_text(path).split())
+        assert core_gap in normalized, path
+
+    for path in ("README.md", "docs/ONE_PAGER.md", "docs/index.html"):
+        assert "AOS verifies the gate, not the code." in read_text(path), path
+
+    buyer = read_text("docs/BUYER_FAQ.md")
+    buyer_normalized = " ".join(buyer.split())
+    value = read_text("docs/VALUE.md")
+    funnel = read_text("docs/FUNNEL.md")
+    metrics = read_text("docs/VALUE_METRICS.md")
+
+    assert "individual developer is a weak paid ICP" in buyer_normalized
+    assert "There is no active paid offering." in buyer
+    assert "low-frequency, potentially high-cost" in value
+    assert "Policy packs alone are too copyable" in value
+    assert "## Commercialization gate" in funnel
+    for metric in (
+        "Actionable rate",
+        "Decision-change rate",
+        "30-day retention",
+    ):
+        assert metric in metrics
+
+    pyproject = tomllib.loads(read_text("pyproject.toml"))
+    assert pyproject["project"]["description"] == (
+        "Pre-merge control assurance with exact-commit replayable evidence."
+    )
 
 
 def test_ci_uses_pinned_actions_and_no_persisted_credentials() -> None:

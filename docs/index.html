@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AOS Workflow Gate - find merge-control gaps before merge</title>
-<meta name="description" content="Read-only GitHub Action and CLI that find required checks that did not run and workflow changes that assess themselves. Plain PASS/WARN/BLOCK, one next action, and an exact-commit record.">
+<title>AOS Workflow Gate - pre-merge control assurance</title>
+<meta name="description" content="Verify which intended CI/CD controls governed the exact PR commit. Detect controls that are missing, stale, from the wrong app, or modified by the same PR.">
 <link rel="canonical" href="https://rafineriaai.github.io/aos-workflow-gate/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="AOS Workflow Gate - find merge-control gaps before merge">
-<meta property="og:description" content="GitHub can be green while required controls are absent or self-validating. AOS names the gap and the next action without blocking by default.">
+<meta property="og:title" content="AOS Workflow Gate - pre-merge control assurance">
+<meta property="og:description" content="AOS verifies whether intended controls governed the exact commit, names the gap, and preserves replayable evidence.">
 <meta property="og:url" content="https://rafineriaai.github.io/aos-workflow-gate/">
 <meta property="og:image" content="https://rafineriaai.github.io/aos-workflow-gate/assets/banner.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -34,12 +34,12 @@ a.btn{display:inline-block;border:1px solid #8886;border-radius:6px;padding:.6re
 </head>
 <body>
 <h1>AOS Workflow Gate</h1>
-<p class="tag">GitHub can show green when no check is required, or when a
-PR changes the workflow that produced its own green checks.</p>
-<p class="lead">AOS is a read-only pre-merge control check. It compares
-active branch requirements with checks on the exact commit, then returns
+<p class="tag">A green PR can still rely on a control that is missing, stale,
+produced by the wrong app, or modified by the same PR.</p>
+<p class="lead"><strong>AOS verifies the gate, not the code.</strong> It is a
+read-only pre-merge control assurance check for the exact commit, returning
 <span class="chips"><span class="pass">PASS</span><span class="warn">WARN</span><span class="block">BLOCK</span></span>
-with one reason and one next action.</p>
+with one reason, one next action, and replayable evidence.</p>
 
 <pre class="result"><code>AOS Workflow Gate: WARN
 
@@ -50,9 +50,10 @@ the same PR.
 Effect: advisory only; this result does not fail the job.
 Next: run or require one unchanged workflow check, then re-run AOS.</code></pre>
 
-<p><strong>Not another AI reviewer.</strong> AOS does not judge code or guess
-who wrote it. Existing tools produce check results; AOS checks whether the
-repository merge controls actually ran and preserves the decision.</p>
+<p><strong>Not another AI reviewer.</strong> Existing tools produce findings
+and statuses. AOS verifies whether the intended controls governed this exact
+change, including subject binding, producer identity, and verifier
+independence, then preserves the decision.</p>
 
 <h2>First value in one PR</h2>
 <pre><code>permissions:
@@ -73,19 +74,20 @@ steps:
 <a class="btn" href="https://github.com/RafineriaAI/aos-workflow-gate/blob/main/benchmarks/value/EXACT_CONTRAST.md">See exact-commit cases</a>
 </p>
 
-<h2>Useful in daily work</h2>
+<h2>Who it is for</h2>
 <div class="grid">
-<div class="card"><h3>PR author</h3><p>Check whether required controls actually completed before asking for review.</p></div>
-<div class="card"><h3>Maintainer</h3><p>See one dominant gap and one repair action instead of cross-checking several GitHub views.</p></div>
-<div class="card"><h3>Platform team</h3><p>Detect missing controls and workflow changes that assess themselves without replacing CI.</p></div>
-<div class="card"><h3>Security review</h3><p>No code upload, no write scopes, no telemetry; reproduce the exact-commit decision offline.</p></div>
+<div class="card"><h3>Maintainer</h3><p>Name the dominant control gap and next action without reconstructing several GitHub views.</p></div>
+<div class="card"><h3>Platform / DevSecOps</h3><p>Apply consistent exact-commit control assurance across repositories without replacing CI.</p></div>
+<div class="card"><h3>Security / assurance</h3><p>Retain replayable evidence without code upload, write scopes, telemetry, or hosted lock-in.</p></div>
+<div class="card"><h3>PR author</h3><p>Use an occasional pre-review check when repository controls are complex; this is not a code assistant.</p></div>
 </div>
 
 <h2>Claim boundary</h2>
-<p>Mechanism, integrity, and replay are tested. External daily usefulness,
-low-noise performance, incident reduction, retention, and willingness to pay
-are not yet independently validated. This is therefore a free advisory
-preview, not a production recommendation or a validated ROI claim.</p>
+<p>Mechanism, integrity, and replay are tested. External practical usefulness,
+low-noise performance, decision impact, retention, and willingness to pay are
+not yet independently validated. This is a free advisory preview with no
+active paid offering, not a production recommendation or validated ROI
+claim.</p>
 <p><a href="https://github.com/RafineriaAI/aos-workflow-gate/blob/main/benchmarks/value/ASSESSMENT.md">Read the current NO_GO assessment and open questions.</a></p>
 
 <p class="muted">This page and the wizard run without cookies, analytics,

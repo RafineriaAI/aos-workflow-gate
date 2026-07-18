@@ -1,10 +1,11 @@
 name: AOS Workflow Gate
 description: >-
-  Find merge-control gaps that a green GitHub view can miss. Get a
-  PASS/WARN/BLOCK verdict, one next action, and a replayable decision.
-  Read-only and advisory by default. Decision records carry
-  UNSIGNED_NOT_OFFICIAL verification status; no production, compliance,
-  signing, SLSA, or security-audit claim is made.
+  Pre-merge control assurance for the exact PR commit. Detect a control that
+  is missing, stale, produced by the wrong app, or modified by the same PR;
+  get a PASS/WARN/BLOCK
+  verdict, one next action, and replayable evidence. Read-only and advisory
+  by default. Records carry UNSIGNED_NOT_OFFICIAL verification status; no
+  production, compliance, signing, SLSA, or security-audit claim is made.
 branding:
   icon: check-circle
   color: gray-dark

@@ -5,9 +5,9 @@ need to know AOS internals, formal methods, or supply-chain standards.
 
 ## One-sentence model
 
-Existing tools produce signals. `aos-workflow-gate` turns those signals and
-repository requirements into one explainable, replayable merge-control
-decision.
+Existing tools produce findings and statuses. `aos-workflow-gate` verifies
+whether the intended controls actually governed the exact commit and preserves
+one explainable, replayable decision.
 
 ## First value
 
@@ -49,11 +49,13 @@ security, correctness, or compliance.
 1. Run `check-pr` locally on representative PRs.
 2. Add the Action in advisory mode with automatic requirement discovery.
 3. Compare named gaps and next actions with the repository's intended rules.
-4. Keep advisory until repeated runs show stable requirements and acceptable
-   noise.
+4. Keep advisory until owners classify the findings, accepted actions, and
+   repeated noise.
 5. Add a small explicit policy only where GitHub requirements do not model a
-   real team rule.
+   real, recurring, costly team rule.
 6. Enable enforcement only after owners agree on override and rollback.
+7. Remove the Action if it adds no incremental decision or retained evidence
+   value after several weeks.
 
 Do not begin with a broad policy catalog. One recurring, costly evidence gap is
 a stronger adoption basis than many theoretical checks.
@@ -74,8 +76,11 @@ Before enforcement, verify:
 
 | Barrier | Design response |
 | --- | --- |
-| Category sounds abstract. | Lead with “GitHub permits merge, AOS names the missing control” and show the exact PR. |
+| Category sounds abstract. | Say “AOS verifies the gate, not the code,” then name the missing control, wrong app or SHA, or verifier modified by the same PR. |
+| “Control assurance” may sound like certification. | State the exact-commit scope beside every claim; `PASS` is not security, compliance, or full merge-readiness. |
 | A new check may create alert fatigue. | Advisory default, one dominant gap, bounded output, explicit policy promotion. |
+| Correct alerts may still lack business importance. | Measure accepted actions, decision changes, repeated noise, and retention; technical correctness alone does not justify rollout. |
+| Individual developers may not need another paid tool. | Keep the local Action and CLI free; validate organization-level platform and assurance jobs separately. |
 | Zero configuration may infer the wrong intent. | Autodiscovery models only active GitHub requirements; explicit inputs fully replace it. |
 | API or permission failures may look like success. | Preflight and collection fail closed with stable diagnostics. |
 | Teams distrust opaque AI verdicts. | No LLM in the verdict path; canonical evidence, reason code, policy digest, verify, and replay. |
@@ -108,4 +113,7 @@ Reference sources:
 - https://diataxis.fr/
 - https://www.nngroup.com/articles/ten-usability-heuristics/
 - https://docs.github.com/en/actions/reference/security/secure-use
+- https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks
+- https://slsa.dev/spec/v1.2/source-requirements
+- https://dora.dev/insights/balancing-ai-tensions/
 - https://github.com/ossf/scorecard

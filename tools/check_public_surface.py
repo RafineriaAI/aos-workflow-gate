@@ -23,8 +23,12 @@ python tools/check_public_surface.py
 
 REQUIRED_SNIPPETS = {
     "README.md": [
-        "Green checks can still miss a merge-control gap.",
-        "Read-only · Advisory by default · No source-code upload",
+        "AOS verifies the gate, not the code.",
+        (
+            "control that is missing, stale, produced by the\n"
+            "wrong app, or modified by the same PR"
+        ),
+        "Exact commit · Read-only · Advisory by default · No source-code upload",
         "docs/assets/readme-contrast.png",
         "docs/assets/readme-contrast-mobile.png",
         "scramble-robot/questix#99",
@@ -35,7 +39,8 @@ REQUIRED_SNIPPETS = {
         "No checkout, manual policy, bundle, or `required-checks` list",
         "## A decision you can act on",
         "The verdict and the process exit code are separate.",
-        "## Daily value",
+        "## Who it is for",
+        "Best fit: teams with multiple repositories",
         "## Evidence and replay",
         "docs/assets/aos-warn-evidence.png",
         "## Trust boundary",
@@ -45,6 +50,7 @@ REQUIRED_SNIPPETS = {
         "Daily usefulness, alert precision in\nexternal teams",
         "`NO_GO`",
         "FREE_SELF_SERVE_VALIDATION",
+        "There is no active paid offering.",
         README_LOCAL_HYGIENE_BLOCK,
         "```bash\npython tools/check_public_surface.py\n```",
         "Apache-2.0. See [LICENSE](LICENSE).",
@@ -56,20 +62,40 @@ REQUIRED_SNIPPETS = {
         "No telemetry or account is required.",
         "docs/RELEASE_GOVERNANCE.md",
         "docs/STANDARDS_COMPATIBILITY.md",
+        "docs/VALUE.md",
+        "docs/BUYER_FAQ.md",
+        "docs/COMPARISON.md",
         "docs/TRUST.md",
         "docs/SECURITY_READINESS.md",
         "benchmarks/value/ASSESSMENT.md",
         ".github/workflows/aos-workflow-gate-self.yml",
     ],
+    "action.yml": [
+        "Pre-merge control assurance for the exact PR commit.",
+        "UNSIGNED_NOT_OFFICIAL",
+    ],
+    "pyproject.toml": [
+        "Pre-merge control assurance with exact-commit replayable evidence.",
+    ],
+
     "docs/VALUE.md": [
+        "low-frequency, potentially high-cost",
+        "## Best-fit user and buyer",
+        "## Commercial packaging hypothesis",
+        "actionable rate and alert acceptance rate",
         "Measured, not promised",
         "What this does not promise",
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/ONE_PAGER.md": [
         "free self-serve advisory validation is open",
-        "Find merge-control gaps that a green GitHub view can miss",
-        "Immediate developer value",
+        (
+            "control that is missing, stale, produced by the wrong app, "
+            "or\nmodified by the same PR"
+        ),
+        "pre-merge control\nassurance",
+        "Not the primary paid use case",
+        "Policy packs alone are too copyable",
         "external utility and market value remain unvalidated",
         "## Technical proof",
         "UNSIGNED_NOT_OFFICIAL",
@@ -97,10 +123,14 @@ REQUIRED_SNIPPETS = {
         "without cookies, analytics,\nor network calls",
         "UNSIGNED_NOT_OFFICIAL",
         "no\nproduction, compliance, or security-audit claim",
-        "GitHub can show green when no check is required",
+        (
+            "control that is missing, stale,\nproduced by the wrong app, "
+            "or modified by the same PR"
+        ),
+        "AOS verifies the gate, not the code.",
         "Not another AI reviewer",
-        "Useful in daily work",
-        "free advisory\npreview",
+        "Who it is for",
+        "free advisory preview with no\nactive paid offering",
         'name="description"',
         'property="og:image"',
     ],
@@ -193,20 +223,26 @@ REQUIRED_SNIPPETS = {
     ],
     "docs/FUNNEL.md": [
         "free self-serve advisory validation is open",
-        "No human is required to install or evaluate",
+        "No RafineriaAI human is required to install or evaluate",
         "## Where a human is required",
-        "no\naccount, trial clock, or telemetry",
+        "## Commercialization gate",
+        "Policy packs alone are not treated as a sufficient paid moat",
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/COMPARISON.md": [
         "**not a ranking**",
-        "different tools answer different\nquestions",
-        "## Complementary by design",
-        "no competitor tool was benchmarked or scored",
-        "no superiority, security, or compliance claim",
+        "## Category boundary",
+        "pre-merge control assurance",
+        "## Differentiating bundle",
+        "no\ncompetitor tool was benchmarked or scored",
+        "no superiority,\nsecurity, compliance, market-demand, or ROI claim",
     ],
     "docs/VALUE_METRICS.md": [
         "counted, not estimated",
+        "## Required external field metrics",
+        "Actionable rate",
+        "Decision-change rate",
+        "30-day retention",
         "## What we deliberately do not compute",
         "No return-on-investment figure",
         "will not invent",
@@ -387,13 +423,19 @@ REQUIRED_SNIPPETS = {
         "no right to\nuse that designation is granted",
     ],
     "docs/SCOPE.md": [
+        "pre-merge control assurance",
+        "No active paid product",
+        "Full merge-readiness",
         "## Decision boundary",
         "UNSIGNED_NOT_OFFICIAL",
         "It does not mean the underlying source signals are complete",
     ],
     "docs/ADOPTION_GUIDE.md": [
+        "AOS verifies the gate, not the code",
         "## Competency unblock",
         "## Barriers and design responses",
+        "Correct alerts may still lack business importance",
+        "Individual developers may not need another paid tool",
         "## Research inputs",
     ],
     "docs/STANDARDS_COMPATIBILITY.md": [

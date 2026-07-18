@@ -80,14 +80,20 @@ automation.
 Required sequence:
 
 1. Keep the install-to-diagnosis path below five minutes.
-2. Collect opt-in, non-confidential feedback through the public form.
-3. When access exists, run the preregistered formative study with 8-12
-   independent developers.
-4. Measure comprehension time, next-action clarity, alert disposition, and
-   retention separately from mechanism correctness.
-5. Run the comparative signal study only with the frozen selection,
+2. Recruit maintainers and platform or DevSecOps owners responsible for real
+   repository controls; individual-developer interest alone is not buyer
+   validation.
+3. Collect opt-in, non-confidential feedback through the public form.
+4. When access exists, run the preregistered formative study with 8-12
+   independent developers and control owners.
+5. Measure comprehension and next-action clarity, then separately measure
+   actionable rate, decision-change rate, incremental findings, repeated
+   noise, time-to-resolution, and 30-day retention.
+6. Run the comparative signal study only with frozen selection,
    classification, stopping, and claim rules.
-6. Retain `NO_GO` for efficacy, production, or paid-value claims until the
+7. Test organization-level demand for control drift, exception governance,
+   evidence retention, and assurance reporting before defining a paid offer.
+8. Retain `NO_GO` for efficacy, production, or paid-value claims until the
    corresponding thresholds are met.
 
 The outcome may be promotion, policy narrowing, repositioning, or product
@@ -99,7 +105,9 @@ continue commercialization.
 Deferred until validated demand or a specific operator requirement exists:
 
 - hosted dashboard, organization analytics, or telemetry;
-- paid policy and governance service;
+- cross-repository control inventory, drift, exception governance, and
+  assurance reporting;
+- any paid product, including policy or evidence services;
 - GitLab collection;
 - official RafineriaAI signing or provenance service;
 - SBOM generation, SLSA level, or compliance automation;

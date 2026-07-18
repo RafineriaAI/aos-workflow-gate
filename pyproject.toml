@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "aos-workflow-gate"
 version = "0.37.0"
-description = "Evidence-based workflow gate for CI, PR, scanner, and AI-agent signals."
+description = "Pre-merge control assurance with exact-commit replayable evidence."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"

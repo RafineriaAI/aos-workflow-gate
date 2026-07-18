@@ -5,13 +5,15 @@ enforce them.
 
 ## Use case 1: required-control gap
 
-A maintainer needs one exact-SHA decision instead of manually reconciling
-branch rules, check runs, workflow runs, and commit statuses.
+A maintainer needs one exact-SHA control-assurance decision instead of manually
+reconciling branch rules, check runs, workflow runs, commit statuses, and
+producer identity.
 
 The gate:
 
 - `BLOCK`s when explicit required evidence is missing, failed, pending,
-  stale, malformed, or unverifiable;
+  stale, malformed, from an unverifiable producer, or bound to another
+  subject;
 - `WARN`s when the policy declares an advisory gap, including zero enforced
   checks or non-independent verifier evidence;
 - `PASS`es when every declared requirement is satisfied.
