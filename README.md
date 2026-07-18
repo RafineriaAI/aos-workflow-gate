@@ -4,14 +4,16 @@
 [![Release](https://img.shields.io/github/v/release/RafineriaAI/aos-workflow-gate)](https://github.com/RafineriaAI/aos-workflow-gate/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-**Green checks can still miss a merge-control gap. AOS verifies the gate, not
-the code.**
+**AOS verifies the gate, not the code.**
 
-AOS is a read-only control check for GitHub pull requests. It verifies which
-merge controls actually ran for the exact head commit, then returns `PASS`,
-`WARN`, or `BLOCK` with one reason, one next action, and replayable evidence.
+A green PR can still rely on a control that is missing, stale, produced by the
+wrong app, or modified by the same PR. AOS is a read-only **pre-merge control
+assurance** check
+that verifies which intended controls actually governed the exact head commit.
+It returns `PASS`, `WARN`, or `BLOCK` with one reason, one next action, and
+replayable evidence.
 
-**Read-only · Advisory by default · No source-code upload**
+**Exact commit · Read-only · Advisory by default · No source-code upload**
 
 <picture>
   <source media="(max-width: 600px)" srcset="docs/assets/readme-contrast-mobile.png">
@@ -39,20 +41,27 @@ GitHub API limits may apply; provide a read-only token when needed.
 
 - **A required control is not satisfied:** missing, pending, failed, or unverifiable
   evidence is named instead of disappearing behind an incomplete green view.
+- **The right name came from the wrong integration:** app-bound requirements
+  remain unverifiable unless the observed check has the expected GitHub App
+  identity.
+- **Evidence belongs to the wrong subject:** repository, PR, branch, and exact
+  head-SHA bindings fail closed instead of being silently reused.
+- **A workflow assessed its own change:** the PR changed a workflow that
+  produced evidence used to assess the same exact commit.
 - **No status check is required:** branch rules were read successfully, but
   zero checks can enforce the merge. Action runs record this repository-level
   coverage fact without repeating it as a per-PR warning.
-- **A workflow assessed its own change:** the PR changed a workflow that
-  produced evidence used to assess the same exact commit.
-- **A green scanner step still contains findings:** an existing SARIF report
-  becomes an advisory AOS signal with named rules and paths. For example,
-  `zizmor --format=sarif` intentionally exits `0` even when it finds issues.
 
 Not another AI reviewer: AOS verifies control execution, not code correctness.
 It does not generate review comments, find defects, or guess whether AI wrote
 the change. GitHub, CI, and scanners produce signals. AOS checks whether the
 configured controls produced independent, reproducible evidence for this exact
 commit.
+
+Optional adapters can include existing SARIF or OpenSSF Scorecard results as
+policy inputs. That integration is useful, but it is not the product category:
+the core job is exact-commit control assurance, not finding more scanner
+issues.
 
 The current product boundary is **required-check integrity for one exact
 commit**, not full merge-readiness, security certification, or code review.
@@ -137,14 +146,20 @@ AOS complements branch protection, CI, scanners, and review tools. It does not
 replace them; it turns their observed signals and repository requirements into
 one deterministic decision record.
 
-## Daily value
+## Who it is for
 
-- **Developer:** less manual cross-checking before requesting review and one
-  named action when evidence is incomplete.
-- **Team:** the same repository rule and the same inputs produce the same
-  verdict, locally and in CI.
-- **Platform, security, and audit:** exact-commit evidence can be retained and
-  replayed without sending source code to RafineriaAI.
+- **Maintainer:** one dominant control gap and one next action instead of
+  reconciling branch rules, checks, workflow runs, and statuses by hand.
+- **Platform or DevSecOps owner:** consistent exact-commit control decisions
+  across repositories without replacing CI or scanners.
+- **Security or assurance reviewer:** replayable evidence without source-code
+  upload, write permissions, telemetry, or a hosted dependency.
+- **PR author:** an occasional pre-review check when repository controls are
+  complex; AOS is not positioned as a paid everyday assistant for solo work.
+
+Best fit: teams with multiple repositories, enforced GitHub controls,
+agent-assisted change volume, or review and evidence obligations. Repositories
+with few controls and low-cost failures may receive little incremental value.
 
 ## Evidence and replay
 
@@ -216,6 +231,12 @@ an account or telemetry. The formal research status remains
 commercial claims; `FREE_SELF_SERVE_VALIDATION` permits external testing while
 those claims remain closed. See the [Hybrid Value Gate](benchmarks/value/README.md).
 
+There is no active paid offering. A future commercial product would require
+external evidence that cross-repository control drift, exception governance,
+evidence retention, or assurance reporting saves meaningful time or changes
+decisions. Install counts and internally generated examples do not establish
+that value.
+
 Feedback is opt-in through the
 [product feedback form](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=feedback.yml).
 
@@ -228,6 +249,8 @@ Feedback is opt-in through the
   and [Decision predicate](docs/DECISION_PREDICATE.md).
 - Understand: [Scope](docs/SCOPE.md), [Architecture](docs/ARCHITECTURE.md), and
   [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md).
+- Evaluate fit: [Value](docs/VALUE.md), [Buyer FAQ](docs/BUYER_FAQ.md), and
+  [Comparison](docs/COMPARISON.md).
 - Operate: [Release governance](docs/RELEASE_GOVERNANCE.md) and
   [Contributing](CONTRIBUTING.md).
 

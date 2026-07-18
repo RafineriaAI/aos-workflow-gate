@@ -27,15 +27,35 @@ plus one replay command** — and the record additionally distinguishes
 glance. We count surfaces (pages vs files); we do not convert them into
 minutes or money.
 
+## Required external field metrics
+
+The committed studies do not measure product utility. External validation must
+separate alert volume from business relevance and report at least:
+
+| Metric | Decision question |
+| --- | --- |
+| Actionable rate | Did the maintainer perform the named remediation? |
+| Decision-change rate | Did AOS change merge, review, or escalation behavior? |
+| Incremental finding rate | Did AOS reveal a gap absent from GitHub's baseline and a naive workflow-change rule? |
+| Alert acceptance and repeated-alert rate | Was the recommendation accepted, and did unresolved noise repeat? |
+| Independently adjudicated noise | Was the signal technically correct but operationally irrelevant? |
+| Time-to-resolution | How long from alert to accepted remediation or documented override? |
+| Evidence-handling time | Did replayable evidence reduce investigation or assurance preparation time? |
+| Control-drift and exception closure | Did an owner restore or explicitly accept a changed control? |
+| Activation and 30-day retention | Did an external team keep the Action enabled after repeated runs? |
+| Repository expansion and willingness to pay | Did the control owner extend use and fund organization-level operation? |
+
+No metric may be inferred from stars, downloads, passing tests, internal
+benchmarks, or the number of generated alerts.
+
 ## What we deliberately do not compute
 
 No return-on-investment figure, no hours-saved estimate, no incident
-probability, and no monetary risk reduction. Those depend on your team's
-rates, incident history, and audit regime — numbers we do not have and
-will not invent. A future [guided pilot](GUIDED_PILOT.md), after the
-pre-publication Value Gate reaches `GO`, would measure the same operational
-metrics on customer workflows and leave the arithmetic to the customer.
-Pilot intake is currently closed.
+probability, and no monetary risk reduction. Those depend on a team's rates,
+incident history, control ownership, and assurance regime - numbers we do not
+have and will not invent. A future external study, after the applicable Value
+Gate opens, must measure these outcomes on user workflows. Pilot intake is
+currently closed.
 
 ## Boundary
 

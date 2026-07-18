@@ -1,13 +1,15 @@
 # Scope
 
-`aos-workflow-gate` is a deterministic pre-merge decision layer. It consumes
-existing workflow evidence, applies explicit policy-as-code, and emits an
-explainable `PASS`, `WARN`, or `BLOCK` record. It complements CI,
-scanners, and review; it does not replace them.
+`aos-workflow-gate` is a local-first **pre-merge control assurance** tool. It
+verifies how intended CI/CD controls governed one exact commit, applies
+explicit policy-as-code, and emits an explainable `PASS`, `WARN`, or `BLOCK`
+record. It complements CI, scanners, policy engines, and review; it does not
+replace them.
 
 The current release is a free, self-serve advisory preview. Mechanism behavior
-is tested and replayable. External usefulness, precision, retention, incident
-reduction, and willingness to pay remain unvalidated.
+is tested and replayable. External usefulness, alert precision, retention,
+decision impact, incident reduction, and willingness to pay remain
+unvalidated. No active paid product or production recommendation exists.
 
 ## Implemented scope
 
