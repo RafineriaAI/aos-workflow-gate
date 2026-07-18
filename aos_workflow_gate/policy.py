@@ -27,6 +27,8 @@ REQUIRED_RULE_KEYS = (
 )
 VALID_SEVERITIES = frozenset({"PASS", "WARN", "BLOCK"})
 VALID_MODES = frozenset({"advisory", "blocking"})
+VALID_REQUIRED_STATUS_SEMANTICS = frozenset({"github", "success-only"})
+LEGACY_REQUIRED_STATUS_SEMANTICS = "success-only"
 
 
 @dataclass
@@ -39,6 +41,7 @@ class Policy:
     verification_status: str
     require_repository: bool
     require_sha: bool
+    required_status_semantics: str
     rules: dict[str, str]
     required_sources: tuple[str, ...]
     advisory_sources: tuple[str, ...]
@@ -66,6 +69,18 @@ class Policy:
         require_repository = _optional_bool(subject, "require_repository", False)
         require_sha = _optional_bool(subject, "require_sha", False)
 
+        semantics_explicit = "required_status_semantics" in data
+        required_status_semantics = _optional_str(
+            data,
+            "required_status_semantics",
+            LEGACY_REQUIRED_STATUS_SEMANTICS,
+        )
+        if required_status_semantics not in VALID_REQUIRED_STATUS_SEMANTICS:
+            raise InputError(
+                "policy: required_status_semantics must be one of "
+                f"{sorted(VALID_REQUIRED_STATUS_SEMANTICS)}"
+            )
+
         rules = _parse_rules(data.get("rules"))
         required_sources = _parse_id_list(data, "required_sources")
         advisory_sources = _parse_id_list(data, "advisory_sources")
@@ -83,6 +98,10 @@ class Policy:
             "required_sources": list(required_sources),
             "advisory_sources": list(advisory_sources),
         }
+        if semantics_explicit:
+            normalized["required_status_semantics"] = (
+                required_status_semantics
+            )
         return cls(
             schema_version=schema_version,
             policy_id=policy_id,
@@ -90,6 +109,7 @@ class Policy:
             verification_status=verification_status,
             require_repository=require_repository,
             require_sha=require_sha,
+            required_status_semantics=required_status_semantics,
             rules=rules,
             required_sources=required_sources,
             advisory_sources=advisory_sources,

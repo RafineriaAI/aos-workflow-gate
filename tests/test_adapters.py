@@ -9,6 +9,8 @@ import pytest
 from aos_workflow_gate.adapters import sarif_source, scorecard_source
 from aos_workflow_gate.collect import build_bundle
 from aos_workflow_gate.errors import InputError
+from aos_workflow_gate.evaluate import evaluate
+from aos_workflow_gate.policy import Policy
 
 SHA = "a" * 40
 
@@ -40,6 +42,91 @@ def test_sarif_mapping_contract(tmp_path: Path) -> None:
     clean = sarif_source(_sarif(tmp_path, []))
     assert clean["status"] == "success"
     assert clean["signal_source"] == "sarif_file"
+
+
+def test_sarif_reason_names_top_rules_and_paths(tmp_path: Path) -> None:
+    source = sarif_source(
+        _sarif(
+            tmp_path,
+            [
+                {
+                    "level": "warning",
+                    "ruleId": "zizmor/template-injection",
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": ".github/workflows/ci.yml"
+                                }
+                            }
+                        }
+                    ],
+                },
+                {
+                    "level": "warning",
+                    "ruleId": "zizmor/template-injection",
+                },
+                {"level": "note", "ruleId": "zizmor/unpinned-uses"},
+            ],
+        )
+    )
+    assert "zizmor/template-injection (2)" in source["summary"]
+    assert ".github/workflows/ci.yml" in source["summary"]
+
+    bundle = build_bundle(
+        [],
+        repository="owner/repo",
+        sha=SHA,
+        extra_sources=[source],
+    )
+    policy = Policy.from_dict(
+        {
+            "policy_id": "sarif-advisory",
+            "rules": {
+                "missing_required_source": "BLOCK",
+                "failed_required_source": "BLOCK",
+                "malformed_input": "BLOCK",
+                "advisory_warning": "WARN",
+                "no_required_sources": "PASS",
+            },
+            "advisory_sources": [source["id"]],
+        }
+    )
+    decision = evaluate(bundle, policy)
+    reason = next(
+        item for item in decision.reasons
+        if item.rule == "advisory_warning"
+    )
+    assert "zizmor/template-injection (2)" in reason.detail
+    assert ".github/workflows/ci.yml" in reason.detail
+
+
+def test_sarif_summary_strips_terminal_control_characters(
+    tmp_path: Path,
+) -> None:
+    source = sarif_source(
+        _sarif(
+            tmp_path,
+            [
+                {
+                    "level": "warning",
+                    "ruleId": "\u001b[31munsafe\u0007",
+                    "locations": [
+                        {
+                            "physicalLocation": {
+                                "artifactLocation": {
+                                    "uri": ".github/\u001b[31mci.yml"
+                                }
+                            }
+                        }
+                    ],
+                }
+            ],
+        )
+    )
+
+    assert "\u001b" not in source["summary"]
+    assert "\u0007" not in source["summary"]
 
 
 def test_sarif_digest_is_stable(tmp_path: Path) -> None:

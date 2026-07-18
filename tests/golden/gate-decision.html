@@ -3,7 +3,7 @@
 <title>AOS Workflow Gate: WARN</title>
 <style>body{font:15px/1.5 system-ui,sans-serif;max-width:46rem;margin:2rem auto;padding:0 1rem;color:#1a1a1a;background:#fff}table{border-collapse:collapse;width:100%;margin:.5rem 0}td,th{border:1px solid #ccc;padding:.3rem .6rem;text-align:left;font-size:.9rem}code{font:.85rem/1.4 ui-monospace,monospace;word-break:break-all}.verdict{display:inline-block;padding:.15rem .6rem;border-radius:6px;font-weight:700}.v-PASS{background:#d7f5dd}.v-WARN{background:#fdeec7}.v-BLOCK{background:#fbd7d7}.tampered{border:2px solid #b00;padding:.5rem .8rem;margin:.8rem 0;font-weight:600}.hint{color:#555;font-size:.85rem}footer{margin-top:1.5rem;color:#777;font-size:.8rem}</style></head><body>
 <h1>AOS Workflow Gate: <span class="verdict v-WARN">WARN</span></h1>
-<p><strong>What AOS found:</strong> Non-required check &#x27;scanner.sarif&#x27; ended as &#x27;warning&#x27;.<br><strong>Effect:</strong> advisory only; WARN/BLOCK is reported but does not fail this job<br><strong>Next:</strong> review the named non-required check only if it matters to this change; it cannot block this gate</p>
+<p><strong>What AOS found:</strong> Scanner evidence &#x27;scanner.sarif&#x27; contains findings that need review.<br><strong>Effect:</strong> advisory only; WARN/BLOCK is reported but does not fail this job<br><strong>Next:</strong> review the named SARIF findings for &#x27;scanner.sarif&#x27;; promote this source to required only after its signal is stable and useful</p>
 <p><strong>Signals:</strong> 1 required (1 successful); 2 other observation(s)<br><strong>Scope:</strong> 1 required check(s) plus recorded workflow signals on owner/repo@0123456789ab; not full merge-readiness<br><strong>Freshness:</strong> not recorded (offline or pre-freshness bundle)</p>
 <h2>Technical evidence</h2>
 <table>
@@ -14,12 +14,12 @@
 <tr><th>Policy</th><td><code>default (advisory)</code></td></tr>
 <tr><th>Policy digest</th><td><code>sha256:3f33e4ad37f96d56f5a132d95b4c673aa774d410611111bfef235832aad81272</code></td></tr>
 <tr><th>Input bundle digest</th><td><code>sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19</code></td></tr>
-<tr><th>Record digest</th><td><code>sha256:b6318281b51989682d5897f4578bac4833f47bf1a8cbc4169467e2ce223e73b6</code></td></tr>
+<tr><th>Record digest</th><td><code>sha256:929c054f07382ffdaa843a230e78f09fb8ec94eb59bcc27414a21b9b0cd3bc4e</code></td></tr>
 <tr><th>Record self-check</th><td><code>OK</code></td></tr>
 <tr><th>Verification status</th><td><code>UNSIGNED_NOT_OFFICIAL</code></td></tr>
 </table>
 <h2>Reasons</h2><ul>
-<li>WARN <code>advisory_warning</code> scanner.sarif: advisory source status is &#x27;warning&#x27;<br><span class="hint">Hint: review the named non-required check only if it matters to this change; it cannot block this gate</span></li>
+<li>WARN <code>advisory_warning</code> scanner.sarif: advisory source status is &#x27;warning&#x27;; Advisory findings remain below blocking threshold.<br><span class="hint">Hint: review the named SARIF findings for &#x27;scanner.sarif&#x27;; promote this source to required only after its signal is stable and useful</span></li>
 </ul>
 <h2>Inputs</h2><table><tr><th>Id</th><th>Kind</th><th>Required</th><th>Status</th></tr>
 <tr><td>agent.review</td><td>ai_agent_review_summary</td><td>no</td><td>success</td></tr>

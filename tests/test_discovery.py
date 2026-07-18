@@ -184,18 +184,25 @@ def test_discovery_falls_back_to_classic_protection(
     assert requirements["legacy-ci"]["integration_id"] == 1
 
 
-def test_zero_required_all_green_is_warn_not_pass(
+def test_zero_required_is_recorded_without_recurring_pr_alert(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     _install(monkeypatch, rules=[], runs=[_run("ci"), _run("lint")])
     rc, record, bundle = _run_gate(tmp_path)
     assert rc == 0
-    # every check green, nothing required: an honest WARN, never PASS
-    assert record["verdict"] == "WARN"
-    assert any(
-        r["rule"] == "no_required_sources" for r in record["reasons"]
+    assert record["verdict"] == "PASS"
+    reason = next(
+        r for r in record["reasons"]
+        if r["rule"] == "no_required_sources"
     )
-    assert "requires nothing" in record["summary"]
+    assert reason["severity"] == "PASS"
+    assert record["summary"] == (
+        "Gate PASS: no required checks configured; coverage recorded "
+        "without a per-PR alert."
+    )
+    assert bundle["collection"]["github_baseline"] == (
+        "no_required_checks"
+    )
 
 
 def test_self_reference_is_excluded_and_recorded(

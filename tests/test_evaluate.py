@@ -55,6 +55,7 @@ def test_default_policy_parses_restricted_yaml() -> None:
     assert policy.mode == "advisory"
     assert policy.required_sources == ("ci.validate",)
     assert policy.advisory_sources == ("scanner.sarif", "agent.review")
+    assert policy.required_status_semantics == "success-only"
     assert policy.rules["missing_required_source"] == "BLOCK"
 
 
@@ -120,6 +121,31 @@ def test_failed_required_source_blocks() -> None:
     )
     assert decision.verdict == "BLOCK"
     assert any(r.rule == "failed_required_source" for r in decision.reasons)
+
+
+def test_required_status_semantics_are_explicit_and_compatible() -> None:
+    bundle = _bundle([_source("ci.validate", "skipped", required=True)])
+    assert evaluate(bundle, _policy()).verdict == "BLOCK"
+
+    policy = Policy.from_dict(
+        {
+            **_policy().normalized,
+            "required_status_semantics": "github",
+        }
+    )
+    decision = evaluate(bundle, policy)
+    assert decision.verdict == "PASS"
+    assert policy.normalized["required_status_semantics"] == "github"
+
+
+def test_invalid_required_status_semantics_is_rejected() -> None:
+    with pytest.raises(InputError, match="required_status_semantics"):
+        Policy.from_dict(
+            {
+                **_policy().normalized,
+                "required_status_semantics": "guess",
+            }
+        )
 
 
 def test_missing_sha_blocks_when_required() -> None:

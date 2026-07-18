@@ -32,6 +32,13 @@ inputs:
       check makes the verdict BLOCK.
     required: false
     default: ""
+  sarif:
+    description: >-
+      Self-Test Mode only. Newline-separated paths to existing SARIF 2.1.0
+      files. AOS reads the files locally and never runs the scanner; checkout
+      and SARIF generation must happen in earlier steps.
+    required: false
+    default: ""
   wait-for-checks:
     description: >-
       Self-Test Mode only. Polling budget for required controls. With
@@ -95,6 +102,16 @@ outputs:
   next-action:
     description: The single dominant next step for the operator.
     value: ${{ steps.evaluate.outputs.next-action }}
+  decision-contrast:
+    description: >-
+      Relationship to GitHub's required-check baseline, such as
+      github_already_blocks or aos_policy_gap.
+    value: ${{ steps.evaluate.outputs.decision-contrast }}
+  incremental-gap:
+    description: >-
+      Whether this verdict adds a policy/evidence gap beyond a clear GitHub
+      required-check baseline ("true"/"false").
+    value: ${{ steps.evaluate.outputs.incremental-gap }}
   required-total:
     description: Number of required sources in the policy.
     value: ${{ steps.evaluate.outputs.required-total }}
@@ -136,6 +153,7 @@ runs:
         GATE_MODE: ${{ inputs.mode }}
         GATE_ENFORCE: ${{ inputs.enforce }}
         GATE_REQUIRED_CHECKS: ${{ inputs.required-checks }}
+        GATE_SARIF: ${{ inputs.sarif }}
         GATE_WAIT_FOR_CHECKS: ${{ inputs.wait-for-checks }}
         GITHUB_TOKEN: ${{ github.token }}
         AOS_GATE_WORKSPACE: ${{ github.workspace }}
@@ -169,6 +187,13 @@ runs:
               args+=(--require "$name")
             fi
           done <<< "$(printf '%s' "$GATE_REQUIRED_CHECKS" | tr ',' '\n')"
+          while IFS= read -r path; do
+            path="$(printf '%s' "$path" \
+              | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+            if [ -n "$path" ]; then
+              args+=(--sarif "$path")
+            fi
+          done <<< "$GATE_SARIF"
         fi
         if [ -n "$GATE_POLICY" ]; then
           args+=(--policy "$GATE_POLICY")
@@ -227,7 +252,7 @@ runs:
             echo "record-digest=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['record_digest'])")"
             echo "can-block=$(python3 -c "import json,os;print(str(json.load(open(os.environ['GATE_OUT']))['can_block']).lower())")"
           } >> "$GITHUB_OUTPUT"
-          python3 -c "import json,os;from aos_workflow_gate.summarize import diagnose;d=diagnose(json.load(open(os.environ['GATE_OUT'])));c=d['counts'];clean=lambda v:str(v).replace('\r',' ').replace('\n',' ');out=open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8');out.write('diagnosis='+str(d['verdict'])+': '+clean(d['finding'])+'\n');out.write('next-action='+clean(d['next'])+'\n');out.write('required-total=%d\nrequired-successful=%d\nrequired-missing=%d\nrequired-pending=%d\nrequired-unverifiable=%d\nrequired-failed=%d\nadvisory-warnings=%d\n'%(c['required_total'],c['required_successful'],c['required_missing'],c['required_pending'],c['required_unverifiable'],c['required_failed'],c['advisory_warnings']))" || true
+          python3 -c "import json,os;from aos_workflow_gate.summarize import diagnose;d=diagnose(json.load(open(os.environ['GATE_OUT'])));c=d['counts'];clean=lambda v:str(v).replace('\r',' ').replace('\n',' ');out=open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8');out.write('diagnosis='+str(d['verdict'])+': '+clean(d['finding'])+'\n');out.write('next-action='+clean(d['next'])+'\n');out.write('decision-contrast='+clean(d['contrast']['code'])+'\n');out.write('incremental-gap='+str(bool(d['contrast']['incremental'])).lower()+'\n');out.write('required-total=%d\nrequired-successful=%d\nrequired-missing=%d\nrequired-pending=%d\nrequired-unverifiable=%d\nrequired-failed=%d\nadvisory-warnings=%d\n'%(c['required_total'],c['required_successful'],c['required_missing'],c['required_pending'],c['required_unverifiable'],c['required_failed'],c['advisory_warnings']))" || true
         fi
         exit "$rc"
     # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

@@ -109,6 +109,9 @@ def test_action_and_self_workflow_are_bounded() -> None:
     assert 'using: "composite"' in action
     assert "UNSIGNED_NOT_OFFICIAL" in action
     assert 'default: "false"' in action
+    assert "GATE_SARIF: ${{ inputs.sarif }}" in action
+    assert "decision-contrast" in action
+    assert "incremental-gap" in action
 
     workflow = read_text(".github/workflows/aos-workflow-gate-self.yml")
     assert "permissions:\n  contents: read" in workflow

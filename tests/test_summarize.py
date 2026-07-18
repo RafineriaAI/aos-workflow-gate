@@ -45,7 +45,7 @@ def test_render_markdown_top_block() -> None:
     assert "**Freshness:**" in text
     assert "**Effect:** advisory" in text
     assert "**Next:**" in text
-    assert "review the named non-required check only if it matters" in text
+    assert "review the named SARIF findings" in text
 
 
 def test_next_step_adapts_to_decision_gap() -> None:
@@ -64,7 +64,7 @@ def test_next_step_adapts_to_decision_gap() -> None:
 def test_render_markdown_adds_repair_hints() -> None:
     record = _record()
     text, _ = render_markdown(record)
-    assert "  - Hint: review the named non-required check only if it matters" in text
+    assert "  - Hint: review the named SARIF findings" in text
 
 
 def test_render_markdown_escapes_pipes_in_table_cells() -> None:

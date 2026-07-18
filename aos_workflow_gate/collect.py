@@ -10,9 +10,9 @@ recomputed and verified by ``import`` and ``evaluate``.
 
 Only completed check runs are collected, so the workflow run that is
 currently executing the gate never gates itself. Conclusions are preserved
-verbatim; only ``success`` counts as success downstream, which keeps
-skipped, neutral, cancelled, and timed-out runs visible instead of silently
-passing.
+verbatim. Policy decides whether required GitHub checks use GitHub-compatible
+(``success``/``neutral``/``skipped``) or literal ``success-only`` semantics;
+cancelled, failed, timed-out, and unknown outcomes never pass either mode.
 """
 
 from __future__ import annotations
@@ -346,15 +346,14 @@ def build_bundle(
     latest: dict[str, dict[str, Any]] = {}
     for run in runs:
         name = run.get("name")
-        source_id = run.get("_aos_source_id", name)
-        if (
-            not isinstance(name, str)
-            or not isinstance(source_id, str)
-            or name in excluded
-            or source_id in excluded
-        ):
-            continue
         if run.get("status") != "completed":
+            continue
+        if not isinstance(name, str):
+            continue
+        source_id = run.get("_aos_source_id")
+        if not isinstance(source_id, str) or not source_id.strip():
+            source_id = name if name.strip() else _unnamed_check_source_id(run)
+        if name in excluded or source_id in excluded:
             continue
         current = latest.get(source_id)
         if current is not None and (
@@ -430,11 +429,30 @@ def build_bundle(
     return bundle
 
 
+def _unnamed_check_source_id(run: dict[str, Any]) -> str:
+    """Return a stable source id when GitHub supplies an empty check name."""
+    run_id = run.get("id")
+    if isinstance(run_id, bool) or not isinstance(run_id, (int, str)):
+        raise InputError(
+            "completed GitHub check run has neither a non-empty name nor "
+            "a stable check-run id"
+        )
+    normalized = str(run_id).strip()
+    if not normalized:
+        raise InputError(
+            "completed GitHub check run has neither a non-empty name nor "
+            "a stable check-run id"
+        )
+    return f"github-check-run:{normalized}"
+
+
 def build_generated_policy(
     bundle: dict[str, Any],
     *,
     required: list[str] | None = None,
     allow_missing_required: bool = False,
+    required_status_semantics: str | None = None,
+    no_required_sources_severity: str = "WARN",
 ) -> dict[str, Any]:
     """Build a low-noise advisory policy covering every collected source.
 
@@ -454,7 +472,7 @@ def build_generated_policy(
                     f"required check {required_id!r} was not collected; "
                     "it is either missing, still running, or excluded"
                 )
-    return {
+    policy: dict[str, Any] = {
         "schema_version": "draft-0",
         "policy_id": GENERATED_POLICY_ID,
         "mode": "advisory",
@@ -465,7 +483,10 @@ def build_generated_policy(
             "failed_required_source": "BLOCK",
             "malformed_input": "BLOCK",
             "advisory_warning": "PASS",
-            "no_required_sources": "WARN",
+            # Suppressed for ordinary non-required checks, but a SARIF
+            # file is explicit operator input and should surface findings.
+            "sarif_findings": "WARN",
+            "no_required_sources": no_required_sources_severity,
             "incomplete_collection": "WARN",
             "non_independent_evidence": "WARN",
             "verifier_change_unavailable": "WARN",
@@ -475,6 +496,9 @@ def build_generated_policy(
             source_id for source_id in source_ids if source_id not in required_ids
         ],
     }
+    if required_status_semantics is not None:
+        policy["required_status_semantics"] = required_status_semantics
+    return policy
 
 
 _MERGE_QUEUE_REF_PREFIX = "gh-readonly-queue/"

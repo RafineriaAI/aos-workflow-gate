@@ -34,14 +34,14 @@ object (``requirements``), so ``missing``/``pending``/``unverifiable``
 are recorded as digest-anchored evidence, never silently.
 
 Dual-track semantics: GitHub treats ``neutral`` and ``skipped``
-conclusions as passing for required status checks; this gate does not
-(evidence that never ran is not evidence). Both readings are recorded:
-``state`` is the gate's evidence state (only ``success`` satisfies) and
-``github_equivalent`` is what GitHub's own semantics would do with the
-same observation (``would_pass``/``would_fail``/``would_wait``/
-``unknown``). Raw conclusions stay verbatim in ``observed`` — the
-normalization never overwrites the source value, so neither reading
-misrepresents the other.
+conclusions as passing for required status checks. Both readings are
+recorded: ``state`` is the literal evidence state (only ``success`` is
+literal success) and ``github_equivalent`` is GitHub's interpretation
+(``would_pass``/``would_fail``/``would_wait``/``unknown``). The generated
+zero-config policy uses ``required_status_semantics: github``; an explicit
+``success-only`` policy can require literal success. Raw conclusions stay
+verbatim in ``observed`` and in the source, so policy interpretation never
+rewrites evidence.
 
 Protection sources are merged, not chosen: GitHub enforces rulesets and
 classic branch protection simultaneously when both are active, so the
@@ -490,6 +490,24 @@ def github_baseline(controls: list[dict[str, Any]]) -> str:
     return "clear"
 
 
+def incomplete_required_controls(
+    controls: list[dict[str, Any]],
+) -> list[str]:
+    """Return controls still unresolved after every evidence stream.
+
+    Check-run polling happens before the legacy Status API is read. The
+    polling result is therefore provisional: an unbound requirement absent
+    from Check Runs may still be satisfied by a successful commit status.
+    Collection completeness must come from the final classifications.
+    """
+    unresolved = {PENDING, MISSING, UNVERIFIABLE}
+    return sorted(
+        str(control.get("source_id", control["context"]))
+        for control in controls
+        if control.get("state") in unresolved
+    )
+
+
 def _is_self_run(run: dict[str, Any]) -> bool:
     run_id = os.environ.get("GITHUB_RUN_ID")
     if not run_id:
@@ -618,7 +636,7 @@ def requirement_snapshot(
     ]
     wait_ids = [str(control["source_id"]) for control in wait_controls]
 
-    runs, truncated, incomplete, waited = wait_for_required(
+    runs, truncated, _check_run_incomplete, waited = wait_for_required(
         repository, sha, wait_ids,
         token=token, api_url=api_url,
         wait_seconds=wait_seconds, poll_interval=poll_interval,
@@ -670,6 +688,7 @@ def requirement_snapshot(
                 statuses_readable=statuses_unverifiable is None,
             )
         )
+    incomplete = incomplete_required_controls(classified)
     merged_strict = strict_policy_from_rules(rules) or classic_strict
     snapshot: dict[str, Any] = {
         "sha": sha,

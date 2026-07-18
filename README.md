@@ -4,7 +4,8 @@
 [![Release](https://img.shields.io/github/v/release/RafineriaAI/aos-workflow-gate)](https://github.com/RafineriaAI/aos-workflow-gate/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-**Green checks can still miss a merge-control gap.**
+**Green checks can still miss a merge-control gap. AOS verifies the gate, not
+the code.**
 
 AOS is a read-only control check for GitHub pull requests. It verifies which
 merge controls actually ran for the exact head commit, then returns `PASS`,
@@ -39,13 +40,19 @@ GitHub API limits may apply; provide a read-only token when needed.
 - **A required control is not satisfied:** missing, pending, failed, or unverifiable
   evidence is named instead of disappearing behind an incomplete green view.
 - **No status check is required:** branch rules were read successfully, but
-  zero checks can enforce the merge.
+  zero checks can enforce the merge. Action runs record this repository-level
+  coverage fact without repeating it as a per-PR warning.
 - **A workflow assessed its own change:** the PR changed a workflow that
   produced evidence used to assess the same exact commit.
+- **A green scanner step still contains findings:** an existing SARIF report
+  becomes an advisory AOS signal with named rules and paths. For example,
+  `zizmor --format=sarif` intentionally exits `0` even when it finds issues.
 
-Not another AI reviewer: AOS does not judge code, generate review comments, or
-guess whether AI wrote it. GitHub and CI produce signals. AOS checks whether
-the configured controls produced independent, reproducible evidence.
+Not another AI reviewer: AOS verifies control execution, not code correctness.
+It does not generate review comments, find defects, or guess whether AI wrote
+the change. GitHub, CI, and scanners produce signals. AOS checks whether the
+configured controls produced independent, reproducible evidence for this exact
+commit.
 
 The current product boundary is **required-check integrity for one exact
 commit**, not full merge-readiness, security certification, or code review.
@@ -112,7 +119,9 @@ Require one check whose workflow definition is unchanged by this PR.
 
 The verdict and the process exit code are separate. Advisory mode reports every
 verdict but leaves the job successful. In `mode: "enforce"`, only `BLOCK`
-fails the step. Teams can therefore observe noise before enabling enforcement.
+fails the step. The summary also states whether GitHub already blocks the PR or
+whether AOS found an additional policy/evidence gap. Teams can therefore
+observe noise before enabling enforcement.
 
 ## How it fits
 
