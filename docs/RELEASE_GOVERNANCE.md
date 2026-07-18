@@ -1,6 +1,9 @@
 # Release Governance
 
-This repository publishes the workflow gate layer around `aos-kernel`. Release process controls are intentionally narrow: they protect the public workflow-gate surface without claiming production readiness, compliance, official signing, supply-chain attestation, or correctness of external CI/scanner/agent systems.
+This repository publishes a standalone workflow product in the AOS product
+family. Release controls protect this repository's own implementation without
+claiming production readiness, compliance, official signing, supply-chain
+attestation, or correctness of external CI, scanner, or agent systems.
 
 ## Current Release Boundary
 
@@ -19,7 +22,13 @@ The phase sections below preserve the release history and cumulative boundary.
 
 Phase 0 is repository hygiene and public boundary work only. It may define documents, examples, policies, tests, and CI checks, but it must not claim an implemented gate, production enforcement, signed evidence, SLSA compliance, or security-audit certification.
 
-Unlike `aos-kernel`, no Lean build is required in this repository. Formal verdict semantics remain in the kernel. This repository owns workflow inputs, policy evaluation shape, evidence output shape, and integration hygiene.
+Unlike `aos-kernel`, no Lean build is required in this repository. The
+kernel's interval-gate formal surface does not prove this repository's
+workflow evaluator. This repository independently owns and tests workflow
+inputs, policy semantics, evidence records, replay, and integration behavior.
+A future kernel-backed claim requires a versioned shared contract and identical
+conformance vectors executed in both repositories; shared vocabulary and
+design lineage are not sufficient.
 
 ## Phase 1 Release Boundary
 
@@ -63,6 +72,25 @@ Release sequence:
    pass.
 3. In a follow-up change, update `docs/PUBLISHED_VERSION` and every public
    installation example to that tag.
+
+## Public Merge Metadata
+
+The final merge commit is part of the permanent public release surface. Do
+not accept GitHub's default `Merge pull request ... from ...` message because
+it publishes the temporary head-branch name. Merge release-facing changes
+with an explicit, outcome-oriented subject and body:
+
+```bash
+gh pr merge <number> --merge \
+  --subject "<public outcome>" \
+  --body "<public rationale>" \
+  --delete-branch
+```
+
+The subject and body must describe shipped behavior, contain no temporary
+branch prefix, and make sense without repository-operation context. On pushes
+to `main`, CI runs `tools/check_public_surface.py --check-head-commit` and
+rejects default merge subjects that expose a branch name.
 
 ## Required Repository Controls
 
@@ -109,11 +137,15 @@ GitHub Releases should be published only after the release tag exists, the final
 
 Release text must keep the same public boundary as the repository:
 
-- workflow gate layer, not kernel proof;
+- standalone workflow gate, not a kernel proof or kernel-backed verdict;
 - `UNSIGNED_NOT_OFFICIAL` until signing and publication controls exist;
 - no production, compliance, security-audit, signing, SBOM, SLSA, or attestation claim unless the corresponding audited infrastructure exists;
 - no claim that `PASS` means a repository is secure, correct, production-ready, or legally compliant.
 
 ## Operational Handoff
 
-`aos-kernel` remains the minimal kernel and formal verdict surface. `aos-workflow-gate` may develop workflow adapters, policies, evidence records, and integration tooling only when those behaviors are explicit, tested, and documented.
+`aos-kernel` remains a separate reference demonstrator with an abstract
+interval-verdict proof surface. `aos-workflow-gate` is a standalone product
+implementation that shares AOS vocabulary and design principles but no runtime
+or formal guarantee. Workflow adapters, policies, records, and integrations
+must remain explicit, tested, and documented in this repository.

@@ -12,6 +12,12 @@ lineage of `aos-kernel`, but it does not import, execute, or require the
 kernel at runtime. This repository owns workflow collection, policy evaluation,
 decision records, replay, and presentation.
 
+The kernel's public Lean surface formalizes a numeric interval demonstrator;
+it does not prove this package's source-status rules or GitHub semantics.
+Kernel and workflow-gate evidence are not interchangeable. Any future
+kernel-backed claim requires an explicit shared contract and cross-repository
+conformance tests.
+
 ## Decision flow
 
 ```mermaid

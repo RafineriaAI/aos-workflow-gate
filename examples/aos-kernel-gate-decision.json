@@ -30,14 +30,14 @@
         "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
         "summarize.py": "aec7affb06fdd2e5478f403d07121926df60b9716e9cb82b11f12cd595bcafd9",
         "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
-        "version.py": "aa13c5e5e56545c0cb1df25ca7d167888980dca7fa5b782518e9f739eae72854",
+        "version.py": "354f219e7518fab50d8b4335fff82518d722d3286739300a097918a5e114b459",
         "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
       },
-      "manifest_digest": "sha256:ebe116bdda0a4af4ee20a78bb689b189d380e681872833e49b3a54fe425abe56",
+      "manifest_digest": "sha256:06571ab3b3a3fd2ae83c9a463b17c608d073f50d8a74ea15533b995088b71572",
       "schema_version": "verifier-manifest-v0"
     },
-    "verifier_manifest_digest": "sha256:ebe116bdda0a4af4ee20a78bb689b189d380e681872833e49b3a54fe425abe56",
-    "version": "0.37.0"
+    "verifier_manifest_digest": "sha256:06571ab3b3a3fd2ae83c9a463b17c608d073f50d8a74ea15533b995088b71572",
+    "version": "0.37.1"
   },
   "input_bundle_digest": "sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22",
   "inputs": [
@@ -89,7 +89,7 @@
     "verification_status": "UNSIGNED_NOT_OFFICIAL"
   },
   "reasons": [],
-  "record_digest": "sha256:e6f76d9321b5ebff0d9cfbdeb34d217681e772e4faf5de2b9f5046ee2c04a2b3",
+  "record_digest": "sha256:cd59d48de82e0fc703f815c06576969ea18775dd80b8129680d57b6231f9c8d6",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": null,
