@@ -34,7 +34,7 @@ the record with the same sensitivity as your check names.
 Download the artifacts, then:
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.36.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.37.1"
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json
 ```

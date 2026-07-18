@@ -30,7 +30,7 @@ claim. [Inspect the evidence and boundary](benchmarks/value/EXACT_CONTRAST.md).
 ## Try it on any public PR
 
 ```bash
-python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.36.0"
+python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.37.1"
 aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
 ```
 
@@ -92,7 +92,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.36.0
+        uses: RafineriaAI/aos-workflow-gate@v0.37.1
 ```
 
 No checkout, manual policy, bundle, or `required-checks` list is needed. The

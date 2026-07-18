@@ -61,7 +61,7 @@ required.
 ## Replay it yourself
 
 ```bash
-pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.36.0"
+pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.37.1"
 aos-workflow-gate verify \
   --input examples/zero-required-record.json \
   --bundle examples/zero-required-bundle.json
