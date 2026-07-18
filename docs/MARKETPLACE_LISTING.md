@@ -28,24 +28,26 @@ stricter question: why did the gate decide PASS, WARN, or BLOCK for this
 exact commit, policy, and set of signals - as a replayable, tamper-evident
 decision record.
 
-**Zero-config Self-Test** - add one step, no checkout, no configuration:
-the action collects your commit's completed check runs, generates an
-explicit advisory policy, and writes a decision record plus a job summary
-that answers: what happened, can this gate block, what to fix next.
+**Zero-config Self-Test** - no checkout or policy file. The Action reads
+active GitHub requirements plus exact-commit checks, suites, workflow runs,
+and commit statuses. It writes one advisory decision, one next action, and
+the bundle, generated policy, record, and static evidence view.
 
-**Enforce on your terms** - name your required-checks (missing or failed
-means BLOCK) and set enforce: "true" when you want a BLOCK verdict to
-fail the job. Poll slow checks with wait-for-checks.
+**Enforce on your terms** - keep `mode: "advisory"` while measuring noise.
+Use `mode: "enforce"` only after the named gaps and remediation match the
+repository's intended rules. Explicit `required-checks` fully replaces
+autodiscovery; polling waits only for required controls.
 
-**Evidence that survives audit** - records are deterministic, replay
-offline with no service dependency, and refuse tampering. Export as an
-unsigned in-toto
-Statement and sign with your own keys.
+**Evidence you can verify later** - canonical records detect mutation,
+replay offline without a service dependency, and disclose the verifier
+artifact. Export an unsigned in-toto Statement and sign it with your own
+keys.
 
-**Nothing to trust blindly** - read-only permissions (contents + checks),
-no telemetry, zero runtime dependencies, Apache-2.0. Verification steps
-for every claim: docs/TRUST.md. Records carry UNSIGNED_NOT_OFFICIAL
-status; no production, compliance, or security-audit claim is made.
+**Nothing to trust blindly** - read-only permissions (contents, checks,
+actions, pull requests, statuses), no telemetry, zero runtime dependencies,
+Apache-2.0. Verification steps: docs/TRUST.md. Records carry
+UNSIGNED_NOT_OFFICIAL status; no production, compliance, signing, or
+security-audit claim is made.
 ```
 
 ## After publishing

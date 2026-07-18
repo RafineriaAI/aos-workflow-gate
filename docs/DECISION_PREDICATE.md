@@ -10,6 +10,10 @@ Predicate type identifier:
 https://github.com/RafineriaAI/aos-workflow-gate/decision-record/v0
 ```
 
+This v0 URI is a stable contract identifier, not a dereferenceable schema
+endpoint. It is retained for backward compatibility; this document and the
+committed export tests define the implemented shape.
+
 ## Statement shape
 
 ```json

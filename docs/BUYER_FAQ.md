@@ -61,13 +61,14 @@ GitLab CI, Jenkins, and any shell run the same platform-neutral core on an
 explicitly provided bundle — see [CI_INTEGRATIONS.md](CI_INTEGRATIONS.md).
 
 **How does this relate to EU AI Act / ISO logging standards?**
-The record preserves decision factors, input digests, policy identity, and
-timestamps — the field families those frameworks care about. We intend to
-stay aligned with the emerging logging standards and make no compliance
-claim; see [STANDARDS_COMPATIBILITY.md](STANDARDS_COMPATIBILITY.md).
+The record can preserve decision factors, input digests, policy identity, and
+timestamps when supplied. That may support an operator's own recordkeeping,
+but AOS makes no EU AI Act, ISO, audit, or compliance claim. See
+[STANDARDS_COMPATIBILITY.md](STANDARDS_COMPATIBILITY.md).
 
 **Who is behind this?**
-RafineriaAI (Szymon Hetnar). The workflow gate is the product layer around
-the public [aos-kernel](https://github.com/RafineriaAI/aos-kernel)
-demonstrator; the private AOS Core technology is separate and not part of
-this repository.
+RafineriaAI (Szymon Hetnar). The gate shares the verdict vocabulary and design
+lineage of the public
+[aos-kernel](https://github.com/RafineriaAI/aos-kernel), but the Python package
+is standalone and has no runtime kernel dependency. Private AOS Core
+technology is separate and not part of this repository.

@@ -1,9 +1,10 @@
 {
   "schema_version": "0.1.0",
   "project": "aos-workflow-gate",
-  "status": "phase-2-github-action",
+  "status": "public-advisory-preview",
   "documents": [
     "README.md",
+    "docs/DEVELOPMENT.md",
     "docs/SCOPE.md",
     "docs/ARCHITECTURE.md",
     "docs/USE_CASES.md",
@@ -45,7 +46,8 @@
     "CONTRIBUTING.md",
     "LICENSE",
     "NOTICE",
-    "docs/pilot/P0-P1-REGISTER.md"
+    "docs/pilot/P0-P1-REGISTER.md",
+    "docs/PUBLISHED_VERSION"
   ],
   "examples": [
     "examples/github-pr-signal-bundle.json",
@@ -115,7 +117,27 @@
     "benchmarks/value/exact/geotab-mygeotab-python-240/gate-decision.json",
     "benchmarks/value/exact/hardware-abstraction-ir-62/bundle.json",
     "benchmarks/value/exact/hardware-abstraction-ir-62/policy.json",
-    "benchmarks/value/exact/hardware-abstraction-ir-62/gate-decision.json"
+    "benchmarks/value/exact/hardware-abstraction-ir-62/gate-decision.json",
+    "benchmarks/adversarial/README.md",
+    "benchmarks/adversarial/MATRIX.md",
+    "benchmarks/adversarial/cases/cross-sha-observation-fail-closed.json",
+    "benchmarks/adversarial/cases/duplicate-provenance-single-control.json",
+    "benchmarks/adversarial/cases/legacy-status-app-bound-rejected.json",
+    "benchmarks/adversarial/cases/legacy-status-unbound-success.json",
+    "benchmarks/adversarial/cases/same-context-apps-both-satisfied.json",
+    "benchmarks/adversarial/cases/same-context-apps-one-unverifiable.json",
+    "benchmarks/adversarial/bindings/cross-subject-rebound.json",
+    "benchmarks/adversarial/bindings/different-valid-manifest.json",
+    "benchmarks/adversarial/bindings/digest-only-record.json",
+    "benchmarks/adversarial/bindings/exact-record-bundle.json",
+    "benchmarks/adversarial/bindings/exact-subject-context.json",
+    "benchmarks/adversarial/bindings/future-manifest-schema.json",
+    "benchmarks/adversarial/bindings/historical-pre-manifest.json",
+    "benchmarks/adversarial/bindings/incomplete-context-binding.json",
+    "benchmarks/adversarial/bindings/invalid-context-digest.json",
+    "benchmarks/adversarial/bindings/invalid-embedded-manifest.json",
+    "benchmarks/adversarial/bindings/observation-scope-mismatch.json",
+    "benchmarks/adversarial/bindings/record-observation-scope-mismatch.json"
   ],
   "policies": [
     "policies/default.yml",
@@ -127,12 +149,17 @@
   ],
   "tools": [
     "tools/__init__.py",
+    "tools/adversarial_matrix.py",
     "tools/check_public_surface.py",
     "tools/discovery.py",
     "tools/contrast.py",
     "tools/value_gate.py"
   ],
   "ci": [
+    ".editorconfig",
+    ".github/CODEOWNERS",
+    ".github/pull_request_template.md",
+    ".github/workflows/aos-workflow-gate-no-checkout.yml",
     "pyproject.toml",
     "action.yml",
     ".github/ISSUE_TEMPLATE/feedback.yml",
@@ -168,12 +195,19 @@
     "tests/test_remediation_coverage.py",
     "tests/test_value_gate.py",
     "tests/test_product_test_readiness.py",
-    "tests/test_utility_test_readiness.py"
+    "tests/test_utility_test_readiness.py",
+    "tests/test_adversarial_bindings.py",
+    "tests/test_decision_ux.py",
+    "tests/test_discovery_corpus.py",
+    "tests/test_semantic_correctness.py",
+    "tests/test_verifier_change.py",
+    "tests/test_workflow_state.py"
   ],
   "assets": [
     "docs/assets/banner.png",
     "docs/assets/aos-warn-evidence.png",
     "docs/assets/readme-contrast-mobile.png",
-    "docs/assets/readme-contrast.png"
+    "docs/assets/readme-contrast.png",
+    "docs/.nojekyll"
   ]
 }

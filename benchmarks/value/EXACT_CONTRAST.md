@@ -70,4 +70,4 @@ the distinction; they do not label these individual warnings as useful:
 
 - <https://docs.github.com/en/graphql/reference/pulls#mergestatestatus>
 - <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks>
-- <https://slsa.dev/spec/v1.2-rc2/build-provenance>
+- <https://slsa.dev/spec/v1.2/build-provenance>

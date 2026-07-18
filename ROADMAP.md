@@ -1,137 +1,110 @@
 # Roadmap
 
-## Phase 0: public bootstrap
+## Current status
 
-Goal: make the repository understandable and auditable before implementation.
+Current public release: `v0.36.0`.
 
-- Define scope and non-goals.
-- Define first practical use cases.
-- Define architecture and adoption model.
-- Add draft signal and policy examples for the first use case.
-- Add a lightweight public surface check for bootstrap consistency.
-- Avoid production, compliance, security-audit, signing, and SLSA claims.
+The CLI and GitHub Action are available as a free, self-serve advisory preview.
+The mechanism is deterministic, exact-SHA bound, tamper-evident, and replayable.
+The formal product-claim status remains
+[`NO_GO`](benchmarks/value/ASSESSMENT.md): external usefulness, precision,
+retention, incident reduction, and willingness to pay have not been
+independently established.
 
-## Phase 1: local MVP CLI
+## Completed foundations
 
-Status: implemented. The `evaluate` and `verify` commands are available and
-covered by tests; the committed decision fixture is replayable.
+### Phase 0: public boundary
 
-Goal: evaluate a fixed workflow signal bundle against an explicit policy.
+Completed: scope, claim boundaries, architecture, examples, repository hygiene,
+and public-surface checks.
 
-Command shape:
+### Phase 1: local deterministic gate
 
-```bash
-aos-workflow-gate evaluate --input examples/github-pr-signal-bundle.json --policy policies/default.yml --out evidence/gate-decision.json
-```
+Completed: `evaluate`, `verify`, canonical decision records, fail-closed
+input handling, tamper detection, and historical replay.
 
-Expected properties:
+### Phase 2: advisory GitHub Action
 
-- Deterministic output.
-- Stable JSON decision artifact.
-- `UNSIGNED_NOT_OFFICIAL` verification status.
-- Fail-closed handling for malformed or missing mandatory input.
-- Tests for replay, tampering, missing inputs, and edge cases.
+Completed: read-only composite Action, advisory default, Markdown and HTML
+views, outputs, evidence upload, explicit enforcement, and self-gated releases.
 
-## Phase 2: GitHub Action advisory mode
+### Phase 3: bounded collection and policy surface
 
-Status: implemented. The composite action runs `evaluate` in advisory mode by
-default, writes a Markdown step summary, exposes verdict and record outputs,
-and the repository runs it on itself in CI with the decision record uploaded
-as a JSON artifact.
+Implemented within the current scope:
 
-Goal: run the same evaluation in pull requests without blocking by default.
+- zero-config exact-SHA GitHub collection;
+- rulesets and classic branch-protection requirement discovery;
+- Check Runs, Check Suites, Workflow Runs, and commit statuses;
+- preflight diagnostics and collection completeness;
+- SARIF, Scorecard, `source-v0`, and `agent-action-v0` inputs;
+- starter policy packs;
+- verifier-change independence signal;
+- offline benchmark and adversarial replay.
 
-Expected properties:
+A GitLab API collector and GitLab CI/CD Catalog component are not implemented.
 
-- Read-only permissions by default.
-- No repository secrets required for public data paths.
-- Markdown summary for maintainers.
-- JSON artifact upload.
-- Clear distinction between advisory and blocking modes.
+## Correctness and trust program
 
-## Phase 3: signal adapters and policy packs
+The v0.30-v0.36 program is implemented:
 
-Status: in progress. Implemented: the zero-config GitHub check-runs
-collector (GHES supported via `GITHUB_API_URL`/`--api-url`), the SARIF
-2.1.0 file adapter and the Scorecard presence adapter (mechanical
-contracts in `docs/ADAPTERS.md`), and three starter policy packs shipped
-in the package (`aos_workflow_gate/packs/`, `docs/POLICY_PACKS.md`). The instant merge-protection check (`check-pr <PR URL>`)
-evaluates a policy generated from the base branch's active rules. A
-GitLab pipeline-jobs collector and a GitLab CI/CD Catalog component
-remain planned.
+1. app-bound control identity, separate requirement provenance, and exact-SHA
+   observation scope;
+2. missing-run, approval-required, stale, incomplete, and unverifiable states;
+3. one shared low-noise diagnosis with a dominant problem and next action;
+4. content-addressed verifier manifest and backward-compatible replay;
+5. automated exact-contrast and adversarial corpora;
+6. deterministic remediation coverage;
+7. clean-room packaging, threat model, rollback, pinning, and claim boundaries;
+8. internal red-team and product-test readiness gates.
 
-Goal: provide signal adapters and reusable policy profiles without hiding
-the policy.
+These controls establish mechanism behavior and testability, not market value.
 
-Candidate packs:
+## Scope lock
 
-- Minimal PR gate.
-- Release candidate gate.
-- AI-agent review governance.
-- Scanner-aware advisory gate.
+The existing command and contract surface remains frozen for validation:
+`preflight`, `collect`, `import`, `agent-action`, `evaluate`, `run`,
+`check-pr`, `verify`, `summarize`, `export`, and `bench-verify`, plus
+`source-v0`, `agent-action-v0`, and `benchmark-case-v0`.
 
-## MVP scope lock (v0.22)
+Until external evidence changes the priority, work is limited to correctness,
+compatibility, noise reduction, self-serve onboarding, documentation, and claim
+accuracy. No new commands, contracts, dashboards, SaaS layer, or broad adapter
+catalog should precede validation.
 
-Status: locked. The MVP command and contract surface — `preflight`,
-`collect`, `import`, `agent-action`, `evaluate`, `run`, `check-pr`,
-`verify`, `summarize`, `export`, `bench-verify`, with the `source-v0`,
-`agent-action-v0`, and `benchmark-case-v0` contracts and the
-retrospective real-history governance benchmark — is complete and
-frozen for pre-publication validation. Changes remain limited to
-hardening, correctness fixes, documentation, and claim-boundary
-corrections: no new commands, contracts, or integrations.
+## Next milestone: external value validation
 
-The gate is technically self-contained: advertised mechanics are
-implemented, tested, replayable offline, and bounded by explicit claims.
-That does not establish incremental user value, acceptable noise, or
-pilot readiness. External onboarding and pilot intake remain closed until
-the [Hybrid Value Gate](benchmarks/value/ASSESSMENT.md) reaches `GO`.
+The free advisory release is the recruitment and observation channel.
+Progress requires evidence from independent users, not additional internal
+automation.
 
-## Pre-pilot correctness and trust program (v0.30+)
+Required sequence:
 
-Status: in progress. A maintainer-directed program executed inside the
-scope lock's own terms (hardening, correctness fixes, documentation,
-and claim-boundary work; no new commands or contracts):
+1. Keep the install-to-diagnosis path below five minutes.
+2. Collect opt-in, non-confidential feedback through the public form.
+3. When access exists, run the preregistered formative study with 8-12
+   independent developers.
+4. Measure comprehension time, next-action clarity, alert disposition, and
+   retention separately from mechanism correctness.
+5. Run the comparative signal study only with the frozen selection,
+   classification, stopping, and claim rules.
+6. Retain `NO_GO` for efficacy, production, or paid-value claims until the
+   corresponding thresholds are met.
 
-1. GitHub semantic, scope, and freshness correctness — dual-track
-   requirement states (`github_equivalent` next to the gate's evidence
-   state), rulesets and classic protection unioned, merge_group
-   subjects, `observed_at` freshness, and no PASS on an incomplete or
-   unknown collection.
-2. Workflow state and expected-run visibility — workflows that never
-   started become visible; `missing` is only ever relative to an
-   explicit expectation.
-3. Scope-aware low-noise decision output — one shared diagnosis
-   projection: scope, freshness, effect, at most three gaps, one
-   dominant problem, one next action; quiet PASS.
-4. Evidence-led pain discovery — a frozen, reproducible corpus of
-   public pull requests with discovery/holdout separation and recorded
-   negative results.
-5. Trusted verifier-change awareness — evidence generated solely by a
-   mechanism the same change modifies is flagged as not independent
-   (advisory by default; no model output in any verdict path).
-6. Automated contrast proof — replayable baseline-vs-gate case studies
-   generated from the corpus, without selecting only favorable results.
-7. Pre-release trust package — threat model, rollback, claim
-   boundaries, pinning, and a clean-room install proof.
-8. Internal red-team and pilot readiness gate — adversarial regression
-   matrix and an explicit GO/NO-GO readiness criterion.
+The outcome may be promotion, policy narrowing, repositioning, or product
+closure. A technically correct mechanism is not sufficient evidence to
+continue commercialization.
 
-## Phase 4: evidence hardening
+## Deferred
 
-Status: partially pulled forward. The unsigned in-toto Statement export
-(`export`) is implemented, with an operator-key signing recipe documented in
-`docs/DECISION_PREDICATE.md`. Official RafineriaAI-signed decision
-artifacts, provenance generation, and verification controls remain future
-work.
+Deferred until validated demand or a specific operator requirement exists:
 
-Goal: strengthen evidence integrity after the decision contract is stable.
+- hosted dashboard, organization analytics, or telemetry;
+- paid policy and governance service;
+- GitLab collection;
+- official RafineriaAI signing or provenance service;
+- SBOM generation, SLSA level, or compliance automation;
+- automatic remediation or code generation;
+- LLM participation in the verdict path.
 
-Potential additions:
-
-- Signed decision artifacts.
-- Provenance export.
-- Optional in-toto or SLSA-aligned evidence mapping.
-- Optional SBOM/declaration export.
-
-These are future layers, not current claims.
+Unsigned in-toto Statement export already exists, but it remains an
+`UNSIGNED_NOT_OFFICIAL` projection rather than an attestation.

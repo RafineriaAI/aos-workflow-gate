@@ -41,10 +41,11 @@ inputs:
     default: ""
   wait-for-checks:
     description: >-
-      Self-Test Mode only. Poll until every required check completes, up
-      to this many seconds (default "0": no polling). Only named
-      required-checks are waited for; a wait that ends incomplete fails
-      closed as missing and is recorded in the bundle's collection status.
+      Self-Test Mode only. Polling budget for required controls. With
+      automatic GitHub requirement discovery, "0" uses the built-in
+      120-second stabilization window; a positive value overrides it.
+      With explicit required-checks, "0" means no polling. A wait that
+      ends incomplete fails closed and is recorded in collection evidence.
     required: false
     default: "0"
   out:
@@ -60,8 +61,8 @@ inputs:
   policy-pack:
     description: >-
       Bundled starter policy by name (minimal-pr-gate, release-candidate,
-      agent-review-advisory). Ignored when "policy" is set. See
-      docs/POLICY_PACKS.md.
+      agent-review-advisory, evidence-integrity). Ignored when "policy"
+      is set. See docs/POLICY_PACKS.md.
     required: false
     default: ""
   upload-artifact:

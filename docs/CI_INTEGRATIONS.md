@@ -3,8 +3,10 @@
 The gate core (`evaluate`, `verify`, `summarize`, `export`) is
 platform-neutral: plain Python 3.11+, zero runtime dependencies, JSON in and
 out. Any CI system that can run Python can produce and replay decision
-records. Platform-specific parts are deliberately thin: the GitHub Action
-and the GitHub check-runs collector.
+records. Native online collection is GitHub-specific: the Action and CLI read
+rulesets or classic protection, check runs and suites, workflow runs, pull
+request metadata, and commit statuses. Other platforms use explicit bundles
+or external `source-v0` adapters.
 
 ## GitHub Actions
 
@@ -92,8 +94,8 @@ exits 1 on `BLOCK`; malformed operator input exits 2.
 
 ## Boundary
 
-Only the GitHub check-runs collector is implemented today. On other
-platforms the operator supplies the signal bundle, and the record's
-integrity properties (digests, replay, tamper evidence) apply from that
-point on — collection provenance on those platforms is the operator's
-claim, not the gate's.
+Only GitHub has a built-in online collector. On other platforms the operator
+supplies the signal bundle or imported `source-v0` evidence. Record integrity
+properties (digests, replay, tamper evidence) apply after that boundary;
+collection provenance and completeness on those platforms remain the
+operator's claim, not the gate's.
