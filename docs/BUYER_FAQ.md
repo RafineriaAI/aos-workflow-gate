@@ -4,10 +4,11 @@ Short answers for security reviewers and buyers. Where a claim can be
 verified independently, [TRUST.md](TRUST.md) shows how.
 
 **What daily problem does it address?**
-GitHub spreads merge-control state across branch rules, check runs, workflow
-runs, and commit statuses. AOS gives the PR author or maintainer one
-exact-commit answer: what required control is missing or unreliable, whether
-the result can block, and what to do next. It does not replace code review.
+AOS verifies the gate, not the code. GitHub spreads merge-control state across
+branch rules, check runs, workflow runs, and commit statuses. AOS gives the PR
+author or maintainer one exact-commit answer: what required control is missing
+or unreliable, whether the result can block, and what to do next. It does not
+replace code review.
 
 **Who is the likely user and buyer?**
 The daily user is a PR author or maintainer. The likely buyer, if a paid

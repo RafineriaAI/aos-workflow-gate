@@ -346,15 +346,14 @@ def build_bundle(
     latest: dict[str, dict[str, Any]] = {}
     for run in runs:
         name = run.get("name")
-        source_id = run.get("_aos_source_id", name)
-        if (
-            not isinstance(name, str)
-            or not isinstance(source_id, str)
-            or name in excluded
-            or source_id in excluded
-        ):
-            continue
         if run.get("status") != "completed":
+            continue
+        if not isinstance(name, str):
+            continue
+        source_id = run.get("_aos_source_id")
+        if not isinstance(source_id, str) or not source_id.strip():
+            source_id = name if name.strip() else _unnamed_check_source_id(run)
+        if name in excluded or source_id in excluded:
             continue
         current = latest.get(source_id)
         if current is not None and (
@@ -428,6 +427,23 @@ def build_bundle(
     if collection is not None:
         bundle["collection"] = collection
     return bundle
+
+
+def _unnamed_check_source_id(run: dict[str, Any]) -> str:
+    """Return a stable source id when GitHub supplies an empty check name."""
+    run_id = run.get("id")
+    if isinstance(run_id, bool) or not isinstance(run_id, (int, str)):
+        raise InputError(
+            "completed GitHub check run has neither a non-empty name nor "
+            "a stable check-run id"
+        )
+    normalized = str(run_id).strip()
+    if not normalized:
+        raise InputError(
+            "completed GitHub check run has neither a non-empty name nor "
+            "a stable check-run id"
+        )
+    return f"github-check-run:{normalized}"
 
 
 def build_generated_policy(

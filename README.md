@@ -4,7 +4,8 @@
 [![Release](https://img.shields.io/github/v/release/RafineriaAI/aos-workflow-gate)](https://github.com/RafineriaAI/aos-workflow-gate/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-**Green checks can still miss a merge-control gap.**
+**Green checks can still miss a merge-control gap. AOS verifies the gate, not
+the code.**
 
 AOS is a read-only control check for GitHub pull requests. It verifies which
 merge controls actually ran for the exact head commit, then returns `PASS`,
@@ -47,9 +48,11 @@ GitHub API limits may apply; provide a read-only token when needed.
   becomes an advisory AOS signal with named rules and paths. For example,
   `zizmor --format=sarif` intentionally exits `0` even when it finds issues.
 
-Not another AI reviewer: AOS does not judge code, generate review comments, or
-guess whether AI wrote it. GitHub and CI produce signals. AOS checks whether
-the configured controls produced independent, reproducible evidence.
+Not another AI reviewer: AOS verifies control execution, not code correctness.
+It does not generate review comments, find defects, or guess whether AI wrote
+the change. GitHub, CI, and scanners produce signals. AOS checks whether the
+configured controls produced independent, reproducible evidence for this exact
+commit.
 
 The current product boundary is **required-check integrity for one exact
 commit**, not full merge-readiness, security certification, or code review.

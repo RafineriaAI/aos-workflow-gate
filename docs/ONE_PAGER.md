@@ -5,9 +5,10 @@ tested; external utility and market value remain unvalidated, so the
 [Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) remains `NO_GO` for
 efficacy, production, paid-pilot, and ROI claims.
 
-**Find merge-control gaps that a green GitHub view can miss. Get one
-plain `PASS/WARN/BLOCK` decision, one reason, and one next action before
-merge.**
+**Verify the gate, not the code.**
+
+Find merge-control gaps that a green GitHub view can miss. Get one
+`PASS/WARN/BLOCK` decision, one reason, and one next action before merge.
 
 ## Problem hypothesis
 
@@ -18,9 +19,9 @@ state, and the exact commit by hand.
 
 ## The product
 
-`aos-workflow-gate` is a read-only GitHub Action and CLI. It compares
-active requirements with checks on the exact commit, names the dominant
-gap, gives one remediation, and saves the decision for offline
+`aos-workflow-gate` is a local-first, read-only pre-merge control-assurance
+tool. It compares active requirements with checks on the exact commit, names
+the dominant gap, gives one remediation, and saves the decision for offline
 verification. It does not review code or detect AI authorship.
 
 Immediate developer value: less manual pre-review checking. Team value:

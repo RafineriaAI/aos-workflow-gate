@@ -12,7 +12,7 @@
         "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
         "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
         "cli.py": "df8129fd80b8e6002115a4c50fbb1db2aaa3c1f689302f1f0daffd6c40f06338",
-        "collect.py": "223b7dcd8d55ca27c4c56e338686637f0cf12252faccef58673297cf284b150a",
+        "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
         "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
         "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
         "evaluate.py": "ec046f9b631a2b2efa1b5557d101cea1997100fade278303eedb2906105f60b3",
@@ -33,10 +33,10 @@
         "version.py": "aa13c5e5e56545c0cb1df25ca7d167888980dca7fa5b782518e9f739eae72854",
         "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
       },
-      "manifest_digest": "sha256:6cc30137b8bcf220662f464a83057d92c9c3ba273ac5faa61d65a35adeb988cc",
+      "manifest_digest": "sha256:ebe116bdda0a4af4ee20a78bb689b189d380e681872833e49b3a54fe425abe56",
       "schema_version": "verifier-manifest-v0"
     },
-    "verifier_manifest_digest": "sha256:6cc30137b8bcf220662f464a83057d92c9c3ba273ac5faa61d65a35adeb988cc",
+    "verifier_manifest_digest": "sha256:ebe116bdda0a4af4ee20a78bb689b189d380e681872833e49b3a54fe425abe56",
     "version": "0.37.0"
   },
   "input_bundle_digest": "sha256:9db56de60abcd8d28c5f3db8992642dcf68e2bcf7130286f322ecdd08902505d",
@@ -141,7 +141,7 @@
       "source_id": null
     }
   ],
-  "record_digest": "sha256:52766a42ab9d7ff60c8fdbc708239d4c113b3d02e5c724975f5e7cefda03c32f",
+  "record_digest": "sha256:b37010065a15b4ff8c7fa7f9240d99aed832a29a3624a27cc7a0a00af5a6bed3",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 62,

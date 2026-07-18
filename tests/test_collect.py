@@ -13,6 +13,7 @@ from aos_workflow_gate.collect import (
     resolve_github_context,
 )
 from aos_workflow_gate.errors import InputError
+from aos_workflow_gate.policy import Policy
 
 SHA = "3c00cddf59ebd233cca4761785e20ad51ac9ed78"
 
@@ -72,6 +73,31 @@ def test_build_bundle_preserves_non_success_conclusions() -> None:
     runs = [_run("scorecard", "skipped", run_id=5)]
     bundle = build_bundle(runs, repository="owner/repo", sha=SHA)
     assert bundle["sources"][0]["status"] == "skipped"
+
+
+@pytest.mark.parametrize("name", ["", "   "])
+def test_build_bundle_preserves_unnamed_check_with_stable_id(name: str) -> None:
+    run = _run(name, run_id=42)
+
+    first = build_bundle([run], repository="owner/repo", sha=SHA)
+    second = build_bundle([run], repository="owner/repo", sha=SHA)
+
+    source = first["sources"][0]
+    assert source["id"] == "github-check-run:42"
+    assert source["identity"]["name"] == name
+    assert canonical.digest(first) == canonical.digest(second)
+
+    policy = build_generated_policy(first)
+    assert policy["advisory_sources"] == ["github-check-run:42"]
+    Policy.from_dict(policy)
+
+
+def test_unnamed_check_without_stable_id_fails_closed() -> None:
+    run = _run("")
+    run["id"] = None
+
+    with pytest.raises(InputError, match="non-empty name.*stable check-run id"):
+        build_bundle([run], repository="owner/repo", sha=SHA)
 
 
 def test_generated_policy_lists_all_sources_and_validates_required() -> None:
