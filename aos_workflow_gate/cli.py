@@ -1019,6 +1019,15 @@ def _cmd_run(args: argparse.Namespace) -> int:
             bundle,
             required=required_ids,
             allow_missing_required=discovered is not None,
+            required_status_semantics=(
+                "github" if discovered is not None else None
+            ),
+            # A missing repository gate is durable repository-level
+            # coverage evidence, not a fresh per-PR alert in recurring
+            # zero-config Action runs.
+            no_required_sources_severity=(
+                "PASS" if discovered is not None else "WARN"
+            ),
         )
         generated_path = safe_output_path(args.policy_out, workspace=workspace)
         _write_json(generated_path, generated)
@@ -1361,7 +1370,10 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
     _write_json(safe_output_path(args.bundle_out, workspace=workspace), bundle)
 
     policy = build_generated_policy(
-        bundle, required=required_ids, allow_missing_required=True
+        bundle,
+        required=required_ids,
+        allow_missing_required=True,
+        required_status_semantics="github",
     )
     policy_path = safe_output_path(args.policy_out, workspace=workspace)
     _write_json(policy_path, policy)

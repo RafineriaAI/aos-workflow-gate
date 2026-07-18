@@ -7,8 +7,13 @@ policy — an adapter must never become a hidden authority.
 
 ## GitHub check runs (built in)
 
-`collect` reads the commit's completed check runs; conclusions are
-preserved verbatim and only `success` passes downstream. See
+`collect` reads completed check runs for the exact commit and preserves every
+conclusion verbatim. Generated zero-config policies set
+`required_status_semantics: github`, so required `success`, `neutral`,
+and `skipped` conclusions match GitHub's merge semantics. Explicit policies
+may set `required_status_semantics: success-only` to require literal success.
+Policies that omit the field retain the historical `success-only` behavior, so
+committed replay does not change silently. See
 [SECURITY_READINESS.md](SECURITY_READINESS.md) for the data model.
 
 ## SARIF 2.1.0 — `--sarif PATH` (repeatable)
@@ -24,10 +29,30 @@ Mapping contract:
 The source id defaults to `sarif.<tool-name>`; the digest covers
 `{tool, version, error_count, warning_count, note_count, status}` per
 the identity-completeness invariant
-([SOURCE_CONTRACT.md](SOURCE_CONTRACT.md)); the counts are
-repeated in the human summary. The gate does not read rules, locations, or
-severities beyond the level — scanners keep their own report as the
-authority on findings.
+([SOURCE_CONTRACT.md](SOURCE_CONTRACT.md)). The decision uses only those
+counts and levels. For fast diagnosis, the reason also names up to three
+top `ruleId` values and up to three alphabetically selected affected artifact
+paths; the original SARIF remains authoritative for complete findings and
+locations.
+
+The Action accepts existing local SARIF files without executing a scanner:
+
+```yaml
+- name: Scan GitHub workflows
+  run: zizmor --format=sarif . > zizmor.sarif.json
+- name: AOS decision
+  uses: RafineriaAI/aos-workflow-gate@v0.36.0
+  with:
+    sarif: zizmor.sarif.json
+```
+
+Checkout, scanner installation, and SARIF generation happen in earlier steps.
+AOS reads the file on the runner, records its digest-bound summary, and uploads
+nothing to RafineriaAI. The
+[zizmor integration contract](https://docs.zizmor.sh/integrations/)
+states that SARIF mode exits `0` even when findings exist. A green scanner step
+therefore does not mean an empty SARIF report; the generated AOS policy exposes
+such findings as advisory `WARN`.
 
 ## OpenSSF Scorecard — `--scorecard PATH`
 

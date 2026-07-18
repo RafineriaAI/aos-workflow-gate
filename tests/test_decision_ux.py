@@ -108,6 +108,81 @@ def test_quiet_pass_has_no_tables() -> None:
     assert len(text.splitlines()) <= 12
 
 
+def test_github_semantics_counts_skipped_required_as_satisfied() -> None:
+    record = _record(
+        inputs=[
+            {
+                "id": "ci",
+                "kind": "github_check",
+                "status": "skipped",
+                "required": True,
+                "digest": None,
+                "signal_source": None,
+            }
+        ],
+        observation={"github_baseline": "clear"},
+    )
+    record["policy"]["required_status_semantics"] = "github"
+    record["record_digest"] = canonical.digest(
+        {key: value for key, value in record.items() if key != "record_digest"}
+    )
+
+    diag = diagnose(record)
+
+    assert diag["counts"]["required_successful"] == 1
+    assert diag["finding"].startswith(
+        "Every required check satisfied GitHub's merge semantics"
+    )
+
+
+def test_decision_contrast_separates_native_and_aos_only_gaps() -> None:
+    native = _record(
+        verdict="BLOCK",
+        reasons=[
+            _reason(
+                "missing_required_source",
+                "BLOCK",
+                "ci",
+                state="pending",
+            )
+        ],
+        inputs=[],
+        observation={"github_baseline": "waiting"},
+    )
+    aos_only = _record(
+        verdict="WARN",
+        reasons=[
+            _reason("non_independent_evidence", "WARN", None)
+        ],
+        observation={"github_baseline": "clear"},
+    )
+
+    native_diag = diagnose(native)
+    aos_diag = diagnose(aos_only)
+
+    assert native_diag["contrast"]["code"] == "github_already_blocks"
+    assert native_diag["contrast"]["incremental"] is False
+    assert aos_diag["contrast"]["code"] == "aos_policy_gap"
+    assert aos_diag["contrast"]["incremental"] is True
+    markdown, _ = render_markdown(aos_only)
+    assert "**Decision contrast:**" in markdown
+
+
+def test_zero_required_pass_is_coverage_fact_not_alert() -> None:
+    record = _record(
+        reasons=[_reason("no_required_sources", "PASS", None)],
+        inputs=[],
+        observation={"github_baseline": "no_required_checks"},
+    )
+
+    diag = diagnose(record)
+
+    assert diag["verdict"] == "PASS"
+    assert diag["gaps_total"] == 0
+    assert "without raising a per-PR alert" in diag["finding"]
+    assert diag["contrast"]["code"] == "github_no_required_gate"
+
+
 def test_pass_with_zero_required_is_not_quiet() -> None:
     """Zero-required PASS keeps the full view: the coverage suggestion
     is the funnel out of the decision gap and must not disappear."""
@@ -197,6 +272,38 @@ def test_plain_finding_explains_self_validating_workflow() -> None:
         "This PR changed a workflow that also produced checks used to "
         "assess the same PR."
     )
+
+
+def test_sarif_warning_has_specific_finding_and_next_action() -> None:
+    record = _record(
+        verdict="WARN",
+        reasons=[
+            _reason(
+                "advisory_warning",
+                "WARN",
+                "sarif.zizmor",
+                "advisory source status is 'warning'; SARIF: 2 findings",
+            )
+        ],
+        inputs=[
+            {
+                "id": "sarif.zizmor",
+                "kind": "sarif_summary",
+                "status": "warning",
+                "required": False,
+                "digest": None,
+                "signal_source": "sarif_file",
+            }
+        ],
+    )
+
+    diag = diagnose(record)
+
+    assert diag["finding"] == (
+        "Scanner evidence 'sarif.zizmor' contains findings that need review."
+    )
+    assert diag["remediation"]["code"] == "review_sarif_findings"
+    assert "SARIF findings" in diag["next"]
 
 
 def test_github_annotation_is_nonblocking_and_command_safe() -> None:

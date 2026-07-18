@@ -125,6 +125,16 @@ def build_record(
     tamper-evident like everything else.
     """
     manifest = verifier_manifest()
+    policy_record: dict[str, Any] = {
+        "policy_id": policy.policy_id,
+        "mode": policy.mode,
+        "verification_status": policy.verification_status,
+        "digest": policy.digest,
+    }
+    if "required_status_semantics" in policy.normalized:
+        policy_record["required_status_semantics"] = (
+            policy.required_status_semantics
+        )
     record: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "generator": {
@@ -137,12 +147,7 @@ def build_record(
             "verifier_manifest": manifest,
         },
         "subject": decision.subject.as_dict(),
-        "policy": {
-            "policy_id": policy.policy_id,
-            "mode": policy.mode,
-            "verification_status": policy.verification_status,
-            "digest": policy.digest,
-        },
+        "policy": policy_record,
         "verdict": decision.verdict,
         "can_block": can_block,
         "verification_status": policy.verification_status,

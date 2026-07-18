@@ -43,6 +43,38 @@ def _slug(value: str) -> str:
     return slug or "unknown"
 
 
+def _one_line(value: str, *, limit: int = 100) -> str:
+    sanitized = "".join(
+        character
+        if ord(character) >= 32 and ord(character) != 127
+        else " "
+        for character in value
+    )
+    text = " ".join(sanitized.split())
+    if len(text) <= limit:
+        return text
+    return text[: limit - 3].rstrip() + "..."
+
+
+def _sarif_uri(result: dict[str, Any]) -> str | None:
+    locations = result.get("locations")
+    if not isinstance(locations, list):
+        return None
+    for location in locations:
+        if not isinstance(location, dict):
+            continue
+        physical = location.get("physicalLocation")
+        if not isinstance(physical, dict):
+            continue
+        artifact = physical.get("artifactLocation")
+        if not isinstance(artifact, dict):
+            continue
+        uri = artifact.get("uri")
+        if isinstance(uri, str) and uri:
+            return _one_line(uri)
+    return None
+
+
 def sarif_source(path: Path, source_id: str | None = None) -> dict[str, Any]:
     """Reduce a SARIF 2.1.0 file to a mechanical source."""
     payload = _load_json_file(path, "SARIF file")
@@ -53,6 +85,8 @@ def sarif_source(path: Path, source_id: str | None = None) -> dict[str, Any]:
     tool_name = "unknown"
     tool_version = None
     counts = {"error": 0, "warning": 0, "note": 0}
+    rule_counts: dict[str, int] = {}
+    affected_paths: set[str] = set()
     for run in runs:
         if not isinstance(run, dict):
             continue
@@ -71,6 +105,16 @@ def sarif_source(path: Path, source_id: str | None = None) -> dict[str, Any]:
                 ):
                     level = result["level"]
                 counts[level if level in counts else "warning"] += 1
+                if isinstance(result, dict):
+                    rule_id = result.get("ruleId")
+                    if isinstance(rule_id, str) and rule_id:
+                        normalized = _one_line(rule_id)
+                        rule_counts[normalized] = (
+                            rule_counts.get(normalized, 0) + 1
+                        )
+                    uri = _sarif_uri(result)
+                    if uri is not None:
+                        affected_paths.add(uri)
 
     if counts["error"] > 0:
         status = "failure"
@@ -87,16 +131,27 @@ def sarif_source(path: Path, source_id: str | None = None) -> dict[str, Any]:
         "note_count": counts["note"],
         "status": status,
     }
+    top_rules = sorted(
+        rule_counts.items(), key=lambda item: (-item[1], item[0])
+    )[:3]
+    summary = (
+        f"SARIF: {counts['error']} error(s), {counts['warning']} "
+        f"warning(s), {counts['note']} note(s) from {tool_name}."
+    )
+    if top_rules:
+        summary += " Top rules: " + ", ".join(
+            f"{rule_id} ({count})" for rule_id, count in top_rules
+        ) + "."
+    if affected_paths:
+        summary += " Paths: " + ", ".join(sorted(affected_paths)[:3]) + "."
+
     return {
         "id": source_id or f"sarif.{_slug(tool_name)}",
         "kind": "sarif_summary",
         "signal_source": "sarif_file",
         "status": status,
         "required": False,
-        "summary": (
-            f"SARIF: {counts['error']} error(s), {counts['warning']} "
-            f"warning(s), {counts['note']} note(s) from {tool_name}."
-        ),
+        "summary": summary,
         "identity": identity,
         "digest": source_digest(identity),
     }

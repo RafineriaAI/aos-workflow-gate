@@ -373,9 +373,16 @@ def test_missing_needs_an_explicit_expectation(
     assert rc == 0
     rules_hit = {reason["rule"] for reason in record["reasons"]}
     assert "missing_required_source" not in rules_hit
-    # honest WARN comes from requiring nothing, not from the queued unit
-    assert record["verdict"] == "WARN"
+    # The queued unit remains visible evidence, but without an explicit
+    # expectation it is not a per-PR alert. Repository-level zero-required
+    # coverage is intentionally PASS in recurring zero-config Action runs.
+    assert record["verdict"] == "PASS"
     assert "no_required_sources" in rules_hit
+    reason = next(
+        reason for reason in record["reasons"]
+        if reason["rule"] == "no_required_sources"
+    )
+    assert reason["severity"] == "PASS"
     assert bundle["collection"]["workflow_visibility"]["units_total"] == 1
 
 

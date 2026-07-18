@@ -81,6 +81,7 @@ def test_generated_policy_lists_all_sources_and_validates_required() -> None:
     assert policy["required_sources"] == ["a"]
     assert policy["advisory_sources"] == ["b"]
     assert policy["rules"]["advisory_warning"] == "PASS"
+    assert policy["rules"]["sarif_findings"] == "WARN"
     with pytest.raises(InputError):
         build_generated_policy(bundle, required=["missing-check"])
 

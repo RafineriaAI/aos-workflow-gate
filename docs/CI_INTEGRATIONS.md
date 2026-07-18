@@ -36,6 +36,11 @@ unverifiable instead of interpreting it as unprotected.
 Explicit-bundle mode does not call the API and needs only `contents: read`.
 No `write` scope of any kind is required; the gate is read-only by design.
 
+The optional Action input `sarif` accepts newline-separated paths generated
+by earlier scanner steps. AOS does not install or execute the scanner. The
+decision reason includes bounded rule/path context while the original SARIF
+remains the finding authority; see [Signal adapters](ADAPTERS.md).
+
 ## GitHub Enterprise Server
 
 The collector works against GHES out of the box:

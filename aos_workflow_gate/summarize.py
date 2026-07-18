@@ -77,6 +77,19 @@ GENERIC_REMEDIATIONS: dict[str, RemediationSpec] = {
     ),
 }
 
+SARIF_REMEDIATIONS: dict[str, RemediationSpec] = {
+    "failed_required_source": RemediationSpec(
+        "resolve_required_sarif_findings",
+        "open the SARIF report for '{source}', resolve or explicitly "
+        "accept the named findings, regenerate it, and re-run AOS",
+    ),
+    "advisory_warning": RemediationSpec(
+        "review_sarif_findings",
+        "review the named SARIF findings for '{source}'; promote this "
+        "source to required only after its signal is stable and useful",
+    ),
+}
+
 # Compatibility view for integrations that only need one hint per rule.
 REPAIR_HINTS = {
     rule: remediation.action
@@ -176,6 +189,74 @@ STATE_REMEDIATIONS: dict[tuple[str, str], RemediationSpec] = {
 }
 
 
+def _required_input_satisfied(
+    source: dict[str, Any], policy: dict[str, Any]
+) -> bool:
+    status = str(source.get("status", "")).lower()
+    if status == "success":
+        return True
+    return (
+        policy.get("required_status_semantics") == "github"
+        and source.get("kind") == "github_check"
+        and status in {"neutral", "skipped"}
+    )
+
+
+def _decision_contrast(
+    verdict: str, observation: dict[str, Any]
+) -> dict[str, Any]:
+    baseline = observation.get("github_baseline")
+    if baseline in {"blocked", "waiting"}:
+        return {
+            "code": "github_already_blocks",
+            "github_baseline": baseline,
+            "incremental": False,
+            "summary": (
+                "GitHub already blocks or waits on required checks; "
+                "AOS explains and preserves that existing control gap."
+            ),
+        }
+    if baseline == "clear" and verdict != "PASS":
+        return {
+            "code": "aos_policy_gap",
+            "github_baseline": baseline,
+            "incremental": True,
+            "summary": (
+                "GitHub's required-check baseline is clear; AOS adds a "
+                "separate policy or evidence gap."
+            ),
+        }
+    if baseline == "no_required_checks":
+        return {
+            "code": "github_no_required_gate",
+            "github_baseline": baseline,
+            "incremental": verdict != "PASS",
+            "summary": (
+                "GitHub has no required status-check gate for this branch; "
+                "AOS records that coverage fact separately."
+            ),
+        }
+    if baseline == "clear":
+        return {
+            "code": "aligned_clear",
+            "github_baseline": baseline,
+            "incremental": False,
+            "summary": (
+                "AOS agrees with GitHub's required-check baseline for "
+                "this commit."
+            ),
+        }
+    return {
+        "code": "comparison_unavailable",
+        "github_baseline": baseline,
+        "incremental": False,
+        "summary": (
+            "A GitHub required-check baseline was not available for "
+            "this record."
+        ),
+    }
+
+
 def diagnose(record: Any) -> dict[str, Any]:
     """Build the single structural diagnosis used by every renderer.
 
@@ -200,6 +281,7 @@ def diagnose(record: Any) -> dict[str, Any]:
     ] if isinstance(record.get("reasons"), list) else []
     required = [source for source in inputs if source.get("required")]
     observation = _dict_field(record, "observation")
+    policy = _dict_field(record, "policy")
 
     missing_reasons = [
         reason for reason in reasons
@@ -217,7 +299,7 @@ def diagnose(record: Any) -> dict[str, Any]:
         "required_total": required_total,
         "required_successful": sum(
             1 for source in required
-            if str(source.get("status", "")).lower() == "success"
+            if _required_input_satisfied(source, policy)
         ),
         "required_failed": sum(
             1 for reason in reasons
@@ -251,6 +333,7 @@ def diagnose(record: Any) -> dict[str, Any]:
     finding = _plain_finding(
         record, ranked, inputs, observation, intact=intact
     )
+    contrast = _decision_contrast(str(verdict), observation)
     if not intact:
         remediation = _remediation(
             "record_integrity_failed",
@@ -274,12 +357,13 @@ def diagnose(record: Any) -> dict[str, Any]:
         "scope": _scope_statement(record, observation, required_total),
         "freshness": _freshness_statement(observation),
         "effect": _effect_statement(record),
+        "contrast": contrast,
         "gaps": gap_views[:3],
         "gaps_total": len(gap_views),
         "dominant": _dominant_problem(ranked),
         "observation": observation,
         "subject": _dict_field(record, "subject"),
-        "policy": _dict_field(record, "policy"),
+        "policy": policy,
         "reasons": reason_views,
         "inputs": inputs,
         "record_digest": record.get("record_digest"),
@@ -347,6 +431,31 @@ def _plain_finding(
         return "The saved AOS decision was modified after it was created."
     if not gaps:
         if record.get("verdict") == "PASS":
+            required = [
+                source for source in inputs if source.get("required")
+            ]
+            if not required and observation.get("github_baseline") == (
+                "no_required_checks"
+            ):
+                return (
+                    "GitHub has no required status checks for this branch; "
+                    "AOS recorded the coverage gap without raising a "
+                    "per-PR alert."
+                )
+            policy = _dict_field(record, "policy")
+            if (
+                policy.get("required_status_semantics") == "github"
+                and any(
+                    str(source.get("status", "")).lower()
+                    in {"neutral", "skipped"}
+                    for source in required
+                )
+            ):
+                return (
+                    "Every required check satisfied GitHub's merge "
+                    "semantics for this commit; raw conclusions remain "
+                    "in the evidence."
+                )
             return (
                 "Every required check AOS evaluated completed "
                 "successfully for this commit."
@@ -391,11 +500,29 @@ def _plain_finding(
         return f"Required check '{source}' did not run for this commit."
     if rule == "failed_required_source":
         result = state or "non-success"
+        source_input = _input_for_source(inputs, gap.get("source_id"))
+        if (
+            source_input is not None
+            and source_input.get("kind") == "sarif_summary"
+        ):
+            return (
+                f"Required scanner evidence '{source}' contains "
+                f"'{result}' findings."
+            )
         if result != "success":
             return f"Required check '{source}' ended as '{result}', not success."
         return f"Required check '{source}' did not satisfy the gate."
     if rule == "advisory_warning":
         result = state or "non-success"
+        source_input = _input_for_source(inputs, gap.get("source_id"))
+        if (
+            source_input is not None
+            and source_input.get("kind") == "sarif_summary"
+        ):
+            return (
+                f"Scanner evidence '{source}' contains findings that "
+                "need review."
+            )
         return (
             f"Non-required check '{source}' ended as '{result}'."
         )
@@ -450,6 +577,15 @@ def _github_command_data(value: str) -> str:
     )
 
 
+def _input_for_source(
+    inputs: list[dict[str, Any]], source_id: Any
+) -> dict[str, Any] | None:
+    for source in inputs:
+        if source.get("id") == source_id:
+            return source
+    return None
+
+
 def _reason_view(
     reason: dict[str, Any],
     inputs: list[dict[str, Any]],
@@ -470,7 +606,15 @@ def _remediation_for_reason(
 ) -> dict[str, Any]:
     rule = str(reason.get("rule") or "")
     state = _reason_state(reason, inputs, observation)
-    spec = STATE_REMEDIATIONS.get((rule, state or ""))
+    source_input = _input_for_source(inputs, reason.get("source_id"))
+    spec = None
+    if (
+        source_input is not None
+        and source_input.get("kind") == "sarif_summary"
+    ):
+        spec = SARIF_REMEDIATIONS.get(rule)
+    if spec is None:
+        spec = STATE_REMEDIATIONS.get((rule, state or ""))
     if spec is None:
         spec = GENERIC_REMEDIATIONS.get(rule)
     if spec is None:
@@ -500,7 +644,7 @@ def _fallback_remediation(
             "review the complete decision record because the non-PASS "
             "verdict contains no structured reason",
         )
-    if inputs and not any(source.get("required") for source in inputs):
+    if not any(source.get("required") for source in inputs):
         return _remediation(
             "define_required_sources",
             "define required checks so the gate can BLOCK "
@@ -649,6 +793,13 @@ def render_markdown(record: Any) -> tuple[str, bool]:
 
     lines: list[str] = [f"## AOS Workflow Gate: {verdict}", ""]
     lines.append(f"**What AOS found:** {_escape(diag['finding'])}")
+    if diag["contrast"]["code"] not in {
+        "aligned_clear", "comparison_unavailable"
+    }:
+        lines.append(
+            "**Decision contrast:** "
+            + _escape(diag["contrast"]["summary"])
+        )
     lines.append(f"**Effect:** {_escape(diag['effect'])}")
     lines.append(f"**Next:** {_escape(diag['next'])}")
     lines.append("")
@@ -915,11 +1066,23 @@ def render_html(
             '<p class="tampered">Record content does not match its '
             "self-digest. Do not trust this record.</p>"
         )
-    parts.append(
-        f"<p><strong>What AOS found:</strong> {_h(diag['finding'])}<br>"
-        f"<strong>Effect:</strong> {_h(diag['effect'])}<br>"
-        f"<strong>Next:</strong> {_h(diag['next'])}</p>"
+    top_lines = [
+        f"<strong>What AOS found:</strong> {_h(diag['finding'])}",
+    ]
+    if diag["contrast"]["code"] not in {
+        "aligned_clear", "comparison_unavailable"
+    }:
+        top_lines.append(
+            "<strong>Decision contrast:</strong> "
+            + _h(diag["contrast"]["summary"])
+        )
+    top_lines.extend(
+        [
+            f"<strong>Effect:</strong> {_h(diag['effect'])}",
+            f"<strong>Next:</strong> {_h(diag['next'])}",
+        ]
     )
+    parts.append("<p>" + "<br>".join(top_lines) + "</p>")
     parts.append(
         "<p><strong>Signals:</strong> "
         f"{counts['required_total']} required "

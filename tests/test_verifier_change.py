@@ -212,6 +212,33 @@ def test_policy_can_raise_to_block_or_silence() -> None:
     assert evaluate(_bundle(_flagged()), silenced).verdict == "PASS"
 
 
+def test_unrelated_self_validation_stays_evidence_only() -> None:
+    policy = Policy.from_dict(
+        {
+            "policy_id": "test",
+            "rules": {
+                "missing_required_source": "BLOCK",
+                "failed_required_source": "BLOCK",
+                "malformed_input": "BLOCK",
+                "advisory_warning": "PASS",
+                "no_required_sources": "PASS",
+                "non_independent_evidence": "WARN",
+            },
+            "required_sources": ["ci"],
+        }
+    )
+
+    decision = evaluate(
+        _bundle(_flagged(non_independent_sources=["unrelated"])), policy
+    )
+
+    assert decision.verdict == "PASS"
+    assert not any(
+        reason.rule == "non_independent_evidence"
+        for reason in decision.reasons
+    )
+
+
 def test_acknowledgement_does_not_suppress_the_reason() -> None:
     acknowledged = _flagged(acknowledged="reviewed")
     decision = evaluate(_bundle(acknowledged), _policy())

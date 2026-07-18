@@ -1,8 +1,8 @@
 ## AOS Workflow Gate: WARN
 
-**What AOS found:** Non-required check 'scanner.sarif' ended as 'warning'.
+**What AOS found:** Scanner evidence 'scanner.sarif' contains findings that need review.
 **Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
-**Next:** review the named non-required check only if it matters to this change; it cannot block this gate
+**Next:** review the named SARIF findings for 'scanner.sarif'; promote this source to required only after its signal is stable and useful
 
 **Signals:** 1 required (1 successful); 2 other observation(s)
 **Scope:** 1 required check(s) plus recorded workflow signals on owner/repo@0123456789ab; not full merge-readiness
@@ -19,14 +19,14 @@
 | Policy | `default` (advisory) |
 | Policy digest | `sha256:3f33e4ad37f96d56f5a132d95b4c673aa774d410611111bfef235832aad81272` |
 | Input bundle digest | `sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19` |
-| Record digest | `sha256:f22c05dfeee89beab9f46199f234dbf9b92a82f9ab31453562a11a53dffa15af` |
+| Record digest | `sha256:c874dcf69cb85c624872537dfc8de3108e207f57e177eee943999a36f79a6fc2` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
 ### Top gaps
 
-- WARN `advisory_warning` scanner.sarif: advisory source status is 'warning'
-  - Hint: review the named non-required check only if it matters to this change; it cannot block this gate
+- WARN `advisory_warning` scanner.sarif: advisory source status is 'warning'; Advisory findings remain below blocking threshold.
+  - Hint: review the named SARIF findings for 'scanner.sarif'; promote this source to required only after its signal is stable and useful
 
 ### Inputs
 

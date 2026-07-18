@@ -6,17 +6,17 @@
       "files": {
         "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
         "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
-        "adapters.py": "330a2b685e9fc08bc3b3cb1595fb96893f02cc840b3519ce5039e42ac0718a70",
+        "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
         "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
         "bench.py": "8ce3f344dca713d938e8535efd1fc5fb3cb663d01e1b66cc319eefcc1bbfe4a8",
         "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
         "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
-        "cli.py": "0990cc7a67636209cb968ddc2964b2991d1c25c520094b51b5467ed7a6e7ffbf",
-        "collect.py": "aad0b62b9e79dbadbeb765bfd2e122100a77f79d304d765353d6693f6facfefa",
+        "cli.py": "59fd5ba99995f366d29a72a6046db2e3571dd56297556322a61d2c42929a7df0",
+        "collect.py": "223b7dcd8d55ca27c4c56e338686637f0cf12252faccef58673297cf284b150a",
         "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
         "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
-        "evaluate.py": "9f8919e05e41f0a1ccac237d9d4b8bfcc12005c4d0bc7261ae1fbfaddd0c8591",
-        "evidence.py": "9159fac451be616088c0837640c73f5bb1132c33103968f24af044ab0f79daf5",
+        "evaluate.py": "ec046f9b631a2b2efa1b5557d101cea1997100fade278303eedb2906105f60b3",
+        "evidence.py": "08f2dc24bcc8119cb31e1cd2ba644281f5d70d692807c3ae7ecf509c2b8a2318",
         "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
         "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
         "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
@@ -24,19 +24,19 @@
         "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
         "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
         "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
-        "policy.py": "482541d99ffe23104edfe52986719840099c96505f640ebb88a7b0a2457d21ec",
+        "policy.py": "924c256b70d42c178bea8330c02dad3a23ed297280156d333c479d2c3238ec43",
         "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
-        "requirements.py": "377e9cb4080aaf6022aefe718b3ef0a20d8e5f7ce83e995b2d3c378496906e63",
+        "requirements.py": "7f6e0a1047f7cbd21bbc568934cb202423226a0d1d52cd51082cee3cc3956ae3",
         "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
-        "summarize.py": "fba4533df631a7579f53846b6b513ab9096b57c035299aeae5382e4704200e18",
+        "summarize.py": "aec7affb06fdd2e5478f403d07121926df60b9716e9cb82b11f12cd595bcafd9",
         "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
         "version.py": "37b6869f406948037183d89e869b4f92139964fdb9ce342c834a2f5a46bb7296",
         "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
       },
-      "manifest_digest": "sha256:53cd636076a33e38690c3047c914b8e195ff7a4f47f440165c660d67372e84ff",
+      "manifest_digest": "sha256:e68cf5f0f11d9ef4beb631c023bb80b7f79c30ff6e64de4fb18e797b43edc57c",
       "schema_version": "verifier-manifest-v0"
     },
-    "verifier_manifest_digest": "sha256:53cd636076a33e38690c3047c914b8e195ff7a4f47f440165c660d67372e84ff",
+    "verifier_manifest_digest": "sha256:e68cf5f0f11d9ef4beb631c023bb80b7f79c30ff6e64de4fb18e797b43edc57c",
     "version": "0.36.0"
   },
   "input_bundle_digest": "sha256:b77a94aad51ca759e95227cb526db79196ad7987a681b77ea4519b0ec286515c",
@@ -159,13 +159,13 @@
       "source_id": null
     },
     {
-      "detail": "7 source(s) were produced by a workflow this change itself modifies (Integration tests – Python 3.12, Live network tests – Python 3.12, Unit tests – Python 3.10, and 4 more): the change grades itself with the grader it edited. Require evidence from a verifier governed outside this change.",
+      "detail": "7 evidence source(s) were produced by a workflow this change itself modifies (Integration tests – Python 3.12, Live network tests – Python 3.12, Unit tests – Python 3.10, and 4 more): the change grades itself with the grader it edited. Require evidence from a verifier governed outside this change.",
       "rule": "non_independent_evidence",
       "severity": "WARN",
       "source_id": null
     }
   ],
-  "record_digest": "sha256:4ff9ae9bece36e6d11b0f44bb7fb268434e39046d995c82bbfdcfe1e950380a0",
+  "record_digest": "sha256:d7c457bf2f6f8d82c14f3383d0773d5afcd83ee5270886f1ce1fc1a000e2d47b",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 240,

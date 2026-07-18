@@ -27,6 +27,9 @@ BLOCK = "BLOCK"
 
 _PRECEDENCE = {PASS: 0, WARN: 1, BLOCK: 2}
 _SUCCESS = "success"
+_GITHUB_PASSING_REQUIRED_STATUSES = frozenset(
+    {"success", "neutral", "skipped"}
+)
 
 
 @dataclass(frozen=True)
@@ -198,6 +201,7 @@ def _verifier_change_reasons(
     analysis = collection.get("verifier_change")
     if not isinstance(analysis, dict):
         return []
+
     if not analysis.get("analyzed"):
         detail = str(
             analysis.get("unavailable")
@@ -218,8 +222,34 @@ def _verifier_change_reasons(
     affected = analysis.get("non_independent_sources")
     if not isinstance(affected, list) or not affected:
         return []
-    shown = ", ".join(str(name) for name in affected[:3])
-    more = len(affected) - min(len(affected), 3)
+
+    required = set(policy.required_sources)
+    control_ids: dict[str, set[str]] = {}
+    for control in collection.get("required_controls") or []:
+        if not isinstance(control, dict):
+            continue
+        context = control.get("context")
+        source_id = control.get("source_id", context)
+        if isinstance(context, str) and isinstance(source_id, str):
+            control_ids.setdefault(context, set()).add(source_id)
+    # A policy with no required status checks may still govern verifier
+    # independence: changing the workflow that produced the observed signal
+    # is the differentiated evidence gap. Once required controls are named,
+    # keep the warning scoped to those decision-relevant controls.
+    decision_relevant = sorted(
+        {
+            str(name)
+            for name in affected
+            if not required
+            or str(name) in required
+            or bool(control_ids.get(str(name), set()) & required)
+        }
+    )
+    if not decision_relevant:
+        return []
+
+    shown = ", ".join(decision_relevant[:3])
+    more = len(decision_relevant) - min(len(decision_relevant), 3)
     acknowledgement = (
         " An operator acknowledgement is recorded as evidence but does "
         "not authorize or suppress this reason."
@@ -231,7 +261,8 @@ def _verifier_change_reasons(
             "non_independent_evidence",
             policy.rules.get("non_independent_evidence", "WARN"),
             None,
-            f"{len(affected)} source(s) were produced by a workflow "
+            f"{len(decision_relevant)} evidence source(s) were produced "
+            "by a workflow "
             f"this change itself modifies ({shown}"
             + (f", and {more} more" if more else "")
             + "): the change grades itself with the grader it edited. "
@@ -240,6 +271,27 @@ def _verifier_change_reasons(
             + acknowledgement,
         )
     ]
+
+def _status_reason_detail(source: Source, *, role: str) -> str:
+    detail = f"{role} source status is '{source.status}'"
+    if source.kind == "sarif_summary" and source.summary:
+        summary = " ".join(source.summary.split())
+        if len(summary) > 600:
+            summary = summary[:597].rstrip() + "..."
+        detail += f"; {summary}"
+    return detail
+
+
+def _required_source_satisfied(source: Source, policy: Policy) -> bool:
+    status = source.status.lower()
+    if status == _SUCCESS:
+        return True
+    return (
+        policy.required_status_semantics == "github"
+        and source.kind == "github_check"
+        and status in _GITHUB_PASSING_REQUIRED_STATUSES
+    )
+
 
 def _apply_rules(
     sources: list[Source],
@@ -283,25 +335,32 @@ def _apply_rules(
                     state,
                 )
             )
-        elif source.status.lower() != _SUCCESS:
+        elif not _required_source_satisfied(source, policy):
             reasons.append(
                 Reason(
                     "failed_required_source",
                     policy.rules["failed_required_source"],
                     required_id,
-                    f"required source status is '{source.status}'",
+                    _status_reason_detail(source, role="required"),
                 )
             )
 
     for advisory_id in policy.advisory_sources:
         source = index.get(advisory_id)
         if source is not None and source.status.lower() != _SUCCESS:
+            severity = (
+                policy.rules.get(
+                    "sarif_findings", policy.rules["advisory_warning"]
+                )
+                if source.kind == "sarif_summary"
+                else policy.rules["advisory_warning"]
+            )
             reasons.append(
                 Reason(
                     "advisory_warning",
-                    policy.rules["advisory_warning"],
+                    severity,
                     advisory_id,
-                    f"advisory source status is '{source.status}'",
+                    _status_reason_detail(source, role="advisory"),
                 )
             )
     return reasons
@@ -491,6 +550,11 @@ def _summary(verdict: str, reasons: list[Reason]) -> str:
         return (
             f"Gate WARN: required checks satisfied; "
             f"{len(warnings)} advisory warning(s)."
+        )
+    if any(r.rule == "no_required_sources" for r in reasons):
+        return (
+            "Gate PASS: no required checks configured; coverage recorded "
+            "without a per-PR alert."
         )
     return "Gate PASS: all required checks satisfied; no advisory warnings."
 

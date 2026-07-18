@@ -223,6 +223,7 @@ def _install(
     rules: Any,
     runs: list[dict[str, Any]],
     branch_payload: Any = None,
+    statuses: list[dict[str, Any]] | None = None,
 ) -> None:
     from aos_workflow_gate import collect as collect_module
 
@@ -233,7 +234,9 @@ def _install(
         if "/branches/" in url:
             return _FakeResponse(branch_payload or {"protected": False})
         if url.endswith("/status") or "/status?" in url:
-            return _FakeResponse({"state": "success", "statuses": []})
+            return _FakeResponse(
+                {"state": "success", "statuses": statuses or []}
+            )
         return _FakeResponse({"total_count": len(runs), "check_runs": runs})
 
     monkeypatch.setattr(collect_module.urllib.request, "urlopen", opener)
@@ -356,19 +359,59 @@ def test_observation_is_bound_to_exact_head_sha(
     assert not any(source["id"] == "ci" for source in bundle["sources"])
 
 
-def test_skipped_required_diverges_from_github_baseline(
+def test_legacy_status_resolves_provisional_check_run_gap(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """The contrast case: GitHub would merge (skipped passes there); the
-    gate fails the evidence and records the divergence per control."""
+    rules = [
+        {
+            "type": "required_status_checks",
+            "parameters": {
+                "required_status_checks": [
+                    {"context": "legacy-ci", "integration_id": None}
+                ]
+            },
+        }
+    ]
+    _install(
+        monkeypatch,
+        rules=rules,
+        runs=[],
+        statuses=[{"context": "legacy-ci", "state": "success"}],
+    )
+
+    rc, record, bundle = _run_gate(tmp_path)
+
+    assert rc == 0
+    assert record["verdict"] == "PASS"
+    collection = bundle["collection"]
+    assert collection["status"] == "complete"
+    assert "incomplete_required" not in collection
+    assert collection["requirements"] == [
+        {
+            "context": "legacy-ci",
+            "integration_id": None,
+            "state": "satisfied",
+            "github_equivalent": "would_pass",
+            "required_by": ["rulesets"],
+        }
+    ]
+
+
+def test_skipped_required_matches_github_in_zero_config(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Zero-config follows GitHub while preserving the literal observation."""
     _install(monkeypatch, rules=RULES, runs=[_run("ci", "skipped")])
     rc, record, bundle = _run_gate(tmp_path)
     assert rc == 0
-    assert record["verdict"] == "BLOCK"
+    assert record["verdict"] == "PASS"
+    assert record["policy"]["required_status_semantics"] == "github"
     requirement = bundle["collection"]["requirements"][0]
     assert requirement["state"] == "failed"
     assert requirement["github_equivalent"] == "would_pass"
     assert bundle["collection"]["github_baseline"] == "clear"
+    source = next(item for item in record["inputs"] if item["required"])
+    assert source["status"] == "skipped"
 
 
 # --- merge_group subject resolution --------------------------------------

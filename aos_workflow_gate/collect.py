@@ -10,9 +10,9 @@ recomputed and verified by ``import`` and ``evaluate``.
 
 Only completed check runs are collected, so the workflow run that is
 currently executing the gate never gates itself. Conclusions are preserved
-verbatim; only ``success`` counts as success downstream, which keeps
-skipped, neutral, cancelled, and timed-out runs visible instead of silently
-passing.
+verbatim. Policy decides whether required GitHub checks use GitHub-compatible
+(``success``/``neutral``/``skipped``) or literal ``success-only`` semantics;
+cancelled, failed, timed-out, and unknown outcomes never pass either mode.
 """
 
 from __future__ import annotations
@@ -435,6 +435,8 @@ def build_generated_policy(
     *,
     required: list[str] | None = None,
     allow_missing_required: bool = False,
+    required_status_semantics: str | None = None,
+    no_required_sources_severity: str = "WARN",
 ) -> dict[str, Any]:
     """Build a low-noise advisory policy covering every collected source.
 
@@ -454,7 +456,7 @@ def build_generated_policy(
                     f"required check {required_id!r} was not collected; "
                     "it is either missing, still running, or excluded"
                 )
-    return {
+    policy: dict[str, Any] = {
         "schema_version": "draft-0",
         "policy_id": GENERATED_POLICY_ID,
         "mode": "advisory",
@@ -465,7 +467,10 @@ def build_generated_policy(
             "failed_required_source": "BLOCK",
             "malformed_input": "BLOCK",
             "advisory_warning": "PASS",
-            "no_required_sources": "WARN",
+            # Suppressed for ordinary non-required checks, but a SARIF
+            # file is explicit operator input and should surface findings.
+            "sarif_findings": "WARN",
+            "no_required_sources": no_required_sources_severity,
             "incomplete_collection": "WARN",
             "non_independent_evidence": "WARN",
             "verifier_change_unavailable": "WARN",
@@ -475,6 +480,9 @@ def build_generated_policy(
             source_id for source_id in source_ids if source_id not in required_ids
         ],
     }
+    if required_status_semantics is not None:
+        policy["required_status_semantics"] = required_status_semantics
+    return policy
 
 
 _MERGE_QUEUE_REF_PREFIX = "gh-readonly-queue/"
