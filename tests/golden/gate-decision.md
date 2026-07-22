@@ -19,7 +19,7 @@
 | Policy | `default` (advisory) |
 | Policy digest | `sha256:3f33e4ad37f96d56f5a132d95b4c673aa774d410611111bfef235832aad81272` |
 | Input bundle digest | `sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19` |
-| Record digest | `sha256:8528cb6d54e7662290405af75b64c38dc3a219bf5deba84faa19182333b8d51e` |
+| Record digest | `sha256:eb89c3ea8c0a62a59a8548ea6471a0dc68eef0af071de1f2177a7dbf7b531a68` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
@@ -39,6 +39,6 @@
 ### Coverage
 
 - Required sources: 1 of 3
-- Blocking on: `ci.validate`
+- Required evidence: `ci.validate`
 
 - Advisory only: a BLOCK verdict would not fail the job (no enforcement configured).

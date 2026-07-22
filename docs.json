@@ -7,6 +7,8 @@
     "docs/DEVELOPMENT.md",
     "docs/SCOPE.md",
     "docs/ARCHITECTURE.md",
+    "docs/CHANGE_PROOF.md",
+    "docs/PROJECT_CHECK.md",
     "docs/USE_CASES.md",
     "docs/ADOPTION_GUIDE.md",
     "docs/STANDARDS_COMPATIBILITY.md",
@@ -145,7 +147,9 @@
     "aos_workflow_gate/packs/minimal-pr-gate.yml",
     "aos_workflow_gate/packs/release-candidate.yml",
     "aos_workflow_gate/packs/agent-review-advisory.yml",
-    "aos_workflow_gate/packs/evidence-integrity.yml"
+    "aos_workflow_gate/packs/evidence-integrity.yml",
+    "aos_workflow_gate/packs/code-change-proof.yml",
+    "aos_workflow_gate/packs/project-check.yml"
   ],
   "tools": [
     "tools/__init__.py",
@@ -201,7 +205,9 @@
     "tests/test_discovery_corpus.py",
     "tests/test_semantic_correctness.py",
     "tests/test_verifier_change.py",
-    "tests/test_workflow_state.py"
+    "tests/test_workflow_state.py",
+    "tests/test_change_proof.py",
+    "tests/test_project_check.py"
   ],
   "assets": [
     "docs/assets/banner.png",

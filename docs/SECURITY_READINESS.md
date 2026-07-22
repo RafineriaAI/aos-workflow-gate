@@ -20,6 +20,49 @@ summaries. If you upload it as a workflow artifact or commit it, it becomes
 visible to whoever can read that location. On private repositories treat
 records with the same sensitivity as your check names.
 
+## Local `aos-check` execution boundary
+
+`aos-check` requires no Git or GitHub access, but it executes the conventional
+build and test surfaces of the selected folder:
+
+- project type and commands are selected from a bounded built-in adapter list;
+- dependencies are never installed and commands use argument arrays with
+  `shell=False`;
+- Node package scripts and every build/test tool still execute arbitrary
+  project code with the operator's filesystem, environment, and network
+  access;
+- the local snapshot skips symlinks and dependency/build directories and is
+  bounded to 10,000 files and 100 MiB;
+- evidence stores content and output digests, counts, states, and timings, but
+  no source content, absolute path, or raw output;
+- a bounded failure preview is printed locally and is not retained by AOS.
+
+Run untrusted or downloaded projects in an unprivileged sandbox. AOS does not
+make a project safe merely by executing its checks.
+
+
+## Experimental `prove-change` execution boundary
+
+The read-only table above describes the default Action and collection paths.
+`prove-change` is a separate, explicit local experiment with a stronger trust
+boundary:
+
+- it requires a source checkout and runs only argv supplied by the operator;
+- it uses `shell=False` and never reads a command from PR text or repository
+  configuration;
+- it runs project code in disposable detached worktrees, but inherits the
+  operator environment, network access, filesystem permissions, and any
+  external side effects of the verifier;
+- it records argv, exit states, timings, byte counts, and output digests; raw
+  stdout and stderr are not stored;
+- argv is evidence, so credentials must never be passed as command arguments;
+- temporary worktrees are removed and pruned in a `finally` path, while the
+  source worktree is never patched.
+
+Run it only with a side-effect-free verifier in a sandboxed, unprivileged job.
+Never expose privileged secrets to untrusted fork code. The command is absent
+from the default Action and does not weaken its read-only permissions.
+
 ## Implemented input hardening
 
 - **Workspace-bounded safe output paths.** Operator-supplied

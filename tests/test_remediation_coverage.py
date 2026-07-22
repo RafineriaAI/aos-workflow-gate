@@ -10,6 +10,10 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from aos_workflow_gate.evaluate import (
+    CHANGE_PROOF_RULE_BY_STATUS,
+    PROJECT_CHECK_RULE_BY_STATUS,
+)
 from aos_workflow_gate.summarize import (
     GENERIC_REMEDIATIONS,
     REPAIR_HINTS,
@@ -21,7 +25,14 @@ ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_RULES = {
     "missing_required_source",
     "failed_required_source",
+    "confirmed_verifier_failure",
+    "change_not_distinguished",
+    "verification_inconclusive",
+    "project_check_failed",
+    "project_verification_limited",
+    "project_verification_inconclusive",
     "advisory_warning",
+    "project_quality_warning",
     "malformed_input",
     "no_required_sources",
     "incomplete_collection",
@@ -54,7 +65,11 @@ def _emitted_rules() -> set[str]:
     source = (ROOT / "aos_workflow_gate" / "evaluate.py").read_text(encoding="utf-8")
     rules = set(re.findall(r'Reason\(\s*"([a-z_]+)"', source))
     assert rules, "rule extraction found nothing - pattern drifted"
-    return rules
+    return (
+        rules
+        | set(CHANGE_PROOF_RULE_BY_STATUS.values())
+        | set(PROJECT_CHECK_RULE_BY_STATUS.values())
+    )
 
 
 def test_every_emitted_rule_has_exactly_one_fallback() -> None:

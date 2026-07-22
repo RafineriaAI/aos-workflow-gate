@@ -36,6 +36,12 @@ from .agent_action import (
     load_action_document,
 )
 from .bench import render_bench_report, verify_case
+from .change_proof import (
+    build_bundle as build_change_proof_bundle,
+)
+from .change_proof import (
+    prove_change,
+)
 from .checkpr import (
     counterfactual_blockers,
     fetch_pr,
@@ -69,6 +75,10 @@ from .manifest import (
 from .paths import safe_output_path, workspace_boundary
 from .policy import load_policy
 from .preflight import render_report, run_preflight
+from .project_check import (
+    build_bundle as build_project_check_bundle,
+)
+from .project_check import check_project
 from .requirements import (
     PENDING,
     UNVERIFIABLE,
@@ -77,7 +87,7 @@ from .requirements import (
     requirement_snapshot,
 )
 from .source_contract import load_external_sources
-from .summarize import render_html, render_markdown, verify_bindings
+from .summarize import diagnose, render_html, render_markdown, verify_bindings
 from .verifier_change import analyze_verifier_change, fetch_pr_files
 from .version import __version__
 from .workflow_state import collect_workflow_visibility, fetch_workflow_runs
@@ -87,6 +97,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
     try:
+        if args.command == "check-project":
+            return _cmd_check_project(args)
+        if args.command == "prove-change":
+            return _cmd_prove_change(args)
         if args.command == "collect":
             return _cmd_collect(args)
         if args.command == "evaluate":
@@ -121,6 +135,11 @@ def main(argv: list[str] | None = None) -> int:
     return 2
 
 
+def project_main() -> int:
+    """Beginner-facing entry point: verify the current folder directly."""
+    return main(["check-project", *sys.argv[1:]])
+
+
 _EXAMPLES = """\
 examples:
   # one command: collect this commit's checks, gate, and summarize
@@ -145,12 +164,12 @@ def resolve_policy_pack(name: str) -> Path:
     path = Path(str(trav))
     if not path.is_file():
         packs = sorted(
-            p.stem for p in Path(str(resources.files("aos_workflow_gate")
-            .joinpath("packs"))).glob("*.yml")
+            p.stem
+            for p in Path(
+                str(resources.files("aos_workflow_gate").joinpath("packs"))
+            ).glob("*.yml")
         )
-        raise InputError(
-            f"unknown policy pack {name!r}; available: {', '.join(packs)}"
-        )
+        raise InputError(f"unknown policy pack {name!r}; available: {', '.join(packs)}")
     return path
 
 
@@ -164,41 +183,176 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--version", action="version", version=__version__)
     subparsers = parser.add_subparsers(dest="command")
+    project_parser = subparsers.add_parser(
+        "check-project",
+        help="run the checks this local project already defines",
+        description=(
+            "Zero-configuration local code check. AOS detects a supported "
+            "project, runs its conventional build and test surfaces, and "
+            "returns one plain-language result. Git is not required."
+        ),
+    )
+    project_parser.add_argument(
+        "project",
+        nargs="?",
+        default=".",
+        help="project folder (default: current directory)",
+    )
+    project_parser.add_argument(
+        "--timeout-seconds",
+        type=float,
+        default=300.0,
+        help="timeout for each discovered check, maximum 3600 (default 300)",
+    )
+    project_parser.add_argument(
+        "--mode",
+        choices=["advisory", "enforce"],
+        default="advisory",
+        help="enforce makes a reproducible project failure exit 1",
+    )
+    project_parser.add_argument(
+        "--out",
+        default=".aos-check/gate-decision.json",
+        help="decision record path",
+    )
+    project_parser.add_argument(
+        "--bundle-out",
+        default=".aos-check/bundle.json",
+        help="observed check bundle path",
+    )
+    project_parser.add_argument(
+        "--policy-out",
+        default=".aos-check/policy.json",
+        help="resolved decision policy path",
+    )
+    project_parser.add_argument(
+        "--source-out",
+        default=".aos-check/project-check-source.json",
+        help="standalone local observation path",
+    )
+    proof_parser = subparsers.add_parser(
+        "prove-change",
+        help="test whether the verifier distinguishes this code change",
+        description=(
+            "Experimental local change-sensitivity proof: run a verifier "
+            "at HEAD and against the same tree with selected implementation "
+            "changes removed."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    proof_parser.add_argument(
+        "--base",
+        required=True,
+        help="base commit or ref used to derive the implementation challenge",
+    )
+    proof_parser.add_argument(
+        "--repo",
+        default=".",
+        help="Git worktree to assess (default: current directory)",
+    )
+    proof_parser.add_argument(
+        "--repository",
+        help="stable repository identity (default: derive origin or local/name)",
+    )
+    proof_parser.add_argument(
+        "--sha",
+        help="expected exact HEAD SHA; mismatch is an operational error",
+    )
+    proof_parser.add_argument(
+        "--source",
+        action="append",
+        default=[],
+        metavar="GLOB",
+        help="implementation path glob (repeatable; default: non-test code)",
+    )
+    proof_parser.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        metavar="GLOB",
+        help="exclude a path glob from the implementation challenge",
+    )
+    proof_parser.add_argument(
+        "--timeout-seconds",
+        type=float,
+        default=300.0,
+        help="per-run verifier timeout, maximum 3600 (default 300)",
+    )
+    proof_parser.add_argument(
+        "--mode",
+        choices=["advisory", "enforce"],
+        default="advisory",
+        help="enforce makes a reproducible HEAD failure exit 1",
+    )
+    proof_parser.add_argument(
+        "--out",
+        default=".aos-proof/gate-decision.json",
+        help="decision record path",
+    )
+    proof_parser.add_argument(
+        "--bundle-out",
+        default=".aos-proof/bundle.json",
+        help="source bundle path",
+    )
+    proof_parser.add_argument(
+        "--policy-out",
+        default=".aos-proof/policy.json",
+        help="resolved policy path",
+    )
+    proof_parser.add_argument(
+        "--source-out",
+        default=".aos-proof/change-proof-source.json",
+        help="standalone source-v0 observation path",
+    )
+    proof_parser.add_argument(
+        "verifier_argv",
+        nargs=argparse.REMAINDER,
+        help="explicit verifier argv after '--' (executed without a shell)",
+    )
 
     checkpr_parser = subparsers.add_parser(
         "check-pr",
-        help="instant merge-protection check for a GitHub PR URL "
-        "(read-only observer)",
+        help="instant merge-protection check for a GitHub PR URL (read-only observer)",
     )
     checkpr_parser.add_argument(
         "pr_url", help="https://github.com/OWNER/REPO/pull/N (GHES too)"
     )
     checkpr_parser.add_argument(
-        "--mode", choices=["advisory", "enforce"], default="advisory",
+        "--mode",
+        choices=["advisory", "enforce"],
+        default="advisory",
         help="enforce makes a BLOCK verdict exit 1 (default: advisory)",
     )
     checkpr_parser.add_argument(
-        "--wait-seconds", type=float, default=0.0,
+        "--wait-seconds",
+        type=float,
+        default=0.0,
         help="poll until the rules' required checks complete (default 0)",
     )
     checkpr_parser.add_argument(
-        "--poll-interval", type=float, default=10.0,
+        "--poll-interval",
+        type=float,
+        default=10.0,
         help="seconds between polls (default 10)",
     )
     checkpr_parser.add_argument(
-        "--out", default="gate-decision.json",
+        "--out",
+        default="gate-decision.json",
         help="decision record path (default: gate-decision.json)",
     )
     checkpr_parser.add_argument(
-        "--bundle-out", default=".aos-gate/bundle.json",
+        "--bundle-out",
+        default=".aos-gate/bundle.json",
         help="where to write the collected bundle",
     )
     checkpr_parser.add_argument(
-        "--policy-out", default=".aos-gate/policy.json",
+        "--policy-out",
+        default=".aos-gate/policy.json",
         help="where to write the generated policy",
     )
     checkpr_parser.add_argument(
-        "--token-env", default="GITHUB_TOKEN",
+        "--token-env",
+        default="GITHUB_TOKEN",
         help="env var holding the API token (default GITHUB_TOKEN)",
     )
     checkpr_parser.add_argument(
@@ -217,16 +371,15 @@ def _build_parser() -> argparse.ArgumentParser:
     preflight_parser.add_argument(
         "--pr", help="https://github.com/OWNER/REPO/pull/N to probe"
     )
+    preflight_parser.add_argument("--repository", help="owner/repo to probe")
     preflight_parser.add_argument(
-        "--repository", help="owner/repo to probe"
-    )
-    preflight_parser.add_argument(
-        "--sha", help="commit to probe check runs and statuses on "
+        "--sha",
+        help="commit to probe check runs and statuses on "
         "(default: PR head or the default branch)",
     )
     preflight_parser.add_argument(
-        "--branch", help="branch to probe rules on (default: PR base or "
-        "the default branch)",
+        "--branch",
+        help="branch to probe rules on (default: PR base or the default branch)",
     )
     preflight_parser.add_argument(
         "--github-context",
@@ -235,18 +388,21 @@ def _build_parser() -> argparse.ArgumentParser:
         "(workflow-scoped readiness report)",
     )
     preflight_parser.add_argument(
-        "--json", action="store_true",
+        "--json",
+        action="store_true",
         help="print the full JSON report instead of the findings view",
     )
     preflight_parser.add_argument(
-        "--verbose", action="store_true",
+        "--verbose",
+        action="store_true",
         help="also list every probe, not only the findings",
     )
     preflight_parser.add_argument(
         "--out", help="also write the JSON report to this path"
     )
     preflight_parser.add_argument(
-        "--token-env", default="GITHUB_TOKEN",
+        "--token-env",
+        default="GITHUB_TOKEN",
         help="env var holding the API token (default GITHUB_TOKEN)",
     )
     preflight_parser.add_argument(
@@ -277,24 +433,30 @@ def _build_parser() -> argparse.ArgumentParser:
         "--pull-request", type=int, help="optional subject pull request"
     )
     run_parser.add_argument(
-        "--require", action="append", default=[],
+        "--require",
+        action="append",
+        default=[],
         help="required check name (repeatable)",
     )
     run_parser.add_argument(
-        "--exclude", action="append", default=[],
+        "--exclude",
+        action="append",
+        default=[],
         help="check run name to exclude (repeatable)",
     )
     run_parser.add_argument(
-        "--sarif", action="append", default=[], metavar="PATH",
+        "--sarif",
+        action="append",
+        default=[],
+        metavar="PATH",
         help="add a SARIF file as a source (repeatable)",
     )
     run_parser.add_argument(
-        "--scorecard", metavar="PATH",
+        "--scorecard",
+        metavar="PATH",
         help="add a Scorecard JSON report as a presence source",
     )
-    run_parser.add_argument(
-        "--policy", help="policy JSON or YAML (path)"
-    )
+    run_parser.add_argument("--policy", help="policy JSON or YAML (path)")
     run_parser.add_argument(
         "--policy-pack",
         help="bundled starter policy by name (see docs/POLICY_PACKS.md)",
@@ -304,42 +466,56 @@ def _build_parser() -> argparse.ArgumentParser:
         help="expected sha256:<hex> of the policy; mismatch exits 2",
     )
     run_parser.add_argument(
-        "--mode", choices=["advisory", "enforce"], default="advisory",
+        "--mode",
+        choices=["advisory", "enforce"],
+        default="advisory",
         help="enforce makes a BLOCK verdict exit 1 (default: advisory)",
     )
     run_parser.add_argument(
-        "--out", default="gate-decision.json",
+        "--out",
+        default="gate-decision.json",
         help="decision record path (default: gate-decision.json)",
     )
     run_parser.add_argument(
-        "--bundle-out", default=".aos-gate/bundle.json",
+        "--bundle-out",
+        default=".aos-gate/bundle.json",
         help="where to write the collected bundle",
     )
     run_parser.add_argument(
-        "--policy-out", default=".aos-gate/policy.json",
+        "--policy-out",
+        default=".aos-gate/policy.json",
         help="where to write the generated policy (generated mode only)",
     )
     run_parser.add_argument(
-        "--wait-seconds", type=float, default=0.0,
+        "--wait-seconds",
+        type=float,
+        default=0.0,
         help=(
             "required-control polling budget; 0 uses 120 seconds for "
             "autodiscovery and no wait for explicit --require names"
         ),
     )
     run_parser.add_argument(
-        "--poll-interval", type=float, default=10.0,
+        "--poll-interval",
+        type=float,
+        default=10.0,
         help="seconds between polls (default 10)",
     )
     run_parser.add_argument(
-        "--deadline-seconds", type=float, default=300.0,
+        "--deadline-seconds",
+        type=float,
+        default=300.0,
         help="hard wall-clock limit for collection (default 300)",
     )
     run_parser.add_argument(
-        "--max-api-calls", type=int, default=50,
+        "--max-api-calls",
+        type=int,
+        default=50,
         help="hard limit on API requests (default 50)",
     )
     run_parser.add_argument(
-        "--token-env", default="GITHUB_TOKEN",
+        "--token-env",
+        default="GITHUB_TOKEN",
         help="env var holding the API token (default GITHUB_TOKEN)",
     )
     run_parser.add_argument(
@@ -408,8 +584,7 @@ def _build_parser() -> argparse.ArgumentParser:
         "--max-api-calls",
         type=int,
         default=50,
-        help="hard limit on API requests for the whole collection "
-        "(default 50)",
+        help="hard limit on API requests for the whole collection (default 50)",
     )
     collect_parser.add_argument(
         "--exclude",
@@ -442,8 +617,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     collect_parser.add_argument(
         "--policy-out",
-        help="also write an explicit advisory policy covering every "
-        "collected source",
+        help="also write an explicit advisory policy covering every collected source",
     )
 
     import_parser = subparsers.add_parser(
@@ -460,20 +634,17 @@ def _build_parser() -> argparse.ArgumentParser:
         help="source-v0 JSON document: one source object or a list; "
         "'-' reads stdin (repeatable; stdin at most once)",
     )
-    import_parser.add_argument(
-        "--input", help="existing signal bundle to extend"
-    )
+    import_parser.add_argument("--input", help="existing signal bundle to extend")
     import_parser.add_argument(
         "--repository", help="subject owner/repo when creating a fresh bundle"
     )
     import_parser.add_argument(
         "--sha", help="subject commit SHA when creating a fresh bundle"
     )
+    import_parser.add_argument("--ref", help="optional subject ref for a fresh bundle")
     import_parser.add_argument(
-        "--ref", help="optional subject ref for a fresh bundle"
-    )
-    import_parser.add_argument(
-        "--pull-request", type=int,
+        "--pull-request",
+        type=int,
         help="optional subject pull request for a fresh bundle",
     )
     import_parser.add_argument(
@@ -499,7 +670,8 @@ def _build_parser() -> argparse.ArgumentParser:
         "with --out the sources are merged into it",
     )
     agent_parser.add_argument(
-        "--live", action="store_true",
+        "--live",
+        action="store_true",
         help="staleness check against the live branch head",
     )
     agent_parser.add_argument(
@@ -508,8 +680,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     agent_parser.add_argument(
         "--pinned-base",
-        help="staleness check against this pinned base SHA instead of "
-        "the live head",
+        help="staleness check against this pinned base SHA instead of the live head",
     )
     agent_parser.add_argument(
         "--out",
@@ -517,7 +688,8 @@ def _build_parser() -> argparse.ArgumentParser:
         "JSON; default prints sources to stdout",
     )
     agent_parser.add_argument(
-        "--token-env", default="GITHUB_TOKEN",
+        "--token-env",
+        default="GITHUB_TOKEN",
         help="env var holding the API token for --live",
     )
     agent_parser.add_argument(
@@ -540,16 +712,19 @@ def _build_parser() -> argparse.ArgumentParser:
         help="benchmark case directory containing case.json (repeatable)",
     )
     bench_parser.add_argument(
-        "--live", action="store_true",
+        "--live",
+        action="store_true",
         help="enable the Git ancestry probe via the compare API "
         "(otherwise ancestry is reported unverifiable)",
     )
     bench_parser.add_argument(
-        "--json", action="store_true",
+        "--json",
+        action="store_true",
         help="print the JSON report(s) instead of the human view",
     )
     bench_parser.add_argument(
-        "--token-env", default="GITHUB_TOKEN",
+        "--token-env",
+        default="GITHUB_TOKEN",
         help="env var holding the API token for --live",
     )
     bench_parser.add_argument(
@@ -599,11 +774,10 @@ def _build_parser() -> argparse.ArgumentParser:
         "summarize",
         help="render a decision record as Markdown or static HTML",
     )
+    summarize_parser.add_argument("--input", required=True, help="decision record JSON")
     summarize_parser.add_argument(
-        "--input", required=True, help="decision record JSON"
-    )
-    summarize_parser.add_argument(
-        "--html", action="store_true",
+        "--html",
+        action="store_true",
         help="render a deterministic, self-contained static HTML "
         "evidence view instead of Markdown (same diagnosis, different "
         "view)",
@@ -624,12 +798,9 @@ def _build_parser() -> argparse.ArgumentParser:
 
     export_parser = subparsers.add_parser(
         "export",
-        help="wrap a verified decision record in an unsigned in-toto "
-        "Statement",
+        help="wrap a verified decision record in an unsigned in-toto Statement",
     )
-    export_parser.add_argument(
-        "--input", required=True, help="decision record JSON"
-    )
+    export_parser.add_argument("--input", required=True, help="decision record JSON")
     export_parser.add_argument(
         "--format",
         choices=["in-toto-statement"],
@@ -648,15 +819,9 @@ def _cmd_collect(args: argparse.Namespace) -> int:
     repository = args.repository or context["repository"]
     sha = args.sha or context["sha"]
     if not repository or not sha:
-        raise InputError(
-            "collect needs --repository and --sha, or --github-context"
-        )
+        raise InputError("collect needs --repository and --sha, or --github-context")
     token = os.environ.get(args.token_env) if args.token_env else None
-    api_url = (
-        args.api_url
-        or os.environ.get("GITHUB_API_URL")
-        or DEFAULT_API_URL
-    )
+    api_url = args.api_url or os.environ.get("GITHUB_API_URL") or DEFAULT_API_URL
     budget = Budget(
         deadline_seconds=args.deadline_seconds,
         max_api_calls=args.max_api_calls,
@@ -792,22 +957,19 @@ def _cmd_run(args: argparse.Namespace) -> int:
             context = resolve_github_context()
         else:
             context = {
-                "repository": None, "sha": None,
-                "ref": None, "pull_request": None,
+                "repository": None,
+                "sha": None,
+                "ref": None,
+                "pull_request": None,
             }
         repository = args.repository or context["repository"]
         sha = args.sha or context["sha"]
         if not repository or not sha:
             raise InputError(
-                "run needs --input, or --repository and --sha, or "
-                "--github-context"
+                "run needs --input, or --repository and --sha, or --github-context"
             )
         token = os.environ.get(args.token_env) if args.token_env else None
-        api_url = (
-            args.api_url
-            or os.environ.get("GITHUB_API_URL")
-            or DEFAULT_API_URL
-        )
+        api_url = args.api_url or os.environ.get("GITHUB_API_URL") or DEFAULT_API_URL
         budget = Budget(
             deadline_seconds=args.deadline_seconds,
             max_api_calls=args.max_api_calls,
@@ -828,9 +990,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
             branch = context.get("branch")
             if branch:
                 parts = repository.rstrip("/").rsplit("/", 2)
-                slug = (
-                    "/".join(parts[-2:]) if len(parts) >= 2 else repository
-                )
+                slug = "/".join(parts[-2:]) if len(parts) >= 2 else repository
                 try:
                     discovered = requirement_snapshot(
                         api_url=api_url,
@@ -844,9 +1004,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
                         # are worth a bounded wait even when the
                         # operator configured none
                         wait_seconds=(
-                            args.wait_seconds
-                            if args.wait_seconds > 0
-                            else 120.0
+                            args.wait_seconds if args.wait_seconds > 0 else 120.0
                         ),
                         poll_interval=args.poll_interval,
                         exclude_self=True,
@@ -869,21 +1027,20 @@ def _cmd_run(args: argparse.Namespace) -> int:
             run_source_ids = {
                 run.get("_aos_source_id", run.get("name"))
                 for run in runs
-                if isinstance(
-                    run.get("_aos_source_id", run.get("name")), str
-                )
+                if isinstance(run.get("_aos_source_id", run.get("name")), str)
             }
             status_srcs, _skipped = status_sources(
                 discovered["statuses"],
                 exclude_contexts={str(name) for name in run_source_ids},
-                source_ids_by_context=legacy_status_source_ids(
-                    discovered["controls"]
-                ),
+                source_ids_by_context=legacy_status_source_ids(discovered["controls"]),
             )
         else:
             runs, truncated, incomplete, waited = wait_for_required(
-                repository, sha, args.require,
-                token=token, api_url=api_url,
+                repository,
+                sha,
+                args.require,
+                token=token,
+                api_url=api_url,
                 wait_seconds=args.wait_seconds,
                 poll_interval=args.poll_interval,
                 budget=budget,
@@ -892,9 +1049,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
         status = "complete"
         if truncated:
             status = "truncated"
-        elif discovered is not None and discovered.get(
-            "subject_mismatch_runs"
-        ):
+        elif discovered is not None and discovered.get("subject_mismatch_runs"):
             status = "subject_mismatch"
         elif incomplete:
             status = "wait_timeout"
@@ -907,9 +1062,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
         if incomplete:
             collection["incomplete_required"] = incomplete
         if discovered is not None:
-            collection["observation_scope"] = discovered[
-                "observation_scope"
-            ]
+            collection["observation_scope"] = discovered["observation_scope"]
             collection["required_controls"] = [
                 {
                     "context": control["context"],
@@ -918,17 +1071,11 @@ def _cmd_run(args: argparse.Namespace) -> int:
                 }
                 for control in discovered["controls"]
             ]
-            collection["requirements"] = requirement_evidence(
-                discovered["controls"]
-            )
+            collection["requirements"] = requirement_evidence(discovered["controls"])
             collection["rules_digest"] = discovered["rules_digest"]
-            collection["protection_digest"] = discovered[
-                "protection_digest"
-            ]
+            collection["protection_digest"] = discovered["protection_digest"]
             collection["github_baseline"] = discovered["github_baseline"]
-            collection["protection_source"] = discovered[
-                "protection_source"
-            ]
+            collection["protection_source"] = discovered["protection_source"]
             if discovered["self_reference_excluded"]:
                 collection["self_reference_excluded"] = discovered[
                     "self_reference_excluded"
@@ -1022,15 +1169,11 @@ def _cmd_run(args: argparse.Namespace) -> int:
             bundle,
             required=required_ids,
             allow_missing_required=discovered is not None,
-            required_status_semantics=(
-                "github" if discovered is not None else None
-            ),
+            required_status_semantics=("github" if discovered is not None else None),
             # A missing repository gate is durable repository-level
             # coverage evidence, not a fresh per-PR alert in recurring
             # zero-config Action runs.
-            no_required_sources_severity=(
-                "PASS" if discovered is not None else "WARN"
-            ),
+            no_required_sources_severity=("PASS" if discovered is not None else "WARN"),
         )
         generated_path = safe_output_path(args.policy_out, workspace=workspace)
         _write_json(generated_path, generated)
@@ -1120,18 +1263,13 @@ def _collect_verifier_change(
         )
 
     try:
-        before = fetch_pr(
-            api_url, slug, pr_number, token=token, budget=budget
-        )
+        before = fetch_pr(api_url, slug, pr_number, token=token, budget=budget)
         if before["head_sha"] != sha:
             return unavailable(
                 "pull request head changed before verifier analysis: "
                 f"expected {sha}, observed {before['head_sha']}"
             )
-        if (
-            expected_base_sha is not None
-            and before["base_sha"] != expected_base_sha
-        ):
+        if expected_base_sha is not None and before["base_sha"] != expected_base_sha:
             return unavailable(
                 "pull request base changed before verifier analysis: "
                 f"expected {expected_base_sha}, observed {before['base_sha']}"
@@ -1154,9 +1292,7 @@ def _collect_verifier_change(
                 "workflow-run enumeration was truncated for the head SHA"
             )
 
-        after = fetch_pr(
-            api_url, slug, pr_number, token=token, budget=budget
-        )
+        after = fetch_pr(api_url, slug, pr_number, token=token, budget=budget)
     except InputError as exc:
         return unavailable(str(exc))
 
@@ -1164,9 +1300,7 @@ def _collect_verifier_change(
         before["head_sha"] != after["head_sha"]
         or before["base_sha"] != after["base_sha"]
     ):
-        return unavailable(
-            "pull request head/base changed during verifier analysis"
-        )
+        return unavailable("pull request head/base changed during verifier analysis")
 
     extra_policy = [Path(policy_path).as_posix()] if policy_path else None
     analysis = analyze_verifier_change(
@@ -1228,9 +1362,7 @@ def _print_workflow_visibility(report: dict[str, Any]) -> None:
     not_started = report.get("not_started") or []
     if not not_started:
         return
-    awaiting = sum(
-        1 for unit in not_started if unit.get("state") == "action_required"
-    )
+    awaiting = sum(1 for unit in not_started if unit.get("state") == "action_required")
     names = ", ".join(
         str(
             unit.get("workflow_name")
@@ -1254,8 +1386,11 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
     workspace = workspace_boundary()
 
     pr = fetch_pr(
-        coords["api_url"], coords["slug"], coords["number"],
-        token=token, budget=budget,
+        coords["api_url"],
+        coords["slug"],
+        coords["number"],
+        token=token,
+        budget=budget,
     )
     snapshot = requirement_snapshot(
         api_url=coords["api_url"],
@@ -1285,11 +1420,11 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         source_ids_by_context=legacy_status_source_ids(controls),
     )
     still_running = sorted(
-        str(control["source_id"]) for control in controls
-        if control["state"] == PENDING
+        str(control["source_id"]) for control in controls if control["state"] == PENDING
     )
     unverifiable = sorted(
-        str(control["source_id"]) for control in controls
+        str(control["source_id"])
+        for control in controls
         if control["state"] == UNVERIFIABLE
     )
     status = "complete"
@@ -1327,8 +1462,11 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
         },
     }
     collection["workflow_visibility"] = collect_workflow_visibility(
-        coords["repository"], pr["head_sha"],
-        token=token, api_url=coords["api_url"], budget=budget,
+        coords["repository"],
+        pr["head_sha"],
+        token=token,
+        api_url=coords["api_url"],
+        budget=budget,
     )
     collection["verifier_change"] = _collect_verifier_change(
         repository=coords["repository"],
@@ -1348,13 +1486,9 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
     if unverifiable:
         collection["unverifiable_required"] = unverifiable
     if snapshot.get("statuses_unverifiable"):
-        collection["statuses_unverifiable"] = snapshot[
-            "statuses_unverifiable"
-        ]
+        collection["statuses_unverifiable"] = snapshot["statuses_unverifiable"]
     if snapshot.get("subject_mismatch_runs"):
-        collection["subject_mismatch_runs"] = snapshot[
-            "subject_mismatch_runs"
-        ]
+        collection["subject_mismatch_runs"] = snapshot["subject_mismatch_runs"]
     if skipped_contexts:
         collection["duplicate_status_contexts"] = skipped_contexts
     bundle = build_bundle(
@@ -1417,9 +1551,7 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
             "collection.requirements."
         )
     elif baseline != "clear":
-        print(
-            f"GitHub baseline (status checks only): {baseline}."
-        )
+        print(f"GitHub baseline (status checks only): {baseline}.")
     if not required_ids:
         print(
             "Effect: nothing in the branch rules blocks this merge on "
@@ -1435,10 +1567,7 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
     if pr["draft"]:
         print("Draft PR: checks may be intentionally deferred.")
     if pr["from_fork"]:
-        print(
-            "Fork PR: some checks may not run for forks by repository "
-            "policy."
-        )
+        print("Fork PR: some checks may not run for forks by repository policy.")
     if collection.get("strict_up_to_date_required"):
         print(
             "Strict rules: GitHub additionally requires the branch to be "
@@ -1465,16 +1594,126 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
             "the bundle collection."
         )
     if would_block:
-        print(
-            "Counterfactual: would BLOCK if required: "
-            + ", ".join(would_block)
-        )
+        print("Counterfactual: would BLOCK if required: " + ", ".join(would_block))
     print(
         "Note: this check is a read-only observer of status-check rules "
         "and not a full merge-readiness assessment; reviews and other "
         "rule types are summarized in 'branch.rules' but not evaluated, "
         "and rule bypass actors are not observable from the public API."
     )
+    print()
+    text, _ = render_markdown(record)
+    sys.stdout.write(text)
+    if enforce and decision.verdict == BLOCK:
+        return 1
+    return 0
+
+
+def _cmd_check_project(args: argparse.Namespace) -> int:
+    """Run a beginner-facing local project check without requiring Git."""
+    workspace = workspace_boundary()
+    result = check_project(
+        Path(args.project),
+        timeout_seconds=args.timeout_seconds,
+    )
+    source = result.source
+    bundle = build_project_check_bundle(source)
+    policy = load_policy(resolve_policy_pack("project-check"))
+    decision = evaluate(bundle, policy)
+    enforce = args.mode == "enforce"
+    record = build_record(
+        decision,
+        policy=policy,
+        input_bundle_digest=canonical.digest(bundle),
+        can_block=enforce,
+        observation=observation_from_bundle(bundle),
+    )
+    for raw_path, value in (
+        (args.source_out, source),
+        (args.bundle_out, bundle),
+        (args.policy_out, policy.normalized),
+        (args.out, record),
+    ):
+        _write_json(safe_output_path(raw_path, workspace=workspace), value)
+
+    identity = source["identity"]
+    diagnosis = diagnose(record)
+    ecosystems = ", ".join(identity["ecosystems"]) or "unknown project"
+    print(f"AOS Check: {decision.verdict}")
+    print(f"Project: {ecosystems}")
+    print()
+    for run in result.runs:
+        if run.state == "passed":
+            marker = "OK"
+        elif run.state == "failed" and run.spec.category != "quality":
+            marker = "FAIL"
+        else:
+            marker = "WARN"
+        print(f"[{marker}] {run.spec.label} ({run.elapsed_ms} ms)")
+    print()
+    print("What AOS found:")
+    print(diagnosis["finding"])
+    print()
+    print("Next:")
+    print(diagnosis["next"])
+    failed = next((run for run in result.runs if run.state == "failed"), None)
+    if failed is not None and failed.preview:
+        print()
+        print("Failure details (local output, not stored in evidence):")
+        print(failed.preview)
+    print()
+    print(f"Details: {args.out}")
+    if enforce and decision.verdict == BLOCK:
+        return 1
+    return 0
+
+
+def _cmd_prove_change(args: argparse.Namespace) -> int:
+    """Run the bounded executable change-sensitivity experiment."""
+    workspace = workspace_boundary()
+    source = prove_change(
+        Path(args.repo),
+        base_ref=args.base,
+        command=args.verifier_argv,
+        repository=args.repository,
+        expected_sha=args.sha,
+        include=args.source,
+        exclude=args.exclude,
+        timeout_seconds=args.timeout_seconds,
+    )
+    bundle = build_change_proof_bundle(source)
+    policy = load_policy(resolve_policy_pack("code-change-proof"))
+    decision = evaluate(bundle, policy)
+    enforce = args.mode == "enforce"
+    record = build_record(
+        decision,
+        policy=policy,
+        input_bundle_digest=canonical.digest(bundle),
+        can_block=enforce,
+        observation=observation_from_bundle(bundle),
+    )
+
+    outputs = (
+        (args.source_out, source),
+        (args.bundle_out, bundle),
+        (args.policy_out, policy.normalized),
+        (args.out, record),
+    )
+    for raw_path, value in outputs:
+        _write_json(
+            safe_output_path(raw_path, workspace=workspace),
+            value,
+        )
+
+    identity = source["identity"]
+    print(f"{decision.verdict}  {decision.summary}")
+    print(
+        "experiment: "
+        f"{len(identity['implementation_paths'])} implementation file(s), "
+        f"HEAD {identity['head_sha'][:12]}, "
+        f"base {identity['merge_base_sha'][:12]}"
+    )
+    print(f"record: {args.out}")
     print()
     text, _ = render_markdown(record)
     sys.stdout.write(text)
@@ -1500,9 +1739,7 @@ def _cmd_preflight(args: argparse.Namespace) -> int:
         api_url=args.api_url,
     )
     if args.out:
-        _write_json(
-            safe_output_path(args.out, workspace=workspace_boundary()), report
-        )
+        _write_json(safe_output_path(args.out, workspace=workspace_boundary()), report)
     if args.json:
         text = json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True)
         sys.stdout.write(text + "\n")
@@ -1526,15 +1763,14 @@ def _cmd_import(args: argparse.Namespace) -> int:
 
     if args.input:
         bundle = _load_json(args.input)
-        if not isinstance(bundle, dict) or not isinstance(
-            bundle.get("sources"), list
-        ):
+        if not isinstance(bundle, dict) or not isinstance(bundle.get("sources"), list):
             raise InputError(f"{args.input} is not a signal bundle")
     else:
         if not args.repository or not args.sha:
             raise InputError("import needs --input, or --repository and --sha")
         subject: dict[str, Any] = {
-            "repository": args.repository, "sha": args.sha,
+            "repository": args.repository,
+            "sha": args.sha,
         }
         if args.ref:
             subject["ref"] = args.ref
@@ -1547,9 +1783,7 @@ def _cmd_import(args: argparse.Namespace) -> int:
         }
 
     existing_ids = {
-        source.get("id")
-        for source in bundle["sources"]
-        if isinstance(source, dict)
+        source.get("id") for source in bundle["sources"] if isinstance(source, dict)
     }
     for source in imported:
         if source["id"] in existing_ids:
@@ -1570,9 +1804,7 @@ def _cmd_import(args: argparse.Namespace) -> int:
         collection["imported_sources"] = imported_ids
 
     _write_json(safe_output_path(args.out, workspace=workspace_boundary()), bundle)
-    print(
-        f"imported {len(imported)} source(s) under the source-v0 contract"
-    )
+    print(f"imported {len(imported)} source(s) under the source-v0 contract")
     print(f"bundle: {args.out}")
     return 0
 
@@ -1600,9 +1832,7 @@ def _cmd_agent_action(args: argparse.Namespace) -> int:
     agent_ids: set[str] = set()
     if args.bundle:
         loaded = _load_json(args.bundle)
-        if not isinstance(loaded, dict) or not isinstance(
-            loaded.get("sources"), list
-        ):
+        if not isinstance(loaded, dict) or not isinstance(loaded.get("sources"), list):
             raise InputError(f"{args.bundle} is not a signal bundle")
         bundle = loaded
         subject = bundle.get("subject")
@@ -1616,9 +1846,7 @@ def _cmd_agent_action(args: argparse.Namespace) -> int:
 
     mode = "live" if args.live else ("pinned" if args.pinned_base else "none")
     token = os.environ.get(args.token_env) if args.token_env else None
-    api_url = (
-        args.api_url or os.environ.get("GITHUB_API_URL") or DEFAULT_API_URL
-    )
+    api_url = args.api_url or os.environ.get("GITHUB_API_URL") or DEFAULT_API_URL
     budget = Budget()
     head_cache: dict[tuple[str, str], str] = {}
 
@@ -1636,14 +1864,16 @@ def _cmd_agent_action(args: argparse.Namespace) -> int:
             )
             if not isinstance(branch, str) or not branch:
                 raise InputError(
-                    "--live needs --branch (or snapshot.branch in the "
-                    "document)"
+                    "--live needs --branch (or snapshot.branch in the document)"
                 )
             key = (doc["repository"], branch)
             if key not in head_cache:
                 head_cache[key] = fetch_branch_head(
-                    doc["repository"], branch,
-                    token=token, api_url=api_url, budget=budget,
+                    doc["repository"],
+                    branch,
+                    token=token,
+                    api_url=api_url,
+                    budget=budget,
                 )
             observed_base = head_cache[key]
 
@@ -1671,17 +1901,17 @@ def _cmd_agent_action(args: argparse.Namespace) -> int:
             while f"{base_id}.{ordinal}" in taken:
                 ordinal += 1
             source_id = f"{base_id}.{ordinal}"
-        elif base_id in existing_ids or any(
-            s["id"] == base_id for s in sources
-        ):
+        elif base_id in existing_ids or any(s["id"] == base_id for s in sources):
             raise InputError(
-                f"source id {base_id!r} collides with a non-duplicate "
-                "existing source"
+                f"source id {base_id!r} collides with a non-duplicate existing source"
             )
         sources.append(
             action_source(
-                doc, state, explanation,
-                validation_mode=mode, source_id=source_id,
+                doc,
+                state,
+                explanation,
+                validation_mode=mode,
+                source_id=source_id,
             )
         )
         seen_digests.add(computed["action"])
@@ -1697,18 +1927,12 @@ def _cmd_agent_action(args: argparse.Namespace) -> int:
             if isinstance(prior, list):
                 added = sorted(set(prior) | set(added))
             collection["imported_sources"] = added
-        _write_json(
-            safe_output_path(args.out, workspace=workspace_boundary()), bundle
-        )
+        _write_json(safe_output_path(args.out, workspace=workspace_boundary()), bundle)
         print(f"bundle: {args.out}")
     else:
-        text = json.dumps(
-            sources, indent=2, ensure_ascii=False, sort_keys=True
-        ) + "\n"
+        text = json.dumps(sources, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
         if args.out:
-            out_path = safe_output_path(
-                args.out, workspace=workspace_boundary()
-            )
+            out_path = safe_output_path(args.out, workspace=workspace_boundary())
             if out_path.parent != Path(""):
                 out_path.parent.mkdir(parents=True, exist_ok=True)
             out_path.write_text(text, encoding="utf-8", newline="\n")
@@ -1716,9 +1940,7 @@ def _cmd_agent_action(args: argparse.Namespace) -> int:
         else:
             sys.stdout.write(text)
     for source in sources:
-        print(
-            f"{source['id']}: {source['status']}", file=sys.stderr
-        )
+        print(f"{source['id']}: {source['status']}", file=sys.stderr)
     return 0
 
 
@@ -1729,15 +1951,11 @@ def _cmd_bench_verify(args: argparse.Namespace) -> int:
     harness runs no agent, applies no patch, and executes no command.
     """
     token = os.environ.get(args.token_env) if args.token_env else None
-    api_url = (
-        args.api_url or os.environ.get("GITHUB_API_URL") or DEFAULT_API_URL
-    )
+    api_url = args.api_url or os.environ.get("GITHUB_API_URL") or DEFAULT_API_URL
     reports = []
     for case_dir in args.case:
         reports.append(
-            verify_case(
-                Path(case_dir), live=args.live, token=token, api_url=api_url
-            )
+            verify_case(Path(case_dir), live=args.live, token=token, api_url=api_url)
         )
     if args.json:
         payload: Any = reports[0] if len(reports) == 1 else reports
@@ -1841,7 +2059,6 @@ def _cmd_export(args: argparse.Namespace) -> int:
     return 0
 
 
-
 def _scope_matches_subject(scope: Any, subject: Any) -> bool:
     if not isinstance(scope, dict):
         return False
@@ -1859,13 +2076,13 @@ def _scope_matches_subject(scope: Any, subject: Any) -> bool:
 
 
 def _bundle_bindings(
-    record: dict[str, Any], bundle: Any,
+    record: dict[str, Any],
+    bundle: Any,
 ) -> tuple[bool, str]:
     if not isinstance(bundle, dict):
         return False, "bundle is not an object"
-    if (
-        subject_identity(record.get("subject"))
-        != subject_identity(bundle.get("subject"))
+    if subject_identity(record.get("subject")) != subject_identity(
+        bundle.get("subject")
     ):
         return False, "record and bundle subjects differ"
 
@@ -1882,9 +2099,7 @@ def _bundle_bindings(
     ) != collection.get("context_digest"):
         return False, "context snapshot digest does not recompute"
 
-    scope = collection.get(
-        "observation_scope", collection.get("subject_context")
-    )
+    scope = collection.get("observation_scope", collection.get("subject_context"))
     if scope is None:
         return True, "not recorded in this bundle"
     if not _scope_matches_subject(scope, bundle.get("subject")):
@@ -1916,8 +2131,7 @@ def _cmd_verify(args: argparse.Namespace) -> int:
             if embedded is not None:
                 if (
                     isinstance(embedded, dict)
-                    and embedded.get("schema_version")
-                    != "verifier-manifest-v0"
+                    and embedded.get("schema_version") != "verifier-manifest-v0"
                 ):
                     manifest_kind = "unsupported"
                     ok = _canonical_digest_string(recorded)
@@ -1974,13 +2188,11 @@ def _cmd_verify(args: argparse.Namespace) -> int:
             else:
                 comparison = "different digest from this installation"
             print(
-                "verifier: digest-only record; file inventory is absent; "
-                f"{comparison}"
+                f"verifier: digest-only record; file inventory is absent; {comparison}"
             )
     else:
         print(
-            "verifier: record predates manifest binding "
-            "(digest replay remains valid)"
+            "verifier: record predates manifest binding (digest replay remains valid)"
         )
 
     if isinstance(bundle, dict):
