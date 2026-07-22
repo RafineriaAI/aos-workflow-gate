@@ -9,6 +9,49 @@ business outcomes remain hypotheses. The
 usability, alert precision, retention, decision impact, and willingness to pay
 remain unvalidated.
 
+## Mass-market product hypothesis
+
+The `0.38.0` candidate tests a broader and more frequent job:
+
+> I built or changed a project. Check it before I share or deploy it, explain
+> what actually ran, and tell me the next action without requiring Git or test
+> expertise.
+
+`aos-check` detects conventional project metadata and executes existing build
+and behavioral checks. This can reduce setup and interpretation friction for
+beginners and coding-agent users, but orchestration alone is not a defensible
+market advantage. The candidate must not be sold as general code correctness.
+
+Mass-product advancement requires accepted incremental findings beyond the
+project's familiar commands: browser-level flow failures, adversarial tests,
+change-sensitive verification, or successful agent remediation followed by
+independent re-check. Required metrics are time to first result, completion,
+actionable and remediation-acceptance rates, incremental finding rate,
+inconclusive/noise rate, repeat use, and 30-day retention.
+
+
+## Stronger code-value experiment
+
+Control assurance is a low-frequency, potentially high-cost job. It may be too
+infrequent to sustain daily developer value on its own. The experimental
+`prove-change` path tests a separate, higher-frequency pain:
+
+> Green tests can pass even when they do not distinguish the implementation
+> introduced by the PR from the implementation it replaces.
+
+AOS runs the same explicit verifier at `HEAD` and with selected implementation
+changes removed. The immediate artifact is executable evidence that the checks
+are change-sensitive, insensitive, failing at `HEAD`, or inconclusive. This is
+more actionable than another review comment, but it remains a product
+hypothesis rather than a proven market advantage.
+
+The commercial hypothesis is reduced reviewer uncertainty and fewer weak tests
+on agent-assisted PRs. It is viable only if external maintainers accept the
+finding, add or strengthen tests, change merge decisions, and retain the check
+at a runtime cost lower than the review or regression cost avoided. The
+comparison baseline must include ordinary CI, changed-test heuristics, and
+established mutation-testing tools.
+
 ## Business problem
 
 A green PR is a collection of reported results, not proof that every intended

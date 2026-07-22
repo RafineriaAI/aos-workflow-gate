@@ -48,6 +48,22 @@ separate alert volume from business relevance and report at least:
 No metric may be inferred from stars, downloads, passing tests, internal
 benchmarks, or the number of generated alerts.
 
+### Additional metrics for executable change proof
+
+| Metric | Decision question |
+| --- | --- |
+| Eligible-change coverage | What share of real PRs can be assessed without manual path or environment repair? |
+| Change-sensitive rate | How often do green checks fail after the implementation patch is removed? |
+| Insensitive-test acceptance | How often does `change_not_distinguished` lead to a stronger test, documented exception, or changed merge decision? |
+| Incremental lift over mutation testing | Does AOS find accepted gaps not already found by the team's mutation or coverage tooling? |
+| Inconclusive and flaky-repeat rate | How often do environment, patch, timeout, or nondeterministic results prevent a stable answer? |
+| Runtime and compute overhead | Added wall time and runner cost per eligible PR and per accepted finding. |
+| Avoided-review-work proxy | Did the executable result replace a reviewer request for proof, or shorten the thread to acceptance? |
+
+Report these separately by language, test framework, change size, agent versus
+human author, and selected-path strategy. A high insensitive rate is not
+automatically value; without accepted remediation it may be noise.
+
 ## What we deliberately do not compute
 
 No return-on-investment figure, no hours-saved estimate, no incident

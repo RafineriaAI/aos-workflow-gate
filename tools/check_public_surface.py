@@ -30,12 +30,18 @@ python tools/check_public_surface.py
 
 REQUIRED_SNIPPETS = {
     "README.md": [
-        "AOS verifies the gate, not the code.",
+        "Check your project before you share it. No Git or test expertise required.",
+        "aos-check",
+        "AOS could not find a runnable behavioral test",
+        "The GitHub gate verifies controls, not code.",
         (
             "control that is missing, stale, produced by the\n"
             "wrong app, or modified by the same PR"
         ),
-        "Exact commit · Read-only · Advisory by default · No source-code upload",
+        (
+            "Exact commit · Default Action read-only · Advisory by default · "
+            "No source-code upload"
+        ),
         "docs/assets/readme-contrast.png",
         "docs/assets/readme-contrast-mobile.png",
         "scramble-robot/questix#99",
@@ -82,7 +88,7 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "pyproject.toml": [
-        "Pre-merge control assurance with exact-commit replayable evidence.",
+        "Local code verification and deterministic workflow decisions.",
     ],
 
     "docs/VALUE.md": [
@@ -100,7 +106,7 @@ REQUIRED_SNIPPETS = {
             "control that is missing, stale, produced by the wrong app, "
             "or\nmodified by the same PR"
         ),
-        "pre-merge control\nassurance",
+        "pre-merge control assurance",
         "Not the primary paid use case",
         "Policy packs alone are too copyable",
         "external utility and market value remain unvalidated",
@@ -490,9 +496,9 @@ REQUIRED_SNIPPETS = {
         "## Completed foundations",
         "### Phase 1: local deterministic gate",
         "### Phase 2: advisory GitHub Action",
-        "## Scope lock",
+        "## Stable surface and product experiments",
         "## Next milestone: external value validation",
-        "No new commands, contracts, dashboards, SaaS layer",
+        "No dashboard, SaaS layer, broad adapter catalog, or release claim",
         "technically correct mechanism is not sufficient evidence",
         "## Deferred",
     ],
@@ -730,6 +736,8 @@ def check_cli_examples() -> None:
                             f"{command!r}"
                         )
                     for token in tokens[2:]:
+                        if token == "--":
+                            break
                         if not token.startswith("--"):
                             continue
                         option = token.split("=", 1)[0]

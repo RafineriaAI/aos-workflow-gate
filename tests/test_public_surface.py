@@ -38,11 +38,7 @@ def test_docs_json_paths_exist() -> None:
 
 def test_docs_index_covers_the_complete_public_surface() -> None:
     data = json.loads(read_text("docs.json"))
-    indexed = [
-        item
-        for section in INDEX_SECTIONS
-        for item in data.get(section, [])
-    ]
+    indexed = [item for section in INDEX_SECTIONS for item in data.get(section, [])]
 
     assert data["status"] == "public-advisory-preview"
     assert len(indexed) == len(set(indexed))
@@ -65,7 +61,7 @@ def test_readme_license_and_local_check_are_renderable() -> None:
 
 def test_readme_leads_with_product_value_before_validation_detail() -> None:
     readme = read_text("README.md")
-    proof = readme.index("AOS verifies the gate, not the code.")
+    proof = readme.index("Check your project before you share it.")
     first_run = readme.index("## Try it on any public PR")
     validation = readme.index("## Validation status")
     documentation = readme.index("## Documentation")
@@ -106,8 +102,10 @@ def test_business_positioning_is_consistent_and_bounded() -> None:
         normalized = " ".join(read_text(path).split())
         assert core_gap in normalized, path
 
-    for path in ("README.md", "docs/ONE_PAGER.md", "docs/index.html"):
+    assert "The GitHub gate verifies controls, not code." in read_text("README.md")
+    for path in ("docs/ONE_PAGER.md", "docs/index.html"):
         assert "AOS verifies the gate, not the code." in read_text(path), path
+    assert "No Git or test expertise required." in read_text("docs/ONE_PAGER.md")
 
     buyer = read_text("docs/BUYER_FAQ.md")
     buyer_normalized = " ".join(buyer.split())
@@ -129,7 +127,7 @@ def test_business_positioning_is_consistent_and_bounded() -> None:
 
     pyproject = tomllib.loads(read_text("pyproject.toml"))
     assert pyproject["project"]["description"] == (
-        "Pre-merge control assurance with exact-commit replayable evidence."
+        "Local code verification and deterministic workflow decisions."
     )
 
 
@@ -172,10 +170,7 @@ def test_release_governance_names_required_check() -> None:
 
 
 def test_merge_metadata_hygiene_rejects_branch_leaks() -> None:
-    clean = (
-        "Release metadata integrity and v0.37.1\n\n"
-        "Enforce public metadata."
-    )
+    clean = "Release metadata integrity and v0.37.1\n\nEnforce public metadata."
     default = "Merge pull request #71 from acme/temporary-release-branch"
 
     assert merge_metadata_issues(clean) == []
@@ -194,8 +189,12 @@ def test_action_and_self_workflow_are_bounded() -> None:
     assert "GATE_SARIF: ${{ inputs.sarif }}" in action
     assert "decision-contrast" in action
     assert "incremental-gap" in action
+    assert "prove-change" not in action
+    assert "check-project" not in action
 
     workflow = read_text(".github/workflows/aos-workflow-gate-self.yml")
+    assert "prove-change" not in workflow
+    assert "check-project" not in workflow
     assert "permissions:\n  contents: read" in workflow
     assert "  checks: read" in workflow
     assert "  actions: read" in workflow
@@ -203,8 +202,7 @@ def test_action_and_self_workflow_are_bounded() -> None:
     assert "  statuses: read" in workflow
     assert "persist-credentials: false" in workflow
     pinned_upload = (
-        "uses: actions/upload-artifact@"
-        "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+        "uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
     )
     assert pinned_upload in workflow
 
@@ -256,6 +254,4 @@ def test_current_status_docs_do_not_describe_the_bootstrap_phase() -> None:
     assert "public bootstrap" not in read_text("SECURITY.md")
     assert "planned architecture" not in read_text("docs/ARCHITECTURE.md")
     assert "once implementation starts" not in read_text("CONTRIBUTING.md")
-    assert "## Next milestone: external value validation" in read_text(
-        "ROADMAP.md"
-    )
+    assert "## Next milestone: external value validation" in read_text("ROADMAP.md")

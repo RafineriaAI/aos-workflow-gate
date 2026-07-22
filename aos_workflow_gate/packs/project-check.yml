@@ -1,0 +1,18 @@
+schema_version: draft-0
+policy_id: project-check
+mode: advisory
+verification_status: UNSIGNED_NOT_OFFICIAL
+subject:
+  require_repository: false
+  require_sha: false
+rules:
+  missing_required_source: BLOCK
+  failed_required_source: BLOCK
+  malformed_input: BLOCK
+  advisory_warning: WARN
+  project_check_failed: BLOCK
+  project_verification_limited: WARN
+  project_quality_warning: WARN
+  project_verification_inconclusive: WARN
+required_sources:
+  - code.project-check

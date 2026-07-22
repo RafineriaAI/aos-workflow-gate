@@ -3,6 +3,7 @@
 ## Current status
 
 Current public release: `v0.37.1`.
+Current local product candidate: `v0.38.0` with `aos-check`.
 
 The CLI and GitHub Action are available as a free, self-serve advisory preview.
 The mechanism is deterministic, exact-SHA bound, tamper-evident, and replayable.
@@ -59,17 +60,32 @@ The v0.30-v0.36 program is implemented:
 
 These controls establish mechanism behavior and testability, not market value.
 
-## Scope lock
+## Stable surface and product experiments
 
-The existing command and contract surface remains frozen for validation:
-`preflight`, `collect`, `import`, `agent-action`, `evaluate`, `run`,
-`check-pr`, `verify`, `summarize`, `export`, and `bench-verify`, plus
-`source-v0`, `agent-action-v0`, and `benchmark-case-v0`.
+The established zero-config Action and control-assurance contracts remain
+frozen for validation. `preflight`, `collect`, `import`, `agent-action`,
+`evaluate`, `run`, `check-pr`, `verify`, `summarize`, `export`, and
+`bench-verify` retain their semantics, as do `source-v0`, `agent-action-v0`,
+and `benchmark-case-v0`.
 
-Until external evidence changes the priority, work is limited to correctness,
-compatibility, noise reduction, self-serve onboarding, documentation, and claim
-accuracy. No new commands, contracts, dashboards, SaaS layer, or broad adapter
-catalog should precede validation.
+`aos-check` is the mass-market entry experiment. It removes Git, GitHub,
+policy, and test-command knowledge from the first run, then reports existing
+build/test failures or missing behavioral verification in plain language. Its
+current scope validates onboarding and orchestration only; differentiation
+still requires accepted findings beyond merely re-running familiar project
+commands.
+
+
+`prove-change` is one explicit experimental exception created to test the
+stronger code-value hypothesis: can AOS generate useful executable evidence
+that existing green tests do not distinguish a code change? It is local-only,
+not part of the default Action, introduces no LLM verdict, and reuses
+`source-v0`, policy evaluation, records, and replay.
+
+No dashboard, SaaS layer, broad adapter catalog, or release claim should
+precede measurement of `aos-check` first-run completion and repeat use plus
+`prove-change` actionable rate, decision-change rate, incremental findings,
+runtime cost, and repeated noise.
 
 ## Next milestone: external value validation
 
@@ -80,9 +96,9 @@ automation.
 Required sequence:
 
 1. Keep the install-to-diagnosis path below five minutes.
-2. Recruit maintainers and platform or DevSecOps owners responsible for real
-   repository controls; individual-developer interest alone is not buyer
-   validation.
+2. Recruit beginners, vibe coders, professional developers, and maintainers;
+   measure the local first-run job separately from team control-assurance
+   demand.
 3. Collect opt-in, non-confidential feedback through the public form.
 4. When access exists, run the preregistered formative study with 8-12
    independent developers and control owners.
