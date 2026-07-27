@@ -6,8 +6,11 @@
 
 **Check your project before you share it. No Git or test expertise required.**
 
-AOS detects the project in the current folder, runs the build and behavioral
-checks it already defines, and answers three questions in plain language:
+AOS detects the project at the current root and, when no behavioral test is
+available there, checks bounded nested projects. It runs the build and test
+commands they already define and performs a local high-confidence scan for
+unresolved conflicts and private key material. It answers three questions in
+plain language:
 
 1. What worked?
 2. What failed or was not checked?
@@ -36,7 +39,7 @@ Project: Node.js
 [OK] Node build
 
 What AOS found:
-AOS could not find a runnable behavioral test for this project.
+AOS found no runnable behavioral test command in the scanned scope.
 
 Next:
 Ask your coding agent to add one automated test for the app's most important
@@ -49,22 +52,27 @@ verification result, while the process exits successfully unless
 
 ## What it checks today
 
-AOS recognizes conventional root projects for:
+AOS recognizes the project root. If it exposes no behavioral test, AOS checks
+up to eight nested projects within four directory levels:
 
 - Python: syntax plus pytest when tests are present;
 - Node.js: declared build, typecheck, test, and lint scripts;
 - Go and Rust: their conventional test commands;
-- Maven and Gradle: their conventional test tasks.
+- Maven and Gradle: their conventional test tasks;
+- Every supported project: a bounded high-confidence scan for complete private
+  key blocks and paired unresolved-conflict markers.
 
 AOS does not install dependencies, invent commands, invoke a shell, upload
 code, or send telemetry. It executes the checks already defined by the local
 project and stores digests rather than raw output. A failed command is shown
 locally so the user can act on it.
 
-`PASS` means every discovered build and behavioral check completed. It does
-not prove that every requirement, security property, edge case, or user flow
-is correct. A project with no runnable behavioral test receives `WARN`, not a
-misleading green result.
+The first run scans the bounded local snapshot. Later runs use a local
+content-free state file to scan changed files and recheck unresolved findings,
+while still executing discovered build and tests. `PASS` means the bounded
+safety scan and every discovered build and behavioral check completed. It does
+not prove that every requirement, vulnerability, edge case, or user flow is
+scope with no runnable behavioral test command receives `WARN`.
 
 ## Why this is useful with coding agents
 
@@ -79,6 +87,11 @@ The current local check is the low-friction entry point, not the complete
 product claim. Browser-flow verification, adversarial test generation, and
 external usability evidence remain required before positioning AOS as a
 general correctness verifier.
+
+On the frozen exact-SHA corpus of 60 earlier missing-test warnings, bounded
+nested discovery found a declared test command in 8 cases; 7 had complete
+bounded discovery. This measures one false-warning mechanism, not user value.
+[Inspect the remeasurement](benchmarks/mass-market/PROJECT_CHECK_REMEASUREMENT.md).
 
 ## GitHub control assurance
 

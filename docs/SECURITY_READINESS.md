@@ -23,7 +23,7 @@ records with the same sensitivity as your check names.
 ## Local `aos-check` execution boundary
 
 `aos-check` requires no Git or GitHub access, but it executes the conventional
-build and test surfaces of the selected folder:
+build and test surfaces discovered in the selected folder:
 
 - project type and commands are selected from a bounded built-in adapter list;
 - dependencies are never installed and commands use argument arrays with
@@ -33,8 +33,16 @@ build and test surfaces of the selected folder:
   access;
 - the local snapshot skips symlinks and dependency/build directories and is
   bounded to 10,000 files and 100 MiB;
-- evidence stores content and output digests, counts, states, and timings, but
-  no source content, absolute path, or raw output;
+- nested discovery is bounded to eight projects and four directory levels;
+- the internal scan checks bounded text for paired conflict markers and
+  complete private-key blocks; non-production private-key fixtures are
+  excluded to reduce noise;
+- local `project-state.json` contains relative paths, hashes, and finding
+  metadata but no matched content; it scopes changed-file scans and forces
+  prior findings to be revalidated;
+- evidence stores relative finding metadata, digests, counts, states, and
+  timings, but no matched source content, credential value, absolute path, or
+  raw output;
 - a bounded failure preview is printed locally and is not retained by AOS.
 
 Run untrusted or downloaded projects in an unprivileged sandbox. AOS does not

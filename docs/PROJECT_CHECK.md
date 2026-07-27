@@ -8,8 +8,8 @@ the project's test commands.
 
 ## Product job
 
-> Tell me whether the project passes the checks it already has, what important
-> verification is missing, and what I should do next.
+> Tell me whether the project passes its checks, whether a high-confidence
+> sharing blocker is present, what was not verified, and what I should do next.
 
 This is intentionally narrower than "prove my app is correct." The candidate
 must earn broader claims through browser-level and external usability testing.
@@ -38,7 +38,9 @@ aos-workflow-gate check-project
 
 ## Discovery
 
-The v0 adapter reads only conventional root-level metadata:
+The adapter reads conventional metadata at the selected root. When no
+behavioral test is runnable there, it inspects at most eight nested project
+roots within four directory levels and runs each command in its own directory:
 
 | Project | Discovered checks |
 | --- | --- |
@@ -49,15 +51,20 @@ The v0 adapter reads only conventional root-level metadata:
 | Maven | `mvn test -q` |
 | Gradle | wrapper `test --quiet` |
 
+Every run also performs a bounded internal scan for paired unresolved-conflict
+markers and complete private-key blocks. It records finding type, relative
+path, and line only; matched source text is never retained.
+
 No dependency is installed automatically. A missing runtime, malformed
-manifest, absent behavioral test, incomplete bounded snapshot, timeout, or
+manifest, absent test command, incomplete nested discovery or snapshot, timeout, or
 launch failure prevents an unqualified `PASS`.
 
 ## Decision semantics
 
 | Observation | Verdict | Default exit |
 | --- | --- | --- |
-| Every discovered check passes and at least one behavioral test ran | `PASS` | `0` |
+| Safety scan and every discovered check pass; at least one behavioral test ran | `PASS` | `0` |
+| Paired conflict markers or complete private-key material found | `BLOCK` | `0` |
 | No runnable behavioral test or another explicit coverage limitation | `WARN` | `0` |
 | A discovered build, test, or type command fails | `BLOCK` | `0` |
 | A discovered lint or quality command reports issues | `WARN` | `0` |
@@ -85,16 +92,24 @@ The command writes `.aos-check/`:
 
 ```text
 project-check-source.json
+project-state.json
 bundle.json
 policy.json
 gate-decision.json
 ```
 
 The source identity binds the detected ecosystems, a content digest over
-bounded code and manifest files, selected commands, execution states, exit
-codes, durations, byte counts, and output digests. It contains no raw command
-output, absolute project path, source content, credential, telemetry, or Git
+bounded code, configuration, and manifest files; detected project roots;
+selected working directories and commands; safety-finding metadata; execution
+states; timings; and output digests. It contains no raw command output,
+absolute project path, source content, credential value, telemetry, or Git
 identifier.
+
+`project-state.json` stores relative paths, content hashes, and unresolved
+finding metadata, but no matched content. The first run scans the bounded
+snapshot; a later run scans files whose hashes changed and revalidates prior
+findings. Malformed, foreign-project, or missing state falls back to a full
+scan.
 
 ## Security boundary
 
@@ -105,20 +120,29 @@ identifier.
   use the network according to their own behavior.
 - Snapshot hashing is local, skips symlinks and common dependency/build
   directories, and is bounded to 10,000 files and 100 MiB.
+- Nested discovery is bounded to eight projects and four directory levels.
+- Internal risk scanning reads bounded local text files and retains no matched
+  content; it does not validate whether a credential is active.
 - No result proves absence of defects, vulnerabilities, or harmful behavior.
 
 ## Product boundary
 
 This candidate reduces first-run friction and makes existing verification
-understandable. On its own, it is not sufficiently differentiated from build
-and test runners. Advancement to a mass product requires validated additional
-value from at least one of:
+understandable. Nested execution and changed-file risk scanning now add value
+beyond invoking one root command, but market differentiation remains
+unvalidated. Advancement still requires accepted incremental findings from:
 
 1. browser-level critical-flow verification without test authoring;
 2. adversarial tests that reproduce a defect missed by ordinary CI;
 3. change-sensitive checks that prove the tests react to the implementation;
-4. accepted remediation that a coding agent can apply and AOS can re-check.
+4. accepted high-confidence local findings or agent remediation that AOS can
+   re-check.
 
 External metrics must include time to first result, actionable rate,
 remediation acceptance, incremental findings over ordinary build/test, repeat
 use, and false-positive or inconclusive rate.
+
+A frozen 60-repository exact-SHA remeasurement found a declared nested test
+command in 8 prior root-only warning cases, 7 with complete bounded discovery.
+This demonstrates reduced false-warning risk, not business utility. See the
+[committed report](../benchmarks/mass-market/PROJECT_CHECK_REMEASUREMENT.md).

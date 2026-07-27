@@ -78,7 +78,11 @@ from .preflight import render_report, run_preflight
 from .project_check import (
     build_bundle as build_project_check_bundle,
 )
-from .project_check import check_project
+from .project_check import (
+    build_project_state,
+    check_project,
+    load_project_state,
+)
 from .requirements import (
     PENDING,
     UNVERIFIABLE,
@@ -1612,9 +1616,11 @@ def _cmd_check_pr(args: argparse.Namespace) -> int:
 def _cmd_check_project(args: argparse.Namespace) -> int:
     """Run a beginner-facing local project check without requiring Git."""
     workspace = workspace_boundary()
+    state_path = safe_output_path(".aos-check/project-state.json", workspace=workspace)
     result = check_project(
         Path(args.project),
         timeout_seconds=args.timeout_seconds,
+        baseline=load_project_state(state_path),
     )
     source = result.source
     bundle = build_project_check_bundle(source)
@@ -1638,6 +1644,7 @@ def _cmd_check_project(args: argparse.Namespace) -> int:
 
     identity = source["identity"]
     diagnosis = diagnose(record)
+    _write_json(state_path, build_project_state(result))
     ecosystems = ", ".join(identity["ecosystems"]) or "unknown project"
     print(f"AOS Check: {decision.verdict}")
     print(f"Project: {ecosystems}")

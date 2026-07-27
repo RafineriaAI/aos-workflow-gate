@@ -32,7 +32,7 @@ REQUIRED_SNIPPETS = {
     "README.md": [
         "Check your project before you share it. No Git or test expertise required.",
         "aos-check",
-        "AOS could not find a runnable behavioral test",
+        "AOS found no runnable behavioral test command in the scanned scope.",
         "The GitHub gate verifies controls, not code.",
         (
             "control that is missing, stale, produced by the\n"

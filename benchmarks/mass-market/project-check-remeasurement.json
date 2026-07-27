@@ -1,0 +1,1308 @@
+{
+  "claim_boundary": "This remeasurement can show that bounded nested metadata discovery removes some root-only missing-test warnings. It cannot establish that tests pass, cover business behavior, are accepted by maintainers, change merge decisions, create retention, justify payment or outperform another product.",
+  "collected_at": "2026-07-27T21:01:10Z",
+  "manifest_digest": "sha256:ec204dbe2f94272876678284a810fc58e8482535b0b59c15d28550f1c06e79dc",
+  "metrics": {
+    "bounded_discovery_complete": 58,
+    "bounded_discovery_complete_rate": 0.9667,
+    "bounded_discovery_incomplete": 2,
+    "complete_nested_command_resolution_rate": 0.1167,
+    "complete_nested_command_resolutions": 7,
+    "complete_observation_rate": 1.0,
+    "complete_observations": 60,
+    "definite_command_detection_rate": 0.4167,
+    "definite_surfaces_with_complete_supported_command": 4,
+    "definite_surfaces_with_supported_command": 5,
+    "definite_test_surfaces": 12,
+    "nested_command_resolution_rate": 0.1333,
+    "nested_command_resolutions": 8,
+    "remaining_no_supported_command": 52,
+    "repositories": 60,
+    "root_commands_detected": 0
+  },
+  "observations": [
+    {
+      "adjudication": null,
+      "classification": "resolved_by_nested_command",
+      "complete": true,
+      "declared_test_checks": [
+        {
+          "id": "rust.tests@src-tauri",
+          "working_directory": "src-tauri"
+        },
+        {
+          "id": "rust.tests@src-tauri/crates/get-node",
+          "working_directory": "src-tauri/crates/get-node"
+        }
+      ],
+      "ecosystems": [
+        "Node.js",
+        "Rust"
+      ],
+      "head_sha": "0ab388398bc3a90a84d4215e105fa6b9c882048f",
+      "limitations": [],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "src-tauri",
+        "src-tauri/crates/get-node"
+      ],
+      "repository": "1111mp/nvm-desktop"
+    },
+    {
+      "adjudication": "path_false_match",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python",
+        "Node.js"
+      ],
+      "head_sha": "2b74fd3a0d17bee39880542a80703d09e20d9fbf",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root or in 2 detected nested project(s)."
+      ],
+      "metadata_blobs_fetched": 2,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "frontend",
+        "mobile"
+      ],
+      "repository": "7078-cj/TodaGoo"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "b5c8f4996feae427a99617b03beedb69f152fa69",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "ASTRACAT2022/VPN-FREE-astra.net-V1"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "resolved_by_nested_command",
+      "complete": true,
+      "declared_test_checks": [
+        {
+          "id": "gradle.tests@android",
+          "working_directory": "android"
+        }
+      ],
+      "ecosystems": [
+        "Python",
+        "Node.js",
+        "Java/Gradle"
+      ],
+      "head_sha": "c9bca86c12099a8c43d41a8c96a405eb21a65996",
+      "limitations": [],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "android"
+      ],
+      "repository": "AallynReed/BetterTroveTools"
+    },
+    {
+      "adjudication": "path_false_match",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "bc5b4e471e6b0f1dee03354bd6ea366a0e648c62",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "Big-Data-Club/BDCHub---Frontend"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "16cefc558bf54b89728d46163d0789143b85ef33",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "Bush2021/chrome_installer"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "be05dbd8e343e459384ba19543420feb2644740a",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "CaliCastle/cali.so"
+    },
+    {
+      "adjudication": "probable_validation_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "5b89d895418824206bb5d6f1847a0baea4879665",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "CypherVantageAI/core-platform"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "759c7da2cb899236a394858143582e16e8a967a2",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "Czar-16/PurePin"
+    },
+    {
+      "adjudication": null,
+      "classification": "resolved_by_nested_command",
+      "complete": true,
+      "declared_test_checks": [
+        {
+          "id": "node.test@src/file-utilities",
+          "working_directory": "src/file-utilities"
+        },
+        {
+          "id": "rust.tests@src/file-utilities",
+          "working_directory": "src/file-utilities"
+        },
+        {
+          "id": "rust.tests@src/file-utils",
+          "working_directory": "src/file-utils"
+        },
+        {
+          "id": "node.test@src/zimage",
+          "working_directory": "src/zimage"
+        },
+        {
+          "id": "rust.tests@src/zimage",
+          "working_directory": "src/zimage"
+        },
+        {
+          "id": "node.test@src/zjxl",
+          "working_directory": "src/zjxl"
+        }
+      ],
+      "ecosystems": [
+        "Node.js",
+        "Rust"
+      ],
+      "head_sha": "f3a81dbe1524cbf2fa89f107742e9b8ad97c277c",
+      "limitations": [],
+      "metadata_blobs_fetched": 6,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "src/file-utilities",
+        "src/file-utils",
+        "src/mp4thumb",
+        "src/zimage",
+        "src/zjxl"
+      ],
+      "repository": "DMKha2k7/re-impl-zalo-nativelibs-linux"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "6e0c20fba903583f715081b0e72d8a2cd6020064",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "DarkLingYun/MaaGF2Exilium"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "7f0a366d1038caaa2829e174ea5f733b7e5c1bd4",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "Deasus/firestorm-ngfs-data"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "f4966ee7bf293ff5c9cd676115cb8b38323cff89",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root or in 6 detected nested project(s)."
+      ],
+      "metadata_blobs_fetched": 7,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "projects/helper/custom-scripts/fuel",
+        "projects/helper/custom-scripts/metadao",
+        "projects/helper/custom-scripts/ssv",
+        "projects/helper/custom-scripts/sushi-analytics-v2",
+        "projects/xrpl-dex",
+        "utils"
+      ],
+      "repository": "DefiLlama/DefiLlama-Adapters"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "05318fa14ccd2e833de6ba6052574cf01fb9dc13",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "FlowingAI/kuai"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "209c0155575c83582b345ee87aeb35567ff44a8f",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "InnoNestX/docker-hub-pull-counter"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "53b15320b31f150c3b7dd284ddda6b3c6831b5f2",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "Jerasaurus/Luthor-Discord-Bot"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "84f0845403f61d705a5d74ad33b106c3cc74b759",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "KiranKalluri268/portfolio"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "d49f8aee23eb2b49907c0c7fedb4611358761bd1",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "LukasParke/plex-api-spec"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "ae63eacdc75e0ebc8bfd91cc4cb50a28799c6159",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "MaxWCode/Smeags_Stock_Checker"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "fce0499a09182b8af6336034a82f8c641848420b",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "MhdiTaheri/V2rayCollector_Py"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "b6b9ddea645b1d24bd0030be88e10e20c7f51863",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "N01RRR/Project-Kronos"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "864199e527ea169488f1d88a8281a43a69a877e3",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root or in 1 detected nested project(s)."
+      ],
+      "metadata_blobs_fetched": 2,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        ".agents/skills/expo-cicd-workflows/scripts"
+      ],
+      "repository": "NathanLaure/neve"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "9ae61faf9cfde3ad3b9b13eaa95fe6632d8a3073",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root or in 1 detected nested project(s)."
+      ],
+      "metadata_blobs_fetched": 2,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "services/webos"
+      ],
+      "repository": "NuvioMedia/NuvioWeb"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js",
+        "Python"
+      ],
+      "head_sha": "ea8bed24b020601d6b5714b87357fafa644bc04f",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root or in 3 detected nested project(s)."
+      ],
+      "metadata_blobs_fetched": 4,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "electron",
+        "server",
+        "web"
+      ],
+      "repository": "SirAllap/agentglass"
+    },
+    {
+      "adjudication": "path_false_match",
+      "classification": "resolved_by_nested_command",
+      "complete": true,
+      "declared_test_checks": [
+        {
+          "id": "node.test@apps/portfolio",
+          "working_directory": "apps/portfolio"
+        },
+        {
+          "id": "node.test@apps/server",
+          "working_directory": "apps/server"
+        }
+      ],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "bc17c846afcb781d13c556664834e3eb4f21dfa3",
+      "limitations": [],
+      "metadata_blobs_fetched": 8,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "apps/blog-platform",
+        "apps/docs-platform",
+        "apps/portfolio",
+        "apps/server",
+        "apps/site",
+        "apps/studio",
+        "packages/ui"
+      ],
+      "repository": "VeriWorkly/veriworkly"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "62de4ce92744bb96c189734346299c4864636509",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "WillemSleegers/lime"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "cb4e5f018693961dce31e5d43884600dfbce6006",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "Yu9191/sub-store-workers"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "2101665c7075b976930a8e5ef1eb92a4110a6ecd",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "adamlui/chatgpt-auto-refresh"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "b7df2d278be1a4d1ada4b67cc754b3aa546db674",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "asiya8888/a8iya"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "959d4bd6ce58291ca8a55dc966d594b5c9774eda",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "bulwarkmail/webmail"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "58e52f9631b75427908e7fda3db805ba0e9a5ae9",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "dajie111/nodeseek-userscript"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "5fc408652232633cec18e3c8c058263105f2d45e",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "fabriceigiraneza36-png/backend"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "2c299af690569b43bf7bf1ece57e41c83cbb2de8",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "ftCLI/FoundryTools"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python",
+        "Node.js"
+      ],
+      "head_sha": "fb299eddfac2eacd610ccf0f0421db73ed878e3c",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "fzrilsh/bercocok-tanam"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "f82d4141691f03d57625f27ea60e9d1bf1e209b7",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "indmdev/Free-Telegram-Store-Bot"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "6eeeb56adc2242558e5b89ea2dc15d29b0011224",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "inematds/yt-pub-livesx"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "c6ebe815623ee2b6e0b6defe2700ae95b88b2be8",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "jackyzy823/rajiko"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "644be9f37d564bbee12971927e74cc49b2caec76",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "jvxiao/speed-github"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "4fb0f7a1899c16f5d3adbd5ecfd78e70c27982ee",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "kishankumar8/DSA-Leetcode-question"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "04ac676e06142e248561e15940e0ce15260b2a34",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "lele-blue/gog-galaxy-itch.io"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "4281eac92b6f4f08ec5bd20296f76203bf64c00e",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "linny006/skills-tracker"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "6d85cf75512a00a57de7f781e257b4221d80633a",
+      "limitations": [
+        "Nested project discovery exceeded the bounded limit of 8 projects.",
+        "No runnable behavioral test command was detected at this project root or in 8 detected nested project(s)."
+      ],
+      "metadata_blobs_fetched": 17,
+      "nested_discovery_complete": false,
+      "project_roots": [
+        ".",
+        "apps/docs",
+        "apps/landing",
+        "apps/web",
+        "packages/billing",
+        "packages/database",
+        "packages/dayjs",
+        "packages/emails",
+        "packages/languages"
+      ],
+      "repository": "lukevella/rallly"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "ce194d7da85ca5d557654e329fc1f70fb9d10475",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "magnusfroste/flowwink"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "5cbd6b1601e9ed8ece8b74613b38e505420bb3f1",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "maslovnu111/polymarket-whale-tracker"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "f527959e14c47e74e54815db7a2a5f5e485e245c",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "maxell666/macro-alerts-telegram-v3"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "97df962349ccddb2e872cbb6d7d389c482faab0d",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "moakdoge/chat_site"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "1b58ac3a9c2f30568985ee035a596ac7269f1892",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "mtptisid/mtptisid"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python",
+        "Node.js"
+      ],
+      "head_sha": "d5612dd35c77cfabd09083bc9760b89526269b1f",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root or in 1 detected nested project(s)."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "ui"
+      ],
+      "repository": "ostris/ai-toolkit"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "fa46ee3a8e2faf35b23ee9d9c2ecb68fe0c050dd",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "papersgpt/papersgpt-for-zotero"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "resolved_by_nested_command",
+      "complete": true,
+      "declared_test_checks": [
+        {
+          "id": "python.tests@client",
+          "working_directory": "client"
+        }
+      ],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "1f53ba0ad9ce1ecd599cdb6a6d2291ec954e436e",
+      "limitations": [],
+      "metadata_blobs_fetched": 2,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "client"
+      ],
+      "repository": "pyronear/pyro-api"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "resolved_by_nested_command",
+      "complete": true,
+      "declared_test_checks": [
+        {
+          "id": "node.test@backend",
+          "working_directory": "backend"
+        },
+        {
+          "id": "node.test@frontend",
+          "working_directory": "frontend"
+        }
+      ],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "89c74eabb7652e1bf1ed4b21df081a4e31b97ad3",
+      "limitations": [],
+      "metadata_blobs_fetched": 4,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "backend",
+        "backend/eslint-plugin-local-rules",
+        "frontend"
+      ],
+      "repository": "qinshihu/itops-agent-platform"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "resolved_by_nested_command",
+      "complete": true,
+      "declared_test_checks": [
+        {
+          "id": "rust.tests@src-tauri",
+          "working_directory": "src-tauri"
+        }
+      ],
+      "ecosystems": [
+        "Node.js",
+        "Rust"
+      ],
+      "head_sha": "dee0eab1f9ec8b520c99ec813ac7c8bcef515645",
+      "limitations": [],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "src-tauri"
+      ],
+      "repository": "ryantsai/KKTerm"
+    },
+    {
+      "adjudication": "probable_validation_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "fb47849698e46638f202bd8a385d76ad5c1c7b45",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root or in 1 detected nested project(s)."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        ".",
+        "libs/lzss"
+      ],
+      "repository": "satan53x/SExtractor"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "715e532befa825600e9a97ff3e0fbd56bca8474b",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "sergiocalazans/linkedin-autoconnect-bot"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "0c3fefc11252c3c8954a5ab1063914f6b9843851",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "tahasync/Portfolio_Website"
+    },
+    {
+      "adjudication": "probable_validation_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "48e63a1b92115dcceb62364da919acac2ebc4a93",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "txemi/immich-autotag"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "c8adc23ae8f3b36ed491b54de75baea5da8849a9",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "undp/undp-ui-library"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "resolved_by_nested_command",
+      "complete": true,
+      "declared_test_checks": [
+        {
+          "id": "node.test@packages/bruno-app",
+          "working_directory": "packages/bruno-app"
+        },
+        {
+          "id": "node.test@packages/bruno-cli",
+          "working_directory": "packages/bruno-cli"
+        },
+        {
+          "id": "node.test@packages/bruno-common",
+          "working_directory": "packages/bruno-common"
+        },
+        {
+          "id": "node.test@packages/bruno-converters",
+          "working_directory": "packages/bruno-converters"
+        },
+        {
+          "id": "node.test@packages/bruno-electron",
+          "working_directory": "packages/bruno-electron"
+        },
+        {
+          "id": "node.test@packages/bruno-filestore",
+          "working_directory": "packages/bruno-filestore"
+        }
+      ],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "4f02e61324fe85cc9e2734508bfffad3d852d4e3",
+      "limitations": [
+        "Nested project discovery exceeded the bounded limit of 8 projects."
+      ],
+      "metadata_blobs_fetched": 26,
+      "nested_discovery_complete": false,
+      "project_roots": [
+        ".",
+        "packages/bruno-app",
+        "packages/bruno-cli",
+        "packages/bruno-common",
+        "packages/bruno-converters",
+        "packages/bruno-docs",
+        "packages/bruno-electron",
+        "packages/bruno-filestore",
+        "packages/bruno-graphql-docs"
+      ],
+      "repository": "usebruno/bruno"
+    },
+    {
+      "adjudication": "definite_test_surface",
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Node.js"
+      ],
+      "head_sha": "162e5b2ab1a8179d3eb4eff5e1bd5999cde71e2d",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 1,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "vericontext/querypad"
+    },
+    {
+      "adjudication": null,
+      "classification": "no_supported_runnable_command",
+      "complete": true,
+      "declared_test_checks": [],
+      "ecosystems": [
+        "Python"
+      ],
+      "head_sha": "69f97ab148282966979123bb466105bcb2a3bbc4",
+      "limitations": [
+        "No runnable behavioral test command was detected at this project root."
+      ],
+      "metadata_blobs_fetched": 0,
+      "nested_discovery_complete": true,
+      "project_roots": [
+        "."
+      ],
+      "repository": "xuyang-liu16/hermes-code-bridge"
+    }
+  ],
+  "prior_status": "HIGH_FALSE_POSITIVE_RISK",
+  "schema_version": "aos-project-check-remeasurement/v0",
+  "status": "MEASURED_FALSE_WARNING_RISK_REDUCTION",
+  "study_id": "aos-check-nested-command-remeasurement-2026-07-27"
+}

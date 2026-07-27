@@ -27,6 +27,7 @@ from .project_check import FAILED as PROJECT_CHECK_FAILED
 from .project_check import INCONCLUSIVE as PROJECT_CHECK_INCONCLUSIVE
 from .project_check import LIMITED as PROJECT_CHECK_LIMITED
 from .project_check import QUALITY_WARNING as PROJECT_CHECK_QUALITY_WARNING
+from .project_check import RISK_FOUND as PROJECT_CHECK_RISK_FOUND
 from .project_check import SOURCE_KIND as PROJECT_CHECK_KIND
 from .source_contract import (
     SOURCE_CONTRACT_VERSION,
@@ -53,6 +54,7 @@ PROJECT_CHECK_RULE_BY_STATUS = {
     PROJECT_CHECK_LIMITED: "project_verification_limited",
     PROJECT_CHECK_INCONCLUSIVE: "project_verification_inconclusive",
     PROJECT_CHECK_QUALITY_WARNING: "project_quality_warning",
+    PROJECT_CHECK_RISK_FOUND: "project_high_confidence_risk",
 }
 
 

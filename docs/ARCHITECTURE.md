@@ -62,10 +62,14 @@ The zero-config Action invokes the same `run` path as the CLI. Explicit
 with autodiscovery.
 
 `aos-check` is a separate local product surface. It hashes a bounded project
-snapshot, detects conventional root-level build and test commands, executes
-them with `shell=False`, and maps their observations through the same source,
-policy, decision, and replay pipeline. It does not require or synthesize Git
-identity.
+snapshot, detects conventional root build/test commands, and falls back to
+bounded nested projects when the root has no behavioral test. Commands execute
+in their project directories with `shell=False`. A built-in
+scanner checks the first bounded snapshot and later hash-differentiated files
+for paired conflict markers and complete private-key material. Relative paths,
+hashes, and finding metadata enter the local evidence; matched source text
+does not. The observations use the same source, policy, decision, and replay
+pipeline without requiring or synthesizing Git identity.
 
 `prove-change` is a separate experimental path. It is never called by the
 default Action, never reads verifier commands from repository content, and

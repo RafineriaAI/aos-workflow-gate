@@ -17,10 +17,21 @@ The `0.38.0` candidate tests a broader and more frequent job:
 > what actually ran, and tell me the next action without requiring Git or test
 > expertise.
 
-`aos-check` detects conventional project metadata and executes existing build
-and behavioral checks. This can reduce setup and interpretation friction for
-beginners and coding-agent users, but orchestration alone is not a defensible
-market advantage. The candidate must not be sold as general code correctness.
+`aos-check` detects root project metadata, falls back to bounded nested
+projects when root test coverage is absent, executes existing build and
+behavioral checks, and locally scans changed files for two
+high-confidence sharing blockers without retaining source text. This reduces
+setup and interpretation friction and creates an incremental signal beyond
+ordinary root command orchestration. Its real acceptance, severity, and
+retention are still unmeasured; it must not be sold as general code
+correctness.
+
+A metadata-only remeasurement on the frozen 60-repository exact-SHA corpus
+removed the root-only missing-test reason in 8 cases (13.3%); 7 cases (11.7%)
+also had complete bounded nested discovery. This is a measured engineering
+gain over the prior AOS detector, not evidence of acceptance, decision change,
+retention, willingness to pay, or superiority over another product. See
+[Project Check remeasurement](../benchmarks/mass-market/PROJECT_CHECK_REMEASUREMENT.md).
 
 Mass-product advancement requires accepted incremental findings beyond the
 project's familiar commands: browser-level flow failures, adversarial tests,

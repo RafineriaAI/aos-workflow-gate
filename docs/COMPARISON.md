@@ -8,18 +8,19 @@ competitor tool was benchmarked or scored here, and no superiority is claimed.
 
 ## Local product candidate
 
-`aos-check` is a convenience and decision layer over conventional local
-project checks. Unlike an AI reviewer, it does not infer defects from source
-text. Unlike a hosted browser-testing agent, it does not yet explore user
-flows. Unlike a test runner, it detects the project, selects supported
-surfaces, distinguishes failed from missing verification, and produces one
-plain-language next action plus a replayable local record.
+`aos-check` combines conventional local project checks with a bounded,
+deterministic scan for paired conflict markers and complete private-key
+material. Unlike an AI reviewer, it does not infer intent or use an LLM.
+Unlike a hosted browser-testing agent, it does not explore user flows. Unlike
+a test runner, it falls back to bounded nested projects when root verification
+is absent, distinguishes failed from missing verification, scopes later scans
+using content-free local state, and
+produces one next action plus a replayable record.
 
-That combination lowers first-run friction but is not yet a demonstrated moat.
-AOS becomes materially differentiated only when its adversarial or runtime
-verification produces accepted findings that ordinary build/test and existing
-review tools miss at acceptable runtime and noise. Until measured, the local
-surface is a product experiment rather than a superiority claim.
+That combination now produces an incremental code-risk signal beyond merely
+re-running a root command, but it is not a demonstrated moat. Material
+differentiation still requires accepted findings that ordinary build/test and
+existing review tools miss at acceptable runtime and noise.
 
 See [Local Project Check](PROJECT_CHECK.md) for the exact implemented boundary.
 

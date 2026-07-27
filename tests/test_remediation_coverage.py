@@ -29,6 +29,7 @@ EXPECTED_RULES = {
     "change_not_distinguished",
     "verification_inconclusive",
     "project_check_failed",
+    "project_high_confidence_risk",
     "project_verification_limited",
     "project_verification_inconclusive",
     "advisory_warning",
