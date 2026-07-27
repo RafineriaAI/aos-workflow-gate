@@ -1,0 +1,115 @@
+{
+  "claim_boundary": "This study may measure repository-surface coverage, deterministic first-run behavior, diagnostic contrast with native commands, runtime, evidence hygiene, and activation requirements. It cannot establish human comprehension, business severity, recommendation acceptance, decision change, retention, willingness to pay, or defect-prevention efficacy without external users.",
+  "controlled_execution": {
+    "cases": [
+      "malformed_node_manifest",
+      "node_lint_warning",
+      "node_no_test",
+      "node_pass",
+      "node_test_failure",
+      "python_no_test",
+      "python_pass",
+      "python_secret_failure",
+      "unknown_project"
+    ],
+    "network": "not_required_by_fixtures",
+    "scope": "generated local fixtures only; no public repository code is executed"
+  },
+  "data_cutoff": "2026-07-22T17:16:02Z",
+  "external_metrics_required": {
+    "alert_acceptance_rate": 0.5,
+    "business_relevant_incremental_rate": 0.2,
+    "comprehension_within_30_seconds_rate": 0.8,
+    "critical_false_positive_rate_max": 0.05,
+    "decision_change_rate": 0.1,
+    "first_result_completion_rate": 0.8,
+    "median_time_to_first_result_seconds_max": 300,
+    "minimum_external_participants": 30,
+    "minimum_novice_or_vibe_participants": 15,
+    "minimum_retention_days": 30,
+    "retention_rate": 0.4,
+    "willingness_to_pay_rate": 0.1
+  },
+  "market_comparators": [
+    {
+      "id": "native-project-runner",
+      "source": "https://docs.pytest.org/en/stable/how-to/usage.html"
+    },
+    {
+      "id": "pre-commit",
+      "source": "https://pre-commit.com/"
+    },
+    {
+      "id": "github-actions",
+      "source": "https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows"
+    },
+    {
+      "id": "megalinter",
+      "source": "https://megalinter.io/latest/mega-linter-runner/"
+    },
+    {
+      "id": "github-copilot-code-review",
+      "source": "https://docs.github.com/en/copilot/concepts/agents/code-review"
+    },
+    {
+      "id": "sonarqube-cloud",
+      "source": "https://docs.sonarsource.com/sonarqube-cloud/improving/pull-request-analysis"
+    }
+  ],
+  "preregistered_at": "2026-07-22T17:16:02Z",
+  "public_repository_execution": "forbidden_without_isolation",
+  "sample": {
+    "activity_filter": "pushed:>=2026-01-01",
+    "archived": false,
+    "fork": false,
+    "languages": [
+      {
+        "name": "Python",
+        "star_band_quotas": [21, 21, 21, 21],
+        "total": 84
+      },
+      {
+        "name": "TypeScript",
+        "star_band_quotas": [21, 21, 21, 21],
+        "total": 84
+      },
+      {
+        "name": "JavaScript",
+        "star_band_quotas": [21, 21, 21, 20],
+        "total": 83
+      },
+      {
+        "name": "Go",
+        "star_band_quotas": [21, 21, 21, 20],
+        "total": 83
+      },
+      {
+        "name": "Rust",
+        "star_band_quotas": [21, 21, 21, 20],
+        "total": 83
+      },
+      {
+        "name": "Java",
+        "star_band_quotas": [21, 21, 21, 20],
+        "total": 83
+      }
+    ],
+    "selection_order": "sha256(seed + repository_full_name)",
+    "seed": "aos-check-mass-value-2026-07-22-v0",
+    "size_kib": "10..100000",
+    "star_bands": ["1..9", "10..99", "100..999", ">=1000"],
+    "target_repositories": 500
+  },
+  "schema_version": "aos-mass-value-study/v0",
+  "stopping_rule": "Collect every preregistered stratum. Do not stop or alter thresholds after observing outcomes.",
+  "study_id": "aos-check-mass-value-2026-07-22",
+  "technical_thresholds": {
+    "behavioral_surface_rate_min": 0.5,
+    "coverage_gap_candidate_ecosystems_min": 3,
+    "coverage_gap_candidate_rate_min": 0.05,
+    "incomplete_observation_rate_max": 0.1,
+    "per_language_detection_rate_min": 0.5,
+    "static_detection_wilson_lower_min": 0.7
+  },
+  "verdict_rule": "Mass-market GO is impossible while any external_metrics_required value is unmeasured. Technical thresholds can only produce TECHNICAL_DISTRIBUTION_READY or TECHNICAL_DISTRIBUTION_NOT_READY; successful controlled cases can only produce FREE_PREVIEW_TESTABLE."
+}

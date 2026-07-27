@@ -1,0 +1,318 @@
+{
+  "boundary": "This study may measure repository-surface coverage, deterministic first-run behavior, diagnostic contrast with native commands, runtime, evidence hygiene, and activation requirements. It cannot establish human comprehension, business severity, recommendation acceptance, decision change, retention, willingness to pay, or defect-prevention efficacy without external users.",
+  "controlled": {
+    "actionable_coverage_gap_proxy_rate": 0.2222,
+    "cases_completed": 9,
+    "cases_preregistered": 9,
+    "evidence_hygiene_rate": 1.0,
+    "incremental_contrast_rate": 0.4444,
+    "median_elapsed_ms": 1727,
+    "missing_cases": [],
+    "named_next_rate_nonpass": 1.0,
+    "p95_elapsed_ms": 5241,
+    "verdict_accuracy_rate": 1.0
+  },
+  "corpus_digest": "sha256:b860ef3e8f345a59295ecebfdd17f1fdfd3df47b257781b56765558425e01436",
+  "coverage_gap_candidate_ecosystems": [
+    "JavaScript",
+    "Python",
+    "Rust",
+    "TypeScript"
+  ],
+  "external_metrics": {
+    "alert_acceptance_rate": {
+      "required_threshold": 0.5,
+      "value": null
+    },
+    "business_relevant_incremental_rate": {
+      "required_threshold": 0.2,
+      "value": null
+    },
+    "comprehension_within_30_seconds_rate": {
+      "required_threshold": 0.8,
+      "value": null
+    },
+    "critical_false_positive_rate_max": {
+      "required_threshold": 0.05,
+      "value": null
+    },
+    "decision_change_rate": {
+      "required_threshold": 0.1,
+      "value": null
+    },
+    "first_result_completion_rate": {
+      "required_threshold": 0.8,
+      "value": null
+    },
+    "median_time_to_first_result_seconds_max": {
+      "required_threshold": 300,
+      "value": null
+    },
+    "minimum_external_participants": {
+      "required_threshold": 30,
+      "value": null
+    },
+    "minimum_novice_or_vibe_participants": {
+      "required_threshold": 15,
+      "value": null
+    },
+    "minimum_retention_days": {
+      "required_threshold": 30,
+      "value": null
+    },
+    "retention_rate": {
+      "required_threshold": 0.4,
+      "value": null
+    },
+    "willingness_to_pay_rate": {
+      "required_threshold": 0.1,
+      "value": null
+    }
+  },
+  "manifest_digest": "sha256:31b79e21b06ff18915f3f3359bdd1a0a0474b1393009dde9d8128547415d8f09",
+  "mass_market_status": "NO_GO_EXTERNAL_VALIDATION_REQUIRED",
+  "metrics": {
+    "by_language": {
+      "Go": {
+        "behavioral_surface": 76,
+        "behavioral_surface_rate": 0.9157,
+        "complete": 81,
+        "coverage_gap_candidate_rate": 0.0,
+        "coverage_gap_candidates": 0,
+        "detected": 76,
+        "detection_rate": 0.9157,
+        "detection_wilson_95": {
+          "lower": 0.836,
+          "point": 0.9157,
+          "upper": 0.9585
+        },
+        "incomplete": 2,
+        "incomplete_rate": 0.0241,
+        "repositories": 83,
+        "wrapper_only_candidate_rate": 0.9157,
+        "wrapper_only_candidates": 76
+      },
+      "Java": {
+        "behavioral_surface": 57,
+        "behavioral_surface_rate": 0.6867,
+        "complete": 79,
+        "coverage_gap_candidate_rate": 0.0,
+        "coverage_gap_candidates": 0,
+        "detected": 58,
+        "detection_rate": 0.6988,
+        "detection_wilson_95": {
+          "lower": 0.5931,
+          "point": 0.6988,
+          "upper": 0.7869
+        },
+        "incomplete": 4,
+        "incomplete_rate": 0.0482,
+        "repositories": 83,
+        "wrapper_only_candidate_rate": 0.6867,
+        "wrapper_only_candidates": 57
+      },
+      "JavaScript": {
+        "behavioral_surface": 36,
+        "behavioral_surface_rate": 0.4337,
+        "complete": 82,
+        "coverage_gap_candidate_rate": 0.2048,
+        "coverage_gap_candidates": 17,
+        "detected": 62,
+        "detection_rate": 0.747,
+        "detection_wilson_95": {
+          "lower": 0.644,
+          "point": 0.747,
+          "upper": 0.8281
+        },
+        "incomplete": 1,
+        "incomplete_rate": 0.012,
+        "repositories": 83,
+        "wrapper_only_candidate_rate": 0.4337,
+        "wrapper_only_candidates": 36
+      },
+      "Python": {
+        "behavioral_surface": 48,
+        "behavioral_surface_rate": 0.5714,
+        "complete": 84,
+        "coverage_gap_candidate_rate": 0.2738,
+        "coverage_gap_candidates": 23,
+        "detected": 71,
+        "detection_rate": 0.8452,
+        "detection_wilson_95": {
+          "lower": 0.753,
+          "point": 0.8452,
+          "upper": 0.9073
+        },
+        "incomplete": 0,
+        "incomplete_rate": 0.0,
+        "repositories": 84,
+        "wrapper_only_candidate_rate": 0.5714,
+        "wrapper_only_candidates": 48
+      },
+      "Rust": {
+        "behavioral_surface": 73,
+        "behavioral_surface_rate": 0.8795,
+        "complete": 83,
+        "coverage_gap_candidate_rate": 0.012,
+        "coverage_gap_candidates": 1,
+        "detected": 75,
+        "detection_rate": 0.9036,
+        "detection_wilson_95": {
+          "lower": 0.8212,
+          "point": 0.9036,
+          "upper": 0.9503
+        },
+        "incomplete": 0,
+        "incomplete_rate": 0.0,
+        "repositories": 83,
+        "wrapper_only_candidate_rate": 0.8795,
+        "wrapper_only_candidates": 73
+      },
+      "TypeScript": {
+        "behavioral_surface": 54,
+        "behavioral_surface_rate": 0.6429,
+        "complete": 84,
+        "coverage_gap_candidate_rate": 0.2262,
+        "coverage_gap_candidates": 19,
+        "detected": 78,
+        "detection_rate": 0.9286,
+        "detection_wilson_95": {
+          "lower": 0.8528,
+          "point": 0.9286,
+          "upper": 0.9669
+        },
+        "incomplete": 0,
+        "incomplete_rate": 0.0,
+        "repositories": 84,
+        "wrapper_only_candidate_rate": 0.6429,
+        "wrapper_only_candidates": 54
+      }
+    },
+    "by_star_band": {
+      "1..9": {
+        "behavioral_surface": 65,
+        "behavioral_surface_rate": 0.5159,
+        "complete": 122,
+        "coverage_gap_candidate_rate": 0.1905,
+        "coverage_gap_candidates": 24,
+        "detected": 92,
+        "detection_rate": 0.7302,
+        "detection_wilson_95": {
+          "lower": 0.6467,
+          "point": 0.7302,
+          "upper": 0.8
+        },
+        "incomplete": 4,
+        "incomplete_rate": 0.0317,
+        "repositories": 126,
+        "wrapper_only_candidate_rate": 0.5159,
+        "wrapper_only_candidates": 65
+      },
+      "10..99": {
+        "behavioral_surface": 91,
+        "behavioral_surface_rate": 0.7222,
+        "complete": 126,
+        "coverage_gap_candidate_rate": 0.0952,
+        "coverage_gap_candidates": 12,
+        "detected": 111,
+        "detection_rate": 0.881,
+        "detection_wilson_95": {
+          "lower": 0.8128,
+          "point": 0.881,
+          "upper": 0.9265
+        },
+        "incomplete": 0,
+        "incomplete_rate": 0.0,
+        "repositories": 126,
+        "wrapper_only_candidate_rate": 0.7222,
+        "wrapper_only_candidates": 91
+      },
+      "100..999": {
+        "behavioral_surface": 92,
+        "behavioral_surface_rate": 0.7302,
+        "complete": 124,
+        "coverage_gap_candidate_rate": 0.127,
+        "coverage_gap_candidates": 16,
+        "detected": 108,
+        "detection_rate": 0.8571,
+        "detection_wilson_95": {
+          "lower": 0.7855,
+          "point": 0.8571,
+          "upper": 0.9077
+        },
+        "incomplete": 2,
+        "incomplete_rate": 0.0159,
+        "repositories": 126,
+        "wrapper_only_candidate_rate": 0.7302,
+        "wrapper_only_candidates": 92
+      },
+      ">=1000": {
+        "behavioral_surface": 96,
+        "behavioral_surface_rate": 0.7869,
+        "complete": 121,
+        "coverage_gap_candidate_rate": 0.0656,
+        "coverage_gap_candidates": 8,
+        "detected": 109,
+        "detection_rate": 0.8934,
+        "detection_wilson_95": {
+          "lower": 0.8262,
+          "point": 0.8934,
+          "upper": 0.9367
+        },
+        "incomplete": 1,
+        "incomplete_rate": 0.0082,
+        "repositories": 122,
+        "wrapper_only_candidate_rate": 0.7869,
+        "wrapper_only_candidates": 96
+      }
+    },
+    "ecosystems_detected": {
+      "Go": 80,
+      "Java/Gradle": 22,
+      "Java/Maven": 33,
+      "Node.js": 163,
+      "Python": 89,
+      "Rust": 73
+    },
+    "limitations": {
+      "no_behavioral_test_surface": 76,
+      "root_tree_may_be_truncated": 7,
+      "unsupported_root_project": 80
+    },
+    "overall": {
+      "behavioral_surface": 344,
+      "behavioral_surface_rate": 0.688,
+      "complete": 493,
+      "coverage_gap_candidate_rate": 0.12,
+      "coverage_gap_candidates": 60,
+      "detected": 420,
+      "detection_rate": 0.84,
+      "detection_wilson_95": {
+        "lower": 0.8053,
+        "point": 0.84,
+        "upper": 0.8695
+      },
+      "incomplete": 7,
+      "incomplete_rate": 0.014,
+      "repositories": 500,
+      "wrapper_only_candidate_rate": 0.688,
+      "wrapper_only_candidates": 344
+    },
+    "verdict_proxy": {
+      "PASS": 342,
+      "WARN": 158
+    }
+  },
+  "schema_version": "aos-mass-value-results/v0",
+  "study_id": "aos-check-mass-value-2026-07-22",
+  "technical_checks": {
+    "behavioral_surface_rate": true,
+    "coverage_gap_candidate_ecosystems": true,
+    "coverage_gap_candidate_rate": true,
+    "incomplete_observation_rate": true,
+    "per_language_detection_rate": true,
+    "static_detection_wilson_lower": true
+  },
+  "technical_distribution_status": "TECHNICAL_DISTRIBUTION_READY",
+  "validation_offer_status": "FREE_PREVIEW_TESTABLE"
+}

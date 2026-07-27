@@ -1,0 +1,70 @@
+{
+  "schema_version": "aos-mass-gap-audit/v0",
+  "study_id": "aos-check-missing-test-surface-audit-2026-07-22",
+  "preregistered_at": "2026-07-22T18:16:58Z",
+  "source_corpus_sample_digest": "sha256:26d65f1a7ebe07e0f1d1dae3911201fe15bdb9652218a45a5ee4eddd5653ea99",
+  "selection": {
+    "predicate": "coverage_gap_candidate == true",
+    "sample": "all matching repositories",
+    "expected_repositories": 60,
+    "commit_binding": "head_sha from frozen source corpus",
+    "stopping_rule": "Audit all 60 candidates; do not stop after favorable or unfavorable results."
+  },
+  "collection": {
+    "endpoint": "GitHub Git Trees API recursive=1",
+    "read_only": true,
+    "execute_repository_code": false,
+    "install_repository_dependencies": false,
+    "read_blob_contents": false,
+    "stored_data": "path-derived counts, bounded example paths, exact SHA and truncation state"
+  },
+  "test_path_markers": [
+    "/test/",
+    "/tests/",
+    "/__tests__/",
+    "/spec/",
+    "/specs/",
+    "/src/test/",
+    ".test.",
+    ".spec.",
+    "_test.go",
+    "_test.py",
+    "test_"
+  ],
+  "test_config_names": [
+    "jest.config.js",
+    "jest.config.cjs",
+    "jest.config.mjs",
+    "jest.config.ts",
+    "vitest.config.js",
+    "vitest.config.ts",
+    "pytest.ini",
+    "tox.ini",
+    "noxfile.py",
+    "playwright.config.js",
+    "playwright.config.ts",
+    "cypress.config.js",
+    "cypress.config.ts"
+  ],
+  "classification": {
+    "contradicted_by_paths": "at least one non-vendored test path or explicit test config exists at the exact SHA",
+    "supported_missing_surface": "complete recursive tree contains no test path or explicit test config",
+    "inconclusive": "repository unavailable or recursive tree truncated",
+    "boundary": "A path proves repository test material exists, not that it is runnable or relevant to the current root. Absence of a path does not prove absence of behavioral validation."
+  },
+  "excluded_path_segments": [
+    ".git",
+    ".venv",
+    "node_modules",
+    "vendor",
+    "third_party",
+    "dist",
+    "build"
+  ],
+  "thresholds": {
+    "complete_observation_rate_min": 0.95,
+    "contradiction_rate_max": 0.10,
+    "supported_missing_surface_rate_min": 0.90
+  },
+  "verdict_rule": "LOW_NOISE_PATH_PROXY requires every threshold. HIGH_FALSE_POSITIVE_RISK means the contradiction threshold fails. INSUFFICIENT_PATH_EVIDENCE means completeness fails. No result establishes business relevance, user acceptance or defect-prevention value."
+}

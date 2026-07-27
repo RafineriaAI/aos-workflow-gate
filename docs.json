@@ -139,7 +139,37 @@
     "benchmarks/adversarial/bindings/invalid-context-digest.json",
     "benchmarks/adversarial/bindings/invalid-embedded-manifest.json",
     "benchmarks/adversarial/bindings/observation-scope-mismatch.json",
-    "benchmarks/adversarial/bindings/record-observation-scope-mismatch.json"
+    "benchmarks/adversarial/bindings/record-observation-scope-mismatch.json",
+    "benchmarks/mass-market/controlled.json",
+    "benchmarks/mass-market/corpus.json",
+    "benchmarks/mass-market/GAP_AUDIT_ADJUDICATION.md",
+    "benchmarks/mass-market/GAP_AUDIT.md",
+    "benchmarks/mass-market/gap-audit-adjudication.json",
+    "benchmarks/mass-market/gap-audit-manifest.json",
+    "benchmarks/mass-market/gap-audit.json",
+    "benchmarks/mass-market/manifest.json",
+    "benchmarks/mass-market/REPORT.md",
+    "benchmarks/mass-market/results.json",
+    "benchmarks/mass-market/REVIEW_ADJUDICATION_FINAL.md",
+    "benchmarks/mass-market/REVIEW_PROXY_COMBINED.md",
+    "benchmarks/mass-market/REVIEW_PROXY_CORRECTED.md",
+    "benchmarks/mass-market/REVIEW_PROXY_EXTENSION.md",
+    "benchmarks/mass-market/REVIEW_PROXY_FINAL.md",
+    "benchmarks/mass-market/REVIEW_PROXY.md",
+    "benchmarks/mass-market/review-adjudication-corrected-manifest.json",
+    "benchmarks/mass-market/review-adjudication-final-manifest.json",
+    "benchmarks/mass-market/review-adjudication-final.json",
+    "benchmarks/mass-market/review-adjudication-labels.json",
+    "benchmarks/mass-market/review-adjudication-manifest.json",
+    "benchmarks/mass-market/review-proxy-combined.json",
+    "benchmarks/mass-market/review-proxy-corrected.json",
+    "benchmarks/mass-market/review-proxy-correction-manifest.json",
+    "benchmarks/mass-market/review-proxy-extension-manifest.json",
+    "benchmarks/mass-market/review-proxy-extension.json",
+    "benchmarks/mass-market/review-proxy-final.json",
+    "benchmarks/mass-market/review-proxy-manifest.json",
+    "benchmarks/mass-market/review-proxy-token-correction-manifest.json",
+    "benchmarks/mass-market/review-proxy.json"
   ],
   "policies": [
     "policies/default.yml",
@@ -157,7 +187,11 @@
     "tools/check_public_surface.py",
     "tools/discovery.py",
     "tools/contrast.py",
-    "tools/value_gate.py"
+    "tools/value_gate.py",
+    "tools/mass_gap_audit.py",
+    "tools/mass_review_adjudication.py",
+    "tools/mass_review_proxy.py",
+    "tools/mass_value_study.py"
   ],
   "ci": [
     ".editorconfig",
@@ -207,7 +241,10 @@
     "tests/test_verifier_change.py",
     "tests/test_workflow_state.py",
     "tests/test_change_proof.py",
-    "tests/test_project_check.py"
+    "tests/test_project_check.py",
+    "tests/test_mass_gap_audit.py",
+    "tests/test_mass_review_proxy.py",
+    "tests/test_mass_value_study.py"
   ],
   "assets": [
     "docs/assets/banner.png",

@@ -1,0 +1,31 @@
+{
+  "claim_boundary": "Adjudication cannot produce mass-market GO, precision, decision-change, alert-acceptance, retention, willingness-to-pay or causal product-value claims.",
+  "labels_digest": "sha256:4df4dfdae3e2b9072fd859c1f60cd49a263414233aa29d74380de3b2dbc6b2a3",
+  "manifest_digest": "sha256:3d678627075a07d60732eb156dcf5d7a2bf97dce0cb500263fb7e7c2400d6829",
+  "metrics": {
+    "acceptance_evidence_rate_among_category_valid": 1.0,
+    "adjudicated_actionable_pr_rate": 0.0457,
+    "business_relevance_rate_among_category_valid": 0.8889,
+    "category_match_precision": 0.6,
+    "category_valid_instances": 9,
+    "current_aos_aligned_instances": 0,
+    "current_aos_alignment_rate": 0.0,
+    "labels": 15,
+    "medium_or_high_pr_rate": 0.0343,
+    "medium_or_high_rate_among_category_valid": 0.7778,
+    "reviewed_pull_requests": 175,
+    "true_directive_rate": 0.8667,
+    "unique_category_valid_pull_requests": 8,
+    "unique_medium_or_high_pull_requests": 6
+  },
+  "schema_version": "aos-mass-review-adjudication-result/v0",
+  "source_result_digest": "sha256:372885645fbf5682e462eb3972c64cfbe7a82acba563e343b0e8fa0e4e646ef6",
+  "status": "ADJUDICATED_LOW_RATE_NO_CURRENT_AOS_ALIGNMENT",
+  "study_id": "aos-check-final-review-semantic-adjudication-2026-07-22",
+  "threshold_checks": {
+    "business_relevance": true,
+    "current_aos_alignment": false,
+    "medium_or_high": true,
+    "true_directive": true
+  }
+}
