@@ -11,7 +11,7 @@ remain unvalidated.
 
 ## Mass-market product hypothesis
 
-The `0.38.0` candidate tests a broader and more frequent job:
+The `v0.38.0` release tests a broader and more frequent job:
 
 > I built or changed a project. Check it before I share or deploy it, explain
 > what actually ran, and tell me the next action without requiring Git or test

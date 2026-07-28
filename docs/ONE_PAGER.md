@@ -11,11 +11,11 @@ kernel commit. It is an operational workflow verification layer, not a formal
 proof of kernel semantics. The Apache-2.0 CLI and Action remain free, without
 an account, telemetry, feature gates, or hosted source-code upload.
 
-## Mass-market candidate
+## Mass-market validation surface
 
 **Check your project before you share it. No Git or test expertise required.**
 
-The candidate `aos-check` command detects a Python, Node.js, Go, Rust, Maven,
+The released experimental `aos-check` command detects a Python, Node.js, Go, Rust, Maven,
 or Gradle project at the root, falls back to bounded nested projects when no
 root test is runnable, runs their conventional build and test surfaces, and
 scans bounded changed files for unresolved conflict markers and
@@ -93,7 +93,7 @@ pre-review clarity.
 ## First-run flow
 
 1. Add the Action - no checkout, policy, or required-check list
-   (`uses: RafineriaAI/aos-workflow-gate@v0.37.1`).
+   (`uses: RafineriaAI/aos-workflow-gate@v0.38.0`).
 2. AOS reads branch rules and exact-commit checks, then names the dominant
    control gap, effect, and next action.
 3. Keep advisory while measuring acceptance and repeated noise. Enable

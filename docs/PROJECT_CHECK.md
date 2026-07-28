@@ -1,6 +1,6 @@
 # Local Project Check
 
-Status: `0.38.0` candidate. Not present in published `v0.37.1`.
+Status: released as an experimental, free advisory surface in `v0.38.0`.
 
 `aos-check` is the beginner-facing AOS entry point. It checks a folder without
 requiring Git, GitHub, a pull request, policy configuration, or knowledge of
@@ -11,15 +11,15 @@ the project's test commands.
 > Tell me whether the project passes its checks, whether a high-confidence
 > sharing blocker is present, what was not verified, and what I should do next.
 
-This is intentionally narrower than "prove my app is correct." The candidate
+This is intentionally narrower than "prove my app is correct." The command
 must earn broader claims through browser-level and external usability testing.
 
 ## First run
 
-From a source checkout:
+Install the immutable release:
 
 ```bash
-python -m pip install .
+python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.38.0"
 cd path/to/project
 aos-check
 ```
@@ -127,7 +127,7 @@ scan.
 
 ## Product boundary
 
-This candidate reduces first-run friction and makes existing verification
+This release reduces first-run friction and makes existing verification
 understandable. Nested execution and changed-file risk scanning now add value
 beyond invoking one root command, but market differentiation remains
 unvalidated. Advancement still requires accepted incremental findings from:

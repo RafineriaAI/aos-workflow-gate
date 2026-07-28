@@ -14,7 +14,7 @@ one explainable, replayable decision.
 Inspect any public pull request without a token or repository change:
 
 ```bash
-python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.37.1"
+python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.38.0"
 aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/NUMBER
 ```
 
