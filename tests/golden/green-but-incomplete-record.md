@@ -19,7 +19,7 @@
 | Policy | `collected-advisory` (advisory) |
 | Policy digest | `sha256:307c1f8738f94d966f3911f67d927ac749182aa544390fa8928105ddbc8d6237` |
 | Input bundle digest | `sha256:54949f798a0dbd4e64765c515b0ae828dbc61fb6ed4c9ceb66e174ecc61bfc7f` |
-| Record digest | `sha256:8fe255657486f2bad24f00bb40ef09a0dc0f607d1fb3a388c4f6d00f2eff3e6b` |
+| Record digest | `sha256:8c88a59061704cf2d281092d0a2cb5c01eef22c23238f9b7452b34f1aa6858b9` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
@@ -40,6 +40,6 @@
 ### Coverage
 
 - Required sources: 1 of 4
-- Blocking on: `AOS Workflow Gate CI / validate`
+- Required evidence: `AOS Workflow Gate CI / validate`
 
 - Advisory only: a BLOCK verdict would not fail the job (no enforcement configured).

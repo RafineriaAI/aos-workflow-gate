@@ -5,6 +5,24 @@ questions. AOS is designed to consume their results as signals rather than
 replace them. Every cell describes documented behavior with a source link; no
 competitor tool was benchmarked or scored here, and no superiority is claimed.
 
+
+## Local product candidate
+
+`aos-check` is a convenience and decision layer over conventional local
+project checks. Unlike an AI reviewer, it does not infer defects from source
+text. Unlike a hosted browser-testing agent, it does not yet explore user
+flows. Unlike a test runner, it detects the project, selects supported
+surfaces, distinguishes failed from missing verification, and produces one
+plain-language next action plus a replayable local record.
+
+That combination lowers first-run friction but is not yet a demonstrated moat.
+AOS becomes materially differentiated only when its adversarial or runtime
+verification produces accepted findings that ordinary build/test and existing
+review tools miss at acceptable runtime and noise. Until measured, the local
+surface is a product experiment rather than a superiority claim.
+
+See [Local Project Check](PROJECT_CHECK.md) for the exact implemented boundary.
+
 ## Category boundary
 
 - **AI reviewers and scanners** inspect code or artifacts for defects and
@@ -42,12 +60,33 @@ AOS combines:
 3. fail-closed missing, stale, incomplete, and unverifiable evidence;
 4. verifier-change independence detection;
 5. canonical policy, verifier manifest, record digest, and offline replay;
-6. local-first, read-only execution without source-code upload or telemetry.
+6. a local-first, read-only default gate without source-code upload or
+   telemetry.
 
 The combination is the product hypothesis, not a proven moat. Durable
 commercial differentiation would require low-noise real-world policies, a
 corpus of independently adjudicated control failures, evidence
 interoperability, and organization-level operations that users retain.
+
+## Experimental change-sensitivity comparison
+
+Ordinary CI runs the repository checks on `HEAD`; it does not normally ask
+whether those checks would still pass if the PR implementation were absent.
+Mutation testing tools introduce many small synthetic code changes and report
+whether tests kill or survive each mutant
+([Stryker semantics](https://stryker-mutator.io/docs/mutation-testing-elements/mutant-states-and-metrics/)).
+
+Experimental `prove-change` removes the selected PR implementation patch as
+one coarse counterfactual and runs the operator's verifier in clean worktrees.
+Its hypothesized advantages are direct alignment with the submitted change,
+few verifier runs, language-independent command execution, and reuse of
+exact-SHA decision evidence. Its disadvantages are equally material: it is
+coarser than mutation testing, can fail structurally rather than behaviorally,
+does not generate boundary cases, and may require environment adaptation.
+
+This is not a superiority claim. A valid product comparison must measure
+accepted incremental findings, inconclusive rate, runtime cost, and remediation
+beyond ordinary CI and the repository's established mutation tooling.
 
 ## Complementary by design
 

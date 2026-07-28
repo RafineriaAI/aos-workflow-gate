@@ -3,6 +3,22 @@
 First-run answers for operators. Buyer and security-reviewer questions live
 in [BUYER_FAQ.md](BUYER_FAQ.md); verification steps in [TRUST.md](TRUST.md).
 
+**Can I use AOS without Git or GitHub?**
+Yes. From a `0.38.0` source checkout, install the package, open a terminal in
+the project folder, and run `aos-check`. It detects supported root projects
+and their conventional checks. No repository, branch, commit, policy, account,
+or test-command knowledge is required.
+
+**What does `aos-check` do?**
+It runs existing build and behavioral checks for Python, Node.js, Go, Rust,
+Maven, or Gradle and shows one result and one next action. It never installs
+dependencies. `WARN` commonly means no runnable behavioral test was found;
+a quality-only finding is also `WARN`. `BLOCK` means a discovered build, type,
+or test check failed. It does not yet test browser flows or prove that the
+application meets its intended requirements. See
+[Local Project Check](PROJECT_CHECK.md).
+
+
 **Why did my first run say WARN or show few signals?**
 Decision sources contain completed check runs; queued and approval-required
 execution remains visible in collection evidence. With automatic GitHub
@@ -56,7 +72,9 @@ different question per command:
 
 | Command | 0 | 1 | 2 |
 | --- | --- | --- | --- |
+| `check-project` / `aos-check` | Project result produced; advisory does not fail the process. | Build, type, or test failed under `--mode enforce`. | Invalid folder or operational input; no verdict. |
 | `evaluate` / `run` / `check-pr` | Verdict produced; nothing enforced a failure. | Policy `BLOCK` under enforcement. | Operational error; no verdict was produced. |
+| `prove-change` | Decision produced; advisory does not fail the process. | Reproducible verifier failure at `HEAD` under `--mode enforce`. | Invalid subject, command, selection, or operational setup; no verdict. |
 | `verify` | Record intact. | Record or bundle tampered. | Operational error. |
 | `preflight` | Ready — every probed capability responded. | Degraded readiness — a probed capability is unavailable (named by a stable code; **not** a policy verdict). | The probe run itself could not complete. |
 
@@ -67,6 +85,14 @@ code registry):
 ```bash
 aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
 ```
+
+**What does `prove-change` evaluate?**
+It runs an explicit verifier at the exact `HEAD`, removes selected
+implementation changes in a disposable worktree while retaining the PR tests,
+and runs the verifier again. `PASS` means the checks distinguish removal of
+the change; `WARN` means they do not or the experiment was inconclusive;
+`BLOCK` means the verifier failed twice at `HEAD`. It is not a defect-absence
+or correctness claim. See [Executable Change Proof](CHANGE_PROOF.md).
 
 ## Failure taxonomy
 

@@ -13,8 +13,21 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .change_proof import (
+    CONFIRMED_FAILURE,
+    INCONCLUSIVE,
+    NOT_DISTINGUISHED,
+)
+from .change_proof import (
+    SOURCE_KIND as CHANGE_PROOF_KIND,
+)
 from .errors import InputError
 from .policy import Policy
+from .project_check import FAILED as PROJECT_CHECK_FAILED
+from .project_check import INCONCLUSIVE as PROJECT_CHECK_INCONCLUSIVE
+from .project_check import LIMITED as PROJECT_CHECK_LIMITED
+from .project_check import QUALITY_WARNING as PROJECT_CHECK_QUALITY_WARNING
+from .project_check import SOURCE_KIND as PROJECT_CHECK_KIND
 from .source_contract import (
     SOURCE_CONTRACT_VERSION,
     contract_violation,
@@ -27,9 +40,20 @@ BLOCK = "BLOCK"
 
 _PRECEDENCE = {PASS: 0, WARN: 1, BLOCK: 2}
 _SUCCESS = "success"
-_GITHUB_PASSING_REQUIRED_STATUSES = frozenset(
-    {"success", "neutral", "skipped"}
-)
+_GITHUB_PASSING_REQUIRED_STATUSES = frozenset({"success", "neutral", "skipped"})
+
+CHANGE_PROOF_RULE_BY_STATUS = {
+    CONFIRMED_FAILURE: "confirmed_verifier_failure",
+    NOT_DISTINGUISHED: "change_not_distinguished",
+    INCONCLUSIVE: "verification_inconclusive",
+}
+
+PROJECT_CHECK_RULE_BY_STATUS = {
+    PROJECT_CHECK_FAILED: "project_check_failed",
+    PROJECT_CHECK_LIMITED: "project_verification_limited",
+    PROJECT_CHECK_INCONCLUSIVE: "project_verification_inconclusive",
+    PROJECT_CHECK_QUALITY_WARNING: "project_quality_warning",
+}
 
 
 @dataclass(frozen=True)
@@ -129,7 +153,9 @@ def evaluate(bundle: Any, policy: Policy) -> Decision:
 
     subject = _normalize_subject(bundle, policy, malformed)
     sources = _normalize_sources(
-        bundle, malformed_severity, malformed,
+        bundle,
+        malformed_severity,
+        malformed,
         required_ids=frozenset(policy.required_sources),
     )
 
@@ -141,15 +167,11 @@ def evaluate(bundle: Any, policy: Policy) -> Decision:
     collection = bundle.get("collection")
     if isinstance(collection, dict):
         for entry in collection.get("requirements") or []:
-            if isinstance(entry, dict) and isinstance(
-                entry.get("context"), str
-            ):
+            if isinstance(entry, dict) and isinstance(entry.get("context"), str):
                 source_id = entry.get("source_id", entry["context"])
                 if not isinstance(source_id, str):
                     continue
-                requirement_states[source_id] = str(
-                    entry.get("state", "")
-                )
+                requirement_states[source_id] = str(entry.get("state", ""))
 
     reasons = _apply_rules(sources, policy, requirement_states)
     reasons.extend(_collection_reasons(collection, policy))
@@ -204,8 +226,7 @@ def _verifier_change_reasons(
 
     if not analysis.get("analyzed"):
         detail = str(
-            analysis.get("unavailable")
-            or "verifier-change analysis did not complete"
+            analysis.get("unavailable") or "verifier-change analysis did not complete"
         )
         return [
             Reason(
@@ -267,10 +288,10 @@ def _verifier_change_reasons(
             + (f", and {more} more" if more else "")
             + "): the change grades itself with the grader it edited. "
             "Require evidence from a verifier governed outside this "
-            "change."
-            + acknowledgement,
+            "change." + acknowledgement,
         )
     ]
+
 
 def _status_reason_detail(source: Source, *, role: str) -> str:
     detail = f"{role} source status is '{source.status}'"
@@ -335,6 +356,14 @@ def _apply_rules(
                     state,
                 )
             )
+        elif source.kind == CHANGE_PROOF_KIND:
+            reason = _change_proof_reason(source, policy)
+            if reason is not None:
+                reasons.append(reason)
+        elif source.kind == PROJECT_CHECK_KIND:
+            reason = _project_check_reason(source, policy)
+            if reason is not None:
+                reasons.append(reason)
         elif not _required_source_satisfied(source, policy):
             reasons.append(
                 Reason(
@@ -349,9 +378,7 @@ def _apply_rules(
         source = index.get(advisory_id)
         if source is not None and source.status.lower() != _SUCCESS:
             severity = (
-                policy.rules.get(
-                    "sarif_findings", policy.rules["advisory_warning"]
-                )
+                policy.rules.get("sarif_findings", policy.rules["advisory_warning"])
                 if source.kind == "sarif_summary"
                 else policy.rules["advisory_warning"]
             )
@@ -364,6 +391,37 @@ def _apply_rules(
                 )
             )
     return reasons
+
+
+def _change_proof_reason(source: Source, policy: Policy) -> Reason | None:
+    """Interpret the built-in executable proof without LLM judgment."""
+    status = source.status.lower()
+    if status == _SUCCESS:
+        return None
+    rule = CHANGE_PROOF_RULE_BY_STATUS.get(status, "failed_required_source")
+    severity = policy.rules.get(
+        rule,
+        policy.rules["failed_required_source"],
+    )
+    detail = source.summary or _status_reason_detail(source, role="required")
+    return Reason(
+        rule,
+        severity,
+        source.id,
+        detail,
+        status,
+    )
+
+
+def _project_check_reason(source: Source, policy: Policy) -> Reason | None:
+    """Interpret built-in local code verification without claiming correctness."""
+    status = source.status.lower()
+    if status == _SUCCESS:
+        return None
+    rule = PROJECT_CHECK_RULE_BY_STATUS.get(status, "failed_required_source")
+    severity = policy.rules.get(rule, policy.rules["failed_required_source"])
+    detail = source.summary or _status_reason_detail(source, role="required")
+    return Reason(rule, severity, source.id, detail, status)
 
 
 def _normalize_subject(
@@ -458,9 +516,7 @@ def _normalize_source(
     is_source_v0 = item.get("contract") == SOURCE_CONTRACT_VERSION
     if is_source_v0:
         try:
-            item = validate_source_v0(
-                item, where=f"sources[{position}]"
-            )
+            item = validate_source_v0(item, where=f"sources[{position}]")
         except InputError as exc:
             reject(str(exc))
             return None
@@ -512,9 +568,7 @@ def _normalize_source(
     seen.add(source_id)
     assert isinstance(kind, str)
     assert isinstance(status, str)
-    return Source(
-        source_id, kind, status, required, digest, summary, signal_source
-    )
+    return Source(source_id, kind, status, required, digest, summary, signal_source)
 
 
 def _build(

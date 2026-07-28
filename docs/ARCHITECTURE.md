@@ -25,6 +25,10 @@ flowchart LR
   A[CLI or GitHub Action] --> B[Preflight]
   A --> C[Read-only collectors]
   D[Files or stdin] --> E[Adapters and contracts]
+  L[Operator verifier argv] --> M[Disposable worktree experiment]
+  M --> E
+  N[Local project folder] --> O[Project discovery and checks]
+  O --> E
   B --> C
   C --> F[Signal bundle]
   E --> F
@@ -43,7 +47,9 @@ reinterpreted as successful controls.
 
 | Surface | Responsibility |
 | --- | --- |
+| `aos-check` / `check-project` | Detect and execute conventional local project checks without requiring Git or configuration. |
 | `preflight` | Probe repository, pull request, rules, checks, statuses, and runtime context without a verdict. |
+| `prove-change` | Opt-in local experiment: test whether explicit checks distinguish selected implementation changes from the merge base. |
 | `collect`, `import`, `agent-action` | Build or extend normalized evidence from GitHub, files, or stdin. |
 | `evaluate` | Apply one explicit policy to one existing bundle. |
 | `run` | Collect, evaluate, record, and summarize in one local or Actions flow. |
@@ -54,6 +60,17 @@ reinterpreted as successful controls.
 The zero-config Action invokes the same `run` path as the CLI. Explicit
 `required-checks` replaces GitHub requirement discovery; it does not merge
 with autodiscovery.
+
+`aos-check` is a separate local product surface. It hashes a bounded project
+snapshot, detects conventional root-level build and test commands, executes
+them with `shell=False`, and maps their observations through the same source,
+policy, decision, and replay pipeline. It does not require or synthesize Git
+identity.
+
+`prove-change` is a separate experimental path. It is never called by the
+default Action, never reads verifier commands from repository content, and
+converts its bounded execution result into the same source, policy, decision,
+and replay pipeline.
 
 ## Collection and identity
 
@@ -117,6 +134,20 @@ evidence. Repository output paths are constrained to the configured workspace.
 External files and API responses are untrusted, size- and budget-bounded
 inputs. No source checkout is required for zero-config collection, and no code
 is uploaded to RafineriaAI.
+
+
+`aos-check` executes conventional build and test surfaces defined by the local
+project. It never installs dependencies or invokes a shell, but package scripts
+and project tools remain arbitrary code with the operator's permissions and
+network access. Raw output is shown only in the local terminal and excluded
+from evidence. Untrusted projects require an unprivileged sandbox.
+
+The explicit `prove-change` command has a different local execution boundary:
+it runs operator-supplied argv with `shell=False` in disposable detached
+worktrees and inherits the operator environment. It records command and output
+digests but no raw stdout or stderr. The invoked verifier remains arbitrary
+project code and may have side effects; use a sandboxed, unprivileged job. This
+surface is not part of the read-only zero-config Action.
 
 See [Security Readiness](SECURITY_READINESS.md) for the threat and data model.
 

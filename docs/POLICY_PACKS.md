@@ -11,6 +11,7 @@ pack is exactly what `evaluate --policy` reads.
 | `release-candidate` | **blocking** | `ci`, `scanner.sarif` | `agent.review`, `scorecard` | release gates where a missing scan must block |
 | `agent-review-advisory` | advisory | `ci`, `agent.review` | `scanner.sarif`, `scorecard` | AI-agent changes: agent review must have run |
 | `evidence-integrity` | **blocking** | `ci` | — | blocks on evidence-integrity conditions branch protection cannot express: incomplete collection and non-independent evidence (the change judges itself) |
+| `code-change-proof` | advisory | `code.change-proof` | - | internal policy used by experimental `prove-change`: stable HEAD failure blocks, insensitive or inconclusive experiment warns |
 
 Both the CLI (`run --policy-pack NAME`) and the GitHub Action can select a
 pack by name; `evaluate --policy` takes any file path directly. Pack source
@@ -18,6 +19,10 @@ IDs are literal. Action selection is useful only when repository check IDs
 match the pack; otherwise copy the pack, edit its IDs, and pass it through
 `policy`. `release-candidate` is `mode: blocking`, so a `BLOCK` verdict
 fails the process even without `--enforce`.
+
+`code-change-proof` is resolved automatically by `prove-change`; it is not a
+GitHub check-name starter pack and is intentionally absent from the default
+Action. See [Executable Change Proof](CHANGE_PROOF.md).
 
 Boundary: packs encode structure, not judgment about your tools; a pack
 passing does not make a repository secure, compliant, or release-worthy.

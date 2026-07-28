@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aos-workflow-gate"
-version = "0.37.1"
-description = "Pre-merge control assurance with exact-commit replayable evidence."
+version = "0.38.0"
+description = "Local code verification and deterministic workflow decisions."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
@@ -15,6 +15,7 @@ dependencies = []
 
 [project.scripts]
 aos-workflow-gate = "aos_workflow_gate.cli:main"
+aos-check = "aos_workflow_gate.cli:project_main"
 
 [project.optional-dependencies]
 dev = [

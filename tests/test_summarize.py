@@ -80,7 +80,7 @@ def test_render_markdown_reports_coverage_with_required_sources() -> None:
     text, _ = render_markdown(record)
     assert "### Coverage" in text
     assert "- Required sources: 1 of 3" in text
-    assert "- Blocking on: `ci.validate`" in text
+    assert "- Required evidence: `ci.validate`" in text
 
 
 def test_render_markdown_flags_decision_gap_without_required() -> None:

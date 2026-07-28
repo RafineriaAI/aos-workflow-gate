@@ -33,6 +33,8 @@ environment is therefore a setup defect, not a test to skip.
 flowchart LR
   A[CLI or GitHub Action] --> B[Preflight and collectors]
   B --> C[Normalized signal bundle]
+  H[Operator verifier argv] --> I[Disposable change proof]
+  I --> C
   C --> D[Explicit policy]
   D --> E[Deterministic evaluation]
   E --> F[Decision record]
@@ -50,6 +52,8 @@ annotations are deterministic projections of that record.
 | `collect.py`, `checkpr.py`, `requirements.py`, `workflow_state.py` | Read-only GitHub collection, exact-SHA requirement identity, and workflow visibility. |
 | `preflight.py`, `diagnostics.py` | Capability probes and operational diagnostics; never policy verdicts. |
 | `adapters.py`, `source_contract.py`, `agent_action.py` | External evidence normalization and contract validation. |
+| `project_check.py` | Git-optional project discovery, bounded snapshot, and local build/test execution. |
+| `change_proof.py` | Opt-in exact-SHA change-sensitivity experiment in disposable Git worktrees. |
 | `policy.py`, `evaluate.py` | Restricted policy grammar and deterministic `PASS/WARN/BLOCK` semantics. |
 | `canonical.py`, `evidence.py`, `manifest.py` | Canonical bytes, digests, records, verifier manifest, and replay integrity. |
 | `summarize.py` | Shared diagnosis, one dominant next action, Markdown/HTML rendering. |
@@ -68,6 +72,9 @@ CLI as wiring.
 - The verdict path is deterministic; no LLM participates.
 - The same canonical input, policy, and verifier version produce the same
   decision and record digest.
+- `prove-change` executes only operator-supplied argv with `shell=False`; no
+  command may be derived from PR text or repository configuration, and the
+  default Action must never invoke it implicitly.
 - Observation scope is repository plus exact head SHA.
 - Control identity is `(context, integration_id)`; requirement provenance is
   preserved separately.
@@ -88,6 +95,8 @@ CLI as wiring.
 | Change | Primary tests |
 | --- | --- |
 | CLI parsing or exit behavior | `tests/test_run.py`, `test_check_pr.py`, or the command-specific test |
+| Local project check | `tests/test_project_check.py`, plus evaluator, remediation, replay, and security regressions |
+| Executable change proof | `tests/test_change_proof.py`, plus evaluator, remediation, replay, and security regressions |
 | GitHub collection and requirement semantics | `test_collect.py`, `test_requirements.py`, `test_collection_consistency.py` |
 | Source or action contracts | `test_source_contract.py`, `test_agent_action.py`, `test_backward_compat.py` |
 | Policy or verdict semantics | `test_evaluate.py`, `test_fixtures_replay.py` |

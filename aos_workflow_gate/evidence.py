@@ -58,19 +58,14 @@ def observation_from_bundle(bundle: Any) -> dict[str, Any] | None:
         if key in collection:
             observation[key] = collection[key]
     subject_context = collection.get("subject_context")
-    if (
-        "observation_scope" not in observation
-        and isinstance(subject_context, dict)
-    ):
+    if "observation_scope" not in observation and isinstance(subject_context, dict):
         observation["observation_scope"] = {
             "repository": subject_context.get("repository"),
             "head_sha": subject_context.get("sha"),
         }
     verifier = collection.get("verifier_change")
     if isinstance(verifier, dict):
-        compact_verifier: dict[str, Any] = {
-            "available": bool(verifier.get("analyzed"))
-        }
+        compact_verifier: dict[str, Any] = {"available": bool(verifier.get("analyzed"))}
         if verifier.get("analyzed"):
             compact_verifier.update(
                 {
@@ -86,11 +81,40 @@ def observation_from_bundle(bundle: Any) -> dict[str, Any] | None:
         elif verifier.get("unavailable"):
             compact_verifier["unavailable"] = str(verifier["unavailable"])
         observation["verifier_change"] = compact_verifier
+    change_proof = collection.get("change_proof")
+    if isinstance(change_proof, dict):
+        compact_change_proof = {
+            key: change_proof[key]
+            for key in (
+                "schema_version",
+                "base_sha",
+                "merge_base_sha",
+                "head_sha",
+                "implementation_paths",
+                "status",
+            )
+            if key in change_proof
+        }
+        observation["change_proof"] = compact_change_proof
+    project_check = collection.get("project_check")
+    if isinstance(project_check, dict):
+        compact_project_check = {
+            key: project_check[key]
+            for key in (
+                "schema_version",
+                "snapshot_digest",
+                "snapshot_files",
+                "snapshot_complete",
+                "ecosystems",
+                "checks",
+                "status",
+            )
+            if key in project_check
+        }
+        observation["project_check"] = compact_project_check
     visibility = collection.get("workflow_visibility")
     if isinstance(visibility, dict):
-        compact: dict[str, Any] = {
-            "available": bool(visibility.get("available"))
-        }
+        compact: dict[str, Any] = {"available": bool(visibility.get("available"))}
         if isinstance(visibility.get("units_total"), int):
             compact["units_total"] = visibility["units_total"]
         not_started = visibility.get("not_started")
@@ -99,8 +123,7 @@ def observation_from_bundle(bundle: Any) -> dict[str, Any] | None:
             compact["action_required"] = sum(
                 1
                 for unit in not_started
-                if isinstance(unit, dict)
-                and unit.get("state") == "action_required"
+                if isinstance(unit, dict) and unit.get("state") == "action_required"
             )
         observation["workflow_visibility"] = compact
     return observation or None
@@ -132,9 +155,7 @@ def build_record(
         "digest": policy.digest,
     }
     if "required_status_semantics" in policy.normalized:
-        policy_record["required_status_semantics"] = (
-            policy.required_status_semantics
-        )
+        policy_record["required_status_semantics"] = policy.required_status_semantics
     record: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "generator": {

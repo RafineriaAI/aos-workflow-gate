@@ -1,6 +1,11 @@
 # Trust: verify it yourself
 
 Every claim below comes with a way to check it without trusting us.
+These read-only claims cover the default Action, collectors, and replay path.
+Experimental `prove-change` deliberately executes operator-supplied project
+code in disposable worktrees and has a separate boundary documented in
+[Executable Change Proof](CHANGE_PROOF.md) and
+[Security Readiness](SECURITY_READINESS.md).
 
 ## What the gate can and cannot do to your environment
 

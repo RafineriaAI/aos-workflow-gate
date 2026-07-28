@@ -4,16 +4,94 @@
 [![Release](https://img.shields.io/github/v/release/RafineriaAI/aos-workflow-gate)](https://github.com/RafineriaAI/aos-workflow-gate/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
-**AOS verifies the gate, not the code.**
+**Check your project before you share it. No Git or test expertise required.**
+
+AOS detects the project in the current folder, runs the build and behavioral
+checks it already defines, and answers three questions in plain language:
+
+1. What worked?
+2. What failed or was not checked?
+3. What should I do next?
+
+It is designed for professional developers, beginners, and people building
+with coding agents. The first command does not require a repository, branch,
+commit, pull request, policy file, account, or source-code upload.
+
+## Run one check
+
+`aos-check` is a `0.38.0` candidate surface. Until that version is released,
+run it from a source checkout:
+
+```bash
+python -m pip install .
+aos-check
+```
+
+Example result:
+
+```text
+AOS Check: WARN
+Project: Node.js
+
+[OK] Node build
+
+What AOS found:
+AOS could not find a runnable behavioral test for this project.
+
+Next:
+Ask your coding agent to add one automated test for the app's most important
+user flow, then run aos-check again.
+```
+
+The default remains advisory: `PASS`, `WARN`, and `BLOCK` describe the
+verification result, while the process exits successfully unless
+`--mode enforce` is selected.
+
+## What it checks today
+
+AOS recognizes conventional root projects for:
+
+- Python: syntax plus pytest when tests are present;
+- Node.js: declared build, typecheck, test, and lint scripts;
+- Go and Rust: their conventional test commands;
+- Maven and Gradle: their conventional test tasks.
+
+AOS does not install dependencies, invent commands, invoke a shell, upload
+code, or send telemetry. It executes the checks already defined by the local
+project and stores digests rather than raw output. A failed command is shown
+locally so the user can act on it.
+
+`PASS` means every discovered build and behavioral check completed. It does
+not prove that every requirement, security property, edge case, or user flow
+is correct. A project with no runnable behavioral test receives `WARN`, not a
+misleading green result.
+
+## Why this is useful with coding agents
+
+Coding agents can produce plausible code faster than a person can review it.
+AOS adds an independent execution step after generation:
+
+```text
+agent says done -> aos-check -> fix the named failure or missing check -> share
+```
+
+The current local check is the low-friction entry point, not the complete
+product claim. Browser-flow verification, adversarial test generation, and
+external usability evidence remain required before positioning AOS as a
+general correctness verifier.
+
+## GitHub control assurance
+
+**The GitHub gate verifies controls, not code.**
 
 A green PR can still rely on a control that is missing, stale, produced by the
-wrong app, or modified by the same PR. AOS is a read-only **pre-merge control
-assurance** check
+wrong app, or modified by the same PR. AOS's default gate is a read-only
+**pre-merge control assurance** check
 that verifies which intended controls actually governed the exact head commit.
 It returns `PASS`, `WARN`, or `BLOCK` with one reason, one next action, and
 replayable evidence.
 
-**Exact commit · Read-only · Advisory by default · No source-code upload**
+**Exact commit · Default Action read-only · Advisory by default · No source-code upload**
 
 <picture>
   <source media="(max-width: 600px)" srcset="docs/assets/readme-contrast-mobile.png">
@@ -65,6 +143,50 @@ issues.
 
 The current product boundary is **required-check integrity for one exact
 commit**, not full merge-readiness, security certification, or code review.
+
+## Experimental proof: can your tests see the change?
+
+This is a `0.38.0` candidate surface and is not present in the published
+`v0.37.1` package. Test it from a source checkout until an immutable release
+explicitly includes it.
+
+The opt-in `prove-change` command creates an executable change-sensitivity
+experiment. It runs your explicit verifier on `HEAD`, removes only the
+selected implementation patch in a disposable worktree while keeping the PR's
+tests, and runs the same verifier again:
+
+```bash
+python -m aos_workflow_gate prove-change \
+  --base origin/main \
+  --repository OWNER/REPO \
+  -- \
+  python -m pytest
+```
+
+Immediate result:
+
+```text
+WARN
+
+What AOS found:
+The verifier still passed after AOS removed the selected implementation changes.
+
+Next:
+Add or strengthen a test that fails when the implementation change is removed.
+```
+
+This moves beyond collecting green statuses: AOS performs a falsifiable
+experiment and preserves exact-SHA, command, patch, run, and output digests.
+`PASS` proves only that the checks are sensitive to removal of the change;
+`WARN change_not_distinguished` requires two clean challenge passes, while
+`BLOCK` requires the verifier to fail twice at the exact `HEAD`. An unstable
+repeat is inconclusive. No result proves functional correctness or defect
+absence.
+
+The experiment is local, explicit, and absent from the default Action. It
+executes operator-supplied project code, so use an unprivileged sandboxed job.
+See [Executable Change Proof](docs/CHANGE_PROOF.md) for semantics, security,
+limitations, and the validation threshold.
 
 ## First value in one PR
 
@@ -208,6 +330,8 @@ stable diagnostic codes. It never emits a policy verdict.
 
 - The Action requests no write permission and needs no repository secret.
 - No source code is uploaded to RafineriaAI; evaluation runs in your runner.
+- Experimental `prove-change` is explicit and executes operator-supplied
+  project code in disposable worktrees; it is never run by the default Action.
 - No telemetry or account is required.
 - No LLM participates in the verdict path.
 - The Python package has zero runtime dependencies.
@@ -243,6 +367,8 @@ Feedback is opt-in through the
 ## Documentation
 
 - Start: [User FAQ](docs/USER_FAQ.md) and [Preflight](docs/PREFLIGHT.md).
+- Experiment: [Executable change proof](docs/CHANGE_PROOF.md) for bounded,
+  local code-change sensitivity.
 - Configure: [Policy packs](docs/POLICY_PACKS.md) and
   [CI integrations](docs/CI_INTEGRATIONS.md).
 - Verify: [Trust](docs/TRUST.md), [Security readiness](docs/SECURITY_READINESS.md),

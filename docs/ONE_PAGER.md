@@ -5,11 +5,33 @@ tested; external utility and market value remain unvalidated, so the
 [Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) remains `NO_GO` for
 efficacy, production, paid-pilot, and ROI claims.
 
+## Mass-market candidate
+
+**Check your project before you share it. No Git or test expertise required.**
+
+The candidate `aos-check` command detects a Python, Node.js, Go, Rust, Maven,
+or Gradle project, runs its conventional build and test surfaces, and returns
+one `PASS/WARN/BLOCK` result with one next action. It is designed for
+professional developers, beginners, and vibe-coding users.
+
+The first run requires no repository, branch, commit, pull request, policy,
+account, telemetry, or source-code upload. A missing behavioral test is
+`WARN`; a reproduced build, type, or test failure is `BLOCK`; a quality-only
+finding is `WARN`; advisory remains the default.
+
+This is currently an onboarding and orchestration experiment, not a broad
+correctness product. Commercial progression requires external evidence that
+AOS finds accepted issues or missing verification beyond merely re-running
+commands the project already exposes, and that users repeat the check.
+
+## Team control assurance
+
+
 **Detect a control that is missing, stale, produced by the wrong app, or
 modified by the same PR.**
 
-AOS verifies the gate, not the code. It is a read-only **pre-merge control
-assurance** tool for the exact PR commit, with one `PASS/WARN/BLOCK` verdict,
+AOS verifies the gate, not the code. Its default Action is a read-only
+**pre-merge control assurance** tool, with one `PASS/WARN/BLOCK` verdict,
 one reason, one next action, and replayable evidence.
 
 ## Business problem
@@ -33,7 +55,17 @@ For one exact commit, AOS records five bounded properties:
 4. **Independence** - did the PR modify the workflow that assessed it?
 5. **Replay** - can another operator verify the same decision later?
 
-It does not review code, detect AI authorship, replace CI, or certify security.
+The default Action does not review code, detect AI authorship, replace CI, or
+certify security.
+
+### Experimental code-value wedge
+
+`prove-change` performs one additional local experiment: run explicit checks at
+`HEAD`, remove the selected implementation patch while retaining PR tests, and
+run the same checks again. It can show that green checks do not distinguish the
+submitted implementation from its base. This is a code-change sensitivity
+proof, not a correctness or defect-absence claim, and it remains outside the
+default Action until external users establish acceptable utility and noise.
 
 ## Best fit
 
@@ -41,7 +73,7 @@ It does not review code, detect AI authorship, replace CI, or certify security.
   multiple repositories.
 - Teams with GitHub rulesets, agent-assisted change volume, or evidence and
   review obligations.
-- Security and assurance reviewers who need bounded exact-commit records
+- Security and assurance reviewers who need default-Action exact-commit records
   without source-code upload, write permissions, telemetry, or a hosted
   dependency.
 
