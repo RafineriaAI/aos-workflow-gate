@@ -11,6 +11,7 @@ rules:
   malformed_input: BLOCK
   advisory_warning: WARN
   project_check_failed: BLOCK
+  project_high_confidence_risk: BLOCK
   project_verification_limited: WARN
   project_quality_warning: WARN
   project_verification_inconclusive: WARN

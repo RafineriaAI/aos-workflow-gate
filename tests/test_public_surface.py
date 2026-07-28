@@ -62,11 +62,15 @@ def test_readme_license_and_local_check_are_renderable() -> None:
 def test_readme_leads_with_product_value_before_validation_detail() -> None:
     readme = read_text("README.md")
     proof = readme.index("Check your project before you share it.")
-    first_run = readme.index("## Try it on any public PR")
-    validation = readme.index("## Validation status")
+    first_run = readme.index("### Local check")
+    validation = readme.index("Mechanism verification and market validation")
+    polish = readme.index("## Polski")
     documentation = readme.index("## Documentation")
 
-    assert proof < first_run < validation < documentation
+    assert proof < first_run < validation < polish < documentation
+    assert "[English](#english) | [Polski](#polski)" in readme
+    assert "Sprawdź projekt przed udostępnieniem." in readme
+    assert len(readme.splitlines()) <= 240
     assert "docs/assets/readme-contrast.png" in readme
     assert "docs/assets/readme-contrast-mobile.png" in readme
     assert '<source media="(max-width: 600px)"' in readme

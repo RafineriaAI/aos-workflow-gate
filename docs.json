@@ -148,6 +148,9 @@
     "benchmarks/mass-market/gap-audit-manifest.json",
     "benchmarks/mass-market/gap-audit.json",
     "benchmarks/mass-market/manifest.json",
+    "benchmarks/mass-market/PROJECT_CHECK_REMEASUREMENT.md",
+    "benchmarks/mass-market/project-check-remeasurement-manifest.json",
+    "benchmarks/mass-market/project-check-remeasurement.json",
     "benchmarks/mass-market/REPORT.md",
     "benchmarks/mass-market/results.json",
     "benchmarks/mass-market/REVIEW_ADJUDICATION_FINAL.md",
@@ -189,6 +192,7 @@
     "tools/contrast.py",
     "tools/value_gate.py",
     "tools/mass_gap_audit.py",
+    "tools/project_check_remeasurement.py",
     "tools/mass_review_adjudication.py",
     "tools/mass_review_proxy.py",
     "tools/mass_value_study.py"
@@ -243,6 +247,7 @@
     "tests/test_change_proof.py",
     "tests/test_project_check.py",
     "tests/test_mass_gap_audit.py",
+    "tests/test_project_check_remeasurement.py",
     "tests/test_mass_review_proxy.py",
     "tests/test_mass_value_study.py"
   ],

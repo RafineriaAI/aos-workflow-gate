@@ -27,6 +27,19 @@ plus one replay command** — and the record additionally distinguishes
 glance. We count surfaces (pages vs files); we do not convert them into
 minutes or money.
 
+## Local Project Check engineering remeasurement
+
+The frozen exact-SHA corpus contained 60 earlier root-only missing-test
+warnings. Metadata-only reconstruction found a declared nested test command in
+8 cases (13.3%); 7 (11.7%) also completed the bounded nested search. Among 12
+cases previously adjudicated as containing definite test material, 5 exposed a
+supported command and 4 also completed bounded discovery.
+
+This demonstrates a reduction in one known false-warning mechanism. Repository
+code was not executed, so the result does not establish that tests pass, cover
+business behavior, change a maintainer decision, produce retention, or justify
+payment. [Inspect the report](../benchmarks/mass-market/PROJECT_CHECK_REMEASUREMENT.md).
+
 ## Required external field metrics
 
 The committed studies do not measure product utility. External validation must

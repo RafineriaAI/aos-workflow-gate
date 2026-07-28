@@ -1,0 +1,19 @@
+{
+  "schema_version": "aos-project-check-remeasurement-manifest/v0",
+  "study_id": "aos-check-nested-command-remeasurement-2026-07-27",
+  "source_gap_audit_digest": "sha256:2f29c5fb30fba15188394bfe836bc3981d6a01381a1d155f0ec7e606c867513b",
+  "source_adjudication_digest": "sha256:d93d8e4037b0446250c78ab621f40821c56a999ac31a82a4ebb70ed2bd21e394",
+  "selection": {
+    "source": "all frozen coverage-gap candidates from gap-audit.json",
+    "expected_repositories": 60
+  },
+  "method": {
+    "subject": "exact repository head_sha from the frozen source audit",
+    "observation": "supported root or bounded nested test command declared in reconstructed metadata",
+    "execution": "metadata-only; no repository command, dependency or code is executed",
+    "comparison": "frozen root-only AOS missing-test warning"
+  },
+  "claim_boundary": "This remeasurement can show that bounded nested metadata discovery removes some root-only missing-test warnings. It cannot establish that tests pass, cover business behavior, are accepted by maintainers, change merge decisions, create retention, justify payment or outperform another product.",
+  "stopping_rule": "Process all 60 frozen observations; do not stop on a favorable result.",
+  "mutation_rule": "Do not change the source corpus, exact SHAs, selection or interpretation after collection starts."
+}

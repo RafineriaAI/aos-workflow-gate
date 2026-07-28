@@ -4,199 +4,75 @@
 [![Release](https://img.shields.io/github/v/release/RafineriaAI/aos-workflow-gate)](https://github.com/RafineriaAI/aos-workflow-gate/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 
+[English](#english) | [Polski](#polski)
+
+## English
+
 **Check your project before you share it. No Git or test expertise required.**
 
-AOS detects the project in the current folder, runs the build and behavioral
-checks it already defines, and answers three questions in plain language:
+AOS turns existing project checks and GitHub signals into one explainable
+`PASS/WARN/BLOCK` decision, one dominant reason, and one next action. It is for
+professional developers, beginners, and people building with coding agents.
 
-1. What worked?
-2. What failed or was not checked?
-3. What should I do next?
+**Free to use:** the Apache-2.0 CLI and GitHub Action have no feature gate,
+account requirement, telemetry, or hosted source-code upload.
 
-It is designed for professional developers, beginners, and people building
-with coding agents. The first command does not require a repository, branch,
-commit, pull request, policy file, account, or source-code upload.
+The first-party reference target is
+[`RafineriaAI/aos-kernel`](https://github.com/RafineriaAI/aos-kernel). AOS
+Workflow Gate verifies whether declared workflow and release controls produced
+replayable evidence for the exact kernel commit. It does not execute the
+kernel's Lean proof or claim a formal kernel guarantee.
 
-## Run one check
+### Local check
 
-`aos-check` is a `0.38.0` candidate surface. Until that version is released,
-run it from a source checkout:
+`aos-check` is a `0.38.0` candidate. Until that tag exists, install it from a
+source checkout:
 
 ```bash
 python -m pip install .
 aos-check
 ```
 
-Example result:
-
 ```text
 AOS Check: WARN
-Project: Node.js
-
-[OK] Node build
 
 What AOS found:
-AOS could not find a runnable behavioral test for this project.
+AOS found no runnable behavioral test command in the scanned scope.
 
 Next:
-Ask your coding agent to add one automated test for the app's most important
-user flow, then run aos-check again.
+Add one test for the app's most important user flow, then run aos-check again.
 ```
 
-The default remains advisory: `PASS`, `WARN`, and `BLOCK` describe the
-verification result, while the process exits successfully unless
-`--mode enforce` is selected.
+The bounded local check supports conventional Python, Node.js, Go, Rust, Maven,
+and Gradle projects, including nested projects. It runs declared build and test
+commands and checks changed files for complete private-key blocks and paired
+merge-conflict markers. It does not install dependencies or invoke a shell.
 
-## What it checks today
+### GitHub pre-merge control assurance
 
-AOS recognizes conventional root projects for:
-
-- Python: syntax plus pytest when tests are present;
-- Node.js: declared build, typecheck, test, and lint scripts;
-- Go and Rust: their conventional test commands;
-- Maven and Gradle: their conventional test tasks.
-
-AOS does not install dependencies, invent commands, invoke a shell, upload
-code, or send telemetry. It executes the checks already defined by the local
-project and stores digests rather than raw output. A failed command is shown
-locally so the user can act on it.
-
-`PASS` means every discovered build and behavioral check completed. It does
-not prove that every requirement, security property, edge case, or user flow
-is correct. A project with no runnable behavioral test receives `WARN`, not a
-misleading green result.
-
-## Why this is useful with coding agents
-
-Coding agents can produce plausible code faster than a person can review it.
-AOS adds an independent execution step after generation:
-
-```text
-agent says done -> aos-check -> fix the named failure or missing check -> share
-```
-
-The current local check is the low-friction entry point, not the complete
-product claim. Browser-flow verification, adversarial test generation, and
-external usability evidence remain required before positioning AOS as a
-general correctness verifier.
-
-## GitHub control assurance
-
-**The GitHub gate verifies controls, not code.**
-
-A green PR can still rely on a control that is missing, stale, produced by the
-wrong app, or modified by the same PR. AOS's default gate is a read-only
-**pre-merge control assurance** check
-that verifies which intended controls actually governed the exact head commit.
-It returns `PASS`, `WARN`, or `BLOCK` with one reason, one next action, and
-replayable evidence.
+**The GitHub gate verifies controls, not code.** It finds a required control
+that is missing, stale, produced by the wrong app, or modified by the same PR.
+The decision is bound to the exact head commit and is advisory by default.
 
 **Exact commit · Default Action read-only · Advisory by default · No source-code upload**
 
 <picture>
   <source media="(max-width: 600px)" srcset="docs/assets/readme-contrast-mobile.png">
-  <img src="docs/assets/readme-contrast.png" alt="Exact-SHA contrast: GitHub reports clean while AOS warns that the required evidence is non-independent">
+  <img src="docs/assets/readme-contrast.png" alt="GitHub reports clean while AOS warns that required evidence is non-independent">
 </picture>
 
-Observed public case:
-[`scramble-robot/questix#99`](https://github.com/scramble-robot/questix/pull/99).
-GitHub reported `CLEAN` and successful checks. AOS linked the required
-`build-summary` check to a workflow changed by the same PR. The outcome remains
-unresolved; this is a verified technical contrast, not a defect or efficacy
-claim. [Inspect the evidence and boundary](benchmarks/value/EXACT_CONTRAST.md).
+The committed
+[`aos-kernel` replay case](docs/case-studies/aos-kernel-release-surface-replay.md)
+binds one kernel commit to collected workflow signals, policy, decision record,
+and offline replay. Independent public-repository contrasts remain in the
+[auditable research corpus](benchmarks/value/EXACT_CONTRAST.md); they prove a
+bounded semantic difference, not a defect or efficacy claim.
 
-## Try it on any public PR
-
-```bash
-python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.37.1"
-aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
-```
-
-The command is read-only and does not change the target repository. Anonymous
-GitHub API limits may apply; provide a read-only token when needed.
-
-## What AOS catches
-
-- **A required control is not satisfied:** missing, pending, failed, or unverifiable
-  evidence is named instead of disappearing behind an incomplete green view.
-- **The right name came from the wrong integration:** app-bound requirements
-  remain unverifiable unless the observed check has the expected GitHub App
-  identity.
-- **Evidence belongs to the wrong subject:** repository, PR, branch, and exact
-  head-SHA bindings fail closed instead of being silently reused.
-- **A workflow assessed its own change:** the PR changed a workflow that
-  produced evidence used to assess the same exact commit.
-- **No status check is required:** branch rules were read successfully, but
-  zero checks can enforce the merge. Action runs record this repository-level
-  coverage fact without repeating it as a per-PR warning.
-
-Not another AI reviewer: AOS verifies control execution, not code correctness.
-It does not generate review comments, find defects, or guess whether AI wrote
-the change. GitHub, CI, and scanners produce signals. AOS checks whether the
-configured controls produced independent, reproducible evidence for this exact
-commit.
-
-Optional adapters can include existing SARIF or OpenSSF Scorecard results as
-policy inputs. That integration is useful, but it is not the product category:
-the core job is exact-commit control assurance, not finding more scanner
-issues.
-
-The current product boundary is **required-check integrity for one exact
-commit**, not full merge-readiness, security certification, or code review.
-
-## Experimental proof: can your tests see the change?
-
-This is a `0.38.0` candidate surface and is not present in the published
-`v0.37.1` package. Test it from a source checkout until an immutable release
-explicitly includes it.
-
-The opt-in `prove-change` command creates an executable change-sensitivity
-experiment. It runs your explicit verifier on `HEAD`, removes only the
-selected implementation patch in a disposable worktree while keeping the PR's
-tests, and runs the same verifier again:
-
-```bash
-python -m aos_workflow_gate prove-change \
-  --base origin/main \
-  --repository OWNER/REPO \
-  -- \
-  python -m pytest
-```
-
-Immediate result:
-
-```text
-WARN
-
-What AOS found:
-The verifier still passed after AOS removed the selected implementation changes.
-
-Next:
-Add or strengthen a test that fails when the implementation change is removed.
-```
-
-This moves beyond collecting green statuses: AOS performs a falsifiable
-experiment and preserves exact-SHA, command, patch, run, and output digests.
-`PASS` proves only that the checks are sensitive to removal of the change;
-`WARN change_not_distinguished` requires two clean challenge passes, while
-`BLOCK` requires the verifier to fail twice at the exact `HEAD`. An unstable
-repeat is inconclusive. No result proves functional correctness or defect
-absence.
-
-The experiment is local, explicit, and absent from the default Action. It
-executes operator-supplied project code, so use an unprivileged sandboxed job.
-See [Executable Change Proof](docs/CHANGE_PROOF.md) for semantics, security,
-limitations, and the validation threshold.
-
-## First value in one PR
-
-Add `.github/workflows/aos-self-test.yml`:
+### First value in one PR
 
 ```yaml
 name: AOS Self-Test
-
-on:
-  pull_request:
+on: pull_request
 
 permissions:
   contents: read
@@ -206,189 +82,110 @@ permissions:
   statuses: read
 
 jobs:
-  self-test:
+  aos:
     runs-on: ubuntu-latest
     steps:
-      # Pinned from actions/setup-python@v6 on 2026-07-03.
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.11"
-      - name: AOS self-test (advisory)
-        uses: RafineriaAI/aos-workflow-gate@v0.37.1
+      - uses: RafineriaAI/aos-workflow-gate@v0.37.1
 ```
 
 No checkout, manual policy, bundle, or `required-checks` list is needed. The
-Action reads branch rules, check runs, workflow runs, and commit statuses for
-the exact head SHA. Every permission is read-only; listing all scopes also
-keeps the workflow usable in private repositories, where unlisted scopes are
-set to `none`.
+Action produces a Markdown summary and uploads replayable JSON plus static HTML
+evidence. This repository dogfoods the same workflow in
+[CI](.github/workflows/aos-workflow-gate-self.yml).
 
-The Action then:
+### Try it on any public PR
 
-1. discovers required controls and validates collection capability;
-2. produces a plain-language verdict, dominant reason, effect, and `Next`;
-3. saves the bundle, policy, decision record, and static HTML evidence view;
-4. uploads them as the `aos-gate-evidence` artifact for offline replay.
-
-This repository runs the same Action against itself in
-[AOS Workflow Gate Self](.github/workflows/aos-workflow-gate-self.yml).
-
-## A decision you can act on
-
-```text
-AOS Workflow Gate: WARN
-
-Reason:
-This PR changed the workflow that produced a required check.
-
-Effect:
-Advisory only; this result does not fail the job.
-
-Next:
-Require one check whose workflow definition is unchanged by this PR.
+```bash
+python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.37.1"
+aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
 ```
 
-The verdict and the process exit code are separate. Advisory mode reports every
-verdict but leaves the job successful. In `mode: "enforce"`, only `BLOCK`
-fails the step. The summary also states whether GitHub already blocks the PR or
-whether AOS found an additional policy/evidence gap. Teams can therefore
-observe noise before enabling enforcement.
+The command is read-only. Anonymous GitHub API limits may apply.
 
-## How it fits
+### Read the result
 
-```mermaid
-flowchart LR
-    R["GitHub rules"] --> G["AOS gate"]
-    S["Checks, workflows and statuses<br/>at the exact head SHA"] --> G
-    G --> V["PASS / WARN / BLOCK<br/>Reason + Effect + Next"]
-    G --> E["Evidence record<br/>Verify + replay"]
-```
+- `PASS`: every requirement declared by the selected policy was satisfied.
+- `WARN`: a named readiness gap needs attention, but advisory CI continues.
+- `BLOCK`: the policy says the gap must block; enforcement is still opt-in.
 
-AOS complements branch protection, CI, scanners, and review tools. It does not
-replace them; it turns their observed signals and repository requirements into
-one deterministic decision record.
+The verdict and the process exit code are separate. The verdict describes the
+decision; advisory/enforce mode controls whether the process stops.
 
-## Who it is for
-
-- **Maintainer:** one dominant control gap and one next action instead of
-  reconciling branch rules, checks, workflow runs, and statuses by hand.
-- **Platform or DevSecOps owner:** consistent exact-commit control decisions
-  across repositories without replacing CI or scanners.
-- **Security or assurance reviewer:** replayable evidence without source-code
-  upload, write permissions, telemetry, or a hosted dependency.
-- **PR author:** an occasional pre-review check when repository controls are
-  complex; AOS is not positioned as a paid everyday assistant for solo work.
-
-Best fit: teams with multiple repositories, enforced GitHub controls,
-agent-assisted change volume, or review and evidence obligations. Repositories
-with few controls and low-cost failures may receive little incremental value.
-
-## Evidence and replay
-
-The Action writes these files to `.aos-gate/`:
-
-```text
-bundle.json
-policy.json
-gate-decision.json
-evidence.html
-```
-
-Verify the record and render the human-readable view offline:
+### Evidence, trust, and status
 
 ```bash
 aos-workflow-gate verify --input gate-decision.json --bundle bundle.json
 aos-workflow-gate summarize --input gate-decision.json --html --out evidence.html
 ```
 
-[Open an example WARN evidence report](docs/assets/aos-warn-evidence.png).
-GitHub artifacts expire according to repository settings; attach evidence to a
-release when it must remain durable.
+No LLM participates in the verdict path. The default Action is read-only, no
+telemetry or account is required, and no source code is uploaded to
+RafineriaAI. Records are tamper-evident and replayable but remain
+`UNSIGNED_NOT_OFFICIAL`.
 
-Decision records currently carry `UNSIGNED_NOT_OFFICIAL`: their structure,
-digests, subject binding, and replay can be verified, but they are not signed
-RafineriaAI attestations.
+Mechanism verification and market validation are separate. Daily usefulness,
+alert precision in external teams, retention, incident reduction, and
+willingness to pay are not independently validated. The formal value status is
+[`NO_GO`](benchmarks/value/ASSESSMENT.md); `FREE_SELF_SERVE_VALIDATION` permits
+the free advisory release while efficacy and production claims remain closed.
+There is no active paid offering.
 
-## Adopt gradually
+## Polski
 
-| Stage | Use | CI effect |
-| --- | --- | --- |
-| Local | `check-pr` before review | None |
-| Advisory Action | Observe every PR and tune policy | Always succeeds |
-| Enforced Action | Make a stable policy a required check | `BLOCK` fails |
+**Sprawdź projekt przed udostępnieniem. Bez znajomości Gita i komend testowych.**
 
-Run capability diagnostics before troubleshooting a first integration:
+AOS uruchamia istniejące kontrole projektu, zbiera sygnały GitHub i zwraca jeden
+wyjaśnialny werdykt `PASS/WARN/BLOCK`, główną przyczynę oraz konkretny następny
+krok. Narzędzie jest przeznaczone także dla początkujących i osób pracujących z
+agentami kodującymi.
 
-```bash
-aos-workflow-gate preflight --pr https://github.com/OWNER/REPO/pull/N
-```
+**Dostęp jest bezpłatny:** CLI i GitHub Action są wydane na Apache-2.0, bez
+konta, telemetryki, blokad funkcji i wysyłania kodu do RafineriaAI.
 
-Preflight reports environment, permission, feature, and context readiness with
-stable diagnostic codes. It never emits a policy verdict.
+Pierwszym referencyjnym celem jest operacyjna weryfikacja
+[`aos-kernel`](https://github.com/RafineriaAI/aos-kernel): czy zadeklarowane
+kontrole workflow i release dostarczyły dowody dla dokładnego commita kernela.
+Nie jest to formalny dowód semantyki kernela.
 
-## Trust boundary
+### Szybki start
 
-- The Action requests no write permission and needs no repository secret.
-- No source code is uploaded to RafineriaAI; evaluation runs in your runner.
-- Experimental `prove-change` is explicit and executes operator-supplied
-  project code in disposable worktrees; it is never run by the default Action.
-- No telemetry or account is required.
-- No LLM participates in the verdict path.
-- The Python package has zero runtime dependencies.
-- A verdict does not prove that a repository is secure, defect-free, or
-  compliant, and does not replace review, tests, or threat modeling.
+- Lokalnie: zainstaluj wersję źródłową i uruchom `aos-check`.
+- W GitHub: dodaj pokazany wyżej workflow; domyślnie działa tylko doradczo.
+- Dla publicznego PR-a: uruchom `aos-workflow-gate check-pr <URL>`.
 
-See [Trust](docs/TRUST.md), [Security readiness](docs/SECURITY_READINESS.md),
-and [Scope](docs/SCOPE.md) for the complete data and claim boundaries.
+Wynik odpowiada na trzy pytania: co wykonano, czego brakuje i co zrobić dalej.
+`PASS` nie oznacza braku błędów; oznacza wyłącznie spełnienie jawnie
+sprawdzonych wymagań. Werdykt nie jest exit code'em: dopiero tryb `enforce`
+może przerwać CI.
 
-## Validation status
+### Praktyczna wartość
 
-Mechanism verification and market validation are separate. Deterministic
-evaluation, exact-commit binding, tamper detection, and offline replay are
-covered by committed evidence and tests. Daily usefulness, alert precision in
-external teams, incident reduction, retention, and willingness to pay are not
-yet independently validated.
+- mniej ręcznego ustalania, które kontrole rzeczywiście objęły zmianę;
+- widoczność testu lub kontroli, która nie wystartowała albo pochodzi z
+  niewłaściwej aplikacji;
+- lokalna diagnoza bez znajomości komend projektu;
+- jedno uzasadnienie, następna czynność i odtwarzalny zapis decyzji.
 
-The Action and CLI are therefore available as a free advisory preview without
-an account or telemetry. The formal research status remains
-[`NO_GO`](benchmarks/value/ASSESSMENT.md) for efficacy, production, and
-commercial claims; `FREE_SELF_SERVE_VALIDATION` permits external testing while
-those claims remain closed. See the [Hybrid Value Gate](benchmarks/value/README.md).
-
-There is no active paid offering. A future commercial product would require
-external evidence that cross-repository control drift, exception governance,
-evidence retention, or assurance reporting saves meaningful time or changes
-decisions. Install counts and internally generated examples do not establish
-that value.
-
-Feedback is opt-in through the
-[product feedback form](https://github.com/RafineriaAI/aos-workflow-gate/issues/new?template=feedback.yml).
+AOS nie zastępuje review, testów ani skanerów. Istniejące narzędzia dostarczają
+sygnały; AOS składa je w ograniczoną decyzję gotowości. Użyteczność rynkowa i
+niski poziom szumu wymagają nadal walidacji zewnętrznej, dlatego obecne wydanie
+jest bezpłatnym, doradczym preview.
 
 ## Documentation
 
-- Start: [User FAQ](docs/USER_FAQ.md) and [Preflight](docs/PREFLIGHT.md).
-- Experiment: [Executable change proof](docs/CHANGE_PROOF.md) for bounded,
-  local code-change sensitivity.
-- Configure: [Policy packs](docs/POLICY_PACKS.md) and
-  [CI integrations](docs/CI_INTEGRATIONS.md).
-- Verify: [Trust](docs/TRUST.md), [Security readiness](docs/SECURITY_READINESS.md),
-  and [Decision predicate](docs/DECISION_PREDICATE.md).
-- Understand: [Scope](docs/SCOPE.md), [Architecture](docs/ARCHITECTURE.md), and
-  [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md).
-- Evaluate fit: [Value](docs/VALUE.md), [Buyer FAQ](docs/BUYER_FAQ.md), and
+- Start: [User FAQ](docs/USER_FAQ.md), [Preflight](docs/PREFLIGHT.md), and
+  [Scope](docs/SCOPE.md).
+- Trust: [Trust](docs/TRUST.md), [Security readiness](docs/SECURITY_READINESS.md),
+  and [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md).
+- Product fit: [Value](docs/VALUE.md), [Buyer FAQ](docs/BUYER_FAQ.md), and
   [Comparison](docs/COMPARISON.md).
-- Operate: [Release governance](docs/RELEASE_GOVERNANCE.md) and
+- Operation: [Release governance](docs/RELEASE_GOVERNANCE.md) and
   [Contributing](CONTRIBUTING.md).
 
 ## Local development
-
-Start with the [Contributing guide](CONTRIBUTING.md) and the
-[Development guide](docs/DEVELOPMENT.md). After creating and activating a
-fresh Python 3.11+ virtual environment as documented there:
-
-```bash
-python -m pip install -e ".[dev]"
-```
 
 Run the local hygiene checks with:
 
@@ -399,7 +196,7 @@ python -m pytest
 python tools/check_public_surface.py
 ```
 
-Or run only the public surface check with:
+Or run only the public-surface guard:
 
 ```bash
 python tools/check_public_surface.py

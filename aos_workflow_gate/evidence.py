@@ -107,6 +107,9 @@ def observation_from_bundle(bundle: Any) -> dict[str, Any] | None:
                 "snapshot_complete",
                 "ecosystems",
                 "checks",
+                "project_roots",
+                "nested_discovery_complete",
+                "safety_scan",
                 "status",
             )
             if key in project_check

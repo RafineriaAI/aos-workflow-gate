@@ -14,10 +14,13 @@ decision impact, incident reduction, and willingness to pay remain
 unvalidated. No active paid product or production recommendation exists.
 
 The candidate `aos-check` surface detects Python, Node.js, Go, Rust, Maven, and
-Gradle root projects, runs only their conventional existing checks, and names
-a missing behavioral test rather than returning a misleading `PASS`. It does
-not yet explore a running application, generate adversarial tests, or verify a
-plain-language product requirement.
+Gradle projects at the root and uses a bounded nested fallback when no root
+behavioral test is runnable. It runs their
+conventional checks and scans bounded changed files for paired conflict
+markers and complete private-key blocks without storing matched text. A
+missing behavioral test command remains `WARN`. It does not yet explore a
+running application, generate adversarial tests, or verify a plain-language
+product requirement.
 
 
 The opt-in experimental `prove-change` surface performs one bounded code
@@ -72,17 +75,18 @@ A gate decision means only:
 > produced this verdict and replayable record.
 
 For `prove-change`, `PASS` means the explicit verifier passed at `HEAD` and
-
-For `aos-check`, `PASS` means every discovered project check passed and at
-least one behavioral test ran. `WARN` means a behavioral test or another
-verification prerequisite was unavailable. `BLOCK` means a discovered check
-failed. These states cover only discovered local commands, not every user
-flow, requirement, edge case, or vulnerability.
-
 failed twice after the selected implementation patch was removed. `WARN` means
 the checks did not distinguish the change or the experiment was inconclusive.
 `BLOCK` means the explicit verifier failed twice at `HEAD`. None of these
 states proves business correctness or defect absence.
+
+For `aos-check`, `PASS` means every discovered project check passed, at least
+one behavioral test ran, and the bounded high-confidence scan found no listed
+blocker. `WARN` means a behavioral test or another verification prerequisite
+was unavailable. `BLOCK` means a discovered check failed or the scan found
+paired conflict markers or complete private-key material. These states cover
+only discovered local surfaces, not every user flow, requirement, edge case,
+credential type, or vulnerability.
 
 It does not mean the underlying source signals are complete, honest, or
 independently verified unless the record contains evidence for that property.
@@ -99,6 +103,8 @@ The package shares the public verdict vocabulary and design lineage of
 `aos-kernel`, but the current Python implementation has no runtime dependency
 on the kernel and makes no formal-proof claim. Workflow semantics, contracts,
 digests, and integration behavior are owned and tested in this repository.
+Its first-party reference use is operational verification of the workflow and
+release evidence associated with exact `aos-kernel` commits.
 No artifact produced here is kernel-generated or kernel-verified. A future
 kernel-backed claim requires a versioned shared contract and conformance
 vectors executed in both repositories.

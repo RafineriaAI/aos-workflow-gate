@@ -5,24 +5,33 @@ tested; external utility and market value remain unvalidated, so the
 [Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) remains `NO_GO` for
 efficacy, production, paid-pilot, and ROI claims.
 
+The first-party reference target is `RafineriaAI/aos-kernel`: the gate verifies
+whether declared repository controls produced replayable evidence for an exact
+kernel commit. It is an operational workflow verification layer, not a formal
+proof of kernel semantics. The Apache-2.0 CLI and Action remain free, without
+an account, telemetry, feature gates, or hosted source-code upload.
+
 ## Mass-market candidate
 
 **Check your project before you share it. No Git or test expertise required.**
 
 The candidate `aos-check` command detects a Python, Node.js, Go, Rust, Maven,
-or Gradle project, runs its conventional build and test surfaces, and returns
-one `PASS/WARN/BLOCK` result with one next action. It is designed for
-professional developers, beginners, and vibe-coding users.
+or Gradle project at the root, falls back to bounded nested projects when no
+root test is runnable, runs their conventional build and test surfaces, and
+scans bounded changed files for unresolved conflict markers and
+private-key material, and returns one `PASS/WARN/BLOCK` result with one next
+action. It is designed for professional developers, beginners, and
+vibe-coding users.
 
 The first run requires no repository, branch, commit, pull request, policy,
 account, telemetry, or source-code upload. A missing behavioral test is
 `WARN`; a reproduced build, type, or test failure is `BLOCK`; a quality-only
-finding is `WARN`; advisory remains the default.
+finding is `WARN`; a high-confidence sharing blocker is `BLOCK`; advisory
+remains the default.
 
-This is currently an onboarding and orchestration experiment, not a broad
-correctness product. Commercial progression requires external evidence that
-AOS finds accepted issues or missing verification beyond merely re-running
-commands the project already exposes, and that users repeat the check.
+This remains a bounded verification experiment, not a broad correctness
+product. Commercial progression requires external evidence that the
+incremental findings are accepted, materially useful, low-noise, and retained.
 
 ## Team control assurance
 

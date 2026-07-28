@@ -30,37 +30,33 @@ python tools/check_public_surface.py
 
 REQUIRED_SNIPPETS = {
     "README.md": [
+        "[English](#english) | [Polski](#polski)",
         "Check your project before you share it. No Git or test expertise required.",
+        "Sprawdź projekt przed udostępnieniem.",
         "aos-check",
-        "AOS could not find a runnable behavioral test",
+        "AOS found no runnable behavioral test command in the scanned scope.",
         "The GitHub gate verifies controls, not code.",
         (
-            "control that is missing, stale, produced by the\n"
-            "wrong app, or modified by the same PR"
+            "control\nthat is missing, stale, produced by the wrong app, "
+            "or modified by the same PR"
         ),
+        "pre-merge control assurance",
         (
             "Exact commit · Default Action read-only · Advisory by default · "
             "No source-code upload"
         ),
         "docs/assets/readme-contrast.png",
         "docs/assets/readme-contrast-mobile.png",
-        "scramble-robot/questix#99",
-        "## Try it on any public PR",
-        "## What AOS catches",
-        "Not another AI reviewer",
-        "## First value in one PR",
+        "RafineriaAI/aos-kernel",
+        "### First value in one PR",
         "No checkout, manual policy, bundle, or `required-checks` list",
-        "## A decision you can act on",
+        "### Try it on any public PR",
         "The verdict and the process exit code are separate.",
-        "## Who it is for",
-        "Best fit: teams with multiple repositories",
-        "## Evidence and replay",
-        "docs/assets/aos-warn-evidence.png",
-        "## Trust boundary",
+        "Dostęp jest bezpłatny",
         "No LLM participates in the verdict path.",
         "UNSIGNED_NOT_OFFICIAL",
         "Mechanism verification and market validation are separate.",
-        "Daily usefulness, alert precision in\nexternal teams",
+        "Daily usefulness,\nalert precision in external teams",
         "`NO_GO`",
         "FREE_SELF_SERVE_VALIDATION",
         "There is no active paid offering.",
@@ -72,7 +68,6 @@ REQUIRED_SNIPPETS = {
         "actions: read",
         "pull-requests: read",
         "statuses: read",
-        "No telemetry or account is required.",
         "docs/RELEASE_GOVERNANCE.md",
         "docs/STANDARDS_COMPATIBILITY.md",
         "docs/VALUE.md",
@@ -476,7 +471,11 @@ REQUIRED_SNIPPETS = {
         "no Lean build is required",
         "does not prove this repository's\nworkflow evaluator",
         "A future kernel-backed claim requires a versioned shared contract",
-        "standalone workflow gate, not a kernel proof or kernel-backed verdict",
+        (
+            "first-party operational verification of `aos-kernel` workflow "
+            "and release\n  evidence, not a formal kernel proof or "
+            "kernel-backed verdict"
+        ),
         "Do not delete, recreate, or force-push a published `v*` tag",
         "## Public Merge Metadata",
         "--subject \"<public outcome>\"",

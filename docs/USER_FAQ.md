@@ -5,17 +5,20 @@ in [BUYER_FAQ.md](BUYER_FAQ.md); verification steps in [TRUST.md](TRUST.md).
 
 **Can I use AOS without Git or GitHub?**
 Yes. From a `0.38.0` source checkout, install the package, open a terminal in
-the project folder, and run `aos-check`. It detects supported root projects
-and their conventional checks. No repository, branch, commit, policy, account,
-or test-command knowledge is required.
+the project folder, and run `aos-check`. It detects the supported root project
+and falls back to bounded nested projects when the root has no runnable test.
+No repository, branch, commit, policy, account, or
+test-command knowledge is required.
 
 **What does `aos-check` do?**
 It runs existing build and behavioral checks for Python, Node.js, Go, Rust,
-Maven, or Gradle and shows one result and one next action. It never installs
-dependencies. `WARN` commonly means no runnable behavioral test was found;
-a quality-only finding is also `WARN`. `BLOCK` means a discovered build, type,
-or test check failed. It does not yet test browser flows or prove that the
-application meets its intended requirements. See
+Maven, or Gradle and locally scans bounded changed files for complete private
+key blocks and unresolved conflict markers. It never installs dependencies or
+uploads code. `WARN` commonly means no runnable behavioral test command was
+detected; a quality-only finding is also `WARN`. `BLOCK` means a discovered
+build, type, or test check failed, or a high-confidence sharing blocker was
+found. It does not yet test browser flows or prove that the application meets
+its intended requirements. See
 [Local Project Check](PROJECT_CHECK.md).
 
 

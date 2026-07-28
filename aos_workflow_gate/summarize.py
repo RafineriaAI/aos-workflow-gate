@@ -64,6 +64,11 @@ GENERIC_REMEDIATIONS: dict[str, RemediationSpec] = {
         "fix_first_project_failure",
         "Re-run the named check, fix its first failure, then run aos-check again.",
     ),
+    "project_high_confidence_risk": RemediationSpec(
+        "remove_high_confidence_code_risk",
+        "Remove the named blocker, then run aos-check again. If private key "
+        "material was exposed, rotate that credential.",
+    ),
     "project_verification_limited": RemediationSpec(
         "add_runnable_project_test",
         "Ask your coding agent to add one automated test for the app's "
@@ -511,8 +516,13 @@ def _plain_finding(
         return "AOS could not complete a stable change-sensitivity experiment."
     if rule == "project_check_failed":
         return "A discovered build or test check failed in this project."
+    if rule == "project_high_confidence_risk":
+        return str(
+            gap.get("detail")
+            or "AOS found a high-confidence code risk in this project."
+        )
     if rule == "project_verification_limited":
-        return "AOS could not find a runnable behavioral test for this project."
+        return "AOS found no runnable behavioral test command in the scanned scope."
     if rule == "project_verification_inconclusive":
         return "A discovered project check could not complete reliably."
     if rule == "project_quality_warning":
@@ -718,6 +728,7 @@ _GAP_RULE_RANK = {
     "confirmed_verifier_failure": 1,
     "change_not_distinguished": 1,
     "project_check_failed": 1,
+    "project_high_confidence_risk": 1,
     "project_verification_limited": 2,
     "project_verification_inconclusive": 2,
     "verification_inconclusive": 2,
@@ -783,7 +794,7 @@ def _scope_statement(
         ecosystem_text = ", ".join(ecosystems) or "detected project"
         check_text = str(checks) if isinstance(checks, int) else "discovered"
         return (
-            f"{check_text} local build/test check(s) for {ecosystem_text}; "
+            f"{check_text} local safety/build/test check(s) for {ecosystem_text}; "
             "no Git required, no code uploaded; not proof that every user "
             "flow, requirement, security property, or edge case is correct"
         )
