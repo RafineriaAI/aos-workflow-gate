@@ -5,6 +5,12 @@ tested; external utility and market value remain unvalidated, so the
 [Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md) remains `NO_GO` for
 efficacy, production, paid-pilot, and ROI claims.
 
+The first-party reference target is `RafineriaAI/aos-kernel`: the gate verifies
+whether declared repository controls produced replayable evidence for an exact
+kernel commit. It is an operational workflow verification layer, not a formal
+proof of kernel semantics. The Apache-2.0 CLI and Action remain free, without
+an account, telemetry, feature gates, or hosted source-code upload.
+
 ## Mass-market candidate
 
 **Check your project before you share it. No Git or test expertise required.**

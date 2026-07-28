@@ -12,6 +12,11 @@ lineage of `aos-kernel`, but it does not import, execute, or require the
 kernel at runtime. This repository owns workflow collection, policy evaluation,
 decision records, replay, and presentation.
 
+Its first-party reference purpose is to verify the operational workflow and
+release evidence around exact `aos-kernel` commits. That relationship is
+implemented as ordinary repository inputs, policies, records, and replay, so
+the same package remains usable on other repositories.
+
 The kernel's public Lean surface formalizes a numeric interval demonstrator;
 it does not prove this package's source-status rules or GitHub semantics.
 Kernel and workflow-gate evidence are not interchangeable. Any future

@@ -137,7 +137,9 @@ GitHub Releases should be published only after the release tag exists, the final
 
 Release text must keep the same public boundary as the repository:
 
-- standalone workflow gate, not a kernel proof or kernel-backed verdict;
+- free Apache-2.0 CLI and Action, with no active paid offering;
+- first-party operational verification of `aos-kernel` workflow and release
+  evidence, not a formal kernel proof or kernel-backed verdict;
 - `UNSIGNED_NOT_OFFICIAL` until signing and publication controls exist;
 - no production, compliance, security-audit, signing, SBOM, SLSA, or attestation claim unless the corresponding audited infrastructure exists;
 - no claim that `PASS` means a repository is secure, correct, production-ready, or legally compliant.
@@ -145,7 +147,9 @@ Release text must keep the same public boundary as the repository:
 ## Operational Handoff
 
 `aos-kernel` remains a separate reference demonstrator with an abstract
-interval-verdict proof surface. `aos-workflow-gate` is a standalone product
-implementation that shares AOS vocabulary and design principles but no runtime
-or formal guarantee. Workflow adapters, policies, records, and integrations
-must remain explicit, tested, and documented in this repository.
+interval-verdict proof surface. `aos-workflow-gate` is the first-party
+operational verification layer for the kernel repository's workflow and
+release evidence, and a standalone product implementation for other
+repositories. It shares AOS vocabulary and design principles but no runtime or
+formal guarantee. Workflow adapters, policies, records, and integrations must
+remain explicit, tested, and documented in this repository.
