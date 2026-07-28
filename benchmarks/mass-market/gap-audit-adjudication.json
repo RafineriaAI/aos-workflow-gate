@@ -1,0 +1,50 @@
+{
+  "schema_version": "aos-mass-gap-audit-adjudication/v0",
+  "study_id": "aos-check-missing-test-surface-post-hoc-adjudication-2026-07-22",
+  "created_at": "2026-07-22T18:21:32Z",
+  "source_result_digest": "sha256:2f29c5fb30fba15188394bfe836bc3981d6a01381a1d155f0ec7e606c867513b",
+  "method": {
+    "scope": "100% of 18 contradicted_by_paths observations",
+    "reviewers": 1,
+    "blinding": false,
+    "preregistered": false,
+    "classes": {
+      "definite_test_surface": "conventional tests, test suite, framework test config or numerous test files",
+      "probable_validation_surface": "executable test or validation script outside a conventional suite",
+      "path_false_match": "migration, documentation/spec asset or other path that does not represent behavioral validation"
+    },
+    "limitation": "Post-hoc single-evaluator path review. It does not prove that a discovered test is runnable, relevant or passing."
+  },
+  "labels": [
+    {"repository": "7078-cj/TodaGoo", "class": "path_false_match", "rationale": "Django migration filename contains delete_test but is not a test."},
+    {"repository": "AallynReed/BetterTroveTools", "class": "definite_test_surface", "rationale": "Conventional Android src/test unit-test path."},
+    {"repository": "Big-Data-Club/BDCHub---Frontend", "class": "path_false_match", "rationale": "Agent asset specs are declarative examples, not a test suite."},
+    {"repository": "CaliCastle/cali.so", "class": "definite_test_surface", "rationale": "Large set of application .test.tsx files."},
+    {"repository": "CypherVantageAI/core-platform", "class": "probable_validation_surface", "rationale": "Standalone scratch test script."},
+    {"repository": "SirAllap/agentglass", "class": "definite_test_surface", "rationale": "Large server/test suite with .test.ts files."},
+    {"repository": "VeriWorkly/veriworkly", "class": "path_false_match", "rationale": "Documentation platform component specs are YAML specifications."},
+    {"repository": "bulwarkmail/webmail", "class": "definite_test_surface", "rationale": "Large __tests__ and .test.tsx suite."},
+    {"repository": "lukevella/rallly", "class": "definite_test_surface", "rationale": "Playwright config and application test files."},
+    {"repository": "magnusfroste/flowwink", "class": "definite_test_surface", "rationale": "Large guardrail and integration test suite."},
+    {"repository": "ostris/ai-toolkit", "class": "definite_test_surface", "rationale": "Multiple testing directory and test_ Python files."},
+    {"repository": "pyronear/pyro-api", "class": "definite_test_surface", "rationale": "Client tests suite with conftest and test modules."},
+    {"repository": "qinshihu/itops-agent-platform", "class": "definite_test_surface", "rationale": "Large backend .test.ts suite."},
+    {"repository": "ryantsai/KKTerm", "class": "definite_test_surface", "rationale": "Numerous source .test.ts files; documentation specs are not needed for classification."},
+    {"repository": "satan53x/SExtractor", "class": "probable_validation_surface", "rationale": "Standalone executable test_xor utility."},
+    {"repository": "txemi/immich-autotag", "class": "probable_validation_surface", "rationale": "Package-install validation script targeting TestPyPI."},
+    {"repository": "usebruno/bruno", "class": "definite_test_surface", "rationale": "Extensive test actions and test-related repository surface."},
+    {"repository": "vericontext/querypad", "class": "definite_test_surface", "rationale": "Conventional test directory with .test.ts files."}
+  ],
+  "metrics": {
+    "coverage_gap_candidates": 60,
+    "path_contradictions_raw": 18,
+    "definite_test_surface": 12,
+    "probable_validation_surface": 3,
+    "path_false_matches": 3,
+    "conservative_false_warning_rate": 0.20,
+    "broader_validation_surface_rate": 0.25,
+    "path_contradiction_precision": 0.8333
+  },
+  "status": "CONFIRMED_HIGH_FALSE_POSITIVE_RISK",
+  "claim_boundary": "At least 12 of 60 no-test candidates visibly contain conventional tests. This falsifies a low-noise claim for the current root-only detector. It does not estimate user acceptance or business severity."
+}

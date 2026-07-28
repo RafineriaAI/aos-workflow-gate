@@ -1,0 +1,47 @@
+{
+  "schema_version": "aos-mass-review-adjudication/v0",
+  "study_id": "aos-check-corrected-review-semantic-adjudication-2026-07-22",
+  "preregistered_at": "2026-07-22T18:06:51Z",
+  "source_result_digest": "sha256:bbd808aae83d3cc675aceb7e8ca943bb6670b9b54ef9618ceb15aa4f59c4401b",
+  "supersedes_manifest": "review-adjudication-manifest.json",
+  "supersession_reason": "The earlier manifest targeted a preliminary result invalidated by GitHub Bot actor misclassification; no adjudication result was produced from it.",
+  "scope": "100% of 19 corrected signal instances classified as actionable_intervention_proxy",
+  "expected_instances": 19,
+  "review_input": {
+    "include": ["public review text", "public URL", "PR identity", "category", "blocking", "resolved"],
+    "hide": ["current_aos_alignment_proxy", "incremental_current_aos_proxy", "aggregate threshold result"],
+    "raw_review_text_storage": false
+  },
+  "labels": {
+    "directive_validity": ["true_directive", "weak_or_ambiguous", "false_positive"],
+    "requested_action": ["tests", "correctness", "security", "reliability", "api_contract", "documentation", "style", "other"],
+    "severity": ["high", "medium", "low", "unclear"],
+    "acceptance_evidence": ["blocking_review", "resolved_thread", "both", "insufficient"],
+    "business_relevance": ["material", "routine", "low", "unclear"]
+  },
+  "criteria": {
+    "true_directive": "The reviewer requests a concrete change or missing validation, not merely mentioning a category.",
+    "material": "The request plausibly prevents a correctness, security, compatibility, reliability, data-loss or externally visible contract defect.",
+    "routine": "The request is a normal merge-readiness improvement such as useful tests or required documentation, but no material impact is explicit.",
+    "low": "Stylistic, optional, preference-only or administratively trivial request.",
+    "high": "Explicit security, data integrity, production outage, breaking contract or severe correctness risk.",
+    "medium": "Concrete behavior, reliability, test protection or public contract risk that can justify delaying merge.",
+    "low_severity": "Cosmetic, wording, minor style or optional enhancement.",
+    "acceptance_boundary": "Blocking or resolved state is evidence of workflow handling, not causal proof that the maintainer accepted the exact recommendation."
+  },
+  "evaluation": {
+    "reviewers": 1,
+    "reviewer_type": "model-assisted semantic review by the research agent",
+    "independent_second_review": false,
+    "conflicts": "unclear",
+    "limitation": "This removes obvious keyword false positives but is not independent human adjudication and cannot establish user behavior."
+  },
+  "thresholds": {
+    "true_directive_rate_min": 0.70,
+    "actionable_acceptance_evidence_rate_min": 0.60,
+    "medium_or_high_severity_rate_min": 0.50,
+    "material_or_routine_business_relevance_rate_min": 0.70,
+    "current_aos_alignment_rate_min": 0.20
+  },
+  "claim_boundary": "Adjudication may strengthen or falsify the corrected historical pain proxy. It cannot produce mass-market GO, precision, decision-change, alert-acceptance, retention, willingness-to-pay or causal product-value claims."
+}

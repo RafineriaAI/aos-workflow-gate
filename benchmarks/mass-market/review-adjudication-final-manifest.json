@@ -1,0 +1,43 @@
+{
+  "schema_version": "aos-mass-review-adjudication/v1",
+  "study_id": "aos-check-final-review-semantic-adjudication-2026-07-22",
+  "preregistered_at": "2026-07-22T18:12:23Z",
+  "source_result_digest": "sha256:372885645fbf5682e462eb3972c64cfbe7a82acba563e343b0e8fa0e4e646ef6",
+  "scope": "100% of 15 actionable signal instances after Bot and token-boundary corrections",
+  "expected_instances": 15,
+  "review_input": {
+    "include": ["public review text", "public URL", "PR identity", "category", "blocking", "resolved"],
+    "raw_review_text_storage": false,
+    "blinding": "not blinded; the evaluator saw the aggregate result and a superseded 19-case candidate set"
+  },
+  "labels": {
+    "directive_validity": ["true_directive", "weak_or_ambiguous", "false_positive"],
+    "requested_action": ["tests", "correctness", "security", "reliability", "api_contract", "documentation", "style", "other"],
+    "severity": ["high", "medium", "low", "unclear"],
+    "acceptance_evidence": ["blocking_review", "resolved_thread", "both", "insufficient"],
+    "business_relevance": ["material", "routine", "low", "unclear"]
+  },
+  "criteria": {
+    "true_directive": "The reviewer requests a concrete change or missing validation, not merely mentioning a category.",
+    "material": "The request plausibly prevents correctness, security, compatibility, reliability, data-loss or externally visible contract harm.",
+    "routine": "Normal merge-readiness improvement such as useful tests or required documentation without explicit material impact.",
+    "low": "Stylistic, optional, preference-only or administratively trivial request.",
+    "high": "Explicit security, data integrity, outage, breaking contract or severe correctness risk.",
+    "medium": "Concrete behavior, reliability, test protection or public contract risk that can justify delaying merge.",
+    "low_severity": "Cosmetic, wording, minor style or optional enhancement.",
+    "acceptance_boundary": "Blocking or resolved state is workflow evidence, not causal proof of acceptance."
+  },
+  "evaluation": {
+    "reviewers": 1,
+    "reviewer_type": "model-assisted semantic review by the research agent",
+    "independent_second_review": false,
+    "limitation": "Not independent or blinded; suitable only for filtering obvious proxy noise."
+  },
+  "thresholds": {
+    "true_directive_rate_min": 0.70,
+    "medium_or_high_severity_rate_min": 0.50,
+    "material_or_routine_business_relevance_rate_min": 0.70,
+    "current_aos_alignment_rate_min": 0.20
+  },
+  "claim_boundary": "Adjudication cannot produce mass-market GO, precision, decision-change, alert-acceptance, retention, willingness-to-pay or causal product-value claims."
+}

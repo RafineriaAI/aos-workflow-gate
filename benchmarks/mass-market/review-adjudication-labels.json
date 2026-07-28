@@ -1,0 +1,171 @@
+{
+  "schema_version": "aos-mass-review-adjudication-labels/v0",
+  "study_id": "aos-check-final-review-semantic-adjudication-2026-07-22",
+  "labels": [
+    {
+      "signal_instance_id": "sha256:6be01f6c17be347f3a68f6cf3660abf566dc0588d445a71fe5a40071687e7e84",
+      "category_match_valid": true,
+      "directive_validity": "true_directive",
+      "requested_action": "style",
+      "severity": "low",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "low",
+      "current_aos_alignment": false,
+      "rationale": "Concrete request about deterministic test-file ordering; low operational impact."
+    },
+    {
+      "signal_instance_id": "sha256:0c47451353214fafe0d390d5fcda03904921c9758ad769525089d255aae9cf18",
+      "category_match_valid": false,
+      "directive_validity": "true_directive",
+      "requested_action": "style",
+      "severity": "low",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "low",
+      "current_aos_alignment": false,
+      "rationale": "Concrete simplification request, but not a reliability or edge-case intervention."
+    },
+    {
+      "signal_instance_id": "sha256:a040dbc572fe3093099eac6253a55fd0b6c88d375705393a2cb7a4c94da173e9",
+      "category_match_valid": true,
+      "directive_validity": "true_directive",
+      "requested_action": "security",
+      "severity": "medium",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "material",
+      "current_aos_alignment": false,
+      "rationale": "Requests the authenticated project HTTP client to preserve authentication and base URL behavior."
+    },
+    {
+      "signal_instance_id": "sha256:918006f088861a943ad7fc04066fe8a176ba56d3f27e6b06fef2191ae08a9a29",
+      "category_match_valid": true,
+      "directive_validity": "true_directive",
+      "requested_action": "tests",
+      "severity": "medium",
+      "acceptance_evidence": "blocking_review",
+      "business_relevance": "routine",
+      "current_aos_alignment": false,
+      "rationale": "Blocking review explicitly requires missing backend tests."
+    },
+    {
+      "signal_instance_id": "sha256:df36fc9af3403ca701a79213fcddf3c51980b65563c130841db00efe0819e2b2",
+      "category_match_valid": true,
+      "directive_validity": "true_directive",
+      "requested_action": "security",
+      "severity": "high",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "material",
+      "current_aos_alignment": false,
+      "rationale": "Prevents a silent downgrade in malware-analysis coverage for entitled users."
+    },
+    {
+      "signal_instance_id": "sha256:3df29b6167b982b201387cf49136a658ac8f68655cd5f53428e0d628ec768523",
+      "category_match_valid": false,
+      "directive_validity": "false_positive",
+      "requested_action": "security",
+      "severity": "high",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "material",
+      "current_aos_alignment": false,
+      "rationale": "The word coverage refers to malware coverage, not test coverage; duplicate of the security signal."
+    },
+    {
+      "signal_instance_id": "sha256:f751e6e7af8a73baa9c30d304921437ffe264655e3224a8b19fb1891490d5684",
+      "category_match_valid": false,
+      "directive_validity": "true_directive",
+      "requested_action": "style",
+      "severity": "low",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "low",
+      "current_aos_alignment": false,
+      "rationale": "Code cleanup request without an explicit reliability defect."
+    },
+    {
+      "signal_instance_id": "sha256:f3706976c0eddbb34ab1cf36fd7fec3e7ced5bb562f8a43e3f0f32ef546acbaf",
+      "category_match_valid": true,
+      "directive_validity": "true_directive",
+      "requested_action": "correctness",
+      "severity": "medium",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "material",
+      "current_aos_alignment": false,
+      "rationale": "Concrete suggestion handles the empty-input branch explicitly."
+    },
+    {
+      "signal_instance_id": "sha256:5d4e50ef8a26017c01e3a235935cfc75cb17cbb149f0cb7fdc6136431d64e796",
+      "category_match_valid": true,
+      "directive_validity": "true_directive",
+      "requested_action": "tests",
+      "severity": "medium",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "routine",
+      "current_aos_alignment": false,
+      "rationale": "Requests broader format coverage in a single test."
+    },
+    {
+      "signal_instance_id": "sha256:fb2b0388d4a0423409b977583cb7697b70dde662fcc253c427233755d222ac26",
+      "category_match_valid": false,
+      "directive_validity": "true_directive",
+      "requested_action": "style",
+      "severity": "low",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "low",
+      "current_aos_alignment": false,
+      "rationale": "Import organization request matched tests only because a command names the test directory."
+    },
+    {
+      "signal_instance_id": "sha256:4489bb59293996f957c0833e4cdf070551812cc237fa7950fd18517f0a7720e1",
+      "category_match_valid": false,
+      "directive_validity": "true_directive",
+      "requested_action": "style",
+      "severity": "low",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "low",
+      "current_aos_alignment": false,
+      "rationale": "Explicit nit about error-message wording, not error handling behavior."
+    },
+    {
+      "signal_instance_id": "sha256:6c08ad0a5b32b2b5e41e10e8432c07eb46df9289d38698400e47c03478b68d8b",
+      "category_match_valid": true,
+      "directive_validity": "true_directive",
+      "requested_action": "correctness",
+      "severity": "medium",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "material",
+      "current_aos_alignment": false,
+      "rationale": "Identifies a matrix-offset correctness bug and requests conformance coverage."
+    },
+    {
+      "signal_instance_id": "sha256:621d6a5bf2a24caab3cf134c3105e015bf9083a216d0d991101c2eb977e55fa7",
+      "category_match_valid": false,
+      "directive_validity": "weak_or_ambiguous",
+      "requested_action": "style",
+      "severity": "low",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "unclear",
+      "current_aos_alignment": false,
+      "rationale": "Large refactoring example with tentative wording; test tokens occur inside the diff."
+    },
+    {
+      "signal_instance_id": "sha256:9508a5fb47f81b716e64c428dbed9d52b81326747214e7a72f24c3baf3169461",
+      "category_match_valid": true,
+      "directive_validity": "true_directive",
+      "requested_action": "correctness",
+      "severity": "medium",
+      "acceptance_evidence": "blocking_review",
+      "business_relevance": "material",
+      "current_aos_alignment": false,
+      "rationale": "Blocking review identifies tests that encode behavior conflicting with the implementation contract."
+    },
+    {
+      "signal_instance_id": "sha256:706043037324b2436258e759cf10c2aac9123f5de3b11ebc4d71786b69757222",
+      "category_match_valid": true,
+      "directive_validity": "true_directive",
+      "requested_action": "tests",
+      "severity": "low",
+      "acceptance_evidence": "resolved_thread",
+      "business_relevance": "routine",
+      "current_aos_alignment": false,
+      "rationale": "Concrete request to move tests to the owning module before approval."
+    }
+  ]
+}

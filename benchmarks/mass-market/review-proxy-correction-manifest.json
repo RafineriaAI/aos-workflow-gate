@@ -1,0 +1,75 @@
+{
+  "schema_version": "aos-mass-review-proxy-correction/v0",
+  "study_id": "aos-check-historical-review-proxy-bot-correction-2026-07-22",
+  "preregistered_at": "2026-07-22T18:02:58Z",
+  "data_cutoff": "2026-07-22T17:16:02Z",
+  "source_corpus_sample_digest": "sha256:26d65f1a7ebe07e0f1d1dae3911201fe15bdb9652218a45a5ee4eddd5653ea99",
+  "invalidated_preliminary_result_digest": "sha256:0a2ccd57ce1dc7e8140b062dbe2f1947e6ded3510482a0c3cb6631c519f6cc5d",
+  "correction": {
+    "defect": "login substring filtering misclassified some GitHub Bot actors as humans",
+    "fix": "request author.__typename and exclude every actor whose typename is Bot; retain the original login denylist as defense in depth",
+    "invalidated_claims": ["review_actionable_pain_rate", "human_review_artifacts", "current AOS alignment from the preliminary two-phase result"],
+    "unchanged": ["repository union", "seed", "data cutoff", "PR order", "categories", "thresholds", "stopping rule"]
+  },
+  "selection": {
+    "repository_seed": "aos-check-review-proxy-2026-07-22-v0",
+    "repository_offset_per_search_language": 0,
+    "repositories_per_search_language": 20,
+    "target_repositories": 120,
+    "eligible_repository": "complete public observation with exact head SHA",
+    "order": "sha256(seed + repository_full_name), positions 1 through 20 per language; exact union of invalidated phases",
+    "pull_request_states": ["MERGED"],
+    "candidate_pull_requests_per_repository": 8,
+    "pull_requests_per_repository": 5,
+    "maximum_pull_requests": 600,
+    "pull_request_order": "UPDATED_AT descending; retain merged_at <= data_cutoff",
+    "stopping_rule": "Collect all 120 repositories. Do not stop or change rules after corrected outcomes are observed."
+  },
+  "collection": {
+    "read_only": true,
+    "execute_repository_code": false,
+    "install_repository_dependencies": false,
+    "raw_code_storage": false,
+    "raw_review_text_storage": false,
+    "stored_review_evidence": "public URL, actor login, actor typename, timestamp, state, resolution, category and sha256 body digest",
+    "graphql_limits": {
+      "files_per_pull_request": 100,
+      "reviews_per_pull_request": 50,
+      "threads_per_pull_request": 50,
+      "comments_per_thread": 20
+    }
+  },
+  "human_review": {
+    "exclude_pull_request_author": true,
+    "exclude_actor_typename": ["Bot"],
+    "excluded_login_fragments": ["[bot]", "bot", "copilot", "github-actions", "dependabot", "renovate", "codecov", "sonar", "coderabbit", "greptile"],
+    "eligible_sources": ["pull_request_review", "review_thread_comment"]
+  },
+  "categories": {
+    "tests": ["test", "tests", "testing", "coverage"],
+    "security_permissions": ["security", "vulnerability", "permission", "authorization", "authentication", "secret", "injection"],
+    "reliability_edge_case": ["edge case", "error handling", "exception", "null", "nil", "race", "retry", "timeout", "rollback"],
+    "api_contract_docs": ["openapi", "api contract", "backward compatible", "breaking change", "migration", "documentation", "changelog"]
+  },
+  "directive_markers": ["add", "change", "fix", "handle", "include", "missing", "must", "need", "please", "remove", "required", "should", "update", "write"],
+  "negation_markers": ["no need", "not needed", "not required", "unnecessary", "optional only"],
+  "classification": {
+    "review_intervention": "human review artifact contains a frozen category term and a directive marker",
+    "blocking_intervention": "eligible pull request review has state CHANGES_REQUESTED",
+    "resolved_intervention": "eligible review-thread comment belongs to a resolved thread",
+    "actionable_intervention_proxy": "blocking_intervention or resolved_intervention",
+    "maintainer_action_proxy": "resolved_intervention and pull request merged after the comment; this is not causal proof",
+    "business_relevant_proxy": "blocking intervention, or actionable security/permissions, reliability/edge-case, or API-contract/docs intervention",
+    "current_aos_alignment_proxy": "tests intervention in a repository classified by the frozen corpus as coverage_gap_candidate",
+    "incremental_current_aos_proxy": "business_relevant_proxy and current_aos_alignment_proxy",
+    "limitations": "Final merged history cannot reconstruct what checks failed before merge, prove that AOS would have changed a decision, or establish causality. Keyword classification may contain false positives and false negatives."
+  },
+  "thresholds": {
+    "minimum_pull_requests_collected": 300,
+    "minimum_pull_requests_with_human_review": 150,
+    "review_actionable_pain_rate_min": 0.10,
+    "current_aos_alignment_among_actionable_min": 0.20,
+    "business_relevant_incremental_rate_min": 0.10
+  },
+  "verdict_rule": "Evaluate the corrected 120-repository result once. PROXY_SUPPORT_CURRENT_VALUE requires every threshold. REAL_PAIN_FOUND_AOS_GAP means actionable pain meets threshold but current AOS alignment does not. INSUFFICIENT_PROXY_SAMPLE means either sample threshold fails. No proxy result can produce mass-market GO or causal product claims."
+}
