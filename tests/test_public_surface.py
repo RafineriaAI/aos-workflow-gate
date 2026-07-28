@@ -61,7 +61,7 @@ def test_readme_license_and_local_check_are_renderable() -> None:
 
 def test_readme_leads_with_product_value_before_validation_detail() -> None:
     readme = read_text("README.md")
-    proof = readme.index("Check your project before you share it.")
+    proof = readme.index("AOS finds and runs the project's tests and checks")
     first_run = readme.index("### Local check")
     validation = readme.index("Mechanism verification and market validation")
     polish = readme.index("## Polski")
@@ -69,7 +69,10 @@ def test_readme_leads_with_product_value_before_validation_detail() -> None:
 
     assert proof < first_run < validation < polish < documentation
     assert "[English](#english) | [Polski](#polski)" in readme
-    assert "Sprawdź projekt przed udostępnieniem." in readme
+    assert (
+        "AOS wykrywa i uruchamia testy oraz inne kontrole projektu przed "
+        "przeglądem kodu lub publikacją projektu." in readme
+    )
     assert len(readme.splitlines()) <= 240
     assert "docs/assets/readme-contrast.png" in readme
     assert "docs/assets/readme-contrast-mobile.png" in readme
@@ -84,6 +87,32 @@ def test_readme_leads_with_product_value_before_validation_detail() -> None:
         "## Documentation map",
     ):
         assert stale_heading not in readme
+
+
+def test_readme_language_is_current_and_natural() -> None:
+    readme = read_text("README.md")
+    normalized = " ".join(readme.split())
+
+    for phrase in (
+        "Install the released version pinned to `v0.38.0`",
+        "It is designed for professional developers, beginners",
+        "Nie musisz znać Gita ani komend testowych.",
+        "Werdykt mówi, czy zmiana spełnia te wymagania",
+        "Nie uruchamia dowodów formalnych kernela w Lean",
+    ):
+        assert phrase in normalized
+
+    for stale_phrase in (
+        "zainstaluj wersję źródłową",
+        "wyjaśnialny werdykt",
+        "exit code'em",
+        "doradczym preview",
+        "dogfoods",
+        "Check your project before you share it.",
+        "Sprawdź projekt przed udostępnieniem.",
+        "Sprawdź, czy projekt jest gotowy, zanim go udostępnisz.",
+    ):
+        assert stale_phrase not in readme
 
 
 def test_business_positioning_is_consistent_and_bounded() -> None:

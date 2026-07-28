@@ -8,24 +8,28 @@
 
 ## English
 
-**Check your project before you share it. No Git or test expertise required.**
+**AOS finds and runs the project's tests and checks before code review or release. It identifies the main problem and gives you the next step. No Git or test-command knowledge required.**
 
-AOS turns existing project checks and GitHub signals into one explainable
-`PASS/WARN/BLOCK` decision, one dominant reason, and one next action. It is for
-professional developers, beginners, and people building with coding agents.
+AOS turns existing project checks and GitHub evidence into a clear
+`PASS/WARN/BLOCK` result, the main reason behind it, and a concrete next step.
+Locally, it discovers and runs checks already defined by the project. On
+GitHub, it checks which required controls ran for the pull request's exact head
+commit and whether they produced acceptable results. It is designed for
+professional developers, beginners, and people working with coding agents.
 
-**Free to use:** the Apache-2.0 CLI and GitHub Action have no feature gate,
-account requirement, telemetry, or hosted source-code upload.
+**Free to use:** the CLI and GitHub Action are available under Apache-2.0 with
+no account, telemetry, paid feature restrictions, or source-code upload to
+RafineriaAI.
 
-The first-party reference target is
-[`RafineriaAI/aos-kernel`](https://github.com/RafineriaAI/aos-kernel). AOS
-Workflow Gate verifies whether declared workflow and release controls produced
-replayable evidence for the exact kernel commit. It does not execute the
-kernel's Lean proof or claim a formal kernel guarantee.
+[`RafineriaAI/aos-kernel`](https://github.com/RafineriaAI/aos-kernel) is the
+first-party reference use case. AOS Workflow Gate checks whether declared CI
+and release controls produced replayable evidence for the exact kernel
+commit. It neither runs the kernel's Lean proof nor claims to prove the kernel
+correct.
 
 ### Local check
 
-`aos-check` is available in the immutable `v0.38.0` release:
+Install the released version pinned to `v0.38.0`:
 
 ```bash
 python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.38.0"
@@ -42,16 +46,20 @@ Next:
 Add one test for the app's most important user flow, then run aos-check again.
 ```
 
-The bounded local check supports conventional Python, Node.js, Go, Rust, Maven,
-and Gradle projects, including nested projects. It runs declared build and test
-commands and checks changed files for complete private-key blocks and paired
-merge-conflict markers. It does not install dependencies or invoke a shell.
+AOS recognizes conventional Python, Node.js, Go, Rust, Maven, and Gradle
+projects. It can discover up to eight nested projects within four directory
+levels and runs their declared build and test commands. On the first run it
+scans up to 10,000 files or 100 MiB; later runs rescan changed files and
+unresolved findings. The scan detects complete private-key blocks and
+unresolved Git merge-conflict marker pairs. AOS does not install dependencies
+or invoke a shell.
 
-### GitHub pre-merge control assurance
+### GitHub pull-request check
 
-**The GitHub gate verifies controls, not code.** It finds a required control
+**The GitHub gate verifies controls, not code.** It detects a required control
 that is missing, stale, produced by the wrong app, or modified by the same PR.
-The decision is bound to the exact head commit and is advisory by default.
+This is a read-only **pre-merge control assurance** check bound to the exact
+head commit and advisory by default.
 
 **Exact commit · Default Action read-only · Advisory by default · No source-code upload**
 
@@ -62,10 +70,11 @@ The decision is bound to the exact head commit and is advisory by default.
 
 The committed
 [`aos-kernel` replay case](docs/case-studies/aos-kernel-release-surface-replay.md)
-binds one kernel commit to collected workflow signals, policy, decision record,
-and offline replay. Independent public-repository contrasts remain in the
-[auditable research corpus](benchmarks/value/EXACT_CONTRAST.md); they prove a
-bounded semantic difference, not a defect or efficacy claim.
+shows how AOS ties one exact kernel commit to observed workflow signals, the
+applied policy, the decision record, and offline replay. The separate
+[public-repository corpus](benchmarks/value/EXACT_CONTRAST.md) contains cases
+where AOS represents a state that GitHub's standard result does not express.
+Neither artifact proves a defect or product efficacy.
 
 ### First value in one PR
 
@@ -91,9 +100,9 @@ jobs:
 ```
 
 No checkout, manual policy, bundle, or `required-checks` list is needed. The
-Action produces a Markdown summary and uploads replayable JSON plus static HTML
-evidence. This repository dogfoods the same workflow in
-[CI](.github/workflows/aos-workflow-gate-self.yml).
+Action produces a Markdown summary, a replayable JSON decision record, and a
+static HTML report. This repository uses the same workflow on its own pull
+requests in [CI](.github/workflows/aos-workflow-gate-self.yml).
 
 ### Try it on any public PR
 
@@ -106,12 +115,14 @@ The command is read-only. Anonymous GitHub API limits may apply.
 
 ### Read the result
 
-- `PASS`: every requirement declared by the selected policy was satisfied.
-- `WARN`: a named readiness gap needs attention, but advisory CI continues.
-- `BLOCK`: the policy says the gap must block; enforcement is still opt-in.
+- `PASS`: collected evidence satisfies every requirement in the selected policy.
+- `WARN`: AOS found a named gap, but advisory mode does not stop CI.
+- `BLOCK`: the policy classifies the gap as blocking; it stops CI only in
+  enforce mode.
 
-The verdict and the process exit code are separate. The verdict describes the
-decision; advisory/enforce mode controls whether the process stops.
+The verdict says whether the collected evidence satisfies the policy.
+Advisory/enforce mode determines whether a non-`PASS` verdict stops the
+process.
 
 ### Evidence, trust, and status
 
@@ -122,69 +133,82 @@ aos-workflow-gate summarize --input gate-decision.json --html --out evidence.htm
 
 No LLM participates in the verdict path. The default Action is read-only, no
 telemetry or account is required, and no source code is uploaded to
-RafineriaAI. Records are tamper-evident and replayable but remain
-`UNSIGNED_NOT_OFFICIAL`.
+RafineriaAI. Records have integrity checks and can be replayed offline, but
+they are not signed RafineriaAI attestations (`UNSIGNED_NOT_OFFICIAL`).
 
 Mechanism verification and market validation are separate. Daily usefulness,
 alert precision in external teams, retention, incident reduction, and
-willingness to pay are not independently validated. The formal value status is
-[`NO_GO`](benchmarks/value/ASSESSMENT.md); `FREE_SELF_SERVE_VALIDATION` permits
-the free advisory release while efficacy and production claims remain closed.
-There is no active paid offering.
+willingness to pay have not been independently validated. Version `v0.38.0` is
+therefore offered as a free advisory preview and is not yet production-proven.
+The formal assessment remains [`NO_GO`](benchmarks/value/ASSESSMENT.md) for
+efficacy and production-readiness claims. `FREE_SELF_SERVE_VALIDATION` means
+anyone can test the tool at no cost. There is no active paid offering.
 
 ## Polski
 
-**Sprawdź projekt przed udostępnieniem. Bez znajomości Gita i komend testowych.**
+**AOS wykrywa i uruchamia testy oraz inne kontrole projektu przed przeglądem kodu lub publikacją projektu. Wskazuje najważniejszy problem i kolejny krok. Nie musisz znać Gita ani komend testowych.**
 
-AOS uruchamia istniejące kontrole projektu, zbiera sygnały GitHub i zwraca jeden
-wyjaśnialny werdykt `PASS/WARN/BLOCK`, główną przyczynę oraz konkretny następny
-krok. Narzędzie jest przeznaczone także dla początkujących i osób pracujących z
-agentami kodującymi.
+AOS zwraca czytelny wynik `PASS/WARN/BLOCK`, główny powód i konkretny następny
+krok. Lokalnie wykrywa i uruchamia kontrole zdefiniowane w projekcie. Na
+GitHubie sprawdza, które wymagane kontrole zostały wykonane dla dokładnego
+commita PR-a i czy dały akceptowany wynik. Jest przeznaczony także dla
+początkujących i osób pracujących z agentami AI.
 
-**Dostęp jest bezpłatny:** CLI i GitHub Action są wydane na Apache-2.0, bez
-konta, telemetryki, blokad funkcji i wysyłania kodu do RafineriaAI.
+**Dostęp jest bezpłatny:** CLI i GitHub Action są dostępne na licencji
+Apache-2.0. Nie wymagają konta, nie wysyłają telemetryki ani kodu do
+RafineriaAI, a cała obecna funkcjonalność jest dostępna bez opłat.
 
-Pierwszym referencyjnym celem jest operacyjna weryfikacja
-[`aos-kernel`](https://github.com/RafineriaAI/aos-kernel): czy zadeklarowane
-kontrole workflow i release dostarczyły dowody dla dokładnego commita kernela.
-Nie jest to formalny dowód semantyki kernela.
+Referencyjnym zastosowaniem jest weryfikacja procesu CI i wydania
+[`aos-kernel`](https://github.com/RafineriaAI/aos-kernel). AOS sprawdza, czy
+zadeklarowane kontrole pozostawiły odtwarzalne dowody dla konkretnego commita.
+Nie uruchamia dowodów formalnych kernela w Lean i nie dowodzi poprawności
+samego kernela.
 
 ### Szybki start
 
-- Lokalnie: zainstaluj wersję źródłową i uruchom `aos-check`.
-- W GitHub: dodaj pokazany wyżej workflow; domyślnie działa tylko doradczo.
-- Dla publicznego PR-a: uruchom `aos-workflow-gate check-pr <URL>`.
+```bash
+python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.38.0"
+aos-check
+```
+
+- Aby sprawdzić publiczny PR: `aos-workflow-gate check-pr <URL>`.
+- Aby sprawdzać każdy PR na GitHubie, użyj
+  [workflow pokazanego wyżej](#first-value-in-one-pr); domyślnie działa doradczo.
 
 Wynik odpowiada na trzy pytania: co wykonano, czego brakuje i co zrobić dalej.
-`PASS` nie oznacza braku błędów; oznacza wyłącznie spełnienie jawnie
-sprawdzonych wymagań. Werdykt nie jest exit code'em: dopiero tryb `enforce`
-może przerwać CI.
+`PASS` nie oznacza braku błędów. Oznacza, że zebrane dowody spełniają wymagania
+wybranej polityki. Werdykt mówi, czy zmiana spełnia te wymagania; tryb
+`advisory` lub `enforce` decyduje, czy wynik inny niż `PASS` przerywa proces.
 
 ### Praktyczna wartość
 
-- mniej ręcznego ustalania, które kontrole rzeczywiście objęły zmianę;
-- widoczność testu lub kontroli, która nie wystartowała albo pochodzi z
-  niewłaściwej aplikacji;
+- mniej ręcznego sprawdzania, czy wymagane kontrole uruchomiły się dla
+  właściwego commita;
+- wykrycie wymaganej kontroli, która nie wystartowała lub została wykonana
+  przez inną aplikację GitHub niż wymagana;
 - lokalna diagnoza bez znajomości komend projektu;
-- jedno uzasadnienie, następna czynność i odtwarzalny zapis decyzji.
+- jedno jasne uzasadnienie, konkretna następna czynność i odtwarzalny zapis
+  decyzji.
 
-AOS nie zastępuje review, testów ani skanerów. Istniejące narzędzia dostarczają
-sygnały; AOS składa je w ograniczoną decyzję gotowości. Użyteczność rynkowa i
-niski poziom szumu wymagają nadal walidacji zewnętrznej, dlatego obecne wydanie
-jest bezpłatnym, doradczym preview.
+AOS nie zastępuje przeglądu kodu, testów ani skanerów. Te narzędzia dostarczają
+sygnały; AOS stosuje jawne reguły i na ich podstawie ocenia gotowość zmiany w
+określonym zakresie. Rzeczywista codzienna użyteczność i trafność alertów nie
+zostały jeszcze niezależnie potwierdzone, dlatego `v0.38.0` jest bezpłatną
+wersją doradczą do walidacji.
 
-## Documentation
+## Documentation / Dokumentacja
 
-- Start: [User FAQ](docs/USER_FAQ.md), [Preflight](docs/PREFLIGHT.md), and
+- Start / Początek: [User FAQ](docs/USER_FAQ.md), [Preflight](docs/PREFLIGHT.md), and
   [Scope](docs/SCOPE.md).
-- Trust: [Trust](docs/TRUST.md), [Security readiness](docs/SECURITY_READINESS.md),
-  and [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md).
-- Product fit: [Value](docs/VALUE.md), [Buyer FAQ](docs/BUYER_FAQ.md), and
-  [Comparison](docs/COMPARISON.md).
-- Operation: [Release governance](docs/RELEASE_GOVERNANCE.md) and
+- Trust / Zaufanie: [Trust](docs/TRUST.md),
+  [Security readiness](docs/SECURITY_READINESS.md), and
+  [Standards compatibility](docs/STANDARDS_COMPATIBILITY.md).
+- Product fit / Dopasowanie produktu: [Value](docs/VALUE.md),
+  [Buyer FAQ](docs/BUYER_FAQ.md), and [Comparison](docs/COMPARISON.md).
+- Operation / Utrzymanie: [Release governance](docs/RELEASE_GOVERNANCE.md) and
   [Contributing](CONTRIBUTING.md).
 
-## Local development
+## Local development / Rozwój lokalny
 
 Run the local hygiene checks with:
 
@@ -201,7 +225,7 @@ Or run only the public-surface guard:
 python tools/check_public_surface.py
 ```
 
-## License
+## License / Licencja
 
 Apache-2.0. See [LICENSE](LICENSE).
 

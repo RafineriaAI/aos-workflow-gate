@@ -31,8 +31,10 @@ python tools/check_public_surface.py
 REQUIRED_SNIPPETS = {
     "README.md": [
         "[English](#english) | [Polski](#polski)",
-        "Check your project before you share it. No Git or test expertise required.",
-        "Sprawdź projekt przed udostępnieniem.",
+        ("AOS finds and runs the project's tests and checks before code "
+        "review or release."),
+        ("AOS wykrywa i uruchamia testy oraz inne kontrole projektu przed "
+        "przeglądem kodu lub publikacją projektu."),
         "aos-check",
         "AOS found no runnable behavioral test command in the scanned scope.",
         "The GitHub gate verifies controls, not code.",
@@ -51,7 +53,7 @@ REQUIRED_SNIPPETS = {
         "### First value in one PR",
         "No checkout, manual policy, bundle, or `required-checks` list",
         "### Try it on any public PR",
-        "The verdict and the process exit code are separate.",
+        "The verdict says whether the collected evidence satisfies the policy.",
         "Dostęp jest bezpłatny",
         "No LLM participates in the verdict path.",
         "UNSIGNED_NOT_OFFICIAL",
