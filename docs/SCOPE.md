@@ -1,8 +1,8 @@
 # Scope
 
 `aos-workflow-gate` contains two bounded product surfaces. The released GitHub
-Action is a local-first **pre-merge control assurance** tool. The `0.38.0`
-candidate adds `aos-check`, a beginner-facing local code-verification entry
+Action is a local-first **pre-merge control assurance** tool. The `v0.38.0`
+release adds `aos-check`, a beginner-facing local code-verification entry
 point that runs conventional project checks without Git or manual
 configuration. Both emit explainable `PASS`, `WARN`, or `BLOCK` records and
 reuse the same deterministic evidence pipeline. Neither proves general code
@@ -13,7 +13,7 @@ is tested and replayable. External usefulness, alert precision, retention,
 decision impact, incident reduction, and willingness to pay remain
 unvalidated. No active paid product or production recommendation exists.
 
-The candidate `aos-check` surface detects Python, Node.js, Go, Rust, Maven, and
+The released `aos-check` surface detects Python, Node.js, Go, Rust, Maven, and
 Gradle projects at the root and uses a bounded nested fallback when no root
 behavioral test is runnable. It runs their
 conventional checks and scans bounded changed files for paired conflict
@@ -31,7 +31,7 @@ implementation. It does not change the released control-assurance claim.
 ## Implemented scope
 
 - Local `evaluate` and one-command `run` flows for JSON signal bundles.
-- Candidate local `aos-check` / `check-project` without a Git requirement,
+- Released local `aos-check` / `check-project` without a Git requirement,
   dependency installation, shell invocation, code upload, or telemetry.
 - Experimental local `prove-change` with disposable Git worktrees,
   two-run confirmation, exact-SHA evidence, and no LLM verdict.

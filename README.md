@@ -25,11 +25,10 @@ kernel's Lean proof or claim a formal kernel guarantee.
 
 ### Local check
 
-`aos-check` is a `0.38.0` candidate. Until that tag exists, install it from a
-source checkout:
+`aos-check` is available in the immutable `v0.38.0` release:
 
 ```bash
-python -m pip install .
+python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.38.0"
 aos-check
 ```
 
@@ -88,7 +87,7 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: "3.11"
-      - uses: RafineriaAI/aos-workflow-gate@v0.37.1
+      - uses: RafineriaAI/aos-workflow-gate@v0.38.0
 ```
 
 No checkout, manual policy, bundle, or `required-checks` list is needed. The
@@ -99,7 +98,7 @@ evidence. This repository dogfoods the same workflow in
 ### Try it on any public PR
 
 ```bash
-python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.37.1"
+python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.38.0"
 aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/N
 ```
 

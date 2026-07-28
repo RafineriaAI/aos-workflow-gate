@@ -1,9 +1,8 @@
 # Executable Change Proof
 
-Status: experimental local product slice. It is not enabled by the default
-GitHub Action, is a `0.38.0` candidate not present in published `v0.37.1`,
-and is not evidence of external product-market fit. Test it from a source
-checkout until an immutable release explicitly includes it.
+Status: experimental local product slice included in `v0.38.0`. It is not
+enabled by the default GitHub Action and is not evidence of external
+product-market fit.
 
 `prove-change` answers one concrete code-review question:
 

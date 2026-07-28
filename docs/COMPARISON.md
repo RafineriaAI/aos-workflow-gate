@@ -6,7 +6,7 @@ replace them. Every cell describes documented behavior with a source link; no
 competitor tool was benchmarked or scored here, and no superiority is claimed.
 
 
-## Local product candidate
+## Local verification surface
 
 `aos-check` combines conventional local project checks with a bounded,
 deterministic scan for paired conflict markers and complete private-key

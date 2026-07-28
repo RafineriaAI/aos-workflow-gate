@@ -1,7 +1,7 @@
 # Architecture
 
 Status: implemented public advisory surface. This document describes the code
-that exists in the current package candidate; planned integrations are named
+that exists in the current package release; planned integrations are named
 explicitly.
 
 ## System boundary
