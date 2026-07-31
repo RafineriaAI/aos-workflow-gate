@@ -1,10 +1,8 @@
 """The committed governance benchmark cases must replay forever.
 
-Every case in benchmarks/cases/ is verified offline by the harness on
-every CI run, and the verdict spine of the benchmark (real PASS, real
-WARN, real-signal counterfactual BLOCK) is asserted against the
-committed records — a silent regression in either would invalidate the
-public claim.
+Replay proves the historical decision mechanics, not product usefulness.
+Outcome metadata separately classifies actionable gaps, noise, and controls;
+contract guards prevent a noisy verdict from becoming an advantage claim.
 """
 
 from __future__ import annotations
@@ -67,7 +65,7 @@ def test_incident_case_names_the_failed_control() -> None:
     assert by_id["AOS Workflow Gate CI / validate"]["status"] == "success"
 
 
-def test_gap_case_names_the_skipped_control() -> None:
+def test_expected_skip_case_is_retained_as_a_noise_control() -> None:
     record = json.loads(
         (CASES / "green-but-incomplete-pr22" / "gate-decision.json")
         .read_text(encoding="utf-8")
@@ -77,6 +75,15 @@ def test_gap_case_names_the_skipped_control() -> None:
         and "no-checkout" in str(reason["source_id"])
         for reason in record["reasons"]
     )
+    case = json.loads(
+        (CASES / "green-but-incomplete-pr22" / "case.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert case["classification"] == "known_noise_warn"
+    assert case["outcome"]["classification"] == "noise"
+    assert case["outcome"]["maintainer_action_observed"] is False
+    assert case["outcome"]["aos_decision_change_observed"] is False
 
 
 def test_cases_declare_dogfooding_provenance() -> None:
@@ -86,7 +93,7 @@ def test_cases_declare_dogfooding_provenance() -> None:
         )
         assert case["classification"] in (
             "real_pass_control",
-            "real_gap_warn",
+            "known_noise_warn",
             "controlled_counterfactual_block",
         )
         assert case["provenance"] == "retrospective_real_history"

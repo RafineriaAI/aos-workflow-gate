@@ -33,6 +33,12 @@ _EXAMPLE_ROWS = (
             "note": "all signals green on the head commit",
         },
         "gap_kind": "none (control case)",
+        "outcome": {
+            "classification": "not_applicable",
+            "evidence_basis": "control_case",
+            "maintainer_action_observed": False,
+            "aos_decision_change_observed": False,
+        },
     },
     {
         "case": "examples/zero-required-record.json",
@@ -43,15 +49,12 @@ _EXAMPLE_ROWS = (
             "but were not required",
         },
         "gap_kind": "decision gap (zero required at the gate)",
-    },
-    {
-        "case": "examples/green-but-incomplete-record.json",
-        "baseline": {
-            "github_merge_ready": True,
-            "declared_by": "operator",
-            "note": "dashboard fully green; one control never ran",
+        "outcome": {
+            "classification": "supporting_evidence",
+            "evidence_basis": "mechanism_only",
+            "maintainer_action_observed": False,
+            "aos_decision_change_observed": False,
         },
-        "gap_kind": "advisory-visibility gap",
     },
 )
 
@@ -79,6 +82,7 @@ def build_contrast() -> dict[str, Any]:
                 "case": f"benchmarks/cases/{case_dir.name}",
                 "baseline": case["baseline"],
                 "classification": case["classification"],
+                "outcome": case.get("outcome"),
                 "aos": _record_verdict(case_dir / "gate-decision.json"),
             }
         )
@@ -89,6 +93,7 @@ def build_contrast() -> dict[str, Any]:
                 "case": case_path,
                 "baseline": spec["baseline"],
                 "classification": spec["gap_kind"],
+                "outcome": spec.get("outcome"),
                 "aos": _record_verdict(ROOT / case_path),
             }
         )
@@ -96,8 +101,9 @@ def build_contrast() -> dict[str, Any]:
         "schema_version": "contrast-v0",
         "boundary": (
             "baselines are operator-declared from historical platform "
-            "state; scope is required status checks, not full "
-            "merge-readiness; no security or quality claim is made"
+            "state; scope is required status checks, not full merge-readiness; "
+            "verdict is not outcome; noise is excluded from advantage claims; "
+            "no security or quality claim is made"
         ),
         "rows": rows,
     }
@@ -111,10 +117,11 @@ def render_markdown(contrast: dict[str, Any]) -> str:
         "evidence only; the test suite regenerates it on every CI run and",
         "asserts byte equality, so this table cannot drift from the",
         "evidence. Baselines are operator-declared; scope is required",
-        "status checks, not full merge-readiness.",
+        "status checks, not full merge-readiness. Verdict and outcome are",
+        "separate; a replayable WARN can still be classified as noise.",
         "",
-        "| Case | GitHub baseline | AOS verdict | Gap |",
-        "| --- | --- | --- | --- |",
+        "| Case | GitHub baseline | AOS verdict | Classification | Outcome |",
+        "| --- | --- | --- | --- | --- |",
     ]
     for row in contrast["rows"]:
         ready = (
@@ -124,12 +131,15 @@ def render_markdown(contrast: dict[str, Any]) -> str:
         )
         lines.append(
             f"| `{row['case']}` | {ready} (operator-declared) | "
-            f"**{row['aos']['verdict']}** | {row['classification']} |"
+            f"**{row['aos']['verdict']}** | {row['classification']} | "
+            f"{(row.get('outcome') or {}).get('classification', 'not_applicable')} |"
         )
     lines += [
         "",
         "Every row replays offline from the committed files; decision",
-        "records carry UNSIGNED_NOT_OFFICIAL status.",
+        "records carry UNSIGNED_NOT_OFFICIAL status. Outcome metadata",
+        "states whether maintainer action or AOS-driven decision change",
+        "was observed; operator-declared outcomes are not cryptographic proof.",
         "",
         "## Separate adversarial regression coverage",
         "",

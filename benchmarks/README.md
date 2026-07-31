@@ -1,59 +1,46 @@
 # Real-Agent Governance Benchmark v0
 
-Can a green dashboard hide a governance gap that a deterministic
-evidence gate makes explicit? This benchmark measures exactly one
-thing: **detection of merge-ready decisions lacking required
-evidence**, on real repository history — no staged repositories, no
+Can a deterministic evidence gate expose a decision-relevant gap without
+turning expected CI behavior into noise? This benchmark preserves real
+repository history and reports mechanism verdicts separately from observed
+outcomes: no staged repositories, no
 fabricated signals, no synthetic scenarios.
 
-Every case is built from a real coding-agent change that actually
-happened in this repository, with its real pull request diff, the real
-check runs GitHub persisted for the exact commits, and a decision
-record that replays offline. Cases validate under the
-[benchmark harness](../docs/BENCHMARK_HARNESS.md)
-(`benchmark-case-v0`), which runs nothing and states its
-verified-vs-unverifiable boundary per check.
+Every case contains real coding-agent changes, persisted GitHub signals, and a
+decision record that replays offline. The
+[benchmark harness](../docs/BENCHMARK_HARNESS.md) validates artifacts and
+outcome metadata without executing an agent, patch, or case-provided command.
 
-## Dogfooding boundary — read this first
+## Dogfooding boundary - read this first
 
-The coding agent whose changes these cases record is **Claude Code
-(Anthropic), operated by the maintainer**, working on **this
-repository's own tasks**. The vendor of the gate ran the benchmark on
-the vendor's own history: that makes the cases fully auditable and
-replayable, and it also means no third-party agent, repository, or
-operator has been measured yet. Nothing here generalizes beyond this
-repository until someone reproduces the method elsewhere — the format
-and harness exist so that anyone can.
+The recorded coding agent is **Claude Code (Anthropic), operated by the
+maintainer**, working on this repository. No third-party team, adoption,
+retention, or willingness to pay has been measured. Nothing here generalizes
+beyond this repository.
 
 ## Cases
 
-| Case | GitHub baseline | Gate verdict | What it shows |
-| --- | --- | --- | --- |
-| [`agent-pr36-preflight`](cases/agent-pr36-preflight/) | merge-ready, all signals green | `PASS` | Control case: baseline and gate agree; no false alarm on a clean agent change. |
-| [`green-but-incomplete-pr22`](cases/green-but-incomplete-pr22/) | merge-ready, dashboard fully green | `WARN` | A control that never ran (`skipped`) is named in the record; the gap is invisible on the green dashboard. |
-| [`v0110-incident-counterfactual`](cases/v0110-incident-counterfactual/) | merge-ready, required check green | `BLOCK` | The real v0.11.0 incident: the change broke `action.yml`, both self-test jobs failed on the merge commit, the only required check was green — and the release shipped broken. |
+| Case | GitHub baseline | Gate verdict | Outcome | Interpretation |
+| --- | --- | --- | --- | --- |
+| [`agent-pr36-preflight`](cases/agent-pr36-preflight/) | merge-ready, all signals green | `PASS` | `not_applicable` | Control: GitHub and AOS agree; no alert. |
+| [`green-but-incomplete-pr22`](cases/green-but-incomplete-pr22/) | merge-ready, expected non-required job skipped | `WARN` | `noise` | Historical explicit policy promoted an expected skip; no action was warranted. Current zero-config defaults keep it quiet. |
+| [`v0110-incident-counterfactual`](cases/v0110-incident-counterfactual/) | merge-ready, required check green | `BLOCK` | `supporting_evidence` | Real release failure and real failed self-tests; the blocking AOS policy is retrospective. |
 
-All three verdicts come from real, persisted signals. The third case is
-a **controlled counterfactual on real history**: the signals are the
-incident's own (the failed self-test runs GitHub still serves for that
-commit); only the policy choice — requiring the self-test — is
-retrospective. That is the incident's actual lesson, stated as a
-replayable record instead of a postmortem sentence.
+## Measured claim - no more, no less
 
-## The measured claim — no more, no less
+The harness proves replay and policy behavior. It does not equate every
+`WARN/BLOCK` with value.
 
-The two gap cases are different kinds of gap, and the distinction
-matters: `v0110-incident-counterfactual` is a **required-evidence gap**
-(a required control failed while the baseline said merge-ready —
-surfaced as `BLOCK`, 1 of 1 detected), and `green-but-incomplete-pr22`
-is an **advisory-visibility gap** (a non-required control silently never
-ran — surfaced as a named `WARN`, 1 of 1 detected; a WARN never blocks
-anything). On the clean control case the gate raised nothing (0 false
-alarms on 1 control). The GitHub merge-ready baseline in each case is
-**operator-declared** from historical platform state and marked as such
-by the harness — it is not mechanically re-verifiable offline. Three
-cases from one repository is a sample, not a study: the numbers above
-are counted, not estimated, and no claim is made beyond them.
+- The v0.11.0 case is an evidence-backed mechanism-relevant gap: the release failure
+  happened and the retrospective policy would have blocked the recorded
+  signals. AOS was not present, so decision change remains counterfactual.
+- The expected-skip case is a known noise control. Its `WARN` is retained as
+  history and explicitly excluded from advantage or precision claims.
+- The PASS case checks false-alert avoidance on one clean historical change.
+
+Three cases from one repository are a sample, not a study. Baselines and
+outcomes are operator-declared and remain unverifiable offline. Counts are
+reported, not extrapolated: they are counted, not estimated.
 
 ## Predeclaration and honesty
 

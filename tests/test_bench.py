@@ -112,6 +112,13 @@ def _write_case(tmp_path: Path, **case_overrides: Any) -> Path:
             "operator": "maintainer",
             "statement": "artifacts captured in the declared order",
         },
+        "outcome": {
+            "classification": "not_applicable",
+            "evidence_basis": "control_case",
+            "maintainer_action_observed": False,
+            "aos_decision_change_observed": False,
+            "note": "test control",
+        },
     }
     case.update(case_overrides)
     (case_dir / "case.json").write_text(json.dumps(case), encoding="utf-8")
@@ -251,6 +258,52 @@ def test_malformed_case_is_operational_error(tmp_path: Path) -> None:
         load_case(case_dir)
     assert cli.main(["bench-verify", "--case", str(case_dir)]) == 2
 
+
+def test_outcome_contract_rejects_mislabeled_noise(tmp_path: Path) -> None:
+    case_dir = _write_case(
+        tmp_path,
+        classification="known_noise_warn",
+        outcome={
+            "classification": "supporting_evidence",
+            "evidence_basis": "operator_attestation",
+            "maintainer_action_observed": False,
+            "aos_decision_change_observed": False,
+            "note": "contradictory label",
+        },
+    )
+
+    with pytest.raises(InputError, match="known_noise_warn.*noise"):
+        load_case(case_dir)
+
+
+def test_actionable_outcome_requires_observed_action(tmp_path: Path) -> None:
+    case_dir = _write_case(
+        tmp_path,
+        outcome={
+            "classification": "actionable_gap",
+            "evidence_basis": "operator_attestation",
+            "maintainer_action_observed": False,
+            "aos_decision_change_observed": False,
+            "note": "no observed action",
+        },
+    )
+
+    with pytest.raises(InputError, match="actionable_gap requires observed"):
+        load_case(case_dir)
+
+
+def test_legacy_case_without_outcome_remains_valid(tmp_path: Path) -> None:
+    case_dir = _write_case(tmp_path)
+    path = case_dir / "case.json"
+    case = json.loads(path.read_text(encoding="utf-8"))
+    del case["outcome"]
+    path.write_text(json.dumps(case), encoding="utf-8")
+
+    loaded = load_case(case_dir)
+    report = verify_case(case_dir)
+
+    assert "outcome" not in loaded
+    assert "outcome" not in report
 
 def test_artifact_traversal_rejected(tmp_path: Path) -> None:
     case_dir = _write_case(tmp_path)
