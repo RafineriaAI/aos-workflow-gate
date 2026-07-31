@@ -34,7 +34,7 @@ from aos_workflow_gate.manifest import (
     verifier_manifest,
     verifier_manifest_digest,
 )
-from aos_workflow_gate.policy import load_policy
+from aos_workflow_gate.policy import Policy, load_policy
 
 ROOT = Path(__file__).resolve().parents[1]
 HISTORICAL = ROOT / "tests" / "data" / "historical"
@@ -78,6 +78,24 @@ def test_semantic_replay_is_version_scoped(era: str) -> None:
         era, new_rules - old_rules
     )
 
+
+def test_legacy_direct_policy_constructor_defaults_to_no_accepted_risks() -> None:
+    loaded = load_policy(ROOT / "policies" / "default.yml")
+    direct = Policy(
+        schema_version=loaded.schema_version,
+        policy_id=loaded.policy_id,
+        mode=loaded.mode,
+        verification_status=loaded.verification_status,
+        require_repository=loaded.require_repository,
+        require_sha=loaded.require_sha,
+        required_status_semantics=loaded.required_status_semantics,
+        rules=loaded.rules,
+        required_sources=loaded.required_sources,
+        advisory_sources=loaded.advisory_sources,
+        normalized=loaded.normalized,
+    )
+
+    assert direct.accepted_risks == {}
 
 def test_new_records_embed_the_verifier_manifest() -> None:
     bundle = json.loads(

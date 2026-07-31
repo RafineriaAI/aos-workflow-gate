@@ -10,7 +10,7 @@ replayable record of *why* the gate refused.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 from .change_proof import (
@@ -22,7 +22,7 @@ from .change_proof import (
     SOURCE_KIND as CHANGE_PROOF_KIND,
 )
 from .errors import InputError
-from .policy import Policy
+from .policy import Policy, accepted_risk_selector
 from .project_check import FAILED as PROJECT_CHECK_FAILED
 from .project_check import INCONCLUSIVE as PROJECT_CHECK_INCONCLUSIVE
 from .project_check import LIMITED as PROJECT_CHECK_LIMITED
@@ -59,6 +59,22 @@ PROJECT_CHECK_RULE_BY_STATUS = {
 
 
 @dataclass(frozen=True)
+class AcceptedRisk:
+    """A policy-owned exception applied to one exact WARN reason."""
+
+    selector: str
+    justification: str
+    original_severity: str
+
+    def as_dict(self) -> dict[str, str]:
+        return {
+            "selector": self.selector,
+            "justification": self.justification,
+            "original_severity": self.original_severity,
+        }
+
+
+@dataclass(frozen=True)
 class Reason:
     """One explained contribution to a verdict."""
 
@@ -67,6 +83,7 @@ class Reason:
     source_id: str | None
     detail: str
     state: str | None = None
+    accepted_risk: AcceptedRisk | None = None
 
     def as_dict(self) -> dict[str, Any]:
         value: dict[str, Any] = {
@@ -77,6 +94,8 @@ class Reason:
         }
         if self.state is not None:
             value["state"] = self.state
+        if self.accepted_risk is not None:
+            value["accepted_risk"] = self.accepted_risk.as_dict()
         return value
 
 
@@ -177,6 +196,7 @@ def evaluate(bundle: Any, policy: Policy) -> Decision:
 
     reasons = _apply_rules(sources, policy, requirement_states)
     reasons.extend(_collection_reasons(collection, policy))
+    reasons = _apply_accepted_risks(reasons, policy)
     inputs = [s.as_input() for s in sorted(sources, key=lambda s: s.id)]
     return _build(subject, policy, reasons, inputs)
 
@@ -573,6 +593,31 @@ def _normalize_source(
     return Source(source_id, kind, status, required, digest, summary, signal_source)
 
 
+def _apply_accepted_risks(
+    reasons: list[Reason], policy: Policy
+) -> list[Reason]:
+    """Downgrade exact, policy-authorized WARN reasons while retaining evidence."""
+    applied: list[Reason] = []
+    for reason in reasons:
+        selector = accepted_risk_selector(reason.rule, reason.source_id)
+        justification = policy.accepted_risks.get(selector)
+        if reason.severity != WARN or justification is None:
+            applied.append(reason)
+            continue
+        applied.append(
+            replace(
+                reason,
+                severity=PASS,
+                accepted_risk=AcceptedRisk(
+                    selector=selector,
+                    justification=justification,
+                    original_severity=reason.severity,
+                ),
+            )
+        )
+    return applied
+
+
 def _build(
     subject: Subject,
     policy: Policy,
@@ -592,6 +637,7 @@ def _build(
 
 
 def _summary(verdict: str, reasons: list[Reason]) -> str:
+    accepted = sum(reason.accepted_risk is not None for reason in reasons)
     if verdict == BLOCK:
         blocking = [r for r in reasons if r.severity == BLOCK]
         detail = "; ".join(f"{r.rule}:{r.source_id or '-'}" for r in blocking)
@@ -608,9 +654,19 @@ def _summary(verdict: str, reasons: list[Reason]) -> str:
             f"{len(warnings)} advisory warning(s)."
         )
     if any(r.rule == "no_required_sources" for r in reasons):
+        if accepted:
+            return (
+                "Gate PASS: no required checks configured; "
+                f"{accepted} warning(s) accepted by policy."
+            )
         return (
             "Gate PASS: no required checks configured; coverage recorded "
             "without a per-PR alert."
+        )
+    if accepted:
+        return (
+            "Gate PASS: all required checks satisfied; "
+            f"{accepted} warning(s) accepted by policy."
         )
     return "Gate PASS: all required checks satisfied; no advisory warnings."
 

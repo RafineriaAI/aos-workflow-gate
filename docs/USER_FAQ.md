@@ -68,6 +68,19 @@ renders a deterministic, self-contained static HTML view of the record
 renders to the same bytes). It is the same diagnosis as the Markdown
 summary, only a different view.
 
+**How do I mark a known false or low-impact warning?**
+Use an exact, reviewed exception in the policy file:
+
+```yaml
+accepted_risks:
+  advisory_warning@scanner.sarif: "Known exception reviewed by the team"
+```
+
+The result remains visible as an accepted risk, including its original
+`WARN`, selector and justification. Exceptions cannot target `BLOCK` or
+`malformed_input`, use a wildcard, or silently learn from clicks. See
+[Policy Packs](POLICY_PACKS.md).
+
 ## Exit codes by command
 
 Exit codes are stable but command-scoped — the same number answers a
@@ -115,7 +128,7 @@ or correctness claim. See [Executable Change Proof](CHANGE_PROOF.md).
 | `no_required_sources` reason | GitHub or the explicit policy requires no status check, so green checks enforce nothing. | Configure at least one required status check in GitHub, or pass `required-checks`, then re-run AOS. |
 | `incomplete_collection` reason | The bundle records that its collection did not end `complete` (truncated listing or wait timeout), so signals that exist for the commit may be absent — an otherwise-clean result reads `WARN`, never a plain `PASS`. | Re-collect with a larger wait or API budget; set the `incomplete_collection` rule to `BLOCK` in your policy to fail closed instead. |
 | Requirement `github_equivalent: would_pass` with state `failed` | The required check concluded `skipped` or `neutral`: GitHub's own semantics count that as passing, but no evidence was actually produced. | Decide which reading you want: make the check actually run, or accept GitHub's formal pass and record the divergence. |
-| `non_independent_evidence` reason | This PR changed a workflow that also produced checks used to assess the same PR. | Run or require one check whose workflow definition is unchanged by this PR, then re-run AOS. Acknowledgement records context but does not suppress the reason. |
+| `non_independent_evidence` reason | This PR changed a workflow that also produced checks used to assess the same PR. | Run or require one check whose workflow definition is unchanged by this PR, then re-run AOS. Acknowledgement records context but does not suppress the reason; a reviewed policy exception must use `non_independent_evidence@<decision>`. |
 | `workflow_visibility.not_started` entries | Execution units (check suites) exist on the commit but never produced a check run — `pending` (queued) or `action_required` (awaiting approval, e.g. a fork PR or a deployment gate). They are visible evidence, never a verdict: nothing is `missing` unless something explicitly expected it. | Approve or unblock the listed workflow, or ignore it if it is not part of your policy. |
 
 **Does PASS mean my code is safe?**

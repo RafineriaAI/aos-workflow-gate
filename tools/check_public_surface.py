@@ -294,6 +294,8 @@ REQUIRED_SNIPPETS = {
         "Never treat it as a policy decision",
         "aos-workflow-gate verify --input gate-decision.json",
         "wait-for-checks",
+        "accepted_risks",
+        "cannot target `BLOCK`",
     ],
     "docs/PREFLIGHT.md": [
         "No permission is assumed without probing",
@@ -418,6 +420,12 @@ REQUIRED_SNIPPETS = {
     ],
     "docs/POLICY_PACKS.md": [
         "copy one, rename the `policy_id`",
+        "## Accepted risks",
+        "The selector is exact",
+        "wildcard selectors, `BLOCK` rules, and `malformed_input` are\n"
+        "rejected",
+        "original `WARN` severity",
+        "not model training",
         "packs encode structure, not judgment",
         "mode: blocking",
     ],

@@ -472,6 +472,15 @@ def diagnose(record: Any) -> dict[str, Any]:
         if isinstance(record.get("reasons"), list)
         else []
     )
+    accepted_risks = [
+        {
+            **accepted,
+            "rule": reason.get("rule"),
+            "source_id": reason.get("source_id"),
+        }
+        for reason in reasons
+        if isinstance((accepted := reason.get("accepted_risk")), dict)
+    ]
     required = [source for source in inputs if source.get("required")]
     observation = _dict_field(record, "observation")
     policy = _dict_field(record, "policy")
@@ -512,6 +521,7 @@ def diagnose(record: Any) -> dict[str, Any]:
             if reason.get("rule") == "advisory_warning"
             and reason.get("severity") == "WARN"
         ),
+        "accepted_risks": len(accepted_risks),
         "blocking_reasons": sum(
             1 for reason in reasons if reason.get("severity") == "BLOCK"
         ),
@@ -532,6 +542,12 @@ def diagnose(record: Any) -> dict[str, Any]:
         )
     elif gap_views:
         remediation = gap_views[0]["remediation"]
+    elif accepted_risks:
+        remediation = _remediation(
+            "review_accepted_risk",
+            "no immediate fix - keep the accepted risk under review and "
+            "remove it when its stated assumption no longer holds",
+        )
     else:
         remediation = _fallback_remediation(record, inputs)
 
@@ -569,6 +585,7 @@ def diagnose(record: Any) -> dict[str, Any]:
         "subject": _dict_field(record, "subject"),
         "policy": policy,
         "reasons": reason_views,
+        "accepted_risks": accepted_risks,
         "inputs": inputs,
         "record_digest": record.get("record_digest"),
         "input_bundle_digest": record.get("input_bundle_digest"),
@@ -1181,6 +1198,14 @@ def _freshness_statement(observation: dict[str, Any]) -> str:
     return text
 
 
+def _accepted_risk_statement(accepted_risks: list[dict[str, Any]]) -> str:
+    first = accepted_risks[0]
+    selector = str(first.get("selector") or "unknown selector")
+    justification = str(first.get("justification") or "no justification")
+    prefix = f"{len(accepted_risks)} policy exception(s)"
+    return f"{prefix}; {selector}: {justification}"
+
+
 def _effect_statement(record: dict[str, Any]) -> str:
     """What this verdict can actually do to the pipeline."""
     if record.get("can_block"):
@@ -1228,6 +1253,12 @@ def render_markdown(record: Any) -> tuple[str, bool]:
         f"({counts['required_successful']} successful); "
         f"{counts['advisory_total']} other observation(s)"
     )
+    if diag["accepted_risks"]:
+        lines.append(
+            "**Accepted risk:** "
+            + _escape(_accepted_risk_statement(diag["accepted_risks"]))
+        )
+
     lines.append(f"**Scope:** {_escape(diag['scope'])}")
     lines.append(f"**Freshness:** {_escape(diag['freshness'])}")
     lines.append("")
@@ -1246,6 +1277,7 @@ def render_markdown(record: Any) -> tuple[str, bool]:
         and intact
         and not diag["gaps"]
         and counts["required_total"] > 0
+        and not diag["accepted_risks"]
     ):
         lines += [
             f"Record {_code(record.get('record_digest', '-'))} | "
@@ -1299,6 +1331,16 @@ def render_markdown(record: Any) -> tuple[str, bool]:
             )
         lines.append("")
 
+    if diag["accepted_risks"]:
+        lines += ["### Accepted risks", ""]
+        for accepted in diag["accepted_risks"]:
+            lines.append(
+                f"- {_code(accepted.get('selector', '-'))}: "
+                f"{_escape(accepted.get('justification', '-'))} "
+                f"(original severity: "
+                f"{_escape(accepted.get('original_severity', '-'))})"
+            )
+        lines.append("")
     inputs = record.get("inputs")
     if isinstance(inputs, list) and inputs:
         lines += [
@@ -1501,6 +1543,11 @@ def render_html(
         f"<strong>Scope:</strong> {_h(diag['scope'])}<br>"
         f"<strong>Freshness:</strong> {_h(diag['freshness'])}</p>"
     )
+    if diag["accepted_risks"]:
+        parts.append(
+            "<p><strong>Accepted risk:</strong> "
+            f"{_h(_accepted_risk_statement(diag['accepted_risks']))}</p>"
+        )
     parts.append("<h2>Technical evidence</h2>")
 
     rows = [("Repository", subject.get("repository", "-"))]
@@ -1542,6 +1589,15 @@ def render_html(
                 f"{_h(reason.get('source_id') or '-')}: "
                 f"{_h(reason.get('detail', ''))}"
             )
+            accepted = reason.get("accepted_risk")
+            if isinstance(accepted, dict):
+                line += (
+                    "<br><span class=\"hint\">Accepted risk "
+                    f"<code>{_h(accepted.get('selector', '-'))}</code>: "
+                    f"{_h(accepted.get('justification', '-'))} "
+                    f"(original severity: "
+                    f"{_h(accepted.get('original_severity', '-'))})</span>"
+                )
             remediation = reason.get("remediation")
             if isinstance(remediation, dict):
                 action = remediation.get("action")

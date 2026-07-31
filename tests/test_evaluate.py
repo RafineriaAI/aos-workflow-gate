@@ -27,6 +27,18 @@ def _policy() -> Policy:
     return load_policy(DEFAULT_POLICY)
 
 
+def _policy_with_accepted_risk(
+    selector: str,
+    justification: str = "Known low-impact condition reviewed by the team",
+) -> Policy:
+    return Policy.from_dict(
+        {
+            **_policy().normalized,
+            "accepted_risks": {selector: justification},
+        }
+    )
+
+
 def _source(source_id: str, status: str, required: bool = False) -> dict[str, Any]:
     return {
         "id": source_id,
@@ -63,6 +75,201 @@ def test_example_bundle_warns() -> None:
     decision = evaluate(_example_bundle(), _policy())
     assert decision.verdict == "WARN"
     assert any(r.rule == "advisory_warning" for r in decision.reasons)
+
+
+def test_exact_accepted_risk_downgrades_warn_and_preserves_evidence() -> None:
+    bundle = _bundle(
+        [
+            _source("ci.validate", "success", required=True),
+            _source("scanner.sarif", "warning"),
+            _source("agent.review", "success"),
+        ]
+    )
+    policy = _policy_with_accepted_risk(
+        "advisory_warning@scanner.sarif",
+        "Scanner warning reviewed; this repository tracks it separately",
+    )
+
+    decision = evaluate(bundle, policy)
+    reason = next(
+        item for item in decision.reasons if item.source_id == "scanner.sarif"
+    )
+    record = build_record(
+        decision, policy=policy, input_bundle_digest=digest(bundle)
+    )
+
+    assert decision.verdict == "PASS"
+    assert reason.severity == "PASS"
+    assert reason.accepted_risk is not None
+    assert reason.accepted_risk.as_dict() == {
+        "selector": "advisory_warning@scanner.sarif",
+        "justification": (
+            "Scanner warning reviewed; this repository tracks it separately"
+        ),
+        "original_severity": "WARN",
+    }
+    assert record["policy"]["accepted_risk_count"] == 1
+    assert record["reasons"][0]["accepted_risk"] == reason.accepted_risk.as_dict()
+    assert verify_record(record)
+
+    tampered = json.loads(json.dumps(record))
+    tampered["reasons"][0]["accepted_risk"]["justification"] = "changed"
+    assert not verify_record(tampered)
+
+
+def test_accepted_risk_never_downgrades_a_runtime_block() -> None:
+    bundle = _bundle(
+        [
+            _source("ci.validate", "success", required=True),
+            {
+                "id": "scanner.sarif",
+                "kind": "sarif_summary",
+                "status": "warning",
+                "required": False,
+            },
+        ]
+    )
+    policy = Policy.from_dict(
+        {
+            **_policy().normalized,
+            "rules": {**_policy().rules, "sarif_findings": "BLOCK"},
+            "accepted_risks": {
+                "advisory_warning@scanner.sarif": "Reviewed warning"
+            },
+        }
+    )
+
+    decision = evaluate(bundle, policy)
+    reason = next(
+        item for item in decision.reasons if item.source_id == "scanner.sarif"
+    )
+
+    assert decision.verdict == "BLOCK"
+    assert reason.severity == "BLOCK"
+    assert reason.accepted_risk is None
+
+
+def test_accepted_risk_is_exact_and_does_not_hide_another_warning() -> None:
+    bundle = _bundle(
+        [
+            _source("ci.validate", "success", required=True),
+            _source("scanner.sarif", "warning"),
+            _source("agent.review", "warning"),
+        ]
+    )
+    decision = evaluate(
+        bundle,
+        _policy_with_accepted_risk("advisory_warning@scanner.sarif"),
+    )
+    by_source = {reason.source_id: reason for reason in decision.reasons}
+
+    assert decision.verdict == "WARN"
+    assert by_source["scanner.sarif"].severity == "PASS"
+    assert by_source["scanner.sarif"].accepted_risk is not None
+    assert by_source["agent.review"].severity == "WARN"
+    assert by_source["agent.review"].accepted_risk is None
+
+
+def test_decision_scoped_accepted_risk_uses_explicit_selector() -> None:
+    policy = Policy.from_dict(
+        {
+            **_policy().normalized,
+            "rules": {
+                **_policy().rules,
+                "no_required_sources": "WARN",
+            },
+            "required_sources": [],
+            "accepted_risks": {
+                "no_required_sources@<decision>": (
+                    "Repository intentionally remains advisory during rollout"
+                )
+            },
+        }
+    )
+
+    decision = evaluate(_bundle([]), policy)
+    reason = next(
+        item for item in decision.reasons if item.rule == "no_required_sources"
+    )
+
+    assert decision.verdict == "PASS"
+    assert reason.accepted_risk is not None
+    assert reason.accepted_risk.selector == "no_required_sources@<decision>"
+
+
+@pytest.mark.parametrize(
+    ("selector", "message"),
+    [
+        ("advisory_warning", "exact"),
+        ("advisory_warning@*", "wildcards"),
+        ("unknown_rule@scan", "must be declared"),
+        ("failed_required_source@ci.validate", "configured as WARN"),
+    ],
+)
+def test_invalid_accepted_risk_policy_is_rejected(
+    selector: str, message: str
+) -> None:
+    with pytest.raises(InputError, match=message):
+        _policy_with_accepted_risk(selector)
+
+
+def test_malformed_input_cannot_be_accepted_even_if_configured_warn() -> None:
+    with pytest.raises(InputError, match="cannot target rule 'malformed_input'"):
+        Policy.from_dict(
+            {
+                **_policy().normalized,
+                "rules": {**_policy().rules, "malformed_input": "WARN"},
+                "accepted_risks": {
+                    "malformed_input@<decision>": "Never hide invalid input"
+                },
+            }
+        )
+
+
+def test_accepted_risk_yaml_and_json_are_equivalent(tmp_path: Path) -> None:
+    yaml_path = tmp_path / "accepted.yml"
+    yaml_path.write_text(
+        DEFAULT_POLICY.read_text(encoding="utf-8")
+        + "accepted_risks:\n"
+        + '  "advisory_warning@scanner:linux": "Known: scanner exception"\n',
+        encoding="utf-8",
+    )
+    json_path = tmp_path / "accepted.json"
+    json_path.write_text(
+        json.dumps(
+            {
+                **_policy().normalized,
+                "accepted_risks": {
+                    "advisory_warning@scanner:linux": (
+                        "Known: scanner exception"
+                    )
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    yaml_policy = load_policy(yaml_path)
+    json_policy = load_policy(json_path)
+
+    assert yaml_policy.accepted_risks == {
+        "advisory_warning@scanner:linux": "Known: scanner exception"
+    }
+    assert yaml_policy.digest == json_policy.digest
+
+
+def test_duplicate_accepted_risk_yaml_key_is_rejected(tmp_path: Path) -> None:
+    path = tmp_path / "duplicate.yml"
+    path.write_text(
+        DEFAULT_POLICY.read_text(encoding="utf-8")
+        + "accepted_risks:\n"
+        + "  advisory_warning@scanner.sarif: First reason\n"
+        + "  advisory_warning@scanner.sarif: Second reason\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(InputError, match="duplicate key"):
+        load_policy(path)
 
 
 def test_all_required_and_advisory_success_passes() -> None:

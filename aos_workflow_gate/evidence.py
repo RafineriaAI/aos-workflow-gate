@@ -159,6 +159,8 @@ def build_record(
     }
     if "required_status_semantics" in policy.normalized:
         policy_record["required_status_semantics"] = policy.required_status_semantics
+    if policy.accepted_risks:
+        policy_record["accepted_risk_count"] = len(policy.accepted_risks)
     record: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "generator": {
