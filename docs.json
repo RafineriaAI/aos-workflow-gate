@@ -38,6 +38,9 @@
     "docs/case-studies/green-but-incomplete.md",
     "docs/case-studies/zero-required-checks.md",
     "docs/RELEASE_GOVERNANCE.md",
+    "docs/MATURITY.md",
+    "docs/OPERATIONAL_MATRIX.md",
+    "docs/RELEASE_STATUS.json",
     "benchmarks/README.md",
     "benchmarks/value/README.md",
     "benchmarks/value/ASSESSMENT.md",
@@ -249,6 +252,7 @@
     "tests/test_project_check.py",
     "tests/test_mass_gap_audit.py",
     "tests/test_project_check_remeasurement.py",
+    "tests/test_release_maturity.py",
     "tests/test_mass_review_proxy.py",
     "tests/test_mass_value_study.py"
   ],

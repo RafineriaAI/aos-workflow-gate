@@ -235,9 +235,9 @@ gotowości produkcyjnej. Obecnie nie ma płatnej wersji.
 
 - Start / Pierwsze kroki: [User FAQ](docs/USER_FAQ.md) and
   [Adoption Guide](docs/ADOPTION_GUIDE.md).
-- Scope and trust / Zakres i zaufanie: [Scope](docs/SCOPE.md),
-  [Trust](docs/TRUST.md), [Security](docs/SECURITY_READINESS.md), and
-  [Standards](docs/STANDARDS_COMPATIBILITY.md).
+- Scope and trust / Zakres i zaufanie: [Scope](docs/SCOPE.md), [Trust](docs/TRUST.md),
+  [Security](docs/SECURITY_READINESS.md), [Standards](docs/STANDARDS_COMPATIBILITY.md),
+  and [Release maturity / Dojrzałość wydania](docs/MATURITY.md).
 - Configuration / Konfiguracja: [Policy Packs](docs/POLICY_PACKS.md) and
   [CI Integrations](docs/CI_INTEGRATIONS.md).
 - Development / Rozwój: [Contributing](CONTRIBUTING.md).

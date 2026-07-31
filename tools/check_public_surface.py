@@ -85,6 +85,7 @@ REQUIRED_SNIPPETS = {
         "docs/SCOPE.md",
         "docs/POLICY_PACKS.md",
         "docs/CI_INTEGRATIONS.md",
+        "docs/MATURITY.md",
         "docs/TRUST.md",
         "docs/SECURITY_READINESS.md",
         "docs/STANDARDS_COMPATIBILITY.md",
@@ -122,6 +123,29 @@ REQUIRED_SNIPPETS = {
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/PUBLISHED_VERSION": ["0.38.0"],
+    "docs/RELEASE_STATUS.json": [
+        '"schema_version": "aos-release-status/v0"',
+        '"published_version": "0.38.0"',
+        '"maturity": "Preview"',
+        '"default_mode": "advisory"',
+        '"product_claim_status": "NO_GO"',
+        '"production_use_recommended": false',
+    ],
+    "docs/MATURITY.md": [
+        "Current maturity: **Preview**.",
+        "not a recommendation for unattended production enforcement",
+        "Tests cannot promote maturity by themselves.",
+        "Preview to Pilot",
+        "Pilot to Production Candidate",
+        "Production Candidate to Production Ready",
+    ],
+    "docs/OPERATIONAL_MATRIX.md": [
+        "Nested monorepo projects",
+        "Fork and draft PR",
+        "Jenkins and legacy commit statuses",
+        "Matrix GitHub Actions jobs",
+        "not external field results",
+    ],
     "docs/GUIDED_PILOT.md": [
         "Status: intake closed",
         "## Future design-partner variant",
@@ -1103,6 +1127,60 @@ def check_version_consistency() -> None:
     if roadmap_version not in read_text("ROADMAP.md"):
         fail("ROADMAP.md does not identify the current public release")
 
+def check_release_maturity() -> None:
+    status = json.loads(read_text("docs/RELEASE_STATUS.json"))
+    expected_keys = {
+        "schema_version",
+        "published_version",
+        "maturity",
+        "distribution",
+        "access",
+        "default_mode",
+        "product_claim_status",
+        "production_use_recommended",
+    }
+    if set(status) != expected_keys:
+        fail("RELEASE_STATUS.json fields drifted from release-status/v0")
+    if status["schema_version"] != "aos-release-status/v0":
+        fail("release status schema must be aos-release-status/v0")
+
+    published = read_text("docs/PUBLISHED_VERSION").strip()
+    if status["published_version"] != published:
+        fail("release maturity must describe docs/PUBLISHED_VERSION")
+
+    levels = {
+        "Preview",
+        "Pilot",
+        "Production candidate",
+        "Production ready",
+    }
+    maturity = status["maturity"]
+    if maturity not in levels:
+        fail(f"unknown release maturity: {maturity!r}")
+    if status["default_mode"] != "advisory":
+        fail("the published release must remain advisory by default")
+    if status["access"] != "free":
+        fail("the current self-serve validation release must remain free")
+    if status["distribution"] != "public_self_serve":
+        fail("release distribution must match the public self-serve channel")
+    recommended = status["production_use_recommended"]
+    if not isinstance(recommended, bool):
+        fail("production_use_recommended must be a boolean")
+    if recommended and maturity != "Production ready":
+        fail("only Production ready may recommend production use")
+    if (
+        status["product_claim_status"] == "NO_GO"
+        and maturity in {"Production candidate", "Production ready"}
+    ):
+        fail("NO_GO product claims conflict with production maturity")
+
+    maturity_doc = read_text("docs/MATURITY.md")
+    if f"Current maturity: **{maturity}**." not in maturity_doc:
+        fail("MATURITY.md does not match RELEASE_STATUS.json")
+    if f"Published version: **v{published}**." not in maturity_doc:
+        fail("MATURITY.md does not match PUBLISHED_VERSION")
+
+
 def check_action_surface() -> None:
     action = read_text("action.yml")
     required_action_snippets = (
@@ -1185,6 +1263,7 @@ def main() -> None:
     check_action_surface()
     check_permissions_contract()
     check_version_consistency()
+    check_release_maturity()
     print("public-surface check OK")
 
 

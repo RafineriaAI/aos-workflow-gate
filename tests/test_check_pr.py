@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -214,13 +215,18 @@ class _FakeResponse:
         return json.dumps(self._payload).encode("utf-8")
 
 
-def _fake_urlopen(runs: list[dict[str, Any]]):  # type: ignore[no-untyped-def]
-    def opener(request, timeout=None):  # type: ignore[no-untyped-def]
+def _fake_urlopen(
+    runs: list[dict[str, Any]],
+    *,
+    draft: bool = False,
+    head_repo: str = "octo/repo",
+) -> Callable[..., _FakeResponse]:
+    def opener(request: Any, timeout: object = None) -> _FakeResponse:
         url = request.full_url
         if "/pulls/" in url:
             return _FakeResponse(
                 {
-                    "head": {"sha": SHA, "repo": {"full_name": "octo/repo"}},
+                    "head": {"sha": SHA, "repo": {"full_name": head_repo}},
                     "base": {
                         "ref": "main",
                         "sha": "b" * 40,
@@ -228,7 +234,7 @@ def _fake_urlopen(runs: list[dict[str, Any]]):  # type: ignore[no-untyped-def]
                     },
                     "state": "open",
                     "merged": False,
-                    "draft": False,
+                    "draft": draft,
                 }
             )
         if "/rules/branches/" in url:
@@ -286,6 +292,48 @@ def test_check_pr_end_to_end_block_on_missing_required(
     assert ids["legacy/gate"]["kind"] == "commit_status"
     assert "Merge protection: 2 required status check(s)" in out
     assert "read-only observer" in out
+
+
+def test_check_pr_reports_fork_and_draft_without_weakening_policy(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    from aos_workflow_gate import collect as collect_module
+
+    runs = [_run("ci / validate", "success")]
+    monkeypatch.setattr(
+        collect_module.urllib.request,
+        "urlopen",
+        _fake_urlopen(
+            runs,
+            draft=True,
+            head_repo="contributor/repo-fork",
+        ),
+    )
+    monkeypatch.chdir(tmp_path)
+
+    assert cli.main(["check-pr", "https://github.com/octo/repo/pull/42"]) == 0
+
+    out = capsys.readouterr().out
+    record = json.loads((tmp_path / "gate-decision.json").read_text("utf-8"))
+    bundle = json.loads(
+        (tmp_path / ".aos-gate" / "bundle.json").read_text("utf-8")
+    )
+    assert record["verdict"] == "BLOCK"
+    assert bundle["collection"]["pr"] == {
+        "state": "open",
+        "merged": False,
+        "draft": True,
+        "from_fork": True,
+    }
+    assert any(
+        reason["rule"] == "missing_required_source"
+        and reason["source_id"] == "build"
+        for reason in record["reasons"]
+    )
+    assert "Draft PR: checks may be intentionally deferred." in out
+    assert "Fork PR: some checks may not run" in out
 
 
 def test_check_pr_imposter_app_fails_closed(

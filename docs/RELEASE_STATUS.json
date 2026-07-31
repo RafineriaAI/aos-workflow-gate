@@ -1,0 +1,10 @@
+{
+  "schema_version": "aos-release-status/v0",
+  "published_version": "0.38.0",
+  "maturity": "Preview",
+  "distribution": "public_self_serve",
+  "access": "free",
+  "default_mode": "advisory",
+  "product_claim_status": "NO_GO",
+  "production_use_recommended": false
+}

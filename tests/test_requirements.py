@@ -155,6 +155,40 @@ def test_same_context_controls_keep_distinct_observation_bindings() -> None:
     assert legacy_status_source_ids(controls) == {"ci": by_app[None]}
 
 
+def test_matrix_jobs_remain_distinct_controls() -> None:
+    controls = merge_protection_controls(
+        [
+            {"context": "tests (python=3.11)", "integration_id": APP},
+            {"context": "tests (python=3.12)", "integration_id": APP},
+        ],
+        [],
+    )
+    runs = [
+        _run("tests (python=3.11)", app_id=APP),
+        _run("tests (python=3.12)", app_id=APP),
+        _run("tests (python=3.13)", app_id=APP),
+    ]
+
+    kept = qualifying_runs(runs, controls)
+
+    required_runs = [
+        run for run in kept if "_aos_control_identity" in run
+    ]
+    advisory_runs = [
+        run for run in kept if "_aos_control_identity" not in run
+    ]
+    assert {run["name"] for run in required_runs} == {
+        "tests (python=3.11)",
+        "tests (python=3.12)",
+    }
+    assert len({run["_aos_source_id"] for run in required_runs}) == 2
+    assert [run["name"] for run in advisory_runs] == ["tests (python=3.13)"]
+    assert all(
+        classify_control(control, kept, [])["state"] == "satisfied"
+        for control in controls
+    )
+
+
 def test_requirement_evidence_is_compact() -> None:
     controls = [
         dict(_control(), state="satisfied", observed={"app_id": APP}),
