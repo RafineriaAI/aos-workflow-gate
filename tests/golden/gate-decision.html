@@ -1,9 +1,16 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <title>AOS Workflow Gate: WARN</title>
-<style>body{font:15px/1.5 system-ui,sans-serif;max-width:46rem;margin:2rem auto;padding:0 1rem;color:#1a1a1a;background:#fff}table{border-collapse:collapse;width:100%;margin:.5rem 0}td,th{border:1px solid #ccc;padding:.3rem .6rem;text-align:left;font-size:.9rem}code{font:.85rem/1.4 ui-monospace,monospace;word-break:break-all}.verdict{display:inline-block;padding:.15rem .6rem;border-radius:6px;font-weight:700}.v-PASS{background:#d7f5dd}.v-WARN{background:#fdeec7}.v-BLOCK{background:#fbd7d7}.tampered{border:2px solid #b00;padding:.5rem .8rem;margin:.8rem 0;font-weight:600}.hint{color:#555;font-size:.85rem}footer{margin-top:1.5rem;color:#777;font-size:.8rem}</style></head><body>
+<style>body{font:15px/1.5 system-ui,sans-serif;max-width:46rem;margin:2rem auto;padding:0 1rem;color:#1a1a1a;background:#fff}table{border-collapse:collapse;width:100%;margin:.5rem 0}td,th{border:1px solid #ccc;padding:.3rem .6rem;text-align:left;font-size:.9rem}code{font:.85rem/1.4 ui-monospace,monospace;word-break:break-all}.verdict{display:inline-block;padding:.15rem .6rem;border-radius:6px;font-weight:700}.v-PASS{background:#d7f5dd}.v-WARN{background:#fdeec7}.v-BLOCK{background:#fbd7d7}.tampered{border:2px solid #b00;padding:.5rem .8rem;margin:.8rem 0;font-weight:600}.hint{color:#555;font-size:.85rem}.summary{border-left:4px solid #555;padding:.15rem 1rem;margin:1rem 0 1.5rem}.summary h2{margin:.35rem 0 .5rem}.summary dl{margin:.4rem 0}.summary dt{font-weight:700;margin-top:.6rem}.summary dd{margin:0}footer{margin-top:1.5rem;color:#777;font-size:.8rem}</style></head><body>
 <h1>AOS Workflow Gate: <span class="verdict v-WARN">WARN</span></h1>
-<p><strong>What AOS found:</strong> Scanner evidence &#x27;scanner.sarif&#x27; contains findings that need review.<br><strong>Effect:</strong> advisory only; WARN/BLOCK is reported but does not fail this job<br><strong>Next:</strong> review the named SARIF findings for &#x27;scanner.sarif&#x27;; promote this source to required only after its signal is stable and useful</p>
+<section class="summary"><h2>Decision summary</h2><dl>
+<dt>Problem</dt><dd>Scanner evidence &#x27;scanner.sarif&#x27; contains findings that need review.</dd>
+<dt>Why it matters</dt><dd>This signal does not block the gate, but it may need a reviewer decision when it applies to the change.</dd>
+<dt>Affected area</dt><dd>Scanner report &#x27;scanner.sarif&#x27;</dd>
+<dt>Severity</dt><dd>WARN</dd>
+<dt>What to do next</dt><dd>review the named SARIF findings for &#x27;scanner.sarif&#x27;; promote this source to required only after its signal is stable and useful</dd>
+<dt>Effect</dt><dd>advisory only; WARN/BLOCK is reported but does not fail this job</dd>
+</dl></section>
 <p><strong>Signals:</strong> 1 required (1 successful); 2 other observation(s)<br><strong>Scope:</strong> 1 required check(s) plus recorded workflow signals on owner/repo@0123456789ab; not full merge-readiness<br><strong>Freshness:</strong> not recorded (offline or pre-freshness bundle)</p>
 <h2>Technical evidence</h2>
 <table>
@@ -14,7 +21,7 @@
 <tr><th>Policy</th><td><code>default (advisory)</code></td></tr>
 <tr><th>Policy digest</th><td><code>sha256:3f33e4ad37f96d56f5a132d95b4c673aa774d410611111bfef235832aad81272</code></td></tr>
 <tr><th>Input bundle digest</th><td><code>sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19</code></td></tr>
-<tr><th>Record digest</th><td><code>sha256:ed5b4fd0ef85bf7f1760eb0cf35f15cf523ccb396150d8ae39f711faf68a681a</code></td></tr>
+<tr><th>Record digest</th><td><code>sha256:8a433a4a6c0cf10bec2c51373bf8a6fe862083f5bf2fe25cb6f317c5e70f6c42</code></td></tr>
 <tr><th>Record self-check</th><td><code>OK</code></td></tr>
 <tr><th>Verification status</th><td><code>UNSIGNED_NOT_OFFICIAL</code></td></tr>
 </table>

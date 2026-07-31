@@ -40,9 +40,14 @@ The committed [record](../../examples/zero-required-record.json),
 
 ```text
 AOS Workflow Gate: WARN
-What AOS found: This policy requires no checks, so no check result can block the gate.
+Problem: This policy requires no checks, so no check result can block the gate.
+Why it matters: Visible green checks do not guarantee that any control must
+run before merge.
+Affected area: GitHub branch requirements
+Severity: WARN
+Next step: configure at least one required status check in GitHub, or pass
+required-checks explicitly, then re-run AOS
 Effect: advisory only; WARN/BLOCK is reported but does not fail this job
-Next: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
 Signals: 0 required (0 successful); 4 other observation(s)
 ```
 

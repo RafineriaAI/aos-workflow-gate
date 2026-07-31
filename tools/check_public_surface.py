@@ -33,7 +33,11 @@ REQUIRED_SNIPPETS = {
         ("AOS sprawdza projekt przed przeglądem kodu lub wydaniem "
         "nowej wersji."),
         "aos-check",
-        "AOS found no runnable behavioral test command in the scanned scope.",
+        "No runnable behavioral test command was detected at this project root.",
+        "Why it matters:",
+        "Affected area:",
+        "Severity: WARN",
+        "Next step:",
         "The GitHub gate verifies controls, not code.",
         (
             "control\nthat is missing, stale, produced by the wrong app, "
@@ -1110,7 +1114,10 @@ def check_action_surface() -> None:
         "can-block=",
         "diagnosis=",
         "render_github_annotation",
-        "clean(d['finding'])",
+        "clean(d['problem'])",
+        "clean(d['impact'])",
+        "clean(d['affected_area'])",
+        "clean(d['severity'])",
         "next-action=",
         "required-unverifiable=",
         ".aos-gate/evidence.html",

@@ -12,7 +12,7 @@ diagnosis and files that can be verified independently.
 | --- | --- | --- | --- |
 | Discover | Public repository, Pages, and exact-commit cases | A bounded claim and working quickstart | None by default |
 | Adopt | Self-Test Mode, no checkout, read-only | A decision record from the user's own pipeline | Local evidence only |
-| Understand | Job Summary: finding, effect, `Next` | One dominant action | Optional feedback |
+| Understand | Job Summary: problem, impact, affected area, severity, next step | One dominant action | Optional feedback |
 | Verify | Offline `verify`, HTML evidence, trust docs | Independent confirmation of mechanics | User-controlled |
 | Retain | Keep advisory for several weeks | Repeated exposure to real repository behavior | External study only |
 | Escalate | Opens only after the required evidence gate | A bounded organization-level scope | Written acceptance criteria |
@@ -24,8 +24,8 @@ The activation target remains:
 ```text
 install
 -> exact-commit collection
--> one control-assurance diagnosis
--> one next action
+-> problem, impact, affected area, severity
+-> one executable next action
 -> replayable evidence
 ```
 

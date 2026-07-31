@@ -57,9 +57,11 @@ def test_html_says_the_same_as_markdown() -> None:
     diag = diagnose(record)
     text, _ = render_html(record)
     assert str(diag["verdict"]) in text
-    assert diag["next"] in text.replace("&quot;", '"').replace(
+    decoded = text.replace("&quot;", '"').replace(
         "&#x27;", "'"
     ).replace("&amp;", "&")
+    for key in ("problem", "impact", "affected_area", "severity", "next"):
+        assert diag[key] in decoded
     assert str(diag["record_digest"]) in text
 
 
@@ -118,11 +120,18 @@ def test_verify_bindings_and_cli_flags(tmp_path: Path) -> None:
     bundle_path.write_text(json.dumps(other), encoding="utf-8")
     assert (
         main(
-            ["summarize", "--input",
-             str(ROOT / "examples" / "gate-decision.json"),
-             "--html", "--bundle", str(bundle_path),
-             "--policy", str(policy_path),
-             "--out", str(tmp_path / "e.html")]
+            [
+                "summarize",
+                "--input",
+                str(ROOT / "examples" / "gate-decision.json"),
+                "--html",
+                "--bundle",
+                str(bundle_path),
+                "--policy",
+                str(policy_path),
+                "--out",
+                str(tmp_path / "e.html"),
+            ]
         )
         == 1
     )
@@ -133,9 +142,14 @@ def test_cli_html_out(tmp_path: Path) -> None:
     out = tmp_path / "evidence.html"
     assert (
         main(
-            ["summarize", "--input",
-             str(ROOT / "examples" / "gate-decision.json"),
-             "--html", "--out", str(out)]
+            [
+                "summarize",
+                "--input",
+                str(ROOT / "examples" / "gate-decision.json"),
+                "--html",
+                "--out",
+                str(out),
+            ]
         )
         == 0
     )

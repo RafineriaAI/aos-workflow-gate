@@ -165,7 +165,11 @@ def test_utility_task_corpus_replays_expected_diagnoses() -> None:
         markdown, intact = render_markdown(_record(case))
         assert intact is expected["intact"], case["case_id"]
         assert (
-            sum(line.startswith("**Next:**") for line in markdown.splitlines()) == 1
+            sum(
+                line.startswith("**Next step:**")
+                for line in markdown.splitlines()
+            )
+            == 1
         ), case["case_id"]
 
 

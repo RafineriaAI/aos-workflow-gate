@@ -12,7 +12,7 @@
         "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
         "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
         "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
-        "cli.py": "d825ecb6ae14082d61bb8ed7025d91e557ba1a4c0cc02772f0051e31f5c9a51e",
+        "cli.py": "c2e6b88ac786901acf6146099c525a13bafcd062055039f2a042cb0b3c09e680",
         "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
         "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
         "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
@@ -32,15 +32,15 @@
         "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
         "requirements.py": "7f6e0a1047f7cbd21bbc568934cb202423226a0d1d52cd51082cee3cc3956ae3",
         "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
-        "summarize.py": "2bd3d2fef2117097a1fb5685424ac0d8e5a2c18f9335d9a82418bf6a650025c0",
+        "summarize.py": "5bda6e2c8d78e16452fa64884f3f3398873e6eba96d7cea68bbebfab9e3583df",
         "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
         "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
         "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
       },
-      "manifest_digest": "sha256:64aef9e6ec09470b6ddfab3c9af6861281d8c1a770643a15ef74d5c39b742690",
+      "manifest_digest": "sha256:bb0891dc0181ed516324f9dd445bda2d20b17029f5fe3f20172fc40985e38bc0",
       "schema_version": "verifier-manifest-v0"
     },
-    "verifier_manifest_digest": "sha256:64aef9e6ec09470b6ddfab3c9af6861281d8c1a770643a15ef74d5c39b742690",
+    "verifier_manifest_digest": "sha256:bb0891dc0181ed516324f9dd445bda2d20b17029f5fe3f20172fc40985e38bc0",
     "version": "0.38.0"
   },
   "input_bundle_digest": "sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22",
@@ -93,7 +93,7 @@
     "verification_status": "UNSIGNED_NOT_OFFICIAL"
   },
   "reasons": [],
-  "record_digest": "sha256:32e788c7efdb84bef830befbf0afeeffef30df3c9e150b9d51c51df7a9a4b640",
+  "record_digest": "sha256:400dd270e63404d9979efe96087d5f8292e4775f8a581a93585669decdfef559",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": null,

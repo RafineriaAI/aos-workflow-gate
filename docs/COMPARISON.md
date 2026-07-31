@@ -15,7 +15,8 @@ Unlike a hosted browser-testing agent, it does not explore user flows. Unlike
 a test runner, it falls back to bounded nested projects when root verification
 is absent, distinguishes failed from missing verification, scopes later scans
 using content-free local state, and
-produces one next action plus a replayable record.
+produces a named problem, bounded impact, affected area, severity, one next
+action, and a replayable record.
 
 That combination now produces an incremental code-risk signal beyond merely
 re-running a root command, but it is not a demonstrated moat. Material

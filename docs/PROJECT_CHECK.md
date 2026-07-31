@@ -79,8 +79,10 @@ The terminal shows:
 
 - detected project type;
 - every executed check and duration;
-- one dominant finding;
-- one next action;
+- one dominant problem;
+- its practical impact and affected area;
+- severity;
+- one executable next action;
 - a bounded preview of the first failing command.
 
 The failure preview is never written to evidence. It can contain output from

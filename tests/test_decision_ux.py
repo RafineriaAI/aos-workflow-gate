@@ -151,9 +151,7 @@ def test_decision_contrast_separates_native_and_aos_only_gaps() -> None:
     )
     aos_only = _record(
         verdict="WARN",
-        reasons=[
-            _reason("non_independent_evidence", "WARN", None)
-        ],
+        reasons=[_reason("non_independent_evidence", "WARN", None)],
         observation={"github_baseline": "clear"},
     )
 
@@ -189,8 +187,12 @@ def test_pass_with_zero_required_is_not_quiet() -> None:
     record = _record(
         inputs=[
             {
-                "id": "ci", "kind": "github_check", "status": "success",
-                "required": False, "digest": None, "signal_source": None,
+                "id": "ci",
+                "kind": "github_check",
+                "status": "success",
+                "required": False,
+                "digest": None,
+                "signal_source": None,
             }
         ]
     )
@@ -256,22 +258,131 @@ def test_plain_finding_names_zero_required_github_gap() -> None:
         "GitHub has no required status checks for this branch, so green "
         "checks do not enforce a merge gate."
     )
-    assert "**What AOS found:**" in text
+    assert "**Problem:**" in text
     assert diag["finding"] in text
 
 
 def test_plain_finding_explains_self_validating_workflow() -> None:
     record = _record(
         verdict="WARN",
-        reasons=[
-            _reason("non_independent_evidence", "WARN", None)
-        ],
+        reasons=[_reason("non_independent_evidence", "WARN", None)],
     )
 
     assert diagnose(record)["finding"] == (
         "This PR changed a workflow that also produced checks used to "
         "assess the same PR."
     )
+
+
+@pytest.mark.parametrize(
+    ("verdict", "reason", "inputs", "expected_severity"),
+    [
+        (
+            "WARN",
+            _reason("advisory_warning", "WARN", "scan"),
+            [
+                {
+                    "id": "scan",
+                    "kind": "github_check",
+                    "status": "failure",
+                    "required": False,
+                    "digest": None,
+                    "signal_source": None,
+                }
+            ],
+            "WARN",
+        ),
+        (
+            "BLOCK",
+            _reason(
+                "missing_required_source",
+                "BLOCK",
+                "ci",
+                state="missing",
+            ),
+            [],
+            "BLOCK",
+        ),
+    ],
+)
+def test_non_pass_contract_is_complete_in_both_views(
+    verdict: str,
+    reason: dict[str, Any],
+    inputs: list[dict[str, Any]],
+    expected_severity: str,
+) -> None:
+    record = _record(verdict=verdict, reasons=[reason], inputs=inputs)
+
+    diag = diagnose(record)
+    markdown, _ = render_markdown(record)
+    html, _ = render_html(record)
+
+    assert diag["problem"] == diag["finding"]
+    assert diag["severity"] == expected_severity
+    for key in ("problem", "impact", "affected_area", "next"):
+        assert isinstance(diag[key], str) and diag[key].strip(), key
+    for label in (
+        "**Problem:**",
+        "**Why it matters:**",
+        "**Affected area:**",
+        "**Severity:**",
+        "**Next step:**",
+    ):
+        assert label in markdown
+    for label in (
+        "Problem",
+        "Why it matters",
+        "Affected area",
+        "Severity",
+        "What to do next",
+    ):
+        assert f"<dt>{label}</dt>" in html
+
+
+def test_unknown_reason_does_not_invent_impact_or_location() -> None:
+    record = _record(
+        verdict="WARN",
+        reasons=[_reason("custom_policy_rule", "WARN", None)],
+    )
+
+    diag = diagnose(record)
+
+    assert diag["affected_area"] == "Not available in the collected evidence"
+    assert "not encoded in the record" in diag["impact"]
+
+
+def test_project_warning_names_scope_and_ecosystem_specific_action() -> None:
+    detail = "No runnable behavioral test command was detected at this project root."
+    record = _record(
+        verdict="WARN",
+        reasons=[
+            _reason(
+                "project_verification_limited",
+                "WARN",
+                "code.project-check",
+                detail,
+                state="limited",
+            )
+        ],
+        inputs=[
+            {
+                "id": "code.project-check",
+                "kind": "aos_project_check",
+                "status": "limited",
+                "required": True,
+                "digest": None,
+                "signal_source": "local_project_check",
+            }
+        ],
+        observation={"project_check": {"ecosystems": ["Python"]}},
+    )
+
+    diag = diagnose(record)
+
+    assert diag["problem"] == detail
+    assert diag["affected_area"] == "Project build and test configuration"
+    assert "under tests/" in diag["next"]
+    assert "not encoded in the record" not in diag["impact"]
 
 
 def test_sarif_warning_has_specific_finding_and_next_action() -> None:
@@ -324,12 +435,11 @@ def test_github_annotation_is_nonblocking_and_command_safe() -> None:
     annotation = render_github_annotation(record)
 
     assert annotation is not None
-    assert annotation.startswith(
-        "::warning title=AOS BLOCK (non-blocking)::"
-    )
+    assert annotation.startswith("::warning title=AOS BLOCK (non-blocking)::")
     assert "%250A" in annotation
     assert "\n" not in annotation
     assert "\r" not in annotation
+    assert "Why it matters:" in annotation
     assert "Next:" in annotation
 
 
@@ -353,9 +463,9 @@ def test_pass_emits_no_github_annotation() -> None:
 
 
 def test_gaps_capped_at_three_with_remainder() -> None:
-    reasons = [
-        _reason("advisory_warning", "WARN", f"scan-{i}") for i in range(4)
-    ] + [_reason("failed_required_source", "BLOCK", "ci", "required failed")]
+    reasons = [_reason("advisory_warning", "WARN", f"scan-{i}") for i in range(4)] + [
+        _reason("failed_required_source", "BLOCK", "ci", "required failed")
+    ]
     record = _record(verdict="BLOCK", reasons=reasons)
     diag = diagnose(record)
     assert diag["gaps_total"] == 5
@@ -388,9 +498,7 @@ def test_gap_ranking_is_stable_and_severity_first() -> None:
         _reason("missing_required_source", "BLOCK", "a"),
     ]
     diag = diagnose(_record(verdict="BLOCK", reasons=reasons))
-    ordered = [
-        (gap["rule"], gap.get("source_id")) for gap in diag["gaps"]
-    ]
+    ordered = [(gap["rule"], gap.get("source_id")) for gap in diag["gaps"]]
     assert ordered == [
         ("missing_required_source", "a"),
         ("missing_required_source", "b"),
@@ -433,9 +541,7 @@ def test_freshness_honest_when_unrecorded() -> None:
 
 def test_effect_states_enforcement() -> None:
     assert diagnose(_record())["effect"].startswith("advisory")
-    assert diagnose(_record(can_block=True))["effect"].startswith(
-        "enforcing"
-    )
+    assert diagnose(_record(can_block=True))["effect"].startswith("enforcing")
 
 
 def test_scope_shows_protection_source_and_strict() -> None:
@@ -488,6 +594,9 @@ def test_required_gap_remediation_uses_structural_state(
     assert "1 required" in diag["scope"]
     assert diag["gaps"][0]["remediation"] == diag["remediation"]
     assert diag["next"] == diag["remediation"]["action"]
+    assert diag["severity"] == "BLOCK"
+    assert diag["affected_area"] == "Required control 'ci'"
+    assert "not encoded in the record" not in diag["impact"]
 
 
 def test_legacy_detail_is_never_parsed_as_operational_state() -> None:
@@ -543,13 +652,14 @@ def test_failed_check_remediation_uses_structured_input_status(
         "same display text for every status",
     )
 
-    diag = diagnose(
-        _record(verdict="BLOCK", reasons=[reason], inputs=inputs)
-    )
+    diag = diagnose(_record(verdict="BLOCK", reasons=[reason], inputs=inputs))
 
     assert diag["remediation"]["code"] == code
     assert diag["remediation"]["state"] == status
     assert "ci" in diag["next"]
+    assert diag["severity"] == "BLOCK"
+    assert diag["affected_area"] == "GitHub check 'ci'"
+    assert "not encoded in the record" not in diag["impact"]
 
 
 @pytest.mark.parametrize(
@@ -580,6 +690,10 @@ def test_collection_remediation_uses_structured_observation_status(
 
     assert diag["remediation"]["code"] == code
     assert diag["remediation"]["state"] == status
+    assert diag["affected_area"] == ("GitHub evidence collection for the exact commit")
+    assert "not encoded in the record" not in diag["impact"]
+
+
 # --- one projection, two views ----------------------------------------------
 
 
@@ -587,8 +701,7 @@ def test_markdown_and_html_share_the_same_diagnosis() -> None:
     record = _record(
         verdict="WARN",
         reasons=[_reason("advisory_warning", "WARN", "scan")],
-        observation={"status": "complete",
-                     "observed_at": "2026-07-11T10:00:00Z"},
+        observation={"status": "complete", "observed_at": "2026-07-11T10:00:00Z"},
     )
     import html as html_module
 
@@ -597,22 +710,25 @@ def test_markdown_and_html_share_the_same_diagnosis() -> None:
     html, _ = render_html(record)
     assert diag["freshness"] in markdown.replace("\\", "")
     assert html_module.escape(diag["freshness"], quote=True) in html
-    assert diag["next"] in markdown.replace("\\", "")
-    assert html_module.escape(diag["next"], quote=True) in html
+    for key in ("problem", "impact", "affected_area", "severity", "next"):
+        assert diag[key] in markdown.replace("\\", "")
+        assert html_module.escape(diag[key], quote=True) in html
 
 
 # --- safe escaping -----------------------------------------------------------
 
 
 def test_untrusted_values_stay_escaped_in_both_views() -> None:
-    hostile = 'repo|<script>alert(1)</script>`*_'
+    hostile = "repo|<script>alert(1)</script>`*_"
     record = _record(
         verdict="WARN",
         repository=hostile,
         reasons=[
             _reason(
-                "advisory_warning", "WARN",
-                "bad|id`", "detail <img src=x onerror=1> | pipe",
+                "advisory_warning",
+                "WARN",
+                "bad|id`",
+                "detail <img src=x onerror=1> | pipe",
             )
         ],
     )

@@ -55,7 +55,7 @@ def test_summary_has_one_dominant_next() -> None:
         text, _ = render_markdown(record)
         next_lines = [
             line for line in text.splitlines()
-            if line.startswith("**Next:**")
+            if line.startswith("**Next step:**")
         ]
         assert len(next_lines) == 1, name
         assert "**Signals:**" in text, name

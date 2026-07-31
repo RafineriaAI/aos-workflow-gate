@@ -60,7 +60,7 @@ from .collect import (
     wait_for_required,
 )
 from .errors import InputError
-from .evaluate import BLOCK, evaluate
+from .evaluate import BLOCK, PASS, evaluate
 from .evidence import (
     build_record,
     observation_from_bundle,
@@ -1658,10 +1658,18 @@ def _cmd_check_project(args: argparse.Namespace) -> int:
             marker = "WARN"
         print(f"[{marker}] {run.spec.label} ({run.elapsed_ms} ms)")
     print()
-    print("What AOS found:")
-    print(diagnosis["finding"])
+    print("Result:" if decision.verdict == PASS else "Problem:")
+    print(diagnosis["problem"])
     print()
-    print("Next:")
+    print("Why it matters:")
+    print(diagnosis["impact"])
+    print()
+    print("Affected area:")
+    print(diagnosis["affected_area"])
+    print()
+    print(f"Severity: {diagnosis['severity']}")
+    print()
+    print("Next step:")
     print(diagnosis["next"])
     failed = next((run for run in result.runs if run.state == "failed"), None)
     if failed is not None and failed.preview:

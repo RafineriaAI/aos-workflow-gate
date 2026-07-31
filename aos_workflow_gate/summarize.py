@@ -71,8 +71,8 @@ GENERIC_REMEDIATIONS: dict[str, RemediationSpec] = {
     ),
     "project_verification_limited": RemediationSpec(
         "add_runnable_project_test",
-        "Ask your coding agent to add one automated test for the app's "
-        "most important user flow, then run aos-check again.",
+        "add one automated test for the app's most important user flow "
+        "in the project's conventional test location, then run aos-check again",
     ),
     "project_verification_inconclusive": RemediationSpec(
         "restore_project_verification",
@@ -227,6 +227,165 @@ STATE_REMEDIATIONS: dict[tuple[str, str], RemediationSpec] = {
 }
 
 
+STATE_IMPACTS: dict[tuple[str, str], str] = {
+    (
+        "missing_required_source",
+        "missing",
+    ): "The protection expected from this control was not applied to this commit.",
+    (
+        "missing_required_source",
+        "pending",
+    ): "The result is incomplete, so deciding now could bypass a required control.",
+    (
+        "missing_required_source",
+        "unverifiable",
+    ): (
+        "A result may exist, but AOS cannot confirm that it satisfies the "
+        "required control identity."
+    ),
+    (
+        "failed_required_source",
+        "failure",
+    ): "A required control reported a known failure for this commit.",
+    (
+        "failed_required_source",
+        "cancelled",
+    ): (
+        "The required validation did not complete, so it provides no "
+        "successful evidence."
+    ),
+    (
+        "failed_required_source",
+        "timed_out",
+    ): (
+        "The required validation did not complete, so it provides no "
+        "successful evidence."
+    ),
+    (
+        "failed_required_source",
+        "action_required",
+    ): "The required validation has not run because it still needs approval.",
+    (
+        "failed_required_source",
+        "startup_failure",
+    ): "The required validation did not start, so it provides no successful evidence.",
+    (
+        "failed_required_source",
+        "skipped",
+    ): (
+        "The required validation did not execute under this policy, so there is "
+        "no run result to rely on."
+    ),
+    (
+        "failed_required_source",
+        "neutral",
+    ): "The control did not provide the explicit success required by this policy.",
+    (
+        "failed_required_source",
+        "stale",
+    ): (
+        "The evidence may describe an earlier base state rather than the "
+        "current change."
+    ),
+    (
+        "failed_required_source",
+        "tampered",
+    ): "Modified evidence cannot support a trusted decision.",
+    (
+        "failed_required_source",
+        "subject_mismatch",
+    ): "The evidence belongs to a different repository or commit.",
+    (
+        "failed_required_source",
+        "bounded_duplicate",
+    ): "Duplicate evidence does not prove that two distinct required actions occurred.",
+    (
+        "failed_required_source",
+        "freshness_unverified",
+    ): "AOS cannot establish that this evidence matches the current base state.",
+    (
+        "incomplete_collection",
+        "wait_timeout",
+    ): "The verdict may be premature because required checks were still running.",
+    (
+        "incomplete_collection",
+        "subject_mismatch",
+    ): "The collected results may belong to a different repository or commit.",
+    (
+        "incomplete_collection",
+        "truncated",
+    ): "The verdict may omit relevant checks because collection stopped early.",
+}
+
+
+RULE_IMPACTS: dict[str, str] = {
+    "missing_required_source": (
+        "A required control has no usable result for this commit."
+    ),
+    "failed_required_source": (
+        "A required control has no successful result for this commit."
+    ),
+    "confirmed_verifier_failure": (
+        "The change does not satisfy the declared executable acceptance check."
+    ),
+    "change_not_distinguished": (
+        "The verifier does not demonstrate that the selected implementation "
+        "change is necessary for the tested behavior."
+    ),
+    "verification_inconclusive": (
+        "The change-sensitivity result cannot support a merge decision."
+    ),
+    "project_check_failed": (
+        "The project does not satisfy a discovered build or behavioral check."
+    ),
+    "project_high_confidence_risk": (
+        "The reported condition is a high-confidence blocker under the built-in "
+        "safety policy."
+    ),
+    "project_verification_limited": (
+        "AOS did not exercise project behavior in this scope, so behavior "
+        "regressions may remain undetected."
+    ),
+    "project_verification_inconclusive": (
+        "A required project check produced no dependable result."
+    ),
+    "project_quality_warning": (
+        "The quality issue may increase review or maintenance cost; build and "
+        "behavioral results remain separate."
+    ),
+    "advisory_warning": (
+        "This signal does not block the gate, but it may need a reviewer decision "
+        "when it applies to the change."
+    ),
+    "no_required_sources": (
+        "Visible green checks do not guarantee that any control must run before merge."
+    ),
+    "malformed_input": "Invalid evidence cannot support a reliable verdict.",
+    "incomplete_collection": (
+        "The verdict may omit a relevant check state for this commit."
+    ),
+    "non_independent_evidence": (
+        "The PR can change both the implementation and part of the mechanism used "
+        "to validate it, reducing the independence of the evidence."
+    ),
+    "verifier_change_unavailable": (
+        "AOS cannot determine whether the PR modified its own verification path."
+    ),
+}
+
+
+RULE_AREAS: dict[str, str] = {
+    "no_required_sources": "GitHub branch requirements",
+    "malformed_input": "AOS signal bundle",
+    "incomplete_collection": "GitHub evidence collection for the exact commit",
+    "non_independent_evidence": "Workflow files and the checks they produce",
+    "verifier_change_unavailable": "Workflow-change analysis",
+    "confirmed_verifier_failure": "Selected verifier command and implementation change",
+    "change_not_distinguished": "Selected verifier command and implementation change",
+    "verification_inconclusive": "Selected verifier command and implementation change",
+}
+
+
 def _required_input_satisfied(source: dict[str, Any], policy: dict[str, Any]) -> bool:
     status = str(source.get("status", "")).lower()
     if status == "success":
@@ -376,6 +535,16 @@ def diagnose(record: Any) -> dict[str, Any]:
     else:
         remediation = _fallback_remediation(record, inputs)
 
+    severity = _decision_severity(str(verdict), ranked, intact=intact)
+    impact = _impact_statement(
+        record,
+        ranked,
+        inputs,
+        observation,
+        intact=intact,
+    )
+    affected_area = _affected_area(ranked, inputs, observation, intact=intact)
+
     return {
         "verdict": verdict,
         "intact": intact,
@@ -383,7 +552,11 @@ def diagnose(record: Any) -> dict[str, Any]:
         "can_block": bool(record.get("can_block")),
         "counts": counts,
         "next": remediation["action"],
+        "problem": finding,
         "finding": finding,
+        "impact": impact,
+        "affected_area": affected_area,
+        "severity": severity,
         "remediation": remediation,
         "scope": _scope_statement(record, observation, required_total, inputs),
         "freshness": _freshness_statement(observation),
@@ -515,18 +688,30 @@ def _plain_finding(
     if rule == "verification_inconclusive":
         return "AOS could not complete a stable change-sensitivity experiment."
     if rule == "project_check_failed":
-        return "A discovered build or test check failed in this project."
+        return str(
+            gap.get("detail")
+            or "A discovered build or test check failed in this project."
+        )
     if rule == "project_high_confidence_risk":
         return str(
             gap.get("detail")
             or "AOS found a high-confidence code risk in this project."
         )
     if rule == "project_verification_limited":
-        return "AOS found no runnable behavioral test command in the scanned scope."
+        return str(
+            gap.get("detail")
+            or "AOS found no runnable behavioral test command in the scanned scope."
+        )
     if rule == "project_verification_inconclusive":
-        return "A discovered project check could not complete reliably."
+        return str(
+            gap.get("detail")
+            or "A discovered project check could not complete reliably."
+        )
     if rule == "project_quality_warning":
-        return "A discovered quality check reported issues in this project."
+        return str(
+            gap.get("detail")
+            or "A discovered quality check reported issues in this project."
+        )
     if rule == "no_required_sources":
         if observation.get("github_baseline") == "no_required_checks":
             return (
@@ -571,6 +756,124 @@ def _plain_finding(
     return "AOS found a repository-rule condition that needs review."
 
 
+def _decision_severity(
+    verdict: str,
+    gaps: list[dict[str, Any]],
+    *,
+    intact: bool,
+) -> str:
+    """Return the importance of the dominant user-visible condition."""
+    if not intact:
+        return "BLOCK"
+    if gaps:
+        severity = gaps[0].get("severity")
+        if severity in VERDICTS:
+            return str(severity)
+    return verdict
+
+
+def _impact_statement(
+    record: dict[str, Any],
+    gaps: list[dict[str, Any]],
+    inputs: list[dict[str, Any]],
+    observation: dict[str, Any],
+    *,
+    intact: bool,
+) -> str:
+    """Explain practical consequence without inventing business context."""
+    if not intact:
+        return "The displayed verdict cannot be verified against the saved record."
+    if gaps:
+        gap = gaps[0]
+        rule = str(gap.get("rule") or "")
+        state = _reason_state(gap, inputs, observation)
+        impact = STATE_IMPACTS.get((rule, state or ""))
+        if impact is not None:
+            return impact
+        impact = RULE_IMPACTS.get(rule)
+        if impact is not None:
+            return impact
+        return (
+            "The active policy marked this condition as decision-relevant, "
+            "but its practical impact is not encoded in the record."
+        )
+
+    required = [source for source in inputs if source.get("required")]
+    if record.get("verdict") == "PASS" and required:
+        return (
+            "The controls covered by the active policy reported no decision gap; "
+            "risk outside that policy remains."
+        )
+    if record.get("verdict") == "PASS":
+        return (
+            "No required control was evaluated, so this is coverage information, "
+            "not a claim that the change is defect-free."
+        )
+    return (
+        "The verdict is non-PASS, but the record does not contain a structured "
+        "reason that explains its impact."
+    )
+
+
+def _affected_area(
+    gaps: list[dict[str, Any]],
+    inputs: list[dict[str, Any]],
+    observation: dict[str, Any],
+    *,
+    intact: bool,
+) -> str:
+    """Name a structural source or say explicitly that it is unavailable."""
+    if not intact:
+        return "AOS decision record"
+    if gaps:
+        gap = gaps[0]
+        rule = str(gap.get("rule") or "")
+        source_id = gap.get("source_id")
+        source_input = _input_for_source(inputs, source_id)
+        if source_input is not None:
+            return _source_area(source_input)
+        if source_id is not None:
+            name = _display_source(source_id, fallback="the required control")
+            if rule == "missing_required_source":
+                return f"Required control '{name}'"
+            return f"Evidence source '{name}'"
+        area = RULE_AREAS.get(rule)
+        if area is not None:
+            return area
+        return "Not available in the collected evidence"
+
+    required = [source for source in inputs if source.get("required")]
+    if len(required) == 1:
+        return _source_area(required[0])
+    if len(required) > 1:
+        return f"{len(required)} configured required controls"
+    if observation.get("github_baseline") == "no_required_checks":
+        return "GitHub branch requirements"
+    return "Configured policy scope"
+
+
+def _source_area(source: dict[str, Any]) -> str:
+    kind = str(source.get("kind"))
+    fixed_areas = {
+        "aos_project_check": "Project build and test configuration",
+        "aos_change_proof": "Selected implementation files and verifier command",
+        "branch_rules_summary": "GitHub branch requirements",
+    }
+    if kind in fixed_areas:
+        return fixed_areas[kind]
+
+    source_id = _display_source(source.get("id"), fallback="unnamed")
+    labels = {
+        "github_check": "GitHub check",
+        "sarif_summary": "Scanner report",
+        "agent_action": "Agent action evidence",
+        "ai_agent_review_summary": "Agent review evidence",
+        "scorecard_summary": "Repository scorecard",
+    }
+    label = labels.get(kind, "Evidence source")
+    return f"{label} '{source_id}'"
+
+
 def _display_source(value: Any, *, fallback: str) -> str:
     text = fallback if value is None else str(value)
     text = " ".join(text.replace("\r", " ").replace("\n", " ").split())
@@ -593,7 +896,7 @@ def render_github_annotation(record: Any) -> str | None:
     effect = "enforced" if enforced_block else "non-blocking"
     title = f"AOS {verdict} ({effect})"
     body = _bounded_text(
-        f"{diag['finding']} Next: {diag['next']}",
+        f"{diag['problem']} Why it matters: {diag['impact']} Next: {diag['next']}",
         limit=1200,
     )
     return f"::{level} title={title}::{_github_command_data(body)}"
@@ -639,7 +942,12 @@ def _remediation_for_reason(
     state = _reason_state(reason, inputs, observation)
     source_input = _input_for_source(inputs, reason.get("source_id"))
     spec = None
-    if source_input is not None and source_input.get("kind") == "sarif_summary":
+    if rule == "project_verification_limited":
+        spec = RemediationSpec(
+            "add_runnable_project_test",
+            _project_test_action(observation),
+        )
+    elif source_input is not None and source_input.get("kind") == "sarif_summary":
         spec = SARIF_REMEDIATIONS.get(rule)
     if spec is None:
         spec = STATE_REMEDIATIONS.get((rule, state or ""))
@@ -660,6 +968,32 @@ def _remediation_for_reason(
         rule=rule or None,
         state=state,
         source_id=source_id,
+    )
+
+
+def _project_test_action(observation: dict[str, Any]) -> str:
+    project = observation.get("project_check")
+    ecosystems = project.get("ecosystems") if isinstance(project, dict) else None
+    names = (
+        {str(item).lower() for item in ecosystems}
+        if isinstance(ecosystems, list)
+        else set()
+    )
+    if "python" in names:
+        location = "under tests/"
+    elif "node.js" in names:
+        location = "and expose it through the package.json test script"
+    elif "go" in names:
+        location = "in a *_test.go file"
+    elif "rust" in names:
+        location = "as a #[test] or integration test"
+    elif names.intersection({"maven", "gradle"}):
+        location = "under src/test/"
+    else:
+        location = "in the project's conventional test location"
+    return (
+        "add one automated test for the app's most important user flow "
+        f"{location}, then run aos-check again"
     )
 
 
@@ -869,11 +1203,24 @@ def render_markdown(record: Any) -> tuple[str, bool]:
     counts = diag["counts"]
 
     lines: list[str] = [f"## AOS Workflow Gate: {verdict}", ""]
-    lines.append(f"**What AOS found:** {_escape(diag['finding'])}")
-    if diag["contrast"]["code"] not in {"aligned_clear", "comparison_unavailable"}:
-        lines.append("**Decision contrast:** " + _escape(diag["contrast"]["summary"]))
-    lines.append(f"**Effect:** {_escape(diag['effect'])}")
-    lines.append(f"**Next:** {_escape(diag['next'])}")
+    if verdict == "PASS" and intact:
+        lines.append(f"**Result:** {_escape(diag['problem'])}")
+        lines.append(f"**Effect:** {_escape(diag['effect'])}")
+        lines.append(f"**Next step:** {_escape(diag['next'])}")
+    else:
+        lines.append(f"**Problem:** {_escape(diag['problem'])}")
+        lines.append(f"**Why it matters:** {_escape(diag['impact'])}")
+        lines.append(f"**Affected area:** {_escape(diag['affected_area'])}")
+        lines.append(f"**Severity:** {_escape(diag['severity'])}")
+        lines.append(f"**Next step:** {_escape(diag['next'])}")
+        if diag["contrast"]["code"] not in {
+            "aligned_clear",
+            "comparison_unavailable",
+        }:
+            lines.append(
+                "**Decision contrast:** " + _escape(diag["contrast"]["summary"])
+            )
+        lines.append(f"**Effect:** {_escape(diag['effect'])}")
     lines.append("")
     lines.append(
         "**Signals:** "
@@ -1034,6 +1381,10 @@ _HTML_STYLE = (
     ".tampered{border:2px solid #b00;padding:.5rem .8rem;margin:.8rem 0;"
     "font-weight:600}"
     ".hint{color:#555;font-size:.85rem}"
+    ".summary{border-left:4px solid #555;padding:.15rem 1rem;"
+    "margin:1rem 0 1.5rem}.summary h2{margin:.35rem 0 .5rem}"
+    ".summary dl{margin:.4rem 0}.summary dt{font-weight:700;"
+    "margin-top:.6rem}.summary dd{margin:0}"
     "footer{margin-top:1.5rem;color:#777;font-size:.8rem}"
 )
 
@@ -1127,20 +1478,21 @@ def render_html(
             '<p class="tampered">Record content does not match its '
             "self-digest. Do not trust this record.</p>"
         )
-    top_lines = [
-        f"<strong>What AOS found:</strong> {_h(diag['finding'])}",
+    problem_label = "Result" if verdict == "PASS" and diag["intact"] else "Problem"
+    summary_rows = [
+        (problem_label, diag["problem"]),
+        ("Why it matters", diag["impact"]),
+        ("Affected area", diag["affected_area"]),
+        ("Severity", diag["severity"]),
+        ("What to do next", diag["next"]),
     ]
     if diag["contrast"]["code"] not in {"aligned_clear", "comparison_unavailable"}:
-        top_lines.append(
-            "<strong>Decision contrast:</strong> " + _h(diag["contrast"]["summary"])
-        )
-    top_lines.extend(
-        [
-            f"<strong>Effect:</strong> {_h(diag['effect'])}",
-            f"<strong>Next:</strong> {_h(diag['next'])}",
-        ]
-    )
-    parts.append("<p>" + "<br>".join(top_lines) + "</p>")
+        summary_rows.append(("Decision contrast", diag["contrast"]["summary"]))
+    summary_rows.append(("Effect", diag["effect"]))
+    parts.append('<section class="summary"><h2>Decision summary</h2><dl>')
+    for label, value in summary_rows:
+        parts.append(f"<dt>{_h(label)}</dt><dd>{_h(value)}</dd>")
+    parts.append("</dl></section>")
     parts.append(
         "<p><strong>Signals:</strong> "
         f"{counts['required_total']} required "

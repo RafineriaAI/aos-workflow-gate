@@ -24,7 +24,7 @@ def test_render_markdown_covers_decision_fields() -> None:
     text, intact = render_markdown(record)
     assert intact
     assert f"## AOS Workflow Gate: {record['verdict']}" in text
-    assert "**What AOS found:**" in text
+    assert "**Problem:**" in text
     assert record["subject"]["repository"] in text
     assert record["policy"]["policy_id"] in text
     assert record["record_digest"] in text
@@ -40,11 +40,11 @@ def test_render_markdown_covers_decision_fields() -> None:
 def test_render_markdown_top_block() -> None:
     record = _record()
     text, _ = render_markdown(record)
-    assert "**What AOS found:**" in text
+    assert "**Problem:**" in text
     assert "**Scope:**" in text
     assert "**Freshness:**" in text
     assert "**Effect:** advisory" in text
-    assert "**Next:**" in text
+    assert "**Next step:**" in text
     assert "review the named SARIF findings" in text
 
 
@@ -57,7 +57,7 @@ def test_next_step_adapts_to_decision_gap() -> None:
     payload = {k: v for k, v in record.items() if k != "record_digest"}
     record["record_digest"] = canonical.digest(payload)
     text, _ = render_markdown(record)
-    assert "**Next:** define required checks" in text
+    assert "**Next step:** define required checks" in text
     assert 'required-checks: "' in text
 
 

@@ -1,8 +1,11 @@
 ## AOS Workflow Gate: WARN
 
-**What AOS found:** Scanner evidence 'scanner.sarif' contains findings that need review.
+**Problem:** Scanner evidence 'scanner.sarif' contains findings that need review.
+**Why it matters:** This signal does not block the gate, but it may need a reviewer decision when it applies to the change.
+**Affected area:** Scanner report 'scanner.sarif'
+**Severity:** WARN
+**Next step:** review the named SARIF findings for 'scanner.sarif'; promote this source to required only after its signal is stable and useful
 **Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
-**Next:** review the named SARIF findings for 'scanner.sarif'; promote this source to required only after its signal is stable and useful
 
 **Signals:** 1 required (1 successful); 2 other observation(s)
 **Scope:** 1 required check(s) plus recorded workflow signals on owner/repo@0123456789ab; not full merge-readiness
@@ -19,7 +22,7 @@
 | Policy | `default` (advisory) |
 | Policy digest | `sha256:3f33e4ad37f96d56f5a132d95b4c673aa774d410611111bfef235832aad81272` |
 | Input bundle digest | `sha256:dcdfb4bd0853c94bd116dea46e976b90825608a3f07b676ab50144f682dd0a19` |
-| Record digest | `sha256:ed5b4fd0ef85bf7f1760eb0cf35f15cf523ccb396150d8ae39f711faf68a681a` |
+| Record digest | `sha256:8a433a4a6c0cf10bec2c51373bf8a6fe862083f5bf2fe25cb6f317c5e70f6c42` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 
