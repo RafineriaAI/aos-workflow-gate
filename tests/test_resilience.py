@@ -127,6 +127,45 @@ def test_api_call_budget_is_enforced(monkeypatch: pytest.MonkeyPatch) -> None:
         )
 
 
+def test_check_run_pagination_keeps_all_pages(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    pages = {
+        1: [
+            {**_run(f"matrix / py-{index}"), "id": index}
+            for index in range(1, 101)
+        ],
+        2: [
+            {**_run(f"matrix / py-{index}"), "id": index}
+            for index in range(101, 201)
+        ],
+        3: [{**_run("matrix / py-201"), "id": 201}],
+    }
+
+    def opener(request: Any, timeout: float | None = None) -> _FakeResponse:
+        page = int(request.full_url.rsplit("page=", 1)[1])
+        return _FakeResponse(
+            {"total_count": 201, "check_runs": pages.get(page, [])}
+        )
+
+    monkeypatch.setattr(collect_module.urllib.request, "urlopen", opener)
+    budget = Budget(max_api_calls=3)
+
+    runs, truncated = fetch_check_runs(
+        "owner/repo",
+        SHA,
+        token=None,
+        max_pages=3,
+        budget=budget,
+    )
+
+    assert len(runs) == 201
+    assert len({run["name"] for run in runs}) == 201
+    assert all(run["head_sha"] == SHA for run in runs)
+    assert truncated is False
+    assert budget.api_calls == 3
+
+
 def test_wait_for_required_polls_until_complete(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

@@ -16,6 +16,12 @@ It must not claim independently validated precision, practical usefulness,
 incident reduction, production suitability, retention, or willingness to pay.
 Those claims remain controlled by the
 [Hybrid Value Gate](../benchmarks/value/ASSESSMENT.md), currently `NO_GO`.
+The current published maturity is **Preview**. Its human promotion criteria
+are defined in [MATURITY.md](MATURITY.md), while
+[RELEASE_STATUS.json](RELEASE_STATUS.json) binds the label to the published
+version and is checked on every release-facing change. Internal tests cannot
+promote the level without the required external evidence.
+
 The phase sections below preserve the release history and cumulative boundary.
 
 ## Phase 0 Release Boundary
