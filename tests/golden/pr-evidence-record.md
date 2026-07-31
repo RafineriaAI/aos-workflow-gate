@@ -8,4 +8,4 @@
 **Scope:** 1 required check(s) plus recorded workflow signals on RafineriaAI/aos-workflow-gate@3f1668680218; not full merge-readiness
 **Freshness:** observation time not recorded; collection complete
 
-Record `sha256:4333890cfad4e4f8d5d1cee2af0bff4bb235bfc45faa8113b19a532eb69503c1` | bundle `sha256:a06a19c633c11a343a622b96fa201ddcbd1b88176565ac93e6ee2fd7c29a973d` | self-check OK | UNSIGNED\_NOT\_OFFICIAL
+Record `sha256:d94bfe096f35ff6fe30827a7651ce665668b1a0806b8eb0219820a3fe54a96c9` | bundle `sha256:a06a19c633c11a343a622b96fa201ddcbd1b88176565ac93e6ee2fd7c29a973d` | self-check OK | UNSIGNED\_NOT\_OFFICIAL

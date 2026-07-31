@@ -33,15 +33,15 @@
         "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
         "requirements.py": "dad78b09daae9f567e9c4f2f53e3104bbdbe3944f8ffe8d87cee4f21544abac9",
         "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
-        "summarize.py": "712677db566aab6bba1a4f288b5e29bc75a43befe2a18b0a47b9b377db6d50bb",
+        "summarize.py": "7ac1711975db965fcdcb47f6155cc5b8e219b6e649282cda28e2272d87e57775",
         "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
         "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
         "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
       },
-      "manifest_digest": "sha256:7f66d41daaf30d802f015d798ad4ac0b39e24c03a2d55966c80697837194ba6f",
+      "manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
       "schema_version": "verifier-manifest-v0"
     },
-    "verifier_manifest_digest": "sha256:7f66d41daaf30d802f015d798ad4ac0b39e24c03a2d55966c80697837194ba6f",
+    "verifier_manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
     "version": "0.38.0"
   },
   "input_bundle_digest": "sha256:a06a19c633c11a343a622b96fa201ddcbd1b88176565ac93e6ee2fd7c29a973d",
@@ -81,7 +81,7 @@
     "verification_status": "UNSIGNED_NOT_OFFICIAL"
   },
   "reasons": [],
-  "record_digest": "sha256:4333890cfad4e4f8d5d1cee2af0bff4bb235bfc45faa8113b19a532eb69503c1",
+  "record_digest": "sha256:d94bfe096f35ff6fe30827a7651ce665668b1a0806b8eb0219820a3fe54a96c9",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 23,

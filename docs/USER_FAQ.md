@@ -134,3 +134,10 @@ or correctness claim. See [Executable Change Proof](CHANGE_PROOF.md).
 **Does PASS mean my code is safe?**
 No. `PASS` means your explicit policy was satisfied by the collected
 signals — nothing more. See [SCOPE.md](SCOPE.md) for the claim boundary.
+
+**Can I give the HTML report to a manager or auditor?**
+Yes. Its first level states the approval guidance, control status, residual
+risk, action owner, and one next step in plain language. Technical evidence
+and replay details remain below it. The static page is print-ready and can be
+saved as PDF by the browser, but the PDF is only a presentation copy: the
+decision record JSON remains the replayable source of truth.

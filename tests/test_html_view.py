@@ -65,6 +65,146 @@ def test_html_says_the_same_as_markdown() -> None:
     assert str(diag["record_digest"]) in text
 
 
+@pytest.mark.parametrize(
+    ("verdict", "expected"),
+    [
+        (
+            "PASS",
+            "All controls required by this policy passed. Normal code and "
+            "product review still apply.",
+        ),
+        ("WARN", "Approval requires an explicit decision on the named gap."),
+        ("BLOCK", "Do not approve until the named requirement is satisfied."),
+    ],
+)
+def test_manager_view_has_bounded_approval_guidance(
+    verdict: str, expected: str
+) -> None:
+    record = _record()
+    record["verdict"] = verdict
+    payload = {k: v for k, v in record.items() if k != "record_digest"}
+    record["record_digest"] = canonical.digest(payload)
+
+    diag = diagnose(record)
+    text, intact = render_html(record)
+
+    assert intact
+    assert diag["manager_view"]["approval"] == expected
+    assert expected in text
+    assert "Manager / auditor view" in text
+    assert "Residual risk" in text
+    assert "safe to approve" not in text.lower()
+
+
+def test_manager_pass_retains_scope_boundary() -> None:
+    record = _record()
+    record["verdict"] = "PASS"
+    record["reasons"] = []
+    payload = {k: v for k, v in record.items() if k != "record_digest"}
+    record["record_digest"] = canonical.digest(payload)
+
+    diag = diagnose(record)
+
+    assert "Normal code and product review still apply" in (
+        diag["manager_view"]["approval"]
+    )
+    assert "risk outside that policy remains" in (
+        diag["manager_view"]["residual_risk"]
+    )
+
+
+def test_manager_pass_names_an_accepted_risk_exception() -> None:
+    record = _record()
+    record["verdict"] = "PASS"
+    record["reasons"] = [
+        {
+            "rule": "advisory_warning",
+            "severity": "PASS",
+            "source_id": "scanner.sarif",
+            "detail": "accepted scanner finding",
+            "accepted_risk": {
+                "selector": "advisory_warning@scanner.sarif",
+                "justification": "Reviewed by the policy owner",
+                "original_severity": "WARN",
+            },
+        }
+    ]
+    payload = {k: v for k, v in record.items() if k != "record_digest"}
+    record["record_digest"] = canonical.digest(payload)
+
+    diag = diagnose(record)
+
+    assert "passed with 1 recorded accepted-risk exception" in (
+        diag["manager_view"]["approval"]
+    )
+    assert diag["manager_view"]["action_owner"] == "Policy owner"
+
+
+def test_manager_pass_with_no_required_control_makes_no_recommendation() -> None:
+    record = _record()
+    record["verdict"] = "PASS"
+    record["reasons"] = []
+    record["observation"] = {
+        **record.get("observation", {}),
+        "github_baseline": "no_required_checks",
+    }
+    for source in record["inputs"]:
+        source["required"] = False
+    payload = {k: v for k, v in record.items() if k != "record_digest"}
+    record["record_digest"] = canonical.digest(payload)
+
+    diag = diagnose(record)
+
+    assert diag["manager_view"]["approval"] == (
+        "No approval recommendation: this policy required no controls."
+    )
+    assert "no required status checks" in (
+        diag["manager_view"]["control_status"].lower()
+    )
+    assert diag["manager_view"]["action_owner"] == "Repository administrator"
+
+
+def test_manager_view_assigns_operational_owner() -> None:
+    record = _record()
+    record["verdict"] = "BLOCK"
+    record["reasons"] = [
+        {
+            "rule": "missing_required_source",
+            "severity": "BLOCK",
+            "source_id": "ci / test",
+            "detail": "required check is missing",
+            "state": "missing",
+        }
+    ]
+    record["inputs"] = []
+    payload = {k: v for k, v in record.items() if k != "record_digest"}
+    record["record_digest"] = canonical.digest(payload)
+
+    diag = diagnose(record)
+
+    assert diag["manager_view"] == {
+        "approval": "Do not approve until the named requirement is satisfied.",
+        "control_status": "Required check 'ci / test' did not run for this commit.",
+        "residual_risk": (
+            "The protection expected from this control was not applied to this "
+            "commit."
+        ),
+        "action_owner": "Owner of the named check or workflow",
+    }
+
+
+def test_manager_view_rejects_tampered_record() -> None:
+    record = _record()
+    record["verdict"] = "PASS"
+
+    diag = diagnose(record)
+    text, intact = render_html(record)
+
+    assert not intact
+    assert diag["manager_view"]["approval"].startswith("Do not approve")
+    assert "AOS integration owner" in text
+
+
 def test_html_escapes_hostile_values() -> None:
     record = _record()
     record["inputs"][0]["id"] = '<script>alert(1)</script>"onload'
@@ -74,6 +214,12 @@ def test_html_escapes_hostile_values() -> None:
     assert intact
     assert "<script>alert" not in text
     assert "&lt;script&gt;" in text
+
+
+def test_html_is_print_ready_without_changing_the_evidence_model() -> None:
+    text, _ = render_html(_record())
+    assert "@media print" in text
+    assert "break-inside:avoid" in text
 
 
 def test_html_flags_tampered_record() -> None:

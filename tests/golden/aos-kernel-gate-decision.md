@@ -8,4 +8,4 @@
 **Scope:** 1 required check(s) plus recorded workflow signals on RafineriaAI/aos-kernel@3c00cddf59eb; not full merge-readiness
 **Freshness:** not recorded (offline or pre-freshness bundle)
 
-Record `sha256:31884610216663e0dd04c612f6eaa1ff4f582e2f16da0ca977eb6a35c1bc5c48` | bundle `sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22` | self-check OK | UNSIGNED\_NOT\_OFFICIAL
+Record `sha256:d9686c6e94f66932125419bc331d6afe0a0700535cbfb3b830197e3e10f8dfd9` | bundle `sha256:c20cc46731f66437b5cac599e7122ea7dbdc7722f689fff4e171816d31e35a22` | self-check OK | UNSIGNED\_NOT\_OFFICIAL
