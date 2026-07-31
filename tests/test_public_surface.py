@@ -15,9 +15,7 @@ from tools.check_public_surface import (
 
 ROOT = Path(__file__).resolve().parents[1]
 
-README_LOCAL_HYGIENE_BLOCK = """Run the local hygiene checks with:
-
-```bash
+README_LOCAL_HYGIENE_BLOCK = """```bash
 python -m ruff check .
 python -m mypy
 python -m pytest
@@ -54,26 +52,27 @@ def test_documentation_links_and_examples_match_the_product() -> None:
 def test_readme_license_and_local_check_are_renderable() -> None:
     readme = read_text("README.md")
     assert README_LOCAL_HYGIENE_BLOCK in readme
-    assert "```bash\npython tools/check_public_surface.py\n```" in readme
     assert "Apache-2.0. See [LICENSE](LICENSE)." in readme
     assert "MIT. See [LICENSE](LICENSE)." not in readme
 
 
 def test_readme_leads_with_product_value_before_validation_detail() -> None:
     readme = read_text("README.md")
-    proof = readme.index("AOS finds and runs the project's tests and checks")
-    first_run = readme.index("### Local check")
-    validation = readme.index("Mechanism verification and market validation")
+    proof = readme.index("AOS checks a project before code review or a release.")
+    first_run = readme.index("### Run it locally")
+    validation = readme.index(
+        "Version `v0.38.0` is free for self-service testing"
+    )
     polish = readme.index("## Polski")
     documentation = readme.index("## Documentation")
 
     assert proof < first_run < validation < polish < documentation
     assert "[English](#english) | [Polski](#polski)" in readme
     assert (
-        "AOS wykrywa i uruchamia testy oraz inne kontrole projektu przed "
-        "przeglądem kodu lub publikacją projektu." in readme
+        "AOS sprawdza projekt przed przeglądem kodu lub wydaniem "
+        "nowej wersji." in readme
     )
-    assert len(readme.splitlines()) <= 240
+    assert len(readme.splitlines()) <= 260
     assert "docs/assets/readme-contrast.png" in readme
     assert "docs/assets/readme-contrast-mobile.png" in readme
     assert '<source media="(max-width: 600px)"' in readme
@@ -94,11 +93,12 @@ def test_readme_language_is_current_and_natural() -> None:
     normalized = " ".join(readme.split())
 
     for phrase in (
-        "Install the released version pinned to `v0.38.0`",
-        "It is designed for professional developers, beginners",
-        "Nie musisz znać Gita ani komend testowych.",
-        "Werdykt mówi, czy zmiana spełnia te wymagania",
+        "Install the released version and run AOS in the project directory",
+        "AOS works in two ways",
+        "Nie musisz znać Gita ani tych poleceń.",
+        "Werdykt mówi, czy zebrane dowody spełniają wymagania.",
         "Nie uruchamia dowodów formalnych kernela w Lean",
+        "Everyday usefulness and alert accuracy have not been independently",
     ):
         assert phrase in normalized
 
@@ -111,6 +111,9 @@ def test_readme_language_is_current_and_natural() -> None:
         "Check your project before you share it.",
         "Sprawdź projekt przed udostępnieniem.",
         "Sprawdź, czy projekt jest gotowy, zanim go udostępnisz.",
+        "Mechanism verification and market validation are separate.",
+        "FREE_SELF_SERVE_VALIDATION",
+        "samym pull requeście",
     ):
         assert stale_phrase not in readme
 

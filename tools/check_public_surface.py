@@ -19,9 +19,7 @@ _BRANCH_LEAKING_MERGE_RE = re.compile(
     re.MULTILINE,
 )
 
-README_LOCAL_HYGIENE_BLOCK = """Run the local hygiene checks with:
-
-```bash
+README_LOCAL_HYGIENE_BLOCK = """```bash
 python -m ruff check .
 python -m mypy
 python -m pytest
@@ -31,10 +29,9 @@ python tools/check_public_surface.py
 REQUIRED_SNIPPETS = {
     "README.md": [
         "[English](#english) | [Polski](#polski)",
-        ("AOS finds and runs the project's tests and checks before code "
-        "review or release."),
-        ("AOS wykrywa i uruchamia testy oraz inne kontrole projektu przed "
-        "przeglądem kodu lub publikacją projektu."),
+        "AOS checks a project before code review or a release.",
+        ("AOS sprawdza projekt przed przeglądem kodu lub wydaniem "
+        "nowej wersji."),
         "aos-check",
         "AOS found no runnable behavioral test command in the scanned scope.",
         "The GitHub gate verifies controls, not code.",
@@ -50,35 +47,45 @@ REQUIRED_SNIPPETS = {
         "docs/assets/readme-contrast.png",
         "docs/assets/readme-contrast-mobile.png",
         "RafineriaAI/aos-kernel",
-        "### First value in one PR",
-        "No checkout, manual policy, bundle, or `required-checks` list",
-        "### Try it on any public PR",
+        "### Add AOS to GitHub",
+        (
+            "The first run needs no checkout, custom policy, or manual "
+            "list of required"
+        ),
+        "To check any public pull request without changing its repository:",
         "The verdict says whether the collected evidence satisfies the policy.",
         "Dostęp jest bezpłatny",
         "No LLM participates in the verdict path.",
         "UNSIGNED_NOT_OFFICIAL",
-        "Mechanism verification and market validation are separate.",
-        "Daily usefulness,\nalert precision in external teams",
+        (
+            "Deterministic evaluation, record integrity, and offline replay "
+            "are covered by"
+        ),
+        (
+            "Everyday usefulness and alert accuracy have not been "
+            "independently\nvalidated"
+        ),
         "`NO_GO`",
-        "FREE_SELF_SERVE_VALIDATION",
+        "free for self-service testing",
         "There is no active paid offering.",
         README_LOCAL_HYGIENE_BLOCK,
-        "```bash\npython tools/check_public_surface.py\n```",
+        "python tools/check_public_surface.py",
         "Apache-2.0. See [LICENSE](LICENSE).",
         "See [NOTICE](NOTICE).",
         "checks: read",
         "actions: read",
         "pull-requests: read",
         "statuses: read",
-        "docs/RELEASE_GOVERNANCE.md",
-        "docs/STANDARDS_COMPATIBILITY.md",
-        "docs/VALUE.md",
-        "docs/BUYER_FAQ.md",
-        "docs/COMPARISON.md",
+        "docs/USER_FAQ.md",
+        "docs/ADOPTION_GUIDE.md",
+        "docs/SCOPE.md",
+        "docs/POLICY_PACKS.md",
+        "docs/CI_INTEGRATIONS.md",
         "docs/TRUST.md",
         "docs/SECURITY_READINESS.md",
+        "docs/STANDARDS_COMPATIBILITY.md",
         "benchmarks/value/ASSESSMENT.md",
-        ".github/workflows/aos-workflow-gate-self.yml",
+        "CONTRIBUTING.md",
     ],
     "action.yml": [
         "Pre-merge control assurance for the exact PR commit.",
