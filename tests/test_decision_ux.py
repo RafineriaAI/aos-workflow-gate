@@ -108,6 +108,36 @@ def test_quiet_pass_has_no_tables() -> None:
     assert len(text.splitlines()) <= 12
 
 
+def test_accepted_risk_pass_is_visible_but_not_a_gap() -> None:
+    reason = _reason(
+        "advisory_warning",
+        "PASS",
+        "scanner.sarif",
+        "advisory source status is 'warning'",
+    )
+    reason["accepted_risk"] = {
+        "selector": "advisory_warning@scanner.sarif",
+        "justification": "Known scanner exception reviewed by the team",
+        "original_severity": "WARN",
+    }
+    record = _record(reasons=[reason])
+
+    diag = diagnose(record)
+    markdown, intact = render_markdown(record)
+    html, html_intact = render_html(record)
+
+    assert intact and html_intact
+    assert diag["verdict"] == "PASS"
+    assert diag["counts"]["accepted_risks"] == 1
+    assert diag["gaps"] == []
+    assert diag["remediation"]["code"] == "review_accepted_risk"
+    assert "**Accepted risk:**" in markdown
+    assert "### Accepted risks" in markdown
+    assert "Known scanner exception reviewed by the team" in markdown
+    assert "Accepted risk" in html
+    assert "Known scanner exception reviewed by the team" in html
+
+
 def test_github_semantics_counts_skipped_required_as_satisfied() -> None:
     record = _record(
         inputs=[

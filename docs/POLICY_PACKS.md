@@ -5,6 +5,29 @@ policy files — copy one, rename the `policy_id`, and edit the source ids
 to match your check names (`ci` is a placeholder). Nothing is hidden: a
 pack is exactly what `evaluate --policy` reads.
 
+## Accepted risks
+
+A known low-impact `WARN` can be accepted in the repository policy without
+deleting its evidence:
+
+```yaml
+accepted_risks:
+  advisory_warning@scanner.sarif: "Known exception reviewed by the team"
+```
+
+The selector is exact: `<rule>@<source-id>`. For a decision-level reason with
+no source, use `<rule>@<decision>`. Quote the selector when a source id
+contains `:`. The targeted rule must be declared as
+`WARN`; wildcard selectors, `BLOCK` rules, and `malformed_input` are
+rejected. A match changes
+only that reason's effective severity to `PASS`. The record still contains the
+original `WARN` severity, selector, justification, policy digest, and accepted
+risk count, so replay and review remain possible.
+
+Keep the exception in version control, use a concrete justification, and
+remove it when the assumption stops being true. This is explicit
+policy-as-code, not model training or an invisible per-user preference.
+
 | Pack | Mode | Requires | Advisory | Intended for |
 | --- | --- | --- | --- | --- |
 | `minimal-pr-gate` | advisory | `ci` | `scanner.sarif`, `agent.review` | first PR gate; evidence before enforcement |

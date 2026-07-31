@@ -12,7 +12,7 @@ which keeps configuration auditable and dependency-free.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -29,6 +29,9 @@ VALID_SEVERITIES = frozenset({"PASS", "WARN", "BLOCK"})
 VALID_MODES = frozenset({"advisory", "blocking"})
 VALID_REQUIRED_STATUS_SEMANTICS = frozenset({"github", "success-only"})
 LEGACY_REQUIRED_STATUS_SEMANTICS = "success-only"
+ACCEPTED_RISK_SEPARATOR = "@"
+ACCEPTED_RISK_DECISION_SCOPE = "<decision>"
+NON_SUPPRESSIBLE_ACCEPTED_RISK_RULES = frozenset({"malformed_input"})
 
 
 @dataclass
@@ -46,6 +49,7 @@ class Policy:
     required_sources: tuple[str, ...]
     advisory_sources: tuple[str, ...]
     normalized: dict[str, Any]
+    accepted_risks: dict[str, str] = field(default_factory=dict)
 
     @property
     def digest(self) -> str:
@@ -84,6 +88,8 @@ class Policy:
         rules = _parse_rules(data.get("rules"))
         required_sources = _parse_id_list(data, "required_sources")
         advisory_sources = _parse_id_list(data, "advisory_sources")
+        accepted_risks_explicit = "accepted_risks" in data
+        accepted_risks = _parse_accepted_risks(data, rules)
 
         normalized: dict[str, Any] = {
             "schema_version": schema_version,
@@ -102,6 +108,8 @@ class Policy:
             normalized["required_status_semantics"] = (
                 required_status_semantics
             )
+        if accepted_risks_explicit:
+            normalized["accepted_risks"] = dict(sorted(accepted_risks.items()))
         return cls(
             schema_version=schema_version,
             policy_id=policy_id,
@@ -113,6 +121,7 @@ class Policy:
             rules=rules,
             required_sources=required_sources,
             advisory_sources=advisory_sources,
+            accepted_risks=accepted_risks,
             normalized=normalized,
         )
 
@@ -184,6 +193,68 @@ def _parse_id_list(data: dict[str, Any], key: str) -> tuple[str, ...]:
     return tuple(ids)
 
 
+def accepted_risk_selector(rule: str, source_id: str | None) -> str:
+    """Return the exact policy selector for one reason instance."""
+    scope = source_id if source_id is not None else ACCEPTED_RISK_DECISION_SCOPE
+    return f"{rule}{ACCEPTED_RISK_SEPARATOR}{scope}"
+
+
+def _parse_accepted_risks(
+    data: dict[str, Any], rules: dict[str, str]
+) -> dict[str, str]:
+    raw = data.get("accepted_risks", {})
+    if not isinstance(raw, dict):
+        raise InputError("policy: 'accepted_risks' must be a mapping")
+
+    accepted: dict[str, str] = {}
+    for selector, justification in raw.items():
+        if not isinstance(selector, str) or not selector:
+            raise InputError(
+                "policy: 'accepted_risks' selectors must be non-empty strings"
+            )
+        if (
+            selector != selector.strip()
+            or len(selector) > 500
+            or any(ord(char) < 32 for char in selector)
+        ):
+            raise InputError(
+                "policy: accepted-risk selectors must be trimmed, bounded, "
+                "single-line strings"
+            )
+        rule, separator, source = selector.partition(ACCEPTED_RISK_SEPARATOR)
+        if not separator or not rule or not source or source == "*":
+            raise InputError(
+                "policy: accepted-risk selectors must use exact "
+                "'<rule>@<source-id>' or '<rule>@<decision>' syntax; "
+                "wildcards are not allowed"
+            )
+        if rule in NON_SUPPRESSIBLE_ACCEPTED_RISK_RULES:
+            raise InputError(
+                f"policy: accepted risks cannot target rule '{rule}'"
+            )
+        if rule not in rules:
+            raise InputError(
+                f"policy: accepted-risk rule '{rule}' must be declared in rules"
+            )
+        if rules[rule] != "WARN":
+            raise InputError(
+                f"policy: accepted-risk rule '{rule}' must be configured as WARN"
+            )
+        if (
+            not isinstance(justification, str)
+            or not justification
+            or justification != justification.strip()
+            or len(justification) > 500
+            or any(char in justification for char in "\r\n")
+        ):
+            raise InputError(
+                "policy: accepted-risk justifications must be non-empty, "
+                "trimmed, single-line strings of at most 500 characters"
+            )
+        accepted[selector] = justification
+    return accepted
+
+
 def parse_restricted_yaml(text: str) -> dict[str, Any]:
     """Parse the restricted YAML subset used by policy files.
 
@@ -249,11 +320,33 @@ def _parse_block(key: str, block: list[str]) -> Any:
     for item in block:
         if item.startswith("- "):
             raise InputError(f"policy: mixed list and mapping under '{key}'")
-        sub_key, has_colon, sub_value = item.partition(":")
-        if not has_colon:
-            raise InputError(f"policy: expected 'key: value' under '{key}'")
-        mapping[sub_key.strip()] = _parse_scalar(sub_value.strip())
+        sub_key, sub_value = _split_mapping_item(key, item)
+        parsed_key = _parse_scalar(sub_key.strip())
+        if not isinstance(parsed_key, str) or not parsed_key:
+            raise InputError(f"policy: mapping keys under '{key}' must be strings")
+        normalized_key = parsed_key
+        if normalized_key in mapping:
+            raise InputError(
+                f"policy: duplicate key {normalized_key!r} under {key!r}"
+            )
+        mapping[normalized_key] = _parse_scalar(sub_value.strip())
     return mapping
+
+
+def _split_mapping_item(parent: str, item: str) -> tuple[str, str]:
+    quote: str | None = None
+    for position, char in enumerate(item):
+        if quote is not None:
+            if char == quote:
+                quote = None
+            continue
+        if char in "\"'":
+            quote = char
+        elif char == ":":
+            return item[:position], item[position + 1 :]
+    if quote is not None:
+        raise InputError(f"policy: unterminated quote under '{parent}'")
+    raise InputError(f"policy: expected 'key: value' under '{parent}'")
 
 
 def _parse_scalar(token: str) -> Any:

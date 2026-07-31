@@ -82,7 +82,7 @@
       "aos": {
         "can_block": false,
         "reason_rules": [],
-        "record_digest": "sha256:99ff7422bc405940c15f6ca55852abc8acaf72e11baf8aa0f9b03c182cb84f65",
+        "record_digest": "sha256:d09fcda9b9d12829373b4758f38ef593aa68f6a160fccce9ad8b4bed1e6293b0",
         "verdict": "PASS"
       },
       "baseline": {
@@ -106,7 +106,7 @@
           "advisory_warning",
           "no_required_sources"
         ],
-        "record_digest": "sha256:b2b6db21314f5e6e61d7b08d88b732938e5da072f0d3745a5b441d179d220996",
+        "record_digest": "sha256:4d76618806770d08b739adc8b52b9b4b50bf32564d170017ba45fbb149fbd2a3",
         "verdict": "WARN"
       },
       "baseline": {

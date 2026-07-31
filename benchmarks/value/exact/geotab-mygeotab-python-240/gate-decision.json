@@ -16,8 +16,8 @@
         "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
         "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
         "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
-        "evaluate.py": "5ceef951e7e485e31e77cfcf55ff0e0035d93562fb7c1525de257b745be050b6",
-        "evidence.py": "4ae67d2403b5597df81b52ee574368f342b0ddbc4a87d41dfa646cebc7d6a2cf",
+        "evaluate.py": "3e92eb472d7d770e40123c093af238605a4fd4622c87dd968a3b64a60a953ee8",
+        "evidence.py": "2e67d6f1e92dd473b79c19abfb4cdaaba84cb0ee39b951223d3d5995d3869138",
         "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
         "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
         "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
@@ -27,20 +27,20 @@
         "packs/project-check.yml": "ff0d8c16a527687adac4eb3c2a391fda565d8c4f0c7f50bb4aa125e6ea145aa0",
         "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
         "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
-        "policy.py": "924c256b70d42c178bea8330c02dad3a23ed297280156d333c479d2c3238ec43",
+        "policy.py": "e1e4d6205aa2017bd706b5f0c3cfb479b8de3a0344356b3ecec751d773aa4070",
         "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
         "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
         "requirements.py": "7f6e0a1047f7cbd21bbc568934cb202423226a0d1d52cd51082cee3cc3956ae3",
         "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
-        "summarize.py": "5bda6e2c8d78e16452fa64884f3f3398873e6eba96d7cea68bbebfab9e3583df",
+        "summarize.py": "712677db566aab6bba1a4f288b5e29bc75a43befe2a18b0a47b9b377db6d50bb",
         "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
         "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
         "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
       },
-      "manifest_digest": "sha256:9d7b97410d348eed365a0d4430996a67e268c88bd80ebefa80b151066fb9c583",
+      "manifest_digest": "sha256:6a932bee7df658440275ab3f787e612a90061b9e7aff9e48c2fed42f1730a400",
       "schema_version": "verifier-manifest-v0"
     },
-    "verifier_manifest_digest": "sha256:9d7b97410d348eed365a0d4430996a67e268c88bd80ebefa80b151066fb9c583",
+    "verifier_manifest_digest": "sha256:6a932bee7df658440275ab3f787e612a90061b9e7aff9e48c2fed42f1730a400",
     "version": "0.38.0"
   },
   "input_bundle_digest": "sha256:b77a94aad51ca759e95227cb526db79196ad7987a681b77ea4519b0ec286515c",
@@ -169,7 +169,7 @@
       "source_id": null
     }
   ],
-  "record_digest": "sha256:87fb750d718b62e5d4c2b0d4963aa68c253ed8c5f944aac5a7f1298326793c1b",
+  "record_digest": "sha256:183d29e4fea86bfc629937a09e03a749844b363b0726a55a550dacde2e364193",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 240,
