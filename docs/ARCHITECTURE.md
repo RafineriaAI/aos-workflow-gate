@@ -138,8 +138,10 @@ display-only and is never parsed to recover semantics.
 
 ## Security posture
 
-GitHub access is read-only. Tokens are environment-only and never written into
-evidence. Repository output paths are constrained to the configured workspace.
+Default GitHub collection is read-only. The optional published decision check
+writes one bounded check result to the same GitHub host when explicitly enabled.
+Tokens are environment-only and never written into evidence. Repository output
+paths are constrained to the configured workspace.
 External files and API responses are untrusted, size- and budget-bounded
 inputs. No source checkout is required for zero-config collection, and no code
 is uploaded to RafineriaAI.

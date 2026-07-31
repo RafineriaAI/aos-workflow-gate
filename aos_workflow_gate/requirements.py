@@ -569,6 +569,7 @@ def requirement_snapshot(
     wait_seconds: float = 0.0,
     poll_interval: float = 10.0,
     exclude_self: bool = False,
+    exclude_control_contexts: set[str] | None = None,
 ) -> dict[str, Any]:
     """Build the shared, SHA-pinned requirement snapshot.
 
@@ -585,6 +586,9 @@ def requirement_snapshot(
     from the wait set and the bundleable runs, and their controls are
     classified ``self_reference`` — the gate never waits for itself and
     never grades itself, and the exclusion is recorded as evidence.
+    ``exclude_control_contexts`` reserves named output checks before they
+    exist, allowing a completed decision check to be published after
+    evaluation without grading itself.
     """
     rules = fetch_branch_rules(
         api_url, slug, branch, token=token, budget=budget
@@ -624,12 +628,21 @@ def requirement_snapshot(
         protection_source = "none"
     required_ids = [str(control["source_id"]) for control in controls]
 
-    self_source_ids: list[str] = []
+    excluded_source_ids: set[str] = set()
     if exclude_self and os.environ.get("GITHUB_RUN_ID"):
         initial_runs, _ = fetch_check_runs(
             repository, sha, token=token, api_url=api_url, budget=budget
         )
-        self_source_ids = self_control_source_ids(initial_runs, controls)
+        excluded_source_ids.update(
+            self_control_source_ids(initial_runs, controls)
+        )
+    reserved_contexts = exclude_control_contexts or set()
+    excluded_source_ids.update(
+        str(control["source_id"])
+        for control in controls
+        if control["context"] in reserved_contexts
+    )
+    self_source_ids = sorted(excluded_source_ids)
     wait_controls = [
         control for control in controls
         if control["source_id"] not in self_source_ids

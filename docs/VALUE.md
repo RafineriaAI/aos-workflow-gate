@@ -110,7 +110,7 @@ validation.
 | One answer instead of control archaeology | A single decision record per gate run: subject, policy digest, input digests, explained reasons | `summarize` any record |
 | Decisions that survive handoff | Records are deterministic, tamper-evident, and replayable offline with no service dependency | `verify --input --bundle` |
 | Advisory before enforcement | Verdict and exit behavior are separate; policy owners can observe noise first | [USER_FAQ.md](USER_FAQ.md) |
-| Low-friction technical path | No config, checkout, write scope, telemetry, runtime dependency, or account | [TRUST.md](TRUST.md) |
+| Low-friction technical path | No config, checkout, write scope, telemetry, runtime dependency, or account in the default path | [TRUST.md](TRUST.md) |
 | Operator-owned export | Unsigned in-toto Statement export, signable with operator keys | [DECISION_PREDICATE.md](DECISION_PREDICATE.md) |
 
 ## Commercial packaging hypothesis

@@ -80,6 +80,8 @@ The first run needs no checkout, custom policy, or manual list of required
 checks. AOS reads GitHub rulesets or classic branch protection, then checks the
 exact pull-request commit. The Action is read-only and advisory by default.
 
+Optional: publish `AOS Workflow Gate / merge readiness` with `publish-check: "true"`. It needs `checks: write`; advisory/required mapping and branch-rule setup are in [CI Integrations](docs/CI_INTEGRATIONS.md).
+
 **The GitHub gate verifies controls, not code.** It detects a required control
 that is missing, stale, produced by the wrong app, or modified by the same PR.
 This is **pre-merge control assurance**, not a replacement for tests, scanners,
@@ -190,6 +192,8 @@ samym PR-ze.
 
 Podsumowanie pojawia się bezpośrednio w GitHub Actions. Artefakt
 `aos-gate-evidence` zawiera rekord JSON i samodzielny raport HTML.
+
+Opcjonalnie AOS może opublikować osobny check decyzji. Wymaga to `publish-check: "true"` i `checks: write`; tryb doradczy, blokowanie merge i konfigurację opisuje [CI Integrations](docs/CI_INTEGRATIONS.md).
 
 Publiczny pull request można sprawdzić bez zmiany jego repozytorium:
 

@@ -9,14 +9,18 @@ code in disposable worktrees and has a separate boundary documented in
 
 ## What the gate can and cannot do to your environment
 
-- **Read-only by design.** Self-Test Mode needs `contents: read`,
+- **Read-only by design.** Default Self-Test Mode needs `contents: read`,
   `checks: read`, `actions: read`, `pull-requests: read`, and
-  `statuses: read`. No `write` scope of any kind. Verify the
+  `statuses: read`. The optional `publish-check` output is disabled by
+  default and needs explicit `checks: write`. Verify the
   [README](../README.md) and self-test workflow.
-- **No data leaves your environment through the gate.** Network calls are
-  read-only requests to your configured GitHub host using your workflow
-  token. There is no telemetry, analytics, or phone-home. Verify all call
-  sites with `grep -R "_request_json" aos_workflow_gate/`.
+- **No data leaves your environment through the gate.** Default network calls
+  are read-only requests to your configured GitHub host. When explicitly
+  enabled, `publish-check` writes only a bounded diagnosis and exact-commit
+  check result back to that same host. There is no telemetry, analytics, or
+  phone-home. Verify GET call sites with
+  `grep -R "_request_json" aos_workflow_gate/` and the sole write path in
+  `github_decision_check.py`.
 - **Zero runtime dependencies.** The package depends on the Python standard
   library only, so there is no transitive supply chain to audit. Verify:
   `dependencies = []` in [pyproject.toml](../pyproject.toml).

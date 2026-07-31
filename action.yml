@@ -59,6 +59,21 @@ inputs:
       "enforce" makes a BLOCK verdict fail the step.
     required: false
     default: "advisory"
+  publish-check:
+    description: >-
+      Publish a separate "AOS Workflow Gate / merge readiness" GitHub check.
+      Disabled by default to preserve the read-only permission posture. When
+      enabled, grant checks: write.
+    required: false
+    default: "false"
+  published-check-mode:
+    description: >-
+      "advisory" publishes WARN/BLOCK as neutral; "required" publishes
+      WARN/BLOCK as failure. This does not change the AOS verdict or the
+      Action exit code. To block merge, also require the published check in
+      GitHub rules.
+    required: false
+    default: "advisory"
   policy-pack:
     description: >-
       Bundled starter policy by name (minimal-pr-gate, release-candidate,
@@ -165,6 +180,8 @@ runs:
         GATE_OUT: ${{ inputs.out }}
         GATE_MODE: ${{ inputs.mode }}
         GATE_ENFORCE: ${{ inputs.enforce }}
+        GATE_PUBLISH_CHECK: ${{ inputs.publish-check }}
+        GATE_PUBLISHED_CHECK_MODE: ${{ inputs.published-check-mode }}
         GATE_REQUIRED_CHECKS: ${{ inputs.required-checks }}
         GATE_SARIF: ${{ inputs.sarif }}
         GATE_WAIT_FOR_CHECKS: ${{ inputs.wait-for-checks }}
@@ -183,6 +200,18 @@ runs:
           mode="enforce"
         fi
         args=(run --out "$GATE_OUT" --mode "$mode")
+        case "$GATE_PUBLISH_CHECK" in
+          true)
+            args+=(--publish-check
+              --published-check-mode "$GATE_PUBLISHED_CHECK_MODE")
+            ;;
+          false|"")
+            ;;
+          *)
+            echo "error: publish-check must be true or false" >&2
+            exit 2
+            ;;
+        esac
         if [ -n "$GATE_INPUT" ]; then
           args+=(--input "$GATE_INPUT")
           if [ -z "$GATE_POLICY" ] && [ -z "$GATE_POLICY_PACK" ]; then

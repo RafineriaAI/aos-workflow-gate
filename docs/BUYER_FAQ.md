@@ -52,14 +52,17 @@ export, assurance reporting, and possibly managed signing. Policy packs alone
 are too copyable to be the primary paid moat. There is no active paid offering.
 
 **What data leaves my environment?**
-None through the gate itself. Self-Test Mode makes read-only calls to your
-configured GitHub host for repository, PR, checks, Actions, rules, and statuses
-data using your workflow token. There is no telemetry.
+Nothing is sent to RafineriaAI or another service. Self-Test Mode reads
+repository, PR, checks, Actions, rules, and statuses from your configured
+GitHub host. When `publish-check` is explicitly enabled, AOS writes the bounded
+diagnosis back to that same host. Source code and raw check output are not
+included. There is no telemetry.
 
 **What permissions does it need?**
 `contents: read`, `checks: read`, `actions: read`, `pull-requests: read`, and
-`statuses: read` for Self-Test Mode. No write scopes. Explicit-bundle mode
-needs no API access at all.
+`statuses: read` for default Self-Test Mode. No write scopes are needed by
+default. The optional published decision check needs `checks: write`.
+Explicit-bundle mode needs no API access at all.
 
 **What is free and what is paid?**
 The repository, CLI, and GitHub Action are free under Apache-2.0 for private

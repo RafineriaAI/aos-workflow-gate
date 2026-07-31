@@ -68,6 +68,7 @@ from .evidence import (
     verify_record,
 )
 from .export import build_statement
+from .github_decision_check import CHECK_NAME, publish_check
 from .manifest import (
     validate_verifier_manifest,
     verifier_manifest_digest,
@@ -474,6 +475,19 @@ def _build_parser() -> argparse.ArgumentParser:
         choices=["advisory", "enforce"],
         default="advisory",
         help="enforce makes a BLOCK verdict exit 1 (default: advisory)",
+    )
+    run_parser.add_argument(
+        "--publish-check",
+        action="store_true",
+        help="publish a separate GitHub decision check (requires "
+        "--github-context and checks: write)",
+    )
+    run_parser.add_argument(
+        "--published-check-mode",
+        choices=["advisory", "required"],
+        default="advisory",
+        help="advisory publishes non-PASS as neutral; required publishes "
+        "non-PASS as failure (independent of --mode)",
     )
     run_parser.add_argument(
         "--out",
@@ -949,6 +963,55 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
 
 
 def _cmd_run(args: argparse.Namespace) -> int:
+    """Optionally publish the completed decision as a GitHub check."""
+    if not args.publish_check:
+        return _cmd_run_core(args)
+    if args.input or not args.github_context:
+        raise InputError(
+            "--publish-check requires online --github-context collection"
+        )
+    if CHECK_NAME in args.require:
+        raise InputError(
+            f"{CHECK_NAME!r} cannot be both the published decision and "
+            "an explicit input requirement"
+        )
+
+    result = _cmd_run_core(args)
+    record_path = safe_output_path(args.out, workspace=workspace_boundary())
+    record = _load_json(str(record_path))
+    if not isinstance(record, dict):
+        raise InputError("generated decision record is not an object")
+
+    context = resolve_github_context()
+    token = os.environ.get(args.token_env) if args.token_env else None
+    api_url = args.api_url or os.environ.get("GITHUB_API_URL") or DEFAULT_API_URL
+    try:
+        conclusion, check_id = publish_check(
+            repository=str(context["repository"]),
+            sha=str(context["sha"]),
+            token=token,
+            api_url=api_url,
+            mode=args.published_check_mode,
+            record=record,
+        )
+    except InputError as exc:
+        if args.published_check_mode == "required":
+            raise
+        print(
+            "Degraded (published check unavailable; decision record is "
+            f"still valid): {exc}",
+            file=sys.stderr,
+        )
+        return result
+
+    print(
+        f"Published {CHECK_NAME!r}: {conclusion} "
+        f"({args.published_check_mode}, id {check_id})"
+    )
+    return result
+
+
+def _cmd_run_core(args: argparse.Namespace) -> int:
     """Collect, evaluate, and summarize in one command."""
     if args.policy and args.policy_pack:
         raise InputError("use either --policy or --policy-pack, not both")
@@ -1012,6 +1075,9 @@ def _cmd_run(args: argparse.Namespace) -> int:
                         ),
                         poll_interval=args.poll_interval,
                         exclude_self=True,
+                        exclude_control_contexts=(
+                            {CHECK_NAME} if args.publish_check else None
+                        ),
                     )
                 except InputError as exc:
                     print(
