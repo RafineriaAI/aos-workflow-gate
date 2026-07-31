@@ -11,6 +11,7 @@ What the gate touches when it runs in your repository, public or private:
 | Flow | Content |
 | --- | --- |
 | Read from the GitHub API (Self-Test Mode only) | Check-run identity metadata for one commit: run id, name, head SHA, status, conclusion, completion timestamp. Never code, diffs, logs, or annotations. |
+| Written to the GitHub API (opt-in only) | With `publish-check: "true"`, one check run containing verdict, problem, impact, affected area, severity, next step, exact commit identity, record digest, and a workflow-run link. Never source code or raw check output. |
 | Written to the runner workspace | `.aos-gate/` bundle, generated policy, decision record; the Markdown step summary. |
 | Sent anywhere else | Nothing. The gate has no telemetry and no server side. |
 | Retained by us | Nothing. There is no service; all artifacts stay in your runner and your repository. |
@@ -108,18 +109,19 @@ rejection.
 
 ## Operational resilience
 
-- **Bounded retries.** Transient API failures (timeouts, network errors,
-  429, rate-limited 403, 5xx) are retried up to 3 attempts per request
-  with capped backoff; `Retry-After` is honored up to 30 seconds. Other
-  HTTP errors fail immediately.
+- **Bounded retries.** Transient read-only collection failures (timeouts,
+  network errors, 429, rate-limited 403, 5xx) are retried up to 3 attempts
+  with capped backoff; `Retry-After` is honored up to 30 seconds. The
+  optional check-run POST is attempted once to avoid creating duplicates
+  after an ambiguous timeout.
 - **Hard budgets.** One collection is bounded by a wall-clock deadline
   (default 300 s), a total API-call limit (default 50), and a page limit;
   exhausting any budget is an operational error.
-- **Infrastructure failure is never a policy verdict.** Every operational
-  failure (retries exhausted, budget exceeded, malformed API response)
-  exits with code 2 and produces no decision record — it cannot be
-  mistaken for a policy `BLOCK` (exit 1 under enforcement) or for any
-  verdict at all.
+- **Infrastructure failure is never a policy verdict.** A collection failure
+  before evaluation exits 2 and produces no decision record. A publication
+  failure happens after the record exists: advisory mode preserves that
+  decision and reports degraded publication; required mode exits 2. Neither
+  path changes the recorded verdict or becomes policy `BLOCK`.
 - **Polling waits only for required controls.** Zero-config discovery gives
   active GitHub requirements a built-in 120-second stabilization window; a
   positive `wait-for-checks` value overrides it. With explicit
@@ -211,9 +213,11 @@ rejection.
   at request time and exists only in the request header; it is never
   written into bundles, records, policies, summaries, warnings, or error
   messages. A leak test asserts this against every produced artifact.
-- **Permissions contract.** The workflows request read scopes only; the
-  public-surface guard fails CI if any workflow ever requests a write
-  scope.
+- **Permissions contract.** This repository's own workflows and the default
+  user workflow request read scopes only; the public-surface guard fails CI
+  if a committed project workflow requests a write scope. The optional
+  published decision check is disabled by default and requires the adopter
+  to grant `checks: write` explicitly.
 
 Non-claim: zero-trust signalling adds no signing, no provenance
 attestation, no SLSA level, and no runtime attestation. It binds evidence
@@ -222,9 +226,11 @@ to identity and context; it does not certify them.
 ## Permissions posture
 
 `contents: read`, `checks: read`, `actions: read`,
-`pull-requests: read`, and `statuses: read` for Self-Test Mode; no
-`write` scope of any kind. See [CI_INTEGRATIONS.md](CI_INTEGRATIONS.md) and
-[TRUST.md](TRUST.md) for self-verification steps.
+`pull-requests: read`, and `statuses: read` for default Self-Test Mode.
+The optional `publish-check` path replaces `checks: read` with
+`checks: write` and writes only the bounded decision check described above.
+See [CI_INTEGRATIONS.md](CI_INTEGRATIONS.md) and [TRUST.md](TRUST.md) for
+self-verification steps.
 
 ## Known limits
 

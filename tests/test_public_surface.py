@@ -225,6 +225,10 @@ def test_action_and_self_workflow_are_bounded() -> None:
     assert "GATE_SARIF: ${{ inputs.sarif }}" in action
     assert "decision-contrast" in action
     assert "incremental-gap" in action
+    assert "publish-check:" in action
+    assert "published-check-mode:" in action
+    assert "GATE_PUBLISH_CHECK: ${{ inputs.publish-check }}" in action
+    assert "--published-check-mode" in action
     assert "prove-change" not in action
     assert "check-project" not in action
 

@@ -36,7 +36,48 @@ still be unavailable to `GITHUB_TOKEN`; the gate records that surface as
 unverifiable instead of interpreting it as unprotected.
 
 Explicit-bundle mode does not call the API and needs only `contents: read`.
-No `write` scope of any kind is required; the gate is read-only by design.
+The default gate is read-only by design and requires no write scope.
+
+### Optional published decision check
+
+Set `publish-check: "true"` to publish a separate
+`AOS Workflow Gate / merge readiness` check. This opt-in path needs
+`checks: write` instead of `checks: read`:
+
+```yaml
+permissions:
+  contents: read
+  checks: write
+  actions: read
+  pull-requests: read
+  statuses: read
+
+steps:
+  - uses: RafineriaAI/aos-workflow-gate@v0.38.0
+    with:
+      publish-check: "true"
+      published-check-mode: advisory
+```
+
+`published-check-mode: advisory` maps `WARN` and `BLOCK` to a neutral GitHub
+conclusion. `published-check-mode: required` maps them to failure; configure
+the stable check name as required in a ruleset or Branch Protection for that
+failure to block merge. This setting does not change the AOS verdict or
+Action exit code. Action `mode: enforce` remains the separate process-exit
+control.
+
+AOS reserves the stable decision-check context during requirement discovery,
+records that self-reference as evidence, and publishes one completed check
+only after the decision record exists. It therefore neither grades itself nor
+leaves a custom `in_progress` check behind when the job is cancelled. The
+check contains only the diagnosis, exact commit identity, record digest, and
+workflow-run link. No source code is uploaded.
+
+For pull requests from forks, GitHub can downgrade `GITHUB_TOKEN` to read-only.
+If publication then fails, advisory mode keeps the decision record and reports
+a degraded output; required mode exits 2 because the blocking check was not
+published. Do not switch to `pull_request_target` merely to regain write access
+for untrusted code.
 
 The optional Action input `sarif` accepts newline-separated paths generated
 by earlier scanner steps. AOS does not install or execute the scanner. The

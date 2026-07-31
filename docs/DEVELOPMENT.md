@@ -50,6 +50,7 @@ annotations are deterministic projections of that record.
 | --- | --- |
 | `aos_workflow_gate/cli.py` | Command parser and command orchestration only. |
 | `collect.py`, `checkpr.py`, `requirements.py`, `workflow_state.py` | Read-only GitHub collection, exact-SHA requirement identity, and workflow visibility. |
+| `github_decision_check.py` | Isolated opt-in GitHub check publisher; output transport, never a decision input. |
 | `preflight.py`, `diagnostics.py` | Capability probes and operational diagnostics; never policy verdicts. |
 | `adapters.py`, `source_contract.py`, `agent_action.py` | External evidence normalization and contract validation. |
 | `project_check.py` | Git-optional project discovery, bounded snapshot, and local build/test execution. |
@@ -82,7 +83,8 @@ CLI as wiring.
   silently become `PASS`.
 - A verdict answers policy readiness. An exit code controls process execution.
 - Advisory is the default; enforcement is explicit.
-- GitHub access is read-only and tokens never enter evidence.
+- Default GitHub collection is read-only; the isolated opt-in decision-check
+  publisher is the only write path. Tokens never enter evidence.
 - Historical records remain replayable; schema evolution needs compatibility
   tests and an explicit migration boundary.
 - `UNSIGNED_NOT_OFFICIAL` remains accurate until signing and publication

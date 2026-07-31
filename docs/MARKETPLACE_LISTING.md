@@ -39,8 +39,9 @@ block from an incremental AOS policy or evidence gap.
 inputs, and verifier artifact. Replay offline without a service dependency, or
 export an unsigned in-toto Statement for operator-key signing.
 
-**Nothing to trust blindly** - read-only permissions, no code upload, no
-telemetry, zero runtime dependencies, and Apache-2.0. Records carry
+**Nothing to trust blindly** - read-only by default, an isolated opt-in
+decision-check write, no code upload, no telemetry, zero runtime dependencies,
+and Apache-2.0. Records carry
 UNSIGNED_NOT_OFFICIAL status; no production, compliance, signing, SLSA,
 security-audit, or code-quality claim is made.
 ```

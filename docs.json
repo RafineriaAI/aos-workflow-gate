@@ -219,6 +219,7 @@
     "tests/test_adapters.py",
     "tests/test_fixtures_replay.py",
     "tests/test_run.py",
+    "tests/test_github_decision_check.py",
     "tests/test_check_pr.py",
     "tests/test_preflight.py",
     "tests/test_source_contract.py",
