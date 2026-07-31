@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <title>AOS Workflow Gate: WARN</title>
-<style>body{font:15px/1.5 system-ui,sans-serif;max-width:46rem;margin:2rem auto;padding:0 1rem;color:#1a1a1a;background:#fff}table{border-collapse:collapse;width:100%;margin:.5rem 0}td,th{border:1px solid #ccc;padding:.3rem .6rem;text-align:left;font-size:.9rem}code{font:.85rem/1.4 ui-monospace,monospace;word-break:break-all}.verdict{display:inline-block;padding:.15rem .6rem;border-radius:6px;font-weight:700}.v-PASS{background:#d7f5dd}.v-WARN{background:#fdeec7}.v-BLOCK{background:#fbd7d7}.tampered{border:2px solid #b00;padding:.5rem .8rem;margin:.8rem 0;font-weight:600}.hint{color:#555;font-size:.85rem}.summary{border-left:4px solid #555;padding:.15rem 1rem;margin:1rem 0 1.5rem}.summary h2{margin:.35rem 0 .5rem}.summary dl{margin:.4rem 0}.summary dt{font-weight:700;margin-top:.6rem}.summary dd{margin:0}footer{margin-top:1.5rem;color:#777;font-size:.8rem}</style></head><body>
+<style>body{font:15px/1.5 system-ui,sans-serif;max-width:46rem;margin:2rem auto;padding:0 1rem;color:#1a1a1a;background:#fff}table{border-collapse:collapse;width:100%;margin:.5rem 0}td,th{border:1px solid #ccc;padding:.3rem .6rem;text-align:left;font-size:.9rem}code{font:.85rem/1.4 ui-monospace,monospace;word-break:break-all}.verdict{display:inline-block;padding:.15rem .6rem;border-radius:6px;font-weight:700}.v-PASS{background:#d7f5dd}.v-WARN{background:#fdeec7}.v-BLOCK{background:#fbd7d7}.tampered{border:2px solid #b00;padding:.5rem .8rem;margin:.8rem 0;font-weight:600}.hint{color:#555;font-size:.85rem}.summary{border-left:4px solid #555;padding:.15rem 1rem;margin:1rem 0 1.5rem}.summary h2{margin:.35rem 0 .5rem}.summary dl{margin:.4rem 0}.summary dt{font-weight:700;margin-top:.6rem}.summary dd{margin:0}.manager{border-top:1px solid #bbb;border-bottom:1px solid #bbb;padding:.35rem 0 .75rem;margin:1rem 0 1.5rem}.manager h2{margin:.35rem 0}.manager dl{margin:.4rem 0}.manager dt{font-weight:700;margin-top:.6rem}.manager dd{margin:0}@media print{body{max-width:none;margin:0}.summary,.manager{break-inside:avoid}h2{break-after:avoid}tr{break-inside:avoid}}footer{margin-top:1.5rem;color:#777;font-size:.8rem}</style></head><body>
 <h1>AOS Workflow Gate: <span class="verdict v-WARN">WARN</span></h1>
 <section class="summary"><h2>Decision summary</h2><dl>
 <dt>Problem</dt><dd>This policy requires no checks, so no check result can block the gate.</dd>
@@ -11,6 +11,12 @@
 <dt>What to do next</dt><dd>configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS</dd>
 <dt>Effect</dt><dd>advisory only; WARN/BLOCK is reported but does not fail this job</dd>
 </dl></section>
+<section class="manager"><h2>Manager / auditor view</h2><dl>
+<dt>Approval guidance</dt><dd>Approval requires an explicit decision on the named gap.</dd>
+<dt>Control status</dt><dd>This policy requires no checks, so no check result can block the gate.</dd>
+<dt>Residual risk</dt><dd>Visible green checks do not guarantee that any control must run before merge.</dd>
+<dt>Action owner</dt><dd>Repository administrator</dd>
+</dl></section>
 <p><strong>Signals:</strong> 0 required (0 successful); 4 other observation(s)<br><strong>Scope:</strong> 0 required check(s) plus recorded workflow signals on RafineriaAI/aos-workflow-gate@f8c6517bef32; not full merge-readiness<br><strong>Freshness:</strong> observation time not recorded; collection complete</p>
 <h2>Technical evidence</h2>
 <table>
@@ -19,7 +25,7 @@
 <tr><th>Policy</th><td><code>collected-advisory (advisory)</code></td></tr>
 <tr><th>Policy digest</th><td><code>sha256:92018eb3494bb955e306ceaedb8bf6f7f26a9e980fee670b43fd2dc1b8b0c7fa</code></td></tr>
 <tr><th>Input bundle digest</th><td><code>sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837</code></td></tr>
-<tr><th>Record digest</th><td><code>sha256:4839eb4e4f99e09840d668adb5df58831c211c2ac53236381d682f9a66b6ca58</code></td></tr>
+<tr><th>Record digest</th><td><code>sha256:6a01d6eea13b85c5fe723c8deb12a537edf646b772c0e6f86694becaeadd6a77</code></td></tr>
 <tr><th>Record self-check</th><td><code>OK</code></td></tr>
 <tr><th>Verification status</th><td><code>UNSIGNED_NOT_OFFICIAL</code></td></tr>
 </table>

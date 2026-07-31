@@ -560,6 +560,15 @@ def diagnose(record: Any) -> dict[str, Any]:
         intact=intact,
     )
     affected_area = _affected_area(ranked, inputs, observation, intact=intact)
+    manager_view = _manager_view(
+        str(verdict),
+        intact=intact,
+        finding=finding,
+        impact=impact,
+        remediation=remediation,
+        required_total=required_total,
+        accepted_risk_count=len(accepted_risks),
+    )
 
     return {
         "verdict": verdict,
@@ -574,6 +583,7 @@ def diagnose(record: Any) -> dict[str, Any]:
         "affected_area": affected_area,
         "severity": severity,
         "remediation": remediation,
+        "manager_view": manager_view,
         "scope": _scope_statement(record, observation, required_total, inputs),
         "freshness": _freshness_statement(observation),
         "effect": _effect_statement(record),
@@ -889,6 +899,90 @@ def _source_area(source: dict[str, Any]) -> str:
     }
     label = labels.get(kind, "Evidence source")
     return f"{label} '{source_id}'"
+
+
+def _manager_view(
+    verdict: str,
+    *,
+    intact: bool,
+    finding: str,
+    impact: str,
+    remediation: dict[str, Any],
+    required_total: int,
+    accepted_risk_count: int,
+) -> dict[str, str]:
+    """Project one bounded decision for a manager or auditor.
+
+    The view deliberately says whether policy-covered evidence supports
+    approval, never whether the code is safe or defect-free.
+    """
+    if not intact:
+        approval = (
+            "Do not approve based on this report; regenerate the evidence first."
+        )
+        control_status = "The AOS decision record failed its integrity check."
+    elif verdict == "PASS" and required_total == 0:
+        approval = "No approval recommendation: this policy required no controls."
+        control_status = finding
+    elif verdict == "PASS":
+        exception = ""
+        if accepted_risk_count:
+            noun = "exception" if accepted_risk_count == 1 else "exceptions"
+            exception = (
+                f" with {accepted_risk_count} recorded accepted-risk {noun}"
+            )
+        approval = (
+            f"All controls required by this policy passed{exception}. "
+            "Normal code and product review still apply."
+        )
+        control_status = (
+            "No control required by the active policy is missing or failed."
+        )
+    elif verdict == "WARN":
+        approval = "Approval requires an explicit decision on the named gap."
+        control_status = finding
+    else:
+        approval = "Do not approve until the named requirement is satisfied."
+        control_status = finding
+
+    return {
+        "approval": approval,
+        "control_status": control_status,
+        "residual_risk": impact,
+        "action_owner": _action_owner(remediation),
+    }
+
+
+def _action_owner(remediation: dict[str, Any]) -> str:
+    """Assign a deterministic operational owner from the remediation code."""
+    code = str(remediation.get("code") or "")
+    if code == "no_action":
+        return "No action owner; no policy action is required."
+    if code == "review_accepted_risk":
+        return "Policy owner"
+    if code.startswith("required_source_"):
+        return "Owner of the named check or workflow"
+    if code.startswith("collection_") or code in {
+        "recollect_evidence",
+        "restore_verifier_change_analysis",
+    }:
+        return "Repository CI administrator"
+    if code in {"define_required_sources", "enable_enforcement"}:
+        return "Repository administrator"
+    if code in {"resolve_required_sarif_findings", "review_sarif_findings"}:
+        return "Security or code owner"
+    if code == "require_independent_evidence":
+        return "PR author and an independent reviewer"
+    if code in {
+        "record_integrity_failed",
+        "repair_signal_bundle",
+        "review_unknown_reason",
+        "review_unexplained_verdict",
+    }:
+        return "AOS integration owner"
+    if code.startswith(("fix_", "add_", "remove_", "restore_project_")):
+        return "PR author"
+    return "PR author or repository maintainer"
 
 
 def _display_source(value: Any, *, fallback: str) -> str:
@@ -1427,6 +1521,12 @@ _HTML_STYLE = (
     "margin:1rem 0 1.5rem}.summary h2{margin:.35rem 0 .5rem}"
     ".summary dl{margin:.4rem 0}.summary dt{font-weight:700;"
     "margin-top:.6rem}.summary dd{margin:0}"
+    ".manager{border-top:1px solid #bbb;border-bottom:1px solid #bbb;"
+    "padding:.35rem 0 .75rem;margin:1rem 0 1.5rem}"
+    ".manager h2{margin:.35rem 0}.manager dl{margin:.4rem 0}"
+    ".manager dt{font-weight:700;margin-top:.6rem}.manager dd{margin:0}"
+    "@media print{body{max-width:none;margin:0}.summary,.manager{"
+    "break-inside:avoid}h2{break-after:avoid}tr{break-inside:avoid}}"
     "footer{margin-top:1.5rem;color:#777;font-size:.8rem}"
 )
 
@@ -1533,6 +1633,17 @@ def render_html(
     summary_rows.append(("Effect", diag["effect"]))
     parts.append('<section class="summary"><h2>Decision summary</h2><dl>')
     for label, value in summary_rows:
+        parts.append(f"<dt>{_h(label)}</dt><dd>{_h(value)}</dd>")
+    parts.append("</dl></section>")
+    manager = diag["manager_view"]
+    manager_rows = [
+        ("Approval guidance", manager["approval"]),
+        ("Control status", manager["control_status"]),
+        ("Residual risk", manager["residual_risk"]),
+        ("Action owner", manager["action_owner"]),
+    ]
+    parts.append('<section class="manager"><h2>Manager / auditor view</h2><dl>')
+    for label, value in manager_rows:
         parts.append(f"<dt>{_h(label)}</dt><dd>{_h(value)}</dd>")
     parts.append("</dl></section>")
     parts.append(
