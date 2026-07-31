@@ -98,8 +98,20 @@ outputs:
       BLOCK verdict ("true"/"false").
     value: ${{ steps.evaluate.outputs.can-block }}
   diagnosis:
-    description: One line - the verdict and what AOS found.
+    description: One line - the verdict and dominant problem.
     value: ${{ steps.evaluate.outputs.diagnosis }}
+  problem:
+    description: The specific dominant problem or PASS result.
+    value: ${{ steps.evaluate.outputs.problem }}
+  impact:
+    description: Why the dominant result matters within the recorded scope.
+    value: ${{ steps.evaluate.outputs.impact }}
+  affected-area:
+    description: The named check, evidence source, configuration, or bounded scope.
+    value: ${{ steps.evaluate.outputs.affected-area }}
+  severity:
+    description: Importance of the dominant condition (PASS, WARN, or BLOCK).
+    value: ${{ steps.evaluate.outputs.severity }}
   next-action:
     description: The single dominant next step for the operator.
     value: ${{ steps.evaluate.outputs.next-action }}
@@ -253,7 +265,7 @@ runs:
             echo "record-digest=$(python3 -c "import json,os;print(json.load(open(os.environ['GATE_OUT']))['record_digest'])")"
             echo "can-block=$(python3 -c "import json,os;print(str(json.load(open(os.environ['GATE_OUT']))['can_block']).lower())")"
           } >> "$GITHUB_OUTPUT"
-          python3 -c "import json,os;from aos_workflow_gate.summarize import diagnose;d=diagnose(json.load(open(os.environ['GATE_OUT'])));c=d['counts'];clean=lambda v:str(v).replace('\r',' ').replace('\n',' ');out=open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8');out.write('diagnosis='+str(d['verdict'])+': '+clean(d['finding'])+'\n');out.write('next-action='+clean(d['next'])+'\n');out.write('decision-contrast='+clean(d['contrast']['code'])+'\n');out.write('incremental-gap='+str(bool(d['contrast']['incremental'])).lower()+'\n');out.write('required-total=%d\nrequired-successful=%d\nrequired-missing=%d\nrequired-pending=%d\nrequired-unverifiable=%d\nrequired-failed=%d\nadvisory-warnings=%d\n'%(c['required_total'],c['required_successful'],c['required_missing'],c['required_pending'],c['required_unverifiable'],c['required_failed'],c['advisory_warnings']))" || true
+          python3 -c "import json,os;from aos_workflow_gate.summarize import diagnose;d=diagnose(json.load(open(os.environ['GATE_OUT'])));c=d['counts'];clean=lambda v:str(v).replace('\r',' ').replace('\n',' ');out=open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8');out.write('diagnosis='+str(d['verdict'])+': '+clean(d['problem'])+'\n');out.write('problem='+clean(d['problem'])+'\n');out.write('impact='+clean(d['impact'])+'\n');out.write('affected-area='+clean(d['affected_area'])+'\n');out.write('severity='+clean(d['severity'])+'\n');out.write('next-action='+clean(d['next'])+'\n');out.write('decision-contrast='+clean(d['contrast']['code'])+'\n');out.write('incremental-gap='+str(bool(d['contrast']['incremental'])).lower()+'\n');out.write('required-total=%d\nrequired-successful=%d\nrequired-missing=%d\nrequired-pending=%d\nrequired-unverifiable=%d\nrequired-failed=%d\nadvisory-warnings=%d\n'%(c['required_total'],c['required_successful'],c['required_missing'],c['required_pending'],c['required_unverifiable'],c['required_failed'],c['advisory_warnings']))" || true
         fi
         exit "$rc"
     # Pinned from actions/upload-artifact@v7.0.1 on 2026-07-04.

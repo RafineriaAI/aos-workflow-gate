@@ -39,16 +39,22 @@ produced by the wrong app, or modified by the same PR.</p>
 <p class="lead"><strong>AOS verifies the gate, not the code.</strong> It is a
 read-only pre-merge control assurance check for the exact commit, returning
 <span class="chips"><span class="pass">PASS</span><span class="warn">WARN</span><span class="block">BLOCK</span></span>
-with one reason, one next action, and replayable evidence.</p>
+with a specific problem, practical impact, affected area, severity, one next
+action, and replayable evidence.</p>
 
 <pre class="result"><code>AOS Workflow Gate: WARN
 
-What AOS found:
+Problem:
 This PR changed a workflow that also produced checks used to assess
 the same PR.
 
-Effect: advisory only; this result does not fail the job.
-Next: run or require one unchanged workflow check, then re-run AOS.</code></pre>
+Why it matters:
+The PR can modify part of the mechanism used to validate itself.
+
+Affected area: Workflow files and the checks they produce
+Severity: WARN
+Next step: run or require one unchanged workflow check, then re-run AOS.
+Effect: advisory only; this result does not fail the job.</code></pre>
 
 <p><strong>Not another AI reviewer.</strong> Existing tools produce findings
 and statuses. AOS verifies whether the intended controls governed this exact

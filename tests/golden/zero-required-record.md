@@ -1,8 +1,11 @@
 ## AOS Workflow Gate: WARN
 
-**What AOS found:** This policy requires no checks, so no check result can block the gate.
+**Problem:** This policy requires no checks, so no check result can block the gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
 **Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
-**Next:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
 
 **Signals:** 0 required (0 successful); 4 other observation(s)
 **Scope:** 0 required check(s) plus recorded workflow signals on RafineriaAI/aos-workflow-gate@f8c6517bef32; not full merge-readiness
@@ -17,7 +20,7 @@
 | Policy | `collected-advisory` (advisory) |
 | Policy digest | `sha256:92018eb3494bb955e306ceaedb8bf6f7f26a9e980fee670b43fd2dc1b8b0c7fa` |
 | Input bundle digest | `sha256:c201708d94aaa4c59e6473ee12cfceb93842f78e443a3350951c96bd96ee8837` |
-| Record digest | `sha256:d845d75cd1d6553ebf4d4f53d040c1d780e77572939a0a1f6c122abc9449b975` |
+| Record digest | `sha256:f5f78393dfa4ea94841ba77b7c50cb5a5fd831813ee45371a0fec2ef0d80290b` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 

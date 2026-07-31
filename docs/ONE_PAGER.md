@@ -41,7 +41,8 @@ modified by the same PR.**
 
 AOS verifies the gate, not the code. Its default Action is a read-only
 **pre-merge control assurance** tool, with one `PASS/WARN/BLOCK` verdict,
-one reason, one next action, and replayable evidence.
+a specific problem, bounded impact, affected area, severity, one next action,
+and replayable evidence.
 
 ## Business problem
 

@@ -102,7 +102,7 @@ or correctness claim. See [Executable Change Proof](CHANGE_PROOF.md).
 | Symptom | Meaning | Fix |
 | --- | --- | --- |
 | Exit 0, verdict `PASS` | Policy satisfied. | Nothing. |
-| Exit 0, verdict `WARN` | AOS found a non-blocking merge-control gap. | Read **What AOS found** and perform the single **Next** action. |
+| Exit 0, verdict `WARN` | AOS found a non-blocking merge-control gap. | Read **Problem**, **Why it matters**, and perform the single **Next step**. |
 | A non-required check failed or skipped, but AOS returned `PASS` | Zero-config records non-required results but does not repeat GitHub-visible failures as AOS warnings. | Use an explicit policy only if that result should affect the AOS verdict. |
 | Exit 0, verdict `BLOCK` | Policy found a blocking gap, but Action mode is advisory. | Set `mode: "enforce"` only after measuring noise; a blocking policy also fails the CLI process. |
 | Exit 1 after `evaluate` | Policy `BLOCK` under enforcement. | Follow the hints under Reasons: fix or re-run the failed required check, or correct the check name. |

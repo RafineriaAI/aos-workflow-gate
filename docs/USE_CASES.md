@@ -25,7 +25,8 @@ merge-readiness.
 ## Use case 2: advisory rollout
 
 A team wants visibility without blocking contributors. The Action runs in
-advisory mode, publishes one dominant finding and next action, and uploads the
+advisory mode, publishes one dominant problem, practical impact, affected area,
+severity, and next action, and uploads the
 record, bundle, policy, and static HTML evidence. A `BLOCK` verdict still
 returns process success until enforcement is explicit.
 

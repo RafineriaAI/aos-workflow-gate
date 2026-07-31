@@ -1,8 +1,11 @@
 ## AOS Workflow Gate: WARN
 
-**What AOS found:** Non-required check 'AOS Workflow Gate Self / no-checkout' ended as 'skipped'.
+**Problem:** Non-required check 'AOS Workflow Gate Self / no-checkout' ended as 'skipped'.
+**Why it matters:** This signal does not block the gate, but it may need a reviewer decision when it applies to the change.
+**Affected area:** GitHub check 'AOS Workflow Gate Self / no-checkout'
+**Severity:** WARN
+**Next step:** review the named non-required check only if it matters to this change; it cannot block this gate
 **Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
-**Next:** review the named non-required check only if it matters to this change; it cannot block this gate
 
 **Signals:** 1 required (1 successful); 3 other observation(s)
 **Scope:** 1 required check(s) plus recorded workflow signals on RafineriaAI/aos-workflow-gate@9c064fc8c95d; not full merge-readiness
@@ -19,7 +22,7 @@
 | Policy | `collected-advisory` (advisory) |
 | Policy digest | `sha256:307c1f8738f94d966f3911f67d927ac749182aa544390fa8928105ddbc8d6237` |
 | Input bundle digest | `sha256:54949f798a0dbd4e64765c515b0ae828dbc61fb6ed4c9ceb66e174ecc61bfc7f` |
-| Record digest | `sha256:ced411662198931c3e3f9819e01a0094635664f90d777c1b1cc8419beff182b2` |
+| Record digest | `sha256:f7dc5ce29d94373edc281decef21da8660e87c30730e58abd7e4224a15c79c6d` |
 | Record self-check | OK |
 | Verification status | UNSIGNED\_NOT\_OFFICIAL |
 

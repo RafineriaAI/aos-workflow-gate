@@ -549,4 +549,5 @@ def test_action_uses_shared_diagnosis_for_required_total() -> None:
     assert "diagnose(json.load(" in action
     assert "['counts']['required_total']" in action
     assert "render_github_annotation" in action
-    assert "clean(d['finding'])" in action
+    for field in ("problem", "impact", "affected_area", "severity", "next"):
+        assert f"clean(d['{field}'])" in action

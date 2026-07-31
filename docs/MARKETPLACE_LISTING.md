@@ -28,7 +28,8 @@ not the code.
 
 **Exact-commit control assurance** - read active GitHub requirements plus
 checks, suites, workflow runs, and statuses for the head SHA. Get one
-PASS/WARN/BLOCK verdict, one reason, one next action, and replayable evidence.
+PASS/WARN/BLOCK verdict, a specific problem, bounded impact, affected area,
+severity, one next action, and replayable evidence.
 
 **Advisory before enforcement** - observe real repository behavior and tune
 policy before making BLOCK fail a job. The summary separates a GitHub-native

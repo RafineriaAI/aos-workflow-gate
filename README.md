@@ -18,8 +18,9 @@ AOS works in two ways:
 - **GitHub pull-request check:** reads the repository's active requirements and
   compares them with the checks observed for the pull request's exact commit.
 
-Each run returns `PASS`, `WARN`, or `BLOCK`, one main reason, and one concrete
-next step.
+Each run returns `PASS`, `WARN`, or `BLOCK` and answers five questions: what is
+wrong, why it matters, what is affected, how important it is, and what to do
+next.
 
 **Free to use:** the CLI and GitHub Action are available under Apache-2.0. No
 account or telemetry is required, and AOS does not upload source code to
@@ -34,16 +35,16 @@ python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.3
 aos-check
 ```
 
-Example:
+Example for a Python project:
 
 ```text
 AOS Check: WARN
-
-What AOS found:
-AOS found no runnable behavioral test command in the scanned scope.
-
-Next:
-Add one test for the app's most important user flow, then run aos-check again.
+Problem: No runnable behavioral test command was detected at this project root.
+Why it matters: AOS did not exercise project behavior, so regressions may remain undetected.
+Affected area: Project build and test configuration
+Severity: WARN
+Next step: add one test for the app's main user flow under tests/, then run
+           aos-check again
 ```
 
 The local check supports conventional Python, Node.js, Go, Rust, Maven, and
@@ -152,8 +153,9 @@ AOS działa na dwa sposoby:
 - **Na GitHubie:** odczytuje aktywne wymagania repozytorium i sprawdza kontrole
   wykonane dla dokładnie tej wersji kodu, której dotyczy pull request.
 
-Każde uruchomienie zwraca wynik `PASS`, `WARN` lub `BLOCK`, jeden główny powód
-oraz jeden konkretny następny krok.
+Każde uruchomienie zwraca wynik `PASS`, `WARN` lub `BLOCK` i odpowiada na pięć
+pytań: co jest nie tak, dlaczego ma to znaczenie, czego dotyczy problem, jaki
+jest poziom istotności i co dokładnie zrobić dalej.
 
 **Dostęp jest bezpłatny:** CLI i GitHub Action są dostępne na licencji
 Apache-2.0. Nie wymagają konta ani telemetryki, a AOS nie wysyła kodu źródłowego

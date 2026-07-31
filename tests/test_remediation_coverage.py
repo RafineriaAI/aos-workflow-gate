@@ -17,6 +17,9 @@ from aos_workflow_gate.evaluate import (
 from aos_workflow_gate.summarize import (
     GENERIC_REMEDIATIONS,
     REPAIR_HINTS,
+    RULE_AREAS,
+    RULE_IMPACTS,
+    STATE_IMPACTS,
     STATE_REMEDIATIONS,
 )
 
@@ -76,6 +79,7 @@ def _emitted_rules() -> set[str]:
 def test_every_emitted_rule_has_exactly_one_fallback() -> None:
     assert _emitted_rules() == EXPECTED_RULES
     assert set(GENERIC_REMEDIATIONS) == EXPECTED_RULES
+    assert set(RULE_IMPACTS) == EXPECTED_RULES
     assert REPAIR_HINTS == {
         rule: remediation.action for rule, remediation in GENERIC_REMEDIATIONS.items()
     }
@@ -83,6 +87,19 @@ def test_every_emitted_rule_has_exactly_one_fallback() -> None:
 
 def test_state_inventory_is_explicit() -> None:
     assert set(STATE_REMEDIATIONS) == EXPECTED_STATES
+    assert set(STATE_IMPACTS) == EXPECTED_STATES
+
+
+def test_source_less_rules_have_a_named_affected_area() -> None:
+    source_less_rules = {
+        "incomplete_collection",
+        "malformed_input",
+        "no_required_sources",
+        "non_independent_evidence",
+        "verifier_change_unavailable",
+    }
+
+    assert source_less_rules <= set(RULE_AREAS)
 
 
 def test_remediation_codes_are_unique_and_actions_are_deterministic() -> None:
