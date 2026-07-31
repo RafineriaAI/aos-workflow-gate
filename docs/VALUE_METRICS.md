@@ -1,31 +1,32 @@
 # Value Metrics
 
-Operational friction, measured — not modeled. Every number below is
-counted, not estimated, and comes from the two committed case studies,
-reproducible offline from files in this repository and re-verified by CI
-on every push (`tests/test_fixtures_replay.py`).
+Mechanism results and product outcomes are reported separately. Committed
+records prove deterministic evaluation and replay; they do not by themselves
+prove that a maintainer would act, change a merge decision, retain the tool, or
+pay for it.
 
-## Measured values
+## Committed evidence
 
-| Metric | [Study 1: release-surface replay](case-studies/aos-kernel-release-surface-replay.md) | [Study 2: green-but-incomplete](case-studies/green-but-incomplete.md) |
-| --- | --- | --- |
-| Verdict | `PASS` | `WARN` |
-| Signals gated | 5 (1 required, 4 advisory) | 4 (1 required, 3 advisory) |
-| Controls that never ran, surfaced by name | 0 | 1 |
-| Time to verdict (whole process, cold start) | ~0.4 s | ~1.4 s |
-| Offline replay of the committed record | `OK` | `OK` |
-| Policy expressed as an inspectable artifact | yes (mirrors the repo's branch ruleset) | yes (generated, committed) |
+| Evidence | Verdict | Outcome | What it supports |
+| --- | --- | --- | --- |
+| [Release-surface replay](case-studies/aos-kernel-release-surface-replay.md) | `PASS` | `not_applicable` | Exact-SHA collection, policy binding, and offline replay. |
+| [Expected skipped check](case-studies/green-but-incomplete.md) | historical `WARN` | `noise` | A technically correct status can still be operationally irrelevant. Current zero-config defaults keep this case quiet. |
+| [v0.11.0 incident counterfactual](../benchmarks/cases/v0110-incident-counterfactual/) | `BLOCK` | `supporting_evidence` | Real failed self-tests align with a real broken release; AOS-driven decision change was not observed. |
 
-## The friction proxy
+The expected-skip record remains unchanged so historical replay is honest. It
+is excluded from precision, actionable-rate, incremental-value, and advantage
+claims. The incident is supporting evidence for mechanism relevance, but its intervention is
+counterfactual because AOS was not active at the time.
 
-To answer *"why did this gate pass?"* without the gate, a reviewer opens
-one page per check run (5 and 4 pages respectively in the studies), plus
-the branch-protection settings, and still has no artifact to hand to a
-second reviewer. With the gate the same answer is **one committed record
-plus one replay command** — and the record additionally distinguishes
-*did not run* from *ran and passed*, which no dashboard page shows at a
-glance. We count surfaces (pages vs files); we do not convert them into
-minutes or money.
+## What is measured
+
+- exact persisted signals and record digests;
+- deterministic policy outcome;
+- offline replay;
+- explicit outcome classification and whether maintainer action or AOS-driven
+  decision change was observed.
+
+These mechanism fields are counted, not estimated. No page-count or time-saved proxy is treated as business value.
 
 ## Local Project Check engineering remeasurement
 

@@ -8,7 +8,7 @@
         "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
         "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
         "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
-        "bench.py": "8ce3f344dca713d938e8535efd1fc5fb3cb663d01e1b66cc319eefcc1bbfe4a8",
+        "bench.py": "ced7112d3e06d6fe402d578a8da7c888e9beea6d2b128c4b97036f1ce70a927d",
         "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
         "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
         "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
@@ -37,10 +37,10 @@
         "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
         "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
       },
-      "manifest_digest": "sha256:bb0891dc0181ed516324f9dd445bda2d20b17029f5fe3f20172fc40985e38bc0",
+      "manifest_digest": "sha256:9d7b97410d348eed365a0d4430996a67e268c88bd80ebefa80b151066fb9c583",
       "schema_version": "verifier-manifest-v0"
     },
-    "verifier_manifest_digest": "sha256:bb0891dc0181ed516324f9dd445bda2d20b17029f5fe3f20172fc40985e38bc0",
+    "verifier_manifest_digest": "sha256:9d7b97410d348eed365a0d4430996a67e268c88bd80ebefa80b151066fb9c583",
     "version": "0.38.0"
   },
   "input_bundle_digest": "sha256:a06a19c633c11a343a622b96fa201ddcbd1b88176565ac93e6ee2fd7c29a973d",
@@ -80,7 +80,7 @@
     "verification_status": "UNSIGNED_NOT_OFFICIAL"
   },
   "reasons": [],
-  "record_digest": "sha256:5dbf95402423be2907f01442b6307c868fa833dd4fbedbdb45053579cbbf8591",
+  "record_digest": "sha256:99ff7422bc405940c15f6ca55852abc8acaf72e11baf8aa0f9b03c182cb84f65",
   "schema_version": "aos-workflow-gate-decision/v0",
   "subject": {
     "pull_request": 23,

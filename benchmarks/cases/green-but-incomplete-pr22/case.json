@@ -25,7 +25,7 @@
   "baseline": {
     "declared_by": "operator",
     "github_merge_ready": true,
-    "note": "GitHub baseline: dashboard fully green, PR merge-ready. The gate records a named WARN: the no-checkout control never ran on this head (skipped), which no green dashboard surfaces. The gap is invisible to the baseline and explicit in the record.",
+    "note": "GitHub baseline: dashboard fully green and PR merge-ready. The no-checkout job was skipped by design on pull requests. The explicit historical policy promoted that expected non-required skip to WARN; no maintainer action was warranted.",
     "required_check": "AOS Workflow Gate CI / validate",
     "required_check_state": "success"
   },
@@ -53,7 +53,14 @@
       "event": "decision_evaluated"
     }
   ],
-  "classification": "real_gap_warn",
+  "classification": "known_noise_warn",
+  "outcome": {
+    "aos_decision_change_observed": false,
+    "classification": "noise",
+    "evidence_basis": "operator_attestation",
+    "maintainer_action_observed": false,
+    "note": "The non-required no-checkout job was expected to skip on pull requests; the historical explicit policy made a technically correct observation operationally irrelevant."
+  },
   "contract": "benchmark-case-v0",
   "provenance": "retrospective_real_history",
   "task": {

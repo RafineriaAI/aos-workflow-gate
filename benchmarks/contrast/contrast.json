@@ -1,5 +1,5 @@
 {
-  "boundary": "baselines are operator-declared from historical platform state; scope is required status checks, not full merge-readiness; no security or quality claim is made",
+  "boundary": "baselines are operator-declared from historical platform state; scope is required status checks, not full merge-readiness; verdict is not outcome; noise is excluded from advantage claims; no security or quality claim is made",
   "rows": [
     {
       "aos": {
@@ -16,7 +16,14 @@
         "required_check_state": "success"
       },
       "case": "benchmarks/cases/agent-pr36-preflight",
-      "classification": "real_pass_control"
+      "classification": "real_pass_control",
+      "outcome": {
+        "aos_decision_change_observed": false,
+        "classification": "not_applicable",
+        "evidence_basis": "control_case",
+        "maintainer_action_observed": false,
+        "note": "The gate and GitHub baseline agreed; this case measures replay and false-alert avoidance, not product value."
+      }
     },
     {
       "aos": {
@@ -30,12 +37,19 @@
       "baseline": {
         "declared_by": "operator",
         "github_merge_ready": true,
-        "note": "GitHub baseline: dashboard fully green, PR merge-ready. The gate records a named WARN: the no-checkout control never ran on this head (skipped), which no green dashboard surfaces. The gap is invisible to the baseline and explicit in the record.",
+        "note": "GitHub baseline: dashboard fully green and PR merge-ready. The no-checkout job was skipped by design on pull requests. The explicit historical policy promoted that expected non-required skip to WARN; no maintainer action was warranted.",
         "required_check": "AOS Workflow Gate CI / validate",
         "required_check_state": "success"
       },
       "case": "benchmarks/cases/green-but-incomplete-pr22",
-      "classification": "real_gap_warn"
+      "classification": "known_noise_warn",
+      "outcome": {
+        "aos_decision_change_observed": false,
+        "classification": "noise",
+        "evidence_basis": "operator_attestation",
+        "maintainer_action_observed": false,
+        "note": "The non-required no-checkout job was expected to skip on pull requests; the historical explicit policy made a technically correct observation operationally irrelevant."
+      }
     },
     {
       "aos": {
@@ -55,13 +69,20 @@
         "required_check_state": "success"
       },
       "case": "benchmarks/cases/v0110-incident-counterfactual",
-      "classification": "controlled_counterfactual_block"
+      "classification": "controlled_counterfactual_block",
+      "outcome": {
+        "aos_decision_change_observed": false,
+        "classification": "supporting_evidence",
+        "evidence_basis": "retrospective_incident_history",
+        "maintainer_action_observed": false,
+        "note": "The underlying release failure was real and the recorded policy would have blocked it, but AOS was not present; decision change remains counterfactual."
+      }
     },
     {
       "aos": {
         "can_block": false,
         "reason_rules": [],
-        "record_digest": "sha256:5dbf95402423be2907f01442b6307c868fa833dd4fbedbdb45053579cbbf8591",
+        "record_digest": "sha256:99ff7422bc405940c15f6ca55852abc8acaf72e11baf8aa0f9b03c182cb84f65",
         "verdict": "PASS"
       },
       "baseline": {
@@ -70,7 +91,13 @@
         "note": "all signals green on the head commit"
       },
       "case": "examples/pr-evidence-record.json",
-      "classification": "none (control case)"
+      "classification": "none (control case)",
+      "outcome": {
+        "aos_decision_change_observed": false,
+        "classification": "not_applicable",
+        "evidence_basis": "control_case",
+        "maintainer_action_observed": false
+      }
     },
     {
       "aos": {
@@ -79,7 +106,7 @@
           "advisory_warning",
           "no_required_sources"
         ],
-        "record_digest": "sha256:f5f78393dfa4ea94841ba77b7c50cb5a5fd831813ee45371a0fec2ef0d80290b",
+        "record_digest": "sha256:b2b6db21314f5e6e61d7b08d88b732938e5da072f0d3745a5b441d179d220996",
         "verdict": "WARN"
       },
       "baseline": {
@@ -88,24 +115,13 @@
         "note": "required status check green; self-test jobs failed but were not required"
       },
       "case": "examples/zero-required-record.json",
-      "classification": "decision gap (zero required at the gate)"
-    },
-    {
-      "aos": {
-        "can_block": false,
-        "reason_rules": [
-          "advisory_warning"
-        ],
-        "record_digest": "sha256:f7dc5ce29d94373edc281decef21da8660e87c30730e58abd7e4224a15c79c6d",
-        "verdict": "WARN"
-      },
-      "baseline": {
-        "declared_by": "operator",
-        "github_merge_ready": true,
-        "note": "dashboard fully green; one control never ran"
-      },
-      "case": "examples/green-but-incomplete-record.json",
-      "classification": "advisory-visibility gap"
+      "classification": "decision gap (zero required at the gate)",
+      "outcome": {
+        "aos_decision_change_observed": false,
+        "classification": "supporting_evidence",
+        "evidence_basis": "mechanism_only",
+        "maintainer_action_observed": false
+      }
     }
   ],
   "schema_version": "contrast-v0"

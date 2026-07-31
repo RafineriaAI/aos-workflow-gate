@@ -10,13 +10,14 @@ from pathlib import Path
 import pytest
 
 from aos_workflow_gate import canonical
+from aos_workflow_gate.collect import build_generated_policy
 from aos_workflow_gate.evaluate import evaluate
 from aos_workflow_gate.evidence import (
     build_record,
     observation_from_bundle,
     verify_record,
 )
-from aos_workflow_gate.policy import load_policy
+from aos_workflow_gate.policy import Policy, load_policy
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -96,6 +97,32 @@ def test_expected_verdicts() -> None:
     for path, expected in verdicts.items():
         record = json.loads((ROOT / path).read_text(encoding="utf-8"))
         assert record["verdict"] == expected, path
+
+
+def test_expected_non_required_skip_stays_quiet_in_current_defaults() -> None:
+    bundle = json.loads(
+        (ROOT / "examples/green-but-incomplete-bundle.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    policy = Policy.from_dict(
+        build_generated_policy(
+            bundle,
+            required=["AOS Workflow Gate CI / validate"],
+            required_status_semantics="github",
+        )
+    )
+
+    decision = evaluate(bundle, policy)
+
+    assert decision.verdict == "PASS"
+    skipped = next(
+        reason
+        for reason in decision.reasons
+        if reason.source_id == "AOS Workflow Gate Self / no-checkout"
+    )
+    assert skipped.rule == "advisory_warning"
+    assert skipped.severity == "PASS"
 
 
 def test_zero_required_aha_case_shape() -> None:

@@ -53,6 +53,13 @@
     }
   ],
   "classification": "controlled_counterfactual_block",
+  "outcome": {
+    "aos_decision_change_observed": false,
+    "classification": "supporting_evidence",
+    "evidence_basis": "retrospective_incident_history",
+    "maintainer_action_observed": false,
+    "note": "The underlying release failure was real and the recorded policy would have blocked it, but AOS was not present; decision change remains counterfactual."
+  },
   "contract": "benchmark-case-v0",
   "provenance": "retrospective_real_history",
   "task": {

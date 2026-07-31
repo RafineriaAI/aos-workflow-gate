@@ -52,6 +52,15 @@ _EVENT_ORDER = ("task_declared", "action_captured", "decision_evaluated")
 OK = "ok"
 FAILED = "failed"
 UNVERIFIABLE = "unverifiable"
+OUTCOME_CLASSIFICATIONS = frozenset(
+    {
+        "not_applicable",
+        "actionable_gap",
+        "noise",
+        "supporting_evidence",
+        "inconclusive",
+    }
+)
 
 
 def load_case(case_dir: Path) -> dict[str, Any]:
@@ -155,6 +164,61 @@ def load_case(case_dir: Path) -> dict[str, Any]:
             f"{where}.attestation.statement: must be a non-empty string "
             "(operator prose, no cryptographic claim)"
         )
+    outcome = case.get("outcome")
+    if outcome is not None:
+        required_outcome_fields = {
+            "classification",
+            "evidence_basis",
+            "maintainer_action_observed",
+            "aos_decision_change_observed",
+            "note",
+        }
+        if not isinstance(outcome, dict) or set(outcome) != required_outcome_fields:
+            raise InputError(
+                f"{where}.outcome: must contain exactly "
+                f"{sorted(required_outcome_fields)}"
+            )
+        if outcome.get("classification") not in OUTCOME_CLASSIFICATIONS:
+            raise InputError(
+                f"{where}.outcome.classification: must be one of "
+                f"{sorted(OUTCOME_CLASSIFICATIONS)}"
+            )
+        for field in ("evidence_basis", "note"):
+            if not isinstance(outcome.get(field), str) or not outcome[field]:
+                raise InputError(
+                    f"{where}.outcome.{field}: must be a non-empty string"
+                )
+        for field in (
+            "maintainer_action_observed",
+            "aos_decision_change_observed",
+        ):
+            if not isinstance(outcome.get(field), bool):
+                raise InputError(f"{where}.outcome.{field}: must be a boolean")
+        if outcome["classification"] == "actionable_gap" and not (
+            outcome["maintainer_action_observed"]
+            or outcome["aos_decision_change_observed"]
+        ):
+            raise InputError(
+                f"{where}: actionable_gap requires observed maintainer action "
+                "or an observed AOS-driven decision change"
+            )
+        if (
+            case.get("classification") == "known_noise_warn"
+            and outcome["classification"] != "noise"
+        ):
+            raise InputError(
+                f"{where}: known_noise_warn must carry "
+                "outcome.classification=noise"
+            )
+        if (
+            case.get("classification") == "real_gap_warn"
+            and outcome["classification"] != "actionable_gap"
+        ):
+            raise InputError(
+                f"{where}: real_gap_warn requires an actionable_gap outcome"
+            )
+    elif case.get("classification") == "known_noise_warn":
+        raise InputError(f"{where}: known_noise_warn requires outcome metadata")
     return case
 
 
@@ -549,7 +613,7 @@ def _semantic_replay(
 def _report(case: dict[str, Any], checks: list[dict[str, str]]) -> dict[str, Any]:
     failed = [c["name"] for c in checks if c["result"] == FAILED]
     unverifiable = [c["name"] for c in checks if c["result"] == UNVERIFIABLE]
-    return {
+    report: dict[str, Any] = {
         "schema_version": REPORT_SCHEMA_VERSION,
         "case_id": case["case_id"],
         "checks": checks,
@@ -564,7 +628,9 @@ def _report(case: dict[str, Any], checks: list[dict[str, str]]) -> dict[str, Any
             "listed as verified"
         ),
     }
-
+    if "outcome" in case:
+        report["outcome"] = case["outcome"]
+    return report
 
 def render_bench_report(report: dict[str, Any]) -> str:
     """Human-readable rendering of a case verification report."""

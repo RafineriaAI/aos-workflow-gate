@@ -29,6 +29,19 @@ aos-workflow-gate bench-verify --case benchmarks/cases/<case-id> [--live] [--jso
 | `bindings` | `action_digest`, `patch_digest`, `record_digest` — the digest spine tying action, patch, and decision together. |
 | `chronology` | Declared `task_declared` / `action_captured` / `decision_evaluated` timestamps. |
 | `attestation` | Operator prose stating how the artifacts were captured. |
+| `outcome` | Separate interpretation: classification, evidence basis, observed maintainer action, observed AOS-driven decision change, and note. |
+
+## Verdict and outcome are separate
+
+The decision record preserves what the evaluated policy returned. `outcome`
+records whether that signal was later classified as `actionable_gap`, `noise`,
+`supporting_evidence`, `inconclusive`, or `not_applicable`. Replaying a verdict
+does not prove its usefulness. Outcome evidence can be operator-declared and
+therefore remains subject to the same explicit unverifiable boundary.
+
+A historical record is never rewritten to improve metrics. A known noisy
+`WARN` remains `WARN`; its outcome is `noise`, and public contrast tooling must
+not count it as advantage or precision.
 
 ## Checks and the verified vs unverifiable boundary
 

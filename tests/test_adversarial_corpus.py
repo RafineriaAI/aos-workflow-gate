@@ -119,7 +119,21 @@ def test_contrast_rows_match_committed_records() -> None:
             encoding="utf-8"
         )
     )
-    assert len(contrast["rows"]) >= 6
+    assert len(contrast["rows"]) == 5
     for row in contrast["rows"]:
         assert row["baseline"].get("github_merge_ready") is True
         assert row["baseline"].get("declared_by") == "operator"
+        outcome = row.get("outcome") or {}
+        assert outcome.get("classification") in {
+            "not_applicable",
+            "actionable_gap",
+            "noise",
+            "supporting_evidence",
+        }
+    noise_rows = [
+        row
+        for row in contrast["rows"]
+        if (row.get("outcome") or {}).get("classification") == "noise"
+    ]
+    assert len(noise_rows) == 1
+    assert noise_rows[0]["classification"] == "known_noise_warn"

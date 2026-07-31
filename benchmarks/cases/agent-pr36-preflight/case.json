@@ -56,6 +56,13 @@
     }
   ],
   "classification": "real_pass_control",
+  "outcome": {
+    "aos_decision_change_observed": false,
+    "classification": "not_applicable",
+    "evidence_basis": "control_case",
+    "maintainer_action_observed": false,
+    "note": "The gate and GitHub baseline agreed; this case measures replay and false-alert avoidance, not product value."
+  },
   "contract": "benchmark-case-v0",
   "provenance": "retrospective_real_history",
   "task": {
