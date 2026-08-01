@@ -1,0 +1,1554 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "clear",
+    "observation_scope": {
+      "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+      "repository": "strawberry-graphql/strawberry"
+    },
+    "observed_at": "2026-08-01T09:36:27Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:14177c9118e43f4188a98439f22d32bd83f10e7acd15b5d5f956e2d46dc76b33",
+    "protection_source": "classic_branch_protection",
+    "required_controls": [
+      {
+        "context": "Required CI",
+        "integration_id": null,
+        "source_id": "Required CI"
+      },
+      {
+        "context": "pre-commit.ci - pr",
+        "integration_id": null,
+        "source_id": "pre-commit.ci - pr"
+      }
+    ],
+    "requirements": [
+      {
+        "context": "Required CI",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "pre-commit.ci - pr",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      }
+    ],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "tests/schema/test_input.py"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "34e9707833f99100086d2736980d5471dde054ce",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "pull_request": 4554,
+        "repository": "strawberry-graphql/strawberry"
+      },
+      "unchanged_workflow_runs": 4,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [],
+      "states": {
+        "action_required": 0,
+        "completed": 8,
+        "pending": 0
+      },
+      "units_total": 8
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:4139a35d9b014028b0264850738ce4e1b2b153ec8b6a053b8625c2bdcbaccd8b",
+      "id": "CodSpeed Performance Analysis",
+      "identity": {
+        "check_run_id": 90234921088,
+        "completed_at": "2026-07-28T09:29:59Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "CodSpeed Performance Analysis",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:29:59Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90234921088 concluded success."
+    },
+    {
+      "digest": "sha256:11598318a4c0932fd713257d5a78506ea659c0392ac37503c8327cb686636b23",
+      "id": "CodeQL",
+      "identity": {
+        "check_run_id": 90229984387,
+        "completed_at": "2026-07-28T09:08:12Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "CodeQL",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:12Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229984387 concluded success."
+    },
+    {
+      "digest": "sha256:c7d3ef70e51f47dbb9e612127abfbdbfe08d846cb33de7bd4beda39ae4838896",
+      "id": "GitGuardian Security Checks",
+      "identity": {
+        "check_run_id": 90229657063,
+        "completed_at": "2026-07-28T09:07:18Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "GitGuardian Security Checks",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229657063 concluded success."
+    },
+    {
+      "digest": "sha256:f43ced995d2e4276c4ff0d63090e94194e235d103716e1b9b3b83042c95cce39",
+      "id": "Release check",
+      "identity": {
+        "check_run_id": 90229657845,
+        "completed_at": "2026-07-28T09:07:06Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "Release check",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:06Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229657845 concluded success."
+    },
+    {
+      "digest": "sha256:8fe085a0dbce33dd9b9fddf5eaf8d19063e0aa6c2d562120720aa006c776473e",
+      "id": "Required CI",
+      "identity": {
+        "check_run_id": 90234896678,
+        "completed_at": "2026-07-28T09:30:05Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "Required CI",
+        "requirement_identity": {
+          "context": "Required CI",
+          "integration_id": null
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:30:05Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90234896678 concluded success."
+    },
+    {
+      "digest": "sha256:9eed3434950527254320fa00891309fd66cfd28942865aff263173328a6b8a79",
+      "id": "Sourcery review",
+      "identity": {
+        "check_run_id": 90229666932,
+        "completed_at": "2026-07-28T09:08:16Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "Sourcery review",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:16Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229666932 concluded success."
+    },
+    {
+      "digest": "sha256:fde3ba2852df8ce08f9162c1a10e37fcc77d3ef3a916f0800a27c064b00f6c29",
+      "id": "analyze",
+      "identity": {
+        "check_run_id": 90229661159,
+        "completed_at": "2026-07-28T09:08:19Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "analyze",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229661159 concluded success."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:5d1943df8397526e2629090cc30c081c1fdf9887104f2f2d3b826ee77ae804ac",
+      "id": "pre-commit.ci - pr",
+      "identity": {
+        "context": "pre-commit.ci - pr",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pre-commit.ci - pr' is success."
+    },
+    {
+      "digest": "sha256:91e355f8afc2911ef24c68ce88919142048f3434e155661c4968f1c5a5125a0f",
+      "id": "zizmor",
+      "identity": {
+        "check_run_id": 90229663739,
+        "completed_at": "2026-07-28T09:07:12Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "zizmor",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:12Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229663739 concluded success."
+    },
+    {
+      "digest": "sha256:f476ac970cbab7075b17c5e4d373d6c969d73d1391226dd1d625b614ac08f486",
+      "id": "\u2728 Lint",
+      "identity": {
+        "check_run_id": 90229662610,
+        "completed_at": "2026-07-28T09:07:19Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\u2728 Lint",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229662610 concluded success."
+    },
+    {
+      "digest": "sha256:67bc4014065ff4014ac147ac7d6599306359cc29161cb11fe72e4f918c009c79",
+      "id": "\ud83d\udcbb Generate test matrix",
+      "identity": {
+        "check_run_id": 90229662621,
+        "completed_at": "2026-07-28T09:07:03Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udcbb Generate test matrix",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:03Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229662621 concluded success."
+    },
+    {
+      "digest": "sha256:5a00022387b4965f40788007a4285f334913b6d74ac7c9d8f0eac8153188a3a5",
+      "id": "\ud83d\udcc8 Benchmarks",
+      "identity": {
+        "check_run_id": 90229662614,
+        "completed_at": "2026-07-28T09:29:52Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udcc8 Benchmarks",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:29:52Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229662614 concluded success."
+    },
+    {
+      "digest": "sha256:a3fbbcc310b87f1bc8206eeb2ee3dc28d17fdb894346367adf67734c18327986",
+      "id": "\ud83d\udcca Combine & check coverage",
+      "identity": {
+        "check_run_id": 90230593179,
+        "completed_at": "2026-07-28T09:11:38Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udcca Combine & check coverage",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:11:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90230593179 concluded success."
+    },
+    {
+      "digest": "sha256:9b22893eb1d99d4d238ca57c0ad5200acdbc60456b8097b478fa5caa4e98bd76",
+      "id": "\ud83d\udd2c CLI tests on 3.10",
+      "identity": {
+        "check_run_id": 90229729901,
+        "completed_at": "2026-07-28T09:08:17Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c CLI tests on 3.10",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729901 concluded success."
+    },
+    {
+      "digest": "sha256:7239ec04c31f6a1f602fe28f7e879ff891ec4e93d662660e78625f8d8facd52b",
+      "id": "\ud83d\udd2c CLI tests on 3.11",
+      "identity": {
+        "check_run_id": 90229729784,
+        "completed_at": "2026-07-28T09:07:43Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c CLI tests on 3.11",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729784 concluded success."
+    },
+    {
+      "digest": "sha256:8d2a88bcf6cb98ed41906aea8ab3eb27b787f13a0b1fd5485948381d398b20fa",
+      "id": "\ud83d\udd2c CLI tests on 3.12",
+      "identity": {
+        "check_run_id": 90229729779,
+        "completed_at": "2026-07-28T09:07:43Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c CLI tests on 3.12",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729779 concluded success."
+    },
+    {
+      "digest": "sha256:e0c1e379e81e9d38c64acee8b9cf3e3d4738e7baa68672c3f95687bb8b3a2e6e",
+      "id": "\ud83d\udd2c CLI tests on 3.13",
+      "identity": {
+        "check_run_id": 90229729850,
+        "completed_at": "2026-07-28T09:07:51Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c CLI tests on 3.13",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729850 concluded success."
+    },
+    {
+      "digest": "sha256:d34176e652dd3b32bd31c5a7e7fc69d9a0a1df22e4a7a86e83130db3d0099870",
+      "id": "\ud83d\udd2c CLI tests on 3.14",
+      "identity": {
+        "check_run_id": 90229730120,
+        "completed_at": "2026-07-28T09:08:18Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c CLI tests on 3.14",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229730120 concluded success."
+    },
+    {
+      "digest": "sha256:ea449a624251cc00c893db6e38456fdeae8cfbb0c8f0f80fab3f21c2ae9da649",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=4.2.0, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729568,
+        "completed_at": "2026-07-28T09:07:57Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Django tests on 3.12 (django=4.2.0, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729568 concluded success."
+    },
+    {
+      "digest": "sha256:bd9700c6b64de6929f10c61cf875653e873527dfc751a31ba2bffabbd28a0d9f",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=4.2.0, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729609,
+        "completed_at": "2026-07-28T09:07:58Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Django tests on 3.12 (django=4.2.0, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:58Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729609 concluded success."
+    },
+    {
+      "digest": "sha256:66bc8a4d9e49be8dddc0a8b42d2f8a41d95c29b67397a52cb361e06e90ded907",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=5.0.9, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729500,
+        "completed_at": "2026-07-28T09:07:56Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Django tests on 3.12 (django=5.0.9, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:56Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729500 concluded success."
+    },
+    {
+      "digest": "sha256:3a407b073ccbd2fb120b7b5de26f39bb2833d1fb6f5cdfdb44c7b2ba651a01d8",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=5.0.9, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729566,
+        "completed_at": "2026-07-28T09:07:57Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Django tests on 3.12 (django=5.0.9, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729566 concluded success."
+    },
+    {
+      "digest": "sha256:090835cb581fe3d67b49c08187218b6a3071f4b3fd17992ca1011738c9191964",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=5.1.3, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729558,
+        "completed_at": "2026-07-28T09:07:53Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Django tests on 3.12 (django=5.1.3, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:53Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729558 concluded success."
+    },
+    {
+      "digest": "sha256:82f58bc57fa0c26a7465038d937374024748146faef7b48af4d46ea9a675fa90",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=5.1.3, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729506,
+        "completed_at": "2026-07-28T09:07:53Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Django tests on 3.12 (django=5.1.3, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:53Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729506 concluded success."
+    },
+    {
+      "digest": "sha256:21f6dcca5f5aa3d2b859a525242aabc4c0f99818c61f5a19def49d242399f738",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.10 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729635,
+        "completed_at": "2026-07-28T09:07:49Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic V1 tests on 3.10 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:49Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729635 concluded success."
+    },
+    {
+      "digest": "sha256:bc5ef19230c385470b02274b1e1cae65049f3b128fd3efe72a1203cafa59a69d",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.10 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729637,
+        "completed_at": "2026-07-28T09:07:43Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic V1 tests on 3.10 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729637 concluded success."
+    },
+    {
+      "digest": "sha256:d759e628212579ab55178c1c6df1e116683f39aef8d604b915acd3cf2c4f82d3",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.11 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729601,
+        "completed_at": "2026-07-28T09:07:54Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic V1 tests on 3.11 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:54Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729601 concluded success."
+    },
+    {
+      "digest": "sha256:83160f63ccb8c64709d96f24e4499e173d8bb9c09df436c8e8e028f9a4de5427",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.11 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729620,
+        "completed_at": "2026-07-28T09:07:50Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic V1 tests on 3.11 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:50Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729620 concluded success."
+    },
+    {
+      "digest": "sha256:9db231ca3f663694b56e54303bcf2aa241872b7f4edada04d894426cac1f7535",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.12 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729741,
+        "completed_at": "2026-07-28T09:07:59Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic V1 tests on 3.12 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:59Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729741 concluded success."
+    },
+    {
+      "digest": "sha256:3baf4c3f69a09dd21f5eee2d07ea7f2b8d3b186d76be69bf1532b36a4b9c0179",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.12 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729755,
+        "completed_at": "2026-07-28T09:07:54Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic V1 tests on 3.12 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:54Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729755 concluded success."
+    },
+    {
+      "digest": "sha256:d24b281d93a642de99be4409dc6b24acee63cf8d31c06ef167b9e7a836f69f4d",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.13 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729684,
+        "completed_at": "2026-07-28T09:07:54Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic V1 tests on 3.13 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:54Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729684 concluded success."
+    },
+    {
+      "digest": "sha256:61cc91342846073cfcd082e6922b9beb4727267df364e7efc4ba7bf9e23b0f95",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.13 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729657,
+        "completed_at": "2026-07-28T09:07:44Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic V1 tests on 3.13 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:44Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729657 concluded success."
+    },
+    {
+      "digest": "sha256:8fc7be7e1c76c0c0ca747e33d2bcf127ea16c242ea6823b2d60c23e2ad1ffa7b",
+      "id": "\ud83d\udd2c Pydantic tests on 3.10 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729658,
+        "completed_at": "2026-07-28T09:07:57Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.10 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729658 concluded success."
+    },
+    {
+      "digest": "sha256:6095ef1667b5cf0538cf61b87c0d00d6f10ff8098f099ea49c92d35cc02c3e52",
+      "id": "\ud83d\udd2c Pydantic tests on 3.10 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729734,
+        "completed_at": "2026-07-28T09:07:51Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.10 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729734 concluded success."
+    },
+    {
+      "digest": "sha256:bcdb920570d7913a6001928c9b15005adbf8d7c0ebb1a2f31723432c049c2d2c",
+      "id": "\ud83d\udd2c Pydantic tests on 3.11 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729766,
+        "completed_at": "2026-07-28T09:07:49Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.11 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:49Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729766 concluded success."
+    },
+    {
+      "digest": "sha256:63ad40a936290ede1d85d81f792d144681bd57217e8843432bcb75bf58daaa7e",
+      "id": "\ud83d\udd2c Pydantic tests on 3.11 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729676,
+        "completed_at": "2026-07-28T09:07:45Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.11 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:45Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729676 concluded success."
+    },
+    {
+      "digest": "sha256:ab5ce7cd1e5405f3f123dabd3ce6f8df907e97ac7c1814e9ea432019a364430b",
+      "id": "\ud83d\udd2c Pydantic tests on 3.12 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729680,
+        "completed_at": "2026-07-28T09:07:55Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.12 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:55Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729680 concluded success."
+    },
+    {
+      "digest": "sha256:fbcf2c133f3f025afb7096dea67f9d367c704d9e59759cd7a502582a85a14c7c",
+      "id": "\ud83d\udd2c Pydantic tests on 3.12 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729642,
+        "completed_at": "2026-07-28T09:07:49Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.12 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:49Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729642 concluded success."
+    },
+    {
+      "digest": "sha256:1bf3b8ed39e5696d625ea18d82229893842f25906f473b327f1b61f2d524c47b",
+      "id": "\ud83d\udd2c Pydantic tests on 3.13 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729719,
+        "completed_at": "2026-07-28T09:07:47Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.13 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:47Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729719 concluded success."
+    },
+    {
+      "digest": "sha256:ee8cbcce802f4585196e0be087e2c938dacfe1e2cba544a806e46bdd85194a03",
+      "id": "\ud83d\udd2c Pydantic tests on 3.13 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729710,
+        "completed_at": "2026-07-28T09:07:55Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.13 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:55Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729710 concluded success."
+    },
+    {
+      "digest": "sha256:35217d2b01afc920196ecb5e9350d68303aa18fbb97cd294cec76a23a433539e",
+      "id": "\ud83d\udd2c Pydantic tests on 3.14 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729668,
+        "completed_at": "2026-07-28T09:07:41Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.14 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729668 concluded success."
+    },
+    {
+      "digest": "sha256:97e785a1854a60497f94906c2b273e8324f95058a42702528dad0357e943ef9b",
+      "id": "\ud83d\udd2c Pydantic tests on 3.14 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729677,
+        "completed_at": "2026-07-28T09:07:45Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Pydantic tests on 3.14 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:45Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729677 concluded success."
+    },
+    {
+      "digest": "sha256:2e513f0d966cb27e171264e5eb18066581e2b91ed13dae2a86bc00400073377c",
+      "id": "\ud83d\udd2c Starlette tests on 3.11 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229730072,
+        "completed_at": "2026-07-28T09:08:35Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Starlette tests on 3.11 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229730072 concluded success."
+    },
+    {
+      "digest": "sha256:e93995e2360792d11b9696a2bd5ab50f81e6b794444749c5d3396204107af928",
+      "id": "\ud83d\udd2c Starlette tests on 3.11 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729571,
+        "completed_at": "2026-07-28T09:07:50Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Starlette tests on 3.11 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:50Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729571 concluded success."
+    },
+    {
+      "digest": "sha256:3e40ff4bd13a50ca0b541e919cb23d79c79d75263c27bfa9c12858f3f812da42",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=aiohttp, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729582,
+        "completed_at": "2026-07-28T09:07:55Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=aiohttp, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:55Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729582 concluded success."
+    },
+    {
+      "digest": "sha256:ab06df76eb1be18c2f8da4e4c515f1e91ec66b35a06c289605f7f42b7cfee68d",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=aiohttp, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729546,
+        "completed_at": "2026-07-28T09:07:57Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=aiohttp, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729546 concluded success."
+    },
+    {
+      "digest": "sha256:51d0c901dc6bb55a59ed25877ea61567fb5db0a311ff9e97af5ad7cb1049b49b",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=chalice, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729700,
+        "completed_at": "2026-07-28T09:07:52Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=chalice, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:52Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729700 concluded success."
+    },
+    {
+      "digest": "sha256:716a8557b76422d5924799bffb2d90744d8d19a943bcda96702c4fe620c2b56a",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=chalice, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729659,
+        "completed_at": "2026-07-28T09:07:52Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=chalice, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:52Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729659 concluded success."
+    },
+    {
+      "digest": "sha256:ddae6944a528745cdc724fa896b48d7bb36dfb618df58905293a6edf7acf04c4",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=channels, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729516,
+        "completed_at": "2026-07-28T09:07:54Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=channels, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:54Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729516 concluded success."
+    },
+    {
+      "digest": "sha256:56953f47763b25ac545d42333348324f8b21ef0ad0764a720a41c57005d9c5ff",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=channels, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729614,
+        "completed_at": "2026-07-28T09:07:57Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=channels, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729614 concluded success."
+    },
+    {
+      "digest": "sha256:889a602cf9a7a3d6c12607c98e479790325a99b0297f34b191b2b08976259e56",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=fastapi, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729736,
+        "completed_at": "2026-07-28T09:07:56Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=fastapi, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:56Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729736 concluded success."
+    },
+    {
+      "digest": "sha256:a09d850ca8bdd58b6ed0dda25e3a6923a87db81b66268aa78fc6e47ef698858d",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=fastapi, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729596,
+        "completed_at": "2026-07-28T09:07:48Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=fastapi, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:48Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729596 concluded success."
+    },
+    {
+      "digest": "sha256:e67386a1bbed7fc24e446191785089c49953638fddf01c2166d40f93d179b0be",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=flask, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729512,
+        "completed_at": "2026-07-28T09:07:52Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=flask, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:52Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729512 concluded success."
+    },
+    {
+      "digest": "sha256:0f4b9205857755254a4abdadfd284d77e69f85301cda4c5d9cb76e19eaa1c372",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=flask, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729581,
+        "completed_at": "2026-07-28T09:07:51Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=flask, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729581 concluded success."
+    },
+    {
+      "digest": "sha256:960fd68137746d5b6e7f5994238131c04d6c8f6841cf5cea26ffd180fd57e7a5",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=litestar, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729605,
+        "completed_at": "2026-07-28T09:08:03Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=litestar, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:03Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729605 concluded success."
+    },
+    {
+      "digest": "sha256:e9263270952f025fb679a1c630fa57fca7f0161e00fa0fc19f0f0bae9abd5ab7",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=litestar, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729652,
+        "completed_at": "2026-07-28T09:08:04Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=litestar, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:04Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729652 concluded success."
+    },
+    {
+      "digest": "sha256:79cb9fe539d6cdb82a6be4568269dde01f32cbdf9c31723f858700f5c9359de0",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=quart, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729763,
+        "completed_at": "2026-07-28T09:07:50Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=quart, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:50Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729763 concluded success."
+    },
+    {
+      "digest": "sha256:f9fbf9667ebb8f276ca33bd5b6e8a9efaa8c6ffb50b37721e3ba5e98501026a4",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=quart, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729640,
+        "completed_at": "2026-07-28T09:07:43Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=quart, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729640 concluded success."
+    },
+    {
+      "digest": "sha256:6431c85d430d6c4b2a798d4a70e983ef63ee9ea655e4d35cd4a8a4a702870a07",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=sanic, gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729602,
+        "completed_at": "2026-07-28T09:07:58Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=sanic, gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:07:58Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729602 concluded success."
+    },
+    {
+      "digest": "sha256:e7708e290c863e1d3c379e3bd05bc6c040ba0fde716cf757ea9ff22a58a913d3",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=sanic, gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729573,
+        "completed_at": "2026-07-28T09:08:41Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Test integrations on 3.11 (integration=sanic, gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729573 concluded success."
+    },
+    {
+      "digest": "sha256:1905dc8a68328eb99fc4e07d33977739d44f0e9bba845812e822e6c807f93f08",
+      "id": "\ud83d\udd2c Tests on 3.10 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729481,
+        "completed_at": "2026-07-28T09:09:18Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.10 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:09:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729481 concluded success."
+    },
+    {
+      "digest": "sha256:bd8c19b6e0746a8e165437f3fedfefb482b0a68af2bd2c570e101d0e8c658eeb",
+      "id": "\ud83d\udd2c Tests on 3.10 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729530,
+        "completed_at": "2026-07-28T09:09:25Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.10 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:09:25Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729530 concluded success."
+    },
+    {
+      "digest": "sha256:eb69e2cdd1a4f0a90d04181eb53eefac65f002c9d41bc1bceb7491c3ef7261a0",
+      "id": "\ud83d\udd2c Tests on 3.11 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729497,
+        "completed_at": "2026-07-28T09:09:00Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.11 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:09:00Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729497 concluded success."
+    },
+    {
+      "digest": "sha256:5270ee704380e26472c4a76c7fe7561086f17a69be2ba0b056e0845b3edc6cb5",
+      "id": "\ud83d\udd2c Tests on 3.11 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729600,
+        "completed_at": "2026-07-28T09:08:59Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.11 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:59Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729600 concluded success."
+    },
+    {
+      "digest": "sha256:d0f79468e0f9ccf6ef1eb926db6ca64908f8439a3d5a9a0f4bc5de5ed775c785",
+      "id": "\ud83d\udd2c Tests on 3.12 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729533,
+        "completed_at": "2026-07-28T09:09:03Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.12 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:09:03Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729533 concluded success."
+    },
+    {
+      "digest": "sha256:02498fc4fc466efdc8b65033697c83d09d411d63d5b1d10ed315b10ac0dfea80",
+      "id": "\ud83d\udd2c Tests on 3.12 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729552,
+        "completed_at": "2026-07-28T09:09:11Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.12 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:09:11Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729552 concluded success."
+    },
+    {
+      "digest": "sha256:d28bf7ffa75fad0da050fb3a9bbe123d30b5cc13a90ac6b82b447c27ab95508b",
+      "id": "\ud83d\udd2c Tests on 3.13 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729422,
+        "completed_at": "2026-07-28T09:08:46Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.13 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:46Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729422 concluded success."
+    },
+    {
+      "digest": "sha256:da051608ac5aef330c6f910d3007312951fb5f20e02fe7017587cc71475ab50f",
+      "id": "\ud83d\udd2c Tests on 3.13 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729526,
+        "completed_at": "2026-07-28T09:08:41Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.13 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729526 concluded success."
+    },
+    {
+      "digest": "sha256:a21fbed28c6b400936a508f2ea4618b57e7989fffbfa26a609045c99e9a5443f",
+      "id": "\ud83d\udd2c Tests on 3.14 (gql_core=3.2.6)",
+      "identity": {
+        "check_run_id": 90229729461,
+        "completed_at": "2026-07-28T09:08:30Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.14 (gql_core=3.2.6)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:30Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729461 concluded success."
+    },
+    {
+      "digest": "sha256:1bccb4b5d649e1db33f63b736bdfdf8bd986c7d4f408ea2cbccace278e9effec",
+      "id": "\ud83d\udd2c Tests on 3.14 (gql_core=3.3.0rc0)",
+      "identity": {
+        "check_run_id": 90229729522,
+        "completed_at": "2026-07-28T09:08:21Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Tests on 3.14 (gql_core=3.3.0rc0)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:21Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729522 concluded success."
+    },
+    {
+      "digest": "sha256:9325a6f9f062ddd33792668499f94507e45cf11fc18c77f0f1d8cb9c48dbbf0a",
+      "id": "\ud83d\udd2c Type checkers tests on 3.10",
+      "identity": {
+        "check_run_id": 90229729802,
+        "completed_at": "2026-07-28T09:09:07Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Type checkers tests on 3.10",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:09:07Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729802 concluded success."
+    },
+    {
+      "digest": "sha256:94535048bee32ba3e1558a6ee153b69fabcadf91fd1c55eb9f49bd883b29423f",
+      "id": "\ud83d\udd2c Type checkers tests on 3.11",
+      "identity": {
+        "check_run_id": 90229729914,
+        "completed_at": "2026-07-28T09:08:37Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Type checkers tests on 3.11",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:37Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729914 concluded success."
+    },
+    {
+      "digest": "sha256:413b6fab8c552f2e9d15dfa74d8caf4742024556b4b350b25957932cae8d61b7",
+      "id": "\ud83d\udd2c Type checkers tests on 3.12",
+      "identity": {
+        "check_run_id": 90229729776,
+        "completed_at": "2026-07-28T09:08:41Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Type checkers tests on 3.12",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729776 concluded success."
+    },
+    {
+      "digest": "sha256:ac57ef8be4e5d0d8a64c5536bcc9f40adf1e025368d0e5d8503ac939620c85cc",
+      "id": "\ud83d\udd2c Type checkers tests on 3.13",
+      "identity": {
+        "check_run_id": 90229729828,
+        "completed_at": "2026-07-28T09:08:42Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Type checkers tests on 3.13",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:42Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729828 concluded success."
+    },
+    {
+      "digest": "sha256:76f12dcce5e33958d7f2c863e8930d812f0a3fa3d00a656feab0e34734f653ce",
+      "id": "\ud83d\udd2c Type checkers tests on 3.14",
+      "identity": {
+        "check_run_id": 90229729852,
+        "completed_at": "2026-07-28T09:08:46Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83d\udd2c Type checkers tests on 3.14",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:08:46Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229729852 concluded success."
+    },
+    {
+      "digest": "sha256:f56fe36be74f574c2796deca7a963ed40f888cd9a0d0ed6c1ddadf36ae9f1909",
+      "id": "\ud83e\ude9f Tests on Windows",
+      "identity": {
+        "check_run_id": 90229662603,
+        "completed_at": "2026-07-28T09:10:48Z",
+        "conclusion": "success",
+        "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+        "name": "\ud83e\ude9f Tests on Windows",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-28T09:10:48Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90229662603 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 4554,
+    "ref": "refs/pull/4554/head",
+    "repository": "strawberry-graphql/strawberry",
+    "sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3"
+  }
+}

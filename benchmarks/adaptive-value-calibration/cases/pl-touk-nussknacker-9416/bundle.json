@@ -1,0 +1,352 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "counterfactual_blockers": [
+      "Publish With Tests",
+      "Publish Without Tests",
+      "trigger-external-build"
+    ],
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+      "repository": "TouK/nussknacker"
+    },
+    "observed_at": "2026-08-01T09:37:08Z",
+    "pr": {
+      "draft": false,
+      "from_fork": false,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:a3b11a802700b93949d46264db0e99032b5be3f052fb0a1baf193618583d1b01",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "designer/server/src/test/scala/pl/touk/nussknacker/test/base/it/NuItTestWithPostgres.scala",
+          "designer/server/src/test/scala/pl/touk/nussknacker/ui/api/AppApiHttpServiceBusinessSpec.scala",
+          "designer/server/src/test/scala/pl/touk/nussknacker/ui/api/AppApiHttpServiceHaSpec.scala",
+          "designer/server/src/test/scala/pl/touk/nussknacker/ui/ha/DistributedLeadershipSpec.scala",
+          "designer/server/src/test/scala/pl/touk/nussknacker/ui/ha/SingleNodeLeadershipSpec.scala",
+          "designer/server/src/test/scala/pl/touk/nussknacker/ui/ha/SlickDistributedLockSpec.scala",
+          "designer/server/src/test/scala/pl/touk/nussknacker/ui/process/deployment/DeploymentServiceSpec.scala",
+          "designer/server/src/test/scala/pl/touk/nussknacker/ui/process/periodic/flink/DeploymentActorTest.scala",
+          "designer/server/src/test/scala/pl/touk/nussknacker/ui/process/periodic/flink/RescheduleFinishedActorTest.scala",
+          "scalafix-rules/src/test/scala/utils/SchemaInSqlDetectorSpec.scala"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "7bf74adb0169c2f8815880e5614570c9eb142c13",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "pull_request": 9416,
+        "repository": "TouK/nussknacker"
+      },
+      "unchanged_workflow_runs": 2,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 34598,
+          "app_slug": "github-pages",
+          "check_suite_id": 83108464761,
+          "conclusion": null,
+          "source": "check_suites",
+          "state": "pending",
+          "status": "queued"
+        }
+      ],
+      "states": {
+        "action_required": 0,
+        "completed": 2,
+        "pending": 1
+      },
+      "units_total": 3
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:e06f81d54c7770a622561375465def8fb6750e9eb155156102802ad5d304b294",
+      "id": "BackendE2ETests (2.13)",
+      "identity": {
+        "check_run_id": 91344224454,
+        "completed_at": "2026-07-31T16:29:32Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "BackendE2ETests (2.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:29:32Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91344224454 concluded success."
+    },
+    {
+      "digest": "sha256:b30b41e91c07bf6c5fb69ee2a2cc97d8da6bc802660066bc2666d0ccb103f2d0",
+      "id": "BackendTests (2.13)",
+      "identity": {
+        "check_run_id": 91344224125,
+        "completed_at": "2026-08-01T08:02:29Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "BackendTests (2.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T08:02:29Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91344224125 concluded success."
+    },
+    {
+      "digest": "sha256:07d55c7abfc80d2f9fcb04180d641eda57961a5cb69adc6419ccc6b70f8bf7dc",
+      "id": "Build",
+      "identity": {
+        "check_run_id": 91344224399,
+        "completed_at": "2026-07-31T16:18:01Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "Build",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:18:01Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91344224399 concluded success."
+    },
+    {
+      "digest": "sha256:72d6d95c0d17ff58dabdaa9d4a5820a74488d87a834d374cfb7c7a227ed133c9",
+      "id": "BuildFrontend",
+      "identity": {
+        "check_run_id": 91344224469,
+        "completed_at": "2026-07-31T16:14:19Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "BuildFrontend",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:14:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91344224469 concluded success."
+    },
+    {
+      "digest": "sha256:ee76b323a5970a6d443a47a5023d698b453727dee27079268218d37e224fda44",
+      "id": "CypressTests",
+      "identity": {
+        "check_run_id": 91344224533,
+        "completed_at": "2026-07-31T16:49:15Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "CypressTests",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:49:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91344224533 concluded success."
+    },
+    {
+      "digest": "sha256:aec87c0edbe58138b5a1253a07a2f69b88c27939f66dc832d52cabacbd3598d8",
+      "id": "FrontendTests",
+      "identity": {
+        "check_run_id": 91344224416,
+        "completed_at": "2026-07-31T16:13:20Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "FrontendTests",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:13:20Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91344224416 concluded success."
+    },
+    {
+      "digest": "sha256:5ecb008b8662d2674d96f1e267c1fad6e79d0e08af3a2432ba15827c6a8f427b",
+      "id": "IntegrationTests (2.13)",
+      "identity": {
+        "check_run_id": 91344224500,
+        "completed_at": "2026-07-31T16:26:54Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "IntegrationTests (2.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:26:54Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91344224500 concluded success."
+    },
+    {
+      "digest": "sha256:936d6d674b7ddb7f67cef49da492dce41e019b8bac5984b2b8e367a3b8979eb2",
+      "id": "Publish With Tests",
+      "identity": {
+        "check_run_id": 91345451911,
+        "completed_at": "2026-08-01T08:02:29Z",
+        "conclusion": "skipped",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "Publish With Tests",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T08:02:29Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91345451911 concluded skipped."
+    },
+    {
+      "digest": "sha256:a0f1ed7d562f056bcce9ee5d24f46bcdf93975082cd6e216b9f97a466ce949dd",
+      "id": "Publish Without Tests",
+      "identity": {
+        "check_run_id": 91344224414,
+        "completed_at": "2026-08-01T07:49:14Z",
+        "conclusion": "skipped",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "Publish Without Tests",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T07:49:14Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91344224414 concluded skipped."
+    },
+    {
+      "digest": "sha256:3fc9f1f24845a9db8b2fb906b97e02e016e2cd3aaffa9c0944edbea77bcd95ed",
+      "id": "SlowTests (2.13)",
+      "identity": {
+        "check_run_id": 91344224437,
+        "completed_at": "2026-07-31T16:30:33Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "SlowTests (2.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:30:33Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91344224437 concluded success."
+    },
+    {
+      "digest": "sha256:a3b11a802700b93949d46264db0e99032b5be3f052fb0a1baf193618583d1b01",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: copilot_code_reviewx1; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:1e979bcf54b59c2fcae2afe98be704fefe04511b4d83ed0735e0ed37fc2afdc4",
+      "id": "setup",
+      "identity": {
+        "check_run_id": 91344224177,
+        "completed_at": "2026-07-31T16:10:22Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "setup",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:10:22Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91344224177 concluded success."
+    },
+    {
+      "digest": "sha256:087ecd7b091aabac42603d4f0e49a72027b581333da44076a564ae08042308bb",
+      "id": "triage",
+      "identity": {
+        "check_run_id": 91207340378,
+        "completed_at": "2026-07-31T16:10:01Z",
+        "conclusion": "success",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "triage",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:10:01Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91207340378 concluded success."
+    },
+    {
+      "digest": "sha256:d319d8dd4129c636b4912a265794f0c12d592c25082685a36a635a6f9d916411",
+      "id": "trigger-external-build",
+      "identity": {
+        "check_run_id": 91344224589,
+        "completed_at": "2026-07-31T16:18:02Z",
+        "conclusion": "skipped",
+        "head_sha": "b5868341d0ef7021d503b5d51894130f1bcf1690",
+        "name": "trigger-external-build",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T16:18:02Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91344224589 concluded skipped."
+    }
+  ],
+  "subject": {
+    "pull_request": 9416,
+    "ref": "refs/pull/9416/head",
+    "repository": "TouK/nussknacker",
+    "sha": "b5868341d0ef7021d503b5d51894130f1bcf1690"
+  }
+}

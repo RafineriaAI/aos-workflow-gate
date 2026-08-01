@@ -1,0 +1,276 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "waiting",
+    "incomplete_required": [
+      "CodeQL",
+      "build (ubuntu-latest)",
+      "build (windows-latest)",
+      "core-typecheck",
+      "lint",
+      "test (3.10)",
+      "test (3.11)",
+      "test (3.12)"
+    ],
+    "observation_scope": {
+      "head_sha": "cdc41100526bac033de1f0d8790695ab8f9a055a",
+      "repository": "run-llama/llama_index"
+    },
+    "observed_at": "2026-08-01T09:37:28Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:c0f4e31ef3ef1278a0edeaa2c32c2f61569d275fdeb6d361bb5e8f17fe7561f8",
+    "protection_source": "classic_branch_protection",
+    "required_controls": [
+      {
+        "context": "CodeQL",
+        "integration_id": 57789,
+        "source_id": "CodeQL"
+      },
+      {
+        "context": "build (ubuntu-latest)",
+        "integration_id": 15368,
+        "source_id": "build (ubuntu-latest)"
+      },
+      {
+        "context": "build (windows-latest)",
+        "integration_id": 15368,
+        "source_id": "build (windows-latest)"
+      },
+      {
+        "context": "core-typecheck",
+        "integration_id": 15368,
+        "source_id": "core-typecheck"
+      },
+      {
+        "context": "lint",
+        "integration_id": 15368,
+        "source_id": "lint"
+      },
+      {
+        "context": "test (3.10)",
+        "integration_id": 15368,
+        "source_id": "test (3.10)"
+      },
+      {
+        "context": "test (3.11)",
+        "integration_id": 15368,
+        "source_id": "test (3.11)"
+      },
+      {
+        "context": "test (3.12)",
+        "integration_id": 15368,
+        "source_id": "test (3.12)"
+      }
+    ],
+    "requirements": [
+      {
+        "context": "CodeQL",
+        "github_equivalent": "would_wait",
+        "integration_id": 57789,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "build (ubuntu-latest)",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "build (windows-latest)",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "core-typecheck",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "lint",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "test (3.10)",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "test (3.11)",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "test (3.12)",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "missing"
+      }
+    ],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "wait_timeout",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "c864fcfa2c1d1f987ccdbcdab7b18e395c01ba86",
+        "head_sha": "cdc41100526bac033de1f0d8790695ab8f9a055a",
+        "pull_request": 22517,
+        "repository": "run-llama/llama_index"
+      },
+      "unchanged_workflow_runs": 6,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83027733619,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30618363680,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Linting"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83027733624,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30618363682,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Unit Testing"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83027733644,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30618363691,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Unit Testing"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83027733747,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30618363729,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Core Typecheck"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83027733821,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30618363756,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Build Package"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83027733917,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30618363785,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "CodeQL"
+        }
+      ],
+      "states": {
+        "action_required": 6,
+        "completed": 0,
+        "pending": 0
+      },
+      "units_total": 6
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": 22517,
+    "ref": "refs/pull/22517/head",
+    "repository": "run-llama/llama_index",
+    "sha": "cdc41100526bac033de1f0d8790695ab8f9a055a"
+  }
+}

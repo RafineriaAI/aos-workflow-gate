@@ -73,6 +73,18 @@ compare API. Interpretation needs no vendor: the record's `reasons`
 name each gap, `can_block` states whether anything enforced it, and the
 summary renders the same text the GitHub Action posts.
 
+## Change Proof plug-in experiment
+
+[`change-proof-plugin/REPORT.md`](change-proof-plugin/REPORT.md) evaluates AOS
+as an add-on to existing targeted tests. It contains eight exact-SHA cases from
+five public repositories: five real code-and-test PRs, two real
+behavior-preserving controls, and one controlled under-scoped verifier.
+
+The experiment supports a narrow eligibility rule and reports runtime cost. It
+does not establish alert acceptance, decision change, avoided defects,
+retention, willingness to pay, or superiority over coverage and mutation
+testing.
+
 ## Boundary
 
 Decision records carry `UNSIGNED_NOT_OFFICIAL` status. A `PASS` here

@@ -50,10 +50,11 @@ def test_published_release_declares_bounded_maturity() -> None:
 def test_preview_does_not_claim_production_readiness() -> None:
     status = _status()
     maturity = (ROOT / "docs" / "MATURITY.md").read_text(encoding="utf-8")
+    normalized = " ".join(maturity.split())
 
     assert status["maturity"] == "Preview"
     assert "Current maturity: **Preview**." in maturity
-    assert "not a recommendation for unattended production enforcement" in maturity
+    assert "Do not let it block production changes without human review." in normalized
     assert "Tests cannot promote maturity by themselves." in maturity
 
 

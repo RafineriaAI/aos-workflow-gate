@@ -52,27 +52,22 @@ def test_documentation_links_and_examples_match_the_product() -> None:
 def test_readme_license_and_local_check_are_renderable() -> None:
     readme = read_text("README.md")
     assert README_LOCAL_HYGIENE_BLOCK in readme
-    assert "Apache-2.0. See [LICENSE](LICENSE)." in readme
+    assert "Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE)." in readme
     assert "MIT. See [LICENSE](LICENSE)." not in readme
 
 
 def test_readme_leads_with_product_value_before_validation_detail() -> None:
     readme = read_text("README.md")
-    proof = readme.index("AOS checks a project before code review or a release.")
-    first_run = readme.index("### Run it locally")
-    validation = readme.index(
-        "Version `v0.38.0` is free for self-service testing"
-    )
+    value = readme.index("AOS adds a small, deterministic check")
+    first_run = readme.index("### Try it locally")
+    validation = readme.index("### What is actually proven?")
     polish = readme.index("## Polski")
-    documentation = readme.index("## Documentation")
+    documentation = readme.index("## More details / Więcej informacji")
 
-    assert proof < first_run < validation < polish < documentation
+    assert value < first_run < validation < polish < documentation
     assert "[English](#english) | [Polski](#polski)" in readme
-    assert (
-        "AOS sprawdza projekt przed przeglądem kodu lub wydaniem "
-        "nowej wersji." in readme
-    )
-    assert len(readme.splitlines()) <= 260
+    assert "AOS jest niewielkim, deterministycznym dodatkiem" in readme
+    assert len(readme.splitlines()) <= 340
     assert "docs/assets/readme-contrast.png" in readme
     assert "docs/assets/readme-contrast-mobile.png" in readme
     assert '<source media="(max-width: 600px)"' in readme
@@ -93,12 +88,12 @@ def test_readme_language_is_current_and_natural() -> None:
     normalized = " ".join(readme.split())
 
     for phrase in (
-        "Install the released version and run AOS in the project directory",
-        "AOS works in two ways",
-        "Nie musisz znać Gita ani tych poleceń.",
-        "Werdykt mówi, czy zebrane dowody spełniają wymagania.",
-        "Nie uruchamia dowodów formalnych kernela w Lean",
-        "Everyday usefulness and alert accuracy have not been independently",
+        "Install the released version, open a terminal in a project directory",
+        "AOS adds a small, deterministic check to tools you already use.",
+        "would those tests still pass without the implementation change?",
+        "AOS jest niewielkim, deterministycznym dodatkiem",
+        "Nie potwierdzono jeszcze codziennej użyteczności",
+        "Nie należy jeszcze włączać ich domyślnie",
     ):
         assert phrase in normalized
 
@@ -120,7 +115,6 @@ def test_readme_language_is_current_and_natural() -> None:
 
 def test_business_positioning_is_consistent_and_bounded() -> None:
     category_paths = (
-        "README.md",
         "action.yml",
         "docs/ONE_PAGER.md",
         "docs/SCOPE.md",
@@ -130,15 +124,19 @@ def test_business_positioning_is_consistent_and_bounded() -> None:
         normalized = " ".join(read_text(path).lower().split())
         assert "pre-merge control assurance" in normalized, path
 
+    readme = " ".join(read_text("README.md").lower().split())
+    assert "small, deterministic check to tools you already use" in readme
+    assert "aos is not another ai reviewer" in readme
+    assert "does not infer business intent or prove that the code is correct" in readme
+
     core_gap = (
         "control that is missing, stale, produced by the wrong app, or "
         "modified by the same PR"
     )
-    for path in ("README.md", "action.yml", "docs/ONE_PAGER.md", "docs/index.html"):
+    for path in ("action.yml", "docs/ONE_PAGER.md", "docs/index.html"):
         normalized = " ".join(read_text(path).split())
         assert core_gap in normalized, path
 
-    assert "The GitHub gate verifies controls, not code." in read_text("README.md")
     for path in ("docs/ONE_PAGER.md", "docs/index.html"):
         assert "AOS verifies the gate, not the code." in read_text(path), path
     assert "No Git or test expertise required." in read_text("docs/ONE_PAGER.md")

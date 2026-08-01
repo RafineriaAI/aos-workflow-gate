@@ -1,9 +1,12 @@
 # Policy Packs
 
-Starter policies shipped inside the package (`aos_workflow_gate/packs/`), so `--policy-pack NAME` works from any install. Packs are plain, inspectable
-policy files — copy one, rename the `policy_id`, and edit the source ids
-to match your check names (`ci` is a placeholder). Nothing is hidden: a
-pack is exactly what `evaluate --policy` reads.
+You do not need a policy file for the first GitHub run. Add one only after AOS
+has shown the same useful gap more than once.
+
+A policy is a short YAML list of checks that matter to your repository. Starter
+files are included in `aos_workflow_gate/packs/`. Select one with
+`--policy-pack NAME`, or copy it and replace placeholder check names such as
+`ci` with the names used by your repository.
 
 ## Accepted risks
 
@@ -26,7 +29,7 @@ risk count, so replay and review remain possible.
 
 Keep the exception in version control, use a concrete justification, and
 remove it when the assumption stops being true. This is explicit
-policy-as-code, not model training or an invisible per-user preference.
+configuration, not model training or an invisible per-user preference.
 
 | Pack | Mode | Requires | Advisory | Intended for |
 | --- | --- | --- | --- | --- |

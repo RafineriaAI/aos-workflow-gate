@@ -1,0 +1,94 @@
+{
+  "collection": {
+    "change_proof": {
+      "base_sha": "c6e7cad18ffe91febf2b97dac03a465134b1a5d1",
+      "head_sha": "7d7708fdf39061b6f7515c13ed0404a9bc05fb33",
+      "implementation_paths": 4,
+      "merge_base_sha": "c6e7cad18ffe91febf2b97dac03a465134b1a5d1",
+      "schema_version": "aos-change-proof/v0",
+      "status": "success"
+    },
+    "observation_scope": {
+      "head_sha": "7d7708fdf39061b6f7515c13ed0404a9bc05fb33",
+      "repository": "hynek/structlog"
+    },
+    "observed_at": "2026-08-01T10:28:42+00:00",
+    "status": "complete"
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "contract": "source-v0",
+      "digest": "sha256:9a41d506a877f5f1fa84026465670b1877ce00e35533d634642df8a7faa6f482",
+      "id": "code.change-proof",
+      "identity": {
+        "base_sha": "c6e7cad18ffe91febf2b97dac03a465134b1a5d1",
+        "challenge_runs": [
+          {
+            "elapsed_ms": 2342,
+            "exit_code": 1,
+            "state": "failed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 6895,
+            "stdout_digest": "sha256:be3123e7f582955c0faf052b87009f4c34e8ee0e7aff2354c1ef05be0e11c5b1"
+          },
+          {
+            "elapsed_ms": 2254,
+            "exit_code": 1,
+            "state": "failed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 6895,
+            "stdout_digest": "sha256:d250ee4f69484652f8a3b157e398755b88bf2e90d84003d783af4dd1972f03da"
+          }
+        ],
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-p",
+          "no:cacheprovider",
+          "tests/processors/test_processors.py",
+          "-q"
+        ],
+        "command_digest": "sha256:590b90f421510b86eed884c34b01fd2424ff4fac93ea756f087e61c17fcf2bbc",
+        "head_runs": [
+          {
+            "elapsed_ms": 2427,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1572,
+            "stdout_digest": "sha256:2e1362a6996f3cf91f890807f184d6b62f0e91b0e0b26c14258ea1aef800e6c0"
+          }
+        ],
+        "head_sha": "7d7708fdf39061b6f7515c13ed0404a9bc05fb33",
+        "implementation_patch_digest": "sha256:42cc8e8f3c877a379b2f4699f9af225f2c8e27215137f259534d757fe85883d1",
+        "implementation_paths": [
+          "src/structlog/_native.py",
+          "src/structlog/contextvars.py",
+          "src/structlog/processors.py",
+          "src/structlog/stdlib.py"
+        ],
+        "implementation_paths_digest": "sha256:f24564bf0aab16240fd71084661212eb63e393a0035536de3e56b8b34d24aa4c",
+        "merge_base_sha": "c6e7cad18ffe91febf2b97dac03a465134b1a5d1",
+        "repository": "hynek/structlog",
+        "schema_version": "aos-change-proof/v0",
+        "status": "success"
+      },
+      "kind": "aos_change_proof",
+      "observed_at": "2026-08-01T10:28:42+00:00",
+      "signal_source": "local_change_proof",
+      "status": "success",
+      "summary": "Change proof passed: the verifier succeeded at HEAD and failed twice after reverting 4 implementation file(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": null,
+    "ref": "HEAD",
+    "repository": "hynek/structlog",
+    "sha": "7d7708fdf39061b6f7515c13ed0404a9bc05fb33"
+  }
+}

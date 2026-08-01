@@ -1,0 +1,64 @@
+{
+  "contract": "source-v0",
+  "digest": "sha256:0329dc1b7683a5d8d9cffce2d4436cace75b6311bc2ff883a14d1e7db721f740",
+  "id": "code.change-proof",
+  "identity": {
+    "base_sha": "516f0a80fb7c2c8562dbb5e318fc2a3d44f4171f",
+    "challenge_runs": [
+      {
+        "elapsed_ms": 5819,
+        "exit_code": 1,
+        "state": "failed",
+        "stderr_bytes": 0,
+        "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1824,
+        "stdout_digest": "sha256:9823f8e5e76ae3ce64025b019e1bea389194b5754886c1d700e7f8b6a930bdf7"
+      },
+      {
+        "elapsed_ms": 5456,
+        "exit_code": 1,
+        "state": "failed",
+        "stderr_bytes": 0,
+        "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 1824,
+        "stdout_digest": "sha256:df0573b4071696aa670c931d7b16b6f42538ab24f0a35f21de33da5842c9d61c"
+      }
+    ],
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_more.py",
+      "-q"
+    ],
+    "command_digest": "sha256:11921d826bbe03a7302f3e8ede5ac1a24d095d6f177d5d5bb7b32607105bc617",
+    "head_runs": [
+      {
+        "elapsed_ms": 5839,
+        "exit_code": 0,
+        "state": "passed",
+        "stderr_bytes": 0,
+        "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 764,
+        "stdout_digest": "sha256:f67bb9bdc4cecdb630b55ef1a60796c19c329ec6160220049df381e2065065b6"
+      }
+    ],
+    "head_sha": "0e6acdf9b60765ecf9634d6f5c132ac1bebc616b",
+    "implementation_patch_digest": "sha256:d394e033feae39ea80014157b76ce4e07d7d4546d2e601bb51d2f7ddcf1e9d20",
+    "implementation_paths": [
+      "more_itertools/more.py"
+    ],
+    "implementation_paths_digest": "sha256:ee763c37c03c1b7ea1636ad266fb4e24dbb07acfb67cc42386002a96c796cdb8",
+    "merge_base_sha": "516f0a80fb7c2c8562dbb5e318fc2a3d44f4171f",
+    "repository": "more-itertools/more-itertools",
+    "schema_version": "aos-change-proof/v0",
+    "status": "success"
+  },
+  "kind": "aos_change_proof",
+  "observed_at": "2026-08-01T10:28:49+00:00",
+  "signal_source": "local_change_proof",
+  "status": "success",
+  "summary": "Change proof passed: the verifier succeeded at HEAD and failed twice after reverting 1 implementation file(s)."
+}

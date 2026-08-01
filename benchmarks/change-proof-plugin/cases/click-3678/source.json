@@ -1,0 +1,69 @@
+{
+  "contract": "source-v0",
+  "digest": "sha256:6c99277c071b8f5b0a08d9aa6e3e88526211b6deaf7dcdf207788cd954b4223e",
+  "id": "code.change-proof",
+  "identity": {
+    "base_sha": "8c1a0a7abbc1c36f70d1f65f3604acc46c5ce6ab",
+    "challenge_runs": [
+      {
+        "elapsed_ms": 1945,
+        "exit_code": 1,
+        "state": "failed",
+        "stderr_bytes": 0,
+        "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 18871,
+        "stdout_digest": "sha256:4f905b2d894d31a97656292fc7a86ec7a8afcf8b61980b6968837d86cd5385b2"
+      },
+      {
+        "elapsed_ms": 1923,
+        "exit_code": 1,
+        "state": "failed",
+        "stderr_bytes": 0,
+        "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 18871,
+        "stdout_digest": "sha256:ce176bb7ebdb912f0121b86735320233b4dd69a3c9b2580ab49217cde05c12f6"
+      }
+    ],
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_basic.py::test_param_named_help",
+      "tests/test_basic.py::test_param_squatting_help_option_name",
+      "tests/test_basic.py::test_option_reusing_help_flag",
+      "tests/test_info_dict.py",
+      "tests/test_options.py::test_argument_sharing_param_name_warning",
+      "tests/test_options.py::test_options_sharing_name_no_warning",
+      "-q"
+    ],
+    "command_digest": "sha256:cb361fdd793a36ec0e1416128670269fcf84ef5da22781f1f677a79ea073f53b",
+    "head_runs": [
+      {
+        "elapsed_ms": 1749,
+        "exit_code": 0,
+        "state": "passed",
+        "stderr_bytes": 0,
+        "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 101,
+        "stdout_digest": "sha256:c91fe4cc793fced92410553f42ed742a4c39b9e48c561579531dfdbf1312c6f7"
+      }
+    ],
+    "head_sha": "a28d839d3e68bb81b77bcd862fb29e35dcf894f9",
+    "implementation_patch_digest": "sha256:4f20126bfc0c5f42d708dee8f769bcc15793cec54bfeb54658b09b54fd794da0",
+    "implementation_paths": [
+      "src/click/core.py"
+    ],
+    "implementation_paths_digest": "sha256:cd0c4a8a4101bc9d7a1eec9a03e56b98e33f6d2dcc276743f62fd31f57df4460",
+    "merge_base_sha": "8c1a0a7abbc1c36f70d1f65f3604acc46c5ce6ab",
+    "repository": "pallets/click",
+    "schema_version": "aos-change-proof/v0",
+    "status": "success"
+  },
+  "kind": "aos_change_proof",
+  "observed_at": "2026-08-01T10:24:29+00:00",
+  "signal_source": "local_change_proof",
+  "status": "success",
+  "summary": "Change proof passed: the verifier succeeded at HEAD and failed twice after reverting 1 implementation file(s)."
+}

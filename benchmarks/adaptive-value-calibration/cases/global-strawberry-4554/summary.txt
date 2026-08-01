@@ -1,0 +1,17 @@
+PASS  Gate PASS: all required checks satisfied; no advisory warnings.
+record: benchmarks\adaptive-value-calibration\cases\global-strawberry-4554\gate-decision.json
+Merge protection: 2 required status check(s) enforced by classic_branch_protection on 'main'.
+Fork PR: some checks may not run for forks by repository policy.
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: PASS
+
+**Result:** Every required check AOS evaluated completed successfully for this commit.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+**Next step:** set enforce: "true" (or a blocking policy) so a BLOCK verdict fails the job
+
+**Signals:** 2 required (2 successful); 75 other observation(s)
+**Scope:** 2 required check(s) plus recorded workflow signals on strawberry-graphql/strawberry@f20d630e5dbe; requirements read from classic\_branch\_protection; not full merge-readiness
+**Freshness:** observed 2026-08-01T09:36:27Z; collection complete
+
+Record `sha256:1d001fb831493245d58a2e365c83c9c4644dbe6ac39daab19e3dfd018785e241` | bundle `sha256:85522a464b39a2c6a0aaced321ea3598859d35349686c8fee39b24c2c28c48fd` | self-check OK | UNSIGNED\_NOT\_OFFICIAL

@@ -6,24 +6,18 @@ replace them. Every cell describes documented behavior with a source link; no
 competitor tool was benchmarked or scored here, and no superiority is claimed.
 
 
-## Local verification surface
+## Product role
 
-`aos-check` combines conventional local project checks with a bounded,
-deterministic scan for paired conflict markers and complete private-key
-material. Unlike an AI reviewer, it does not infer intent or use an LLM.
-Unlike a hosted browser-testing agent, it does not explore user flows. Unlike
-a test runner, it falls back to bounded nested projects when root verification
-is absent, distinguishes failed from missing verification, scopes later scans
-using content-free local state, and
-produces a named problem, bounded impact, affected area, severity, one next
-action, and a replayable record.
+AOS is designed as an add-on to existing test runners, coverage services,
+scanners, and repository rules. `aos-check` reduces first-run friction but is
+not the primary differentiation experiment. `prove-change` adds one bounded
+question to an existing targeted test command: would that command still pass
+if the actual PR implementation patch were absent?
 
-That combination now produces an incremental code-risk signal beyond merely
-re-running a root command, but it is not a demonstrated moat. Material
-differentiation still requires accepted findings that ordinary build/test and
-existing review tools miss at acceptable runtime and noise.
-
-See [Local Project Check](PROJECT_CHECK.md) for the exact implemented boundary.
+Unlike an AI reviewer, AOS does not infer intent or use an LLM. Unlike a hosted
+test service, it does not upload source code to RafineriaAI. The claim is a
+differentiated integration pattern, not a unique market category or a proven
+moat.
 
 ## Category boundary
 
@@ -72,23 +66,36 @@ interoperability, and organization-level operations that users retain.
 
 ## Experimental change-sensitivity comparison
 
-Ordinary CI runs the repository checks on `HEAD`; it does not normally ask
-whether those checks would still pass if the PR implementation were absent.
-Mutation testing tools introduce many small synthetic code changes and report
-whether tests kill or survive each mutant
-([Stryker semantics](https://stryker-mutator.io/docs/mutation-testing-elements/mutant-states-and-metrics/)).
+| Existing layer | What it establishes | What Change Proof adds | Remaining gap |
+| --- | --- | --- | --- |
+| [GitHub required checks](https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks) | A named result reached an accepted state for the relevant commit | Re-runs an explicit verifier against the actual patch counterfactual | Does not prove intended behavior or defect absence |
+| [Codecov patch coverage](https://docs.codecov.com/docs/frequently-asked-questions) | Changed lines were executed by tests | Checks whether the verifier outcome changes when the implementation patch is removed | Execution and outcome sensitivity still do not prove correct assertions |
+| [Stryker](https://stryker-mutator.io/docs/stryker-js/incremental/) or [PIT](https://pitest.org/quickstart/incremental_analysis/) | Tests kill many small synthetic mutants, with language-specific analysis | One coarse counterfactual aligned with the submitted Git diff and any argv-based verifier | Mutation testing is finer-grained and has stronger established evidence |
+| [SonarQube PR analysis](https://docs.sonarsource.com/sonarqube-server/2026.1/analyzing-source-code/pull-request-analysis/introduction) | Static issues and quality-gate measures on new code | Dynamic sensitivity of the team's own verifier | Neither reconstructs business intent |
+| AI reviewer | Probabilistic review of code and context | Deterministic, replayable execution with no LLM verdict | AOS does not find semantic defects outside the supplied verifier |
 
-Experimental `prove-change` removes the selected PR implementation patch as
-one coarse counterfactual and runs the operator's verifier in clean worktrees.
-Its hypothesized advantages are direct alignment with the submitted change,
-few verifier runs, language-independent command execution, and reuse of
-exact-SHA decision evidence. Its disadvantages are equally material: it is
-coarser than mutation testing, can fail structurally rather than behaviorally,
-does not generate boundary cases, and may require environment adaptation.
+Mutation testing is the closest established category.
+[Google's large-scale study](https://research.google/pubs/practical-mutation-testing-at-scale-a-view-from-google/)
+reports incremental, context-filtered mutation testing in code review by more
+than 24,000 developers across more than 1,000 projects. Stryker and PIT both
+provide incremental modes. AOS is coarser but potentially easier to add across
+languages because it consumes a Git diff and an existing command; that setup
+advantage is not yet measured.
 
-This is not a superiority claim. A valid product comparison must measure
-accepted incremental findings, inconclusive rate, runtime cost, and remediation
-beyond ordinary CI and the repository's established mutation tooling.
+A non-exhaustive GitHub and Marketplace search on 2026-08-01 did not surface a
+mature Action with this exact combination: actual-patch counterfactual, any
+argv-based verifier, exact-SHA evidence, and offline replay. That is discovery
+evidence, not proof of an empty category. Language-agnostic mutation tools such
+as [UniversalMutator](https://github.com/agroce/universalmutator) and
+[MutaHunter](https://github.com/codeintegrity-ai/mutahunter) already address
+test adequacy, and agent-focused mutation gates are emerging. AOS must win on
+setup time, accepted findings, low noise, and runtime cost rather than claim
+market exclusivity.
+
+The committed eight-case experiment shows mechanism behavior and the need for
+eligibility calibration. It does not benchmark competitor precision or prove
+superiority. See the
+[Change Proof report](../benchmarks/change-proof-plugin/REPORT.md).
 
 ## Complementary by design
 
@@ -100,6 +107,6 @@ AOS does not claim to replace either.
 
 ## Boundary
 
-Cells describe documented behavior as of 2026-07-18 with sources linked. Tools
+Cells describe documented behavior as of 2026-08-01 with sources linked. Tools
 evolve, and corrections are welcome. This document makes no superiority,
 security, compliance, market-demand, or ROI claim.

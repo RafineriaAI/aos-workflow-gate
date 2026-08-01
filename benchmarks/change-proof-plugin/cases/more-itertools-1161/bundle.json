@@ -1,0 +1,91 @@
+{
+  "collection": {
+    "change_proof": {
+      "base_sha": "64be96ceb2a6e836f76f069f4a96d2394d59fd0c",
+      "head_sha": "f7b44bba5c4a73ed42bab52cb8ede9d742d95e16",
+      "implementation_paths": 1,
+      "merge_base_sha": "64be96ceb2a6e836f76f069f4a96d2394d59fd0c",
+      "schema_version": "aos-change-proof/v0",
+      "status": "not_distinguished"
+    },
+    "observation_scope": {
+      "head_sha": "f7b44bba5c4a73ed42bab52cb8ede9d742d95e16",
+      "repository": "more-itertools/more-itertools"
+    },
+    "observed_at": "2026-08-01T10:31:14+00:00",
+    "status": "complete"
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "contract": "source-v0",
+      "digest": "sha256:c2e06fcc26485d2c1fc6bf3263c703d12ff68ebc2dca52553e9686b00d5c3c8a",
+      "id": "code.change-proof",
+      "identity": {
+        "base_sha": "64be96ceb2a6e836f76f069f4a96d2394d59fd0c",
+        "challenge_runs": [
+          {
+            "elapsed_ms": 1516,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 112,
+            "stdout_digest": "sha256:9c2f5debc7013d6155f9b37bb557543ee87a3719682efe0c36994fcfac96eb08"
+          },
+          {
+            "elapsed_ms": 1534,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 112,
+            "stdout_digest": "sha256:562afbd729301c443a2f5dcac55977b5984fdf773eb1649a00a09a95cff07a8b"
+          }
+        ],
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-p",
+          "no:cacheprovider",
+          "tests/test_more.py::MinMaxTests",
+          "-q"
+        ],
+        "command_digest": "sha256:671dc1215bb84e9e100a361e42f08a6bc921f45200574e357dcab03c8e058d07",
+        "head_runs": [
+          {
+            "elapsed_ms": 1460,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 112,
+            "stdout_digest": "sha256:9c2f5debc7013d6155f9b37bb557543ee87a3719682efe0c36994fcfac96eb08"
+          }
+        ],
+        "head_sha": "f7b44bba5c4a73ed42bab52cb8ede9d742d95e16",
+        "implementation_patch_digest": "sha256:ee2caabac233f9b75b6da82a05c0ffb975e2c47d323648c23feff5e9870a9afd",
+        "implementation_paths": [
+          "more_itertools/more.py"
+        ],
+        "implementation_paths_digest": "sha256:ee763c37c03c1b7ea1636ad266fb4e24dbb07acfb67cc42386002a96c796cdb8",
+        "merge_base_sha": "64be96ceb2a6e836f76f069f4a96d2394d59fd0c",
+        "repository": "more-itertools/more-itertools",
+        "schema_version": "aos-change-proof/v0",
+        "status": "not_distinguished"
+      },
+      "kind": "aos_change_proof",
+      "observed_at": "2026-08-01T10:31:14+00:00",
+      "signal_source": "local_change_proof",
+      "status": "not_distinguished",
+      "summary": "Change proof gap: the verifier also passed after reverting 1 implementation file(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": null,
+    "ref": "HEAD",
+    "repository": "more-itertools/more-itertools",
+    "sha": "f7b44bba5c4a73ed42bab52cb8ede9d742d95e16"
+  }
+}

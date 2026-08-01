@@ -1,0 +1,140 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "afdfd283c9abb570a50b60050f8f9224a96ed5c3",
+      "repository": "react-native-webview/react-native-webview"
+    },
+    "observed_at": "2026-08-01T09:37:02Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "d65a961080dad3e82d33370ad6e8d90e973fcbd3",
+        "head_sha": "afdfd283c9abb570a50b60050f8f9224a96ed5c3",
+        "pull_request": 3984,
+        "repository": "react-native-webview/react-native-webview"
+      },
+      "unchanged_workflow_runs": 5,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 78891417717,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 29155106271,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Lint"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 78891417752,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 29155106287,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Windows CI"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 78891417760,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 29155106290,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Android"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 78891417786,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 29155106295,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "macOS"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 78891417814,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 29155106308,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "iOS"
+        }
+      ],
+      "states": {
+        "action_required": 5,
+        "completed": 0,
+        "pending": 0
+      },
+      "units_total": 5
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": 3984,
+    "ref": "refs/pull/3984/head",
+    "repository": "react-native-webview/react-native-webview",
+    "sha": "afdfd283c9abb570a50b60050f8f9224a96ed5c3"
+  }
+}

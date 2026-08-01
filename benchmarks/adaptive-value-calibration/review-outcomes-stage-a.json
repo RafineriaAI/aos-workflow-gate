@@ -1,0 +1,170 @@
+{
+    "schema_version":  "aos-adaptive-value-review-outcomes/v0",
+    "study_id":  "aos-adaptive-value-calibration-2026-08-01",
+    "frozen_at":  "2026-08-01T09:31:57Z",
+    "status":  "STAGE_A_FROZEN_BEFORE_AOS",
+    "retains_raw_comment_text":  false,
+    "definition":  "Each entry summarizes an explicit public human review outcome before AOS is run. Bot-only findings, silent approval, merge alone and absence of response are not treated as product value or noise.",
+    "cases":  [
+                  {
+                      "case_id":  "pl-mirumee-ariadne-1334",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/mirumee/ariadne/pull/1334#discussion_r3688270595",
+                                          "https://github.com/mirumee/ariadne/pull/1334#discussion_r3688284692"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "A maintainer questioned a duplicate test and asked why acknowledgement state depends on WebSocket state instead of a direct assignment.",
+                      "requested_action":  "Simplify the test and justify or simplify acknowledgement-state handling.",
+                      "action_taken":  false,
+                      "review_effect":  "open_change_questions",
+                      "business_relevance":  "minor",
+                      "business_risk":  "test_quality_and_state_handling",
+                      "confidence":  "high"
+                  },
+                  {
+                      "case_id":  "pl-sylius-sylius-19134",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/Sylius/Sylius/pull/19134#issuecomment-5142012864"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "QA found that validation implies administrator access is required even though either administrator or API access is valid.",
+                      "requested_action":  "Move the validation message to the whole access-level section.",
+                      "action_taken":  false,
+                      "review_effect":  "qa_issue_reported",
+                      "business_relevance":  "minor",
+                      "business_risk":  "misleading_user_validation",
+                      "confidence":  "high"
+                  },
+                  {
+                      "case_id":  "pl-widlarz-react-native-video-5016",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/TheWidlarzGroup/react-native-video/pull/5016#discussion_r3491971513",
+                                          "https://github.com/TheWidlarzGroup/react-native-video/pull/5016#discussion_r3492094368"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "A collaborator asked why Android core-library desugaring was added; the author explained that Media3 IMA 1.9 requires it for the ads example on older APIs.",
+                      "requested_action":  "Explain the build-compatibility requirement.",
+                      "action_taken":  true,
+                      "review_effect":  "clarification_requested_then_provided",
+                      "business_relevance":  "minor",
+                      "business_risk":  "android_build_compatibility",
+                      "confidence":  "high"
+                  },
+                  {
+                      "case_id":  "pl-touk-nussknacker-9416",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/TouK/nussknacker/pull/9416#discussion_r3624300614",
+                                          "https://github.com/TouK/nussknacker/pull/9416#discussion_r3624953169",
+                                          "https://github.com/TouK/nussknacker/pull/9416#discussion_r3689394756",
+                                          "https://github.com/TouK/nussknacker/pull/9416#discussion_r3689491442"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "Maintainer review identified race conditions and clock assumptions that could allow two instances to believe they are leader, then requested safer state handling and explicit operating limits.",
+                      "requested_action":  "Correct leadership validity, shutdown races and time handling before approval.",
+                      "action_taken":  true,
+                      "review_effect":  "changes_requested_then_approved_after_revision",
+                      "business_relevance":  "material",
+                      "business_risk":  "high_availability_split_brain_and_duplicate_work",
+                      "confidence":  "high"
+                  },
+                  {
+                      "case_id":  "pl-deepsense-ragbits-977",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/deepsense-ai/ragbits/pull/977#discussion_r3180921766",
+                                          "https://github.com/deepsense-ai/ragbits/pull/977#discussion_r3181121705",
+                                          "https://github.com/deepsense-ai/ragbits/pull/977#discussion_r3226469717"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "Reviewers requested a clearer persistence model, separation of conversation and sharing APIs, and removal of unused compatibility code; the author revised the design.",
+                      "requested_action":  "Untangle persistence responsibilities and remove unused API surface.",
+                      "action_taken":  true,
+                      "review_effect":  "architecture_changes_requested_then_applied",
+                      "business_relevance":  "material",
+                      "business_risk":  "data_model_and_maintenance_cost",
+                      "confidence":  "high"
+                  },
+                  {
+                      "case_id":  "global-strawberry-4554",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/strawberry-graphql/strawberry/pull/4554#discussion_r3663725010"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "A contributor acknowledged that an existing input extension makes the proposed cleaning behavior substantially more complicated.",
+                      "requested_action":  "Account for the extension path before completing the change.",
+                      "action_taken":  false,
+                      "review_effect":  "material_design_concern_acknowledged",
+                      "business_relevance":  "material",
+                      "business_risk":  "input_validation_behavior_regression",
+                      "confidence":  "medium"
+                  },
+                  {
+                      "case_id":  "global-shopware-18878",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/shopware/shopware/pull/18878#discussion_r3689986669",
+                                          "https://github.com/shopware/shopware/pull/18878#discussion_r3690399369",
+                                          "https://github.com/shopware/shopware/pull/18878#discussion_r3690641476"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "Review removed an inappropriate release note and raised that tests do not exercise the long-running environment, so helper usage may diverge again.",
+                      "requested_action":  "Remove the release note and add a durable test or guard for the correct container helper.",
+                      "action_taken":  true,
+                      "review_effect":  "change_applied_and_follow_up_control_discussed",
+                      "business_relevance":  "material",
+                      "business_risk":  "runtime_environment_regression",
+                      "confidence":  "high"
+                  },
+                  {
+                      "case_id":  "global-react-native-webview-3984",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/react-native-webview/react-native-webview/pull/3984#issuecomment-5078844444",
+                                          "https://github.com/react-native-webview/react-native-webview/pull/3984#issuecomment-5109485354"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "A user initially appeared to confirm the Windows fixes, then clarified that only a separate backport package had been tested, not this pull request.",
+                      "requested_action":  "Do not treat the external report as validation of this exact PR; obtain exact-branch testing.",
+                      "action_taken":  false,
+                      "review_effect":  "apparent_validation_retracted",
+                      "business_relevance":  "material",
+                      "business_risk":  "incorrect_test_provenance_and_release_confidence",
+                      "confidence":  "high"
+                  },
+                  {
+                      "case_id":  "global-apache-flink-28850",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/apache/flink/pull/28850#discussion_r3694131286"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "A reviewer found that the Chinese documentation contains a long untranslated English description while adjacent entries are localized.",
+                      "requested_action":  "Translate the prose and SQL comments to Chinese.",
+                      "action_taken":  false,
+                      "review_effect":  "documentation_change_requested",
+                      "business_relevance":  "minor",
+                      "business_risk":  "localized_documentation_quality",
+                      "confidence":  "high"
+                  },
+                  {
+                      "case_id":  "global-llama-index-22517",
+                      "stage_a_status":  "frozen_before_aos",
+                      "source_urls":  [
+                                          "https://github.com/run-llama/llama_index/pull/22517#discussion_r3691348377"
+                                      ],
+                      "human_outcome_available":  true,
+                      "outcome":  "A reviewer reproduced a TypeError in the default MMR path introduced by the change and supplied a minimal reproducer.",
+                      "requested_action":  "Keep the existing MMR loop and handle similarity_top_k equal to zero with an early return.",
+                      "action_taken":  false,
+                      "review_effect":  "reproducible_regression_reported",
+                      "business_relevance":  "material",
+                      "business_risk":  "default_query_path_runtime_failure",
+                      "confidence":  "high"
+                  }
+              ]
+}

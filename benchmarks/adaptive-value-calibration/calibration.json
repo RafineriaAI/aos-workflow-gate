@@ -1,0 +1,103 @@
+{
+  "schema_version": "aos-adaptive-value-calibration/v0",
+  "study_id": "aos-adaptive-value-calibration-2026-08-01",
+  "frozen_at": "2026-08-01T09:31:57Z",
+  "status": "FROZEN_BEFORE_HOLDOUT_AOS",
+  "discovery_source": {
+    "study_id": "aos-real-workflow-utility-2026-08-01",
+    "results_path": "benchmarks/real-workflow-utility/results.json",
+    "results_digest": "sha256:8908368ac9d100009ee0acaa02637504e75fa2652579bcc09b076f213c9c170c",
+    "report_path": "benchmarks/real-workflow-utility/REPORT.md",
+    "report_digest": "sha256:f5cedd05ad92a9283210f052902f54e2551c4b1f183d35dbf749a9ddc4118a7d"
+  },
+  "calibration_changes": [
+    {
+      "id": "do_not_count_contract_difference_as_user_value",
+      "reason": "The discovery benchmark produced four contract differences but no material alignment with historical review.",
+      "rule": "A different AOS and GitHub label is not useful by itself. It must add a concrete action or a materially clearer explanation."
+    },
+    {
+      "id": "separate_new_action_from_explanation",
+      "reason": "Discovery BLOCK results explained states where GitHub was already waiting.",
+      "rule": "AOS gets new-action credit only when the action was not already visible in the same GitHub snapshot."
+    },
+    {
+      "id": "treat_no_required_checks_as_targeting_not_success",
+      "reason": "Every discovery contrast was caused by no required checks.",
+      "rule": "No required checks may identify a repository setup gap, but it does not count as daily code-review value without an aligned human need."
+    },
+    {
+      "id": "measure_missed_human_problems",
+      "reason": "Every discovery non-PASS result concerned repository controls, while material human review concerned code or change scope.",
+      "rule": "A material human problem that AOS does not address is reported as a miss, not hidden by mechanism metrics."
+    },
+    {
+      "id": "plain_language_first",
+      "reason": "Correct technical records do not show that a reader understands why the result matters.",
+      "rule": "The main message must state the problem, practical effect and one next action without internal AOS terminology."
+    }
+  ],
+  "value_classes": {
+    "new_action": "AOS identifies a material action aligned with human review and not already visible in GitHub.",
+    "useful_explanation": "AOS makes an existing workflow state materially easier to understand or act on.",
+    "duplicate": "AOS repeats a problem already visible in GitHub without adding a materially better action.",
+    "unrelated": "AOS output does not address the independently observed human problem.",
+    "no_problem_observed": "AOS returns PASS and no material independent problem is available.",
+    "insufficient": "Public data cannot support a usefulness judgment."
+  },
+  "plain_language": {
+    "required_fields": [
+      "problem",
+      "impact",
+      "affected_area",
+      "next",
+      "severity"
+    ],
+    "internal_terms_not_allowed_in_main_message": [
+      "canonical",
+      "contract",
+      "digest",
+      "evidence",
+      "policy",
+      "provenance",
+      "replay",
+      "source-v0",
+      "verifier manifest"
+    ],
+    "reader_questions": [
+      "What is wrong?",
+      "Why does it matter?",
+      "What should I do next?",
+      "Is AOS adding information that GitHub did not already show?"
+    ]
+  },
+  "decision_rules": {
+    "minimum_completed_holdout_cases": 8,
+    "minimum_human_outcome_coverage": 0.8,
+    "continue_current_product_direction": {
+      "minimum_new_action_cases": 2,
+      "minimum_material_alignment_rate": 0.25,
+      "maximum_material_miss_rate": 0.5
+    },
+    "open_community_preview": {
+      "mechanism_integrity_rate": 1.0,
+      "minimum_plain_main_message_rate": 0.8,
+      "requires_free_license": true,
+      "requires_reproducible_setup": true,
+      "requires_explicit_unproven_value_label": true
+    }
+  },
+  "decision_labels": {
+    "development": [
+      "CONTINUE_CURRENT_DIRECTION",
+      "NARROW_OR_PIVOT",
+      "STOP_PENDING_NEW_EVIDENCE",
+      "INSUFFICIENT_SAMPLE"
+    ],
+    "community": [
+      "OPEN_AS_EXPERIMENTAL_PREVIEW",
+      "HOLD_BEFORE_COMMUNITY_RELEASE",
+      "INSUFFICIENT_SAMPLE"
+    ]
+  }
+}

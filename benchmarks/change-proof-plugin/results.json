@@ -1,0 +1,418 @@
+{
+  "cases": [
+    {
+      "adaptive_action": "run",
+      "artifact_dir": "cases/click-3678",
+      "base_sha": "8c1a0a7abbc1c36f70d1f65f3604acc46c5ce6ab",
+      "case_id": "click-3678",
+      "challenge_runs_ms": 3868,
+      "cohort": "observed_code_and_tests",
+      "expected_raw_outcome": true,
+      "expected_raw_verdict": "PASS",
+      "head_run_ms": 1749,
+      "head_sha": "a28d839d3e68bb81b77bcd862fb29e35dcf894f9",
+      "implementation_paths": [
+        "src/click/core.py"
+      ],
+      "integrity": {
+        "bundle_digest": true,
+        "exact_subject": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true,
+        "standalone_source_binding": true
+      },
+      "integrity_ok": true,
+      "observed_workflow": true,
+      "pr_number": 3678,
+      "pr_url": "https://github.com/pallets/click/pull/3678",
+      "raw_status": "success",
+      "raw_verdict": "PASS",
+      "repository": "pallets/click",
+      "tests_changed": true,
+      "title": "Fix parsing when a parameter is named help",
+      "value_interpretation": "bounded_reassurance",
+      "verifier": [
+        "python",
+        "-m",
+        "pytest",
+        "targeted changed tests",
+        "-q"
+      ],
+      "verifier_total_ms": 5617,
+      "verifier_work_ratio": 3.212,
+      "wall_seconds": 6.952
+    },
+    {
+      "adaptive_action": "run",
+      "artifact_dir": "cases/pluggy-617",
+      "base_sha": "cba86adc815a68a09f2765e70ed0cca305cc6ce2",
+      "case_id": "pluggy-617",
+      "challenge_runs_ms": 3808,
+      "cohort": "observed_code_and_tests",
+      "expected_raw_outcome": true,
+      "expected_raw_verdict": "PASS",
+      "head_run_ms": 1729,
+      "head_sha": "53eeddf56e09fede281ac5f3cd6a6b5a83e1799a",
+      "implementation_paths": [
+        "src/pluggy/_compat.py",
+        "src/pluggy/_manager.py"
+      ],
+      "integrity": {
+        "bundle_digest": true,
+        "exact_subject": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true,
+        "standalone_source_binding": true
+      },
+      "integrity_ok": true,
+      "observed_workflow": true,
+      "pr_number": 617,
+      "pr_url": "https://github.com/pytest-dev/pluggy/pull/617",
+      "raw_status": "success",
+      "raw_verdict": "PASS",
+      "repository": "pytest-dev/pluggy",
+      "tests_changed": true,
+      "title": "Refactor setuptools compatibility and add plugin distribution tests",
+      "value_interpretation": "bounded_reassurance",
+      "verifier": [
+        "python",
+        "-m",
+        "pytest",
+        "testing/test_details.py",
+        "testing/test_pluginmanager.py",
+        "-q"
+      ],
+      "verifier_total_ms": 5537,
+      "verifier_work_ratio": 3.202,
+      "wall_seconds": 6.794
+    },
+    {
+      "adaptive_action": "run",
+      "artifact_dir": "cases/structlog-805",
+      "base_sha": "c6e7cad18ffe91febf2b97dac03a465134b1a5d1",
+      "case_id": "structlog-805",
+      "challenge_runs_ms": 4596,
+      "cohort": "observed_code_and_tests",
+      "expected_raw_outcome": true,
+      "expected_raw_verdict": "PASS",
+      "head_run_ms": 2427,
+      "head_sha": "7d7708fdf39061b6f7515c13ed0404a9bc05fb33",
+      "implementation_paths": [
+        "src/structlog/_native.py",
+        "src/structlog/contextvars.py",
+        "src/structlog/processors.py",
+        "src/structlog/stdlib.py"
+      ],
+      "integrity": {
+        "bundle_digest": true,
+        "exact_subject": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true,
+        "standalone_source_binding": true
+      },
+      "integrity_ok": true,
+      "observed_workflow": true,
+      "pr_number": 805,
+      "pr_url": "https://github.com/hynek/structlog/pull/805",
+      "raw_status": "success",
+      "raw_verdict": "PASS",
+      "repository": "hynek/structlog",
+      "tests_changed": true,
+      "title": "Fix thread name CallsiteParameterAdder in async methods",
+      "value_interpretation": "bounded_reassurance",
+      "verifier": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/processors/test_processors.py",
+        "-q"
+      ],
+      "verifier_total_ms": 7023,
+      "verifier_work_ratio": 2.894,
+      "wall_seconds": 8.489
+    },
+    {
+      "adaptive_action": "run",
+      "artifact_dir": "cases/attrs-1593",
+      "base_sha": "6851ab593cd25f3c14393e9355d57d22bec2a074",
+      "case_id": "attrs-1593",
+      "challenge_runs_ms": 3842,
+      "cohort": "observed_code_and_tests",
+      "expected_raw_outcome": true,
+      "expected_raw_verdict": "PASS",
+      "head_run_ms": 1763,
+      "head_sha": "2e082f1c1efb019885fbdb601b32f8464dbe5d47",
+      "implementation_paths": [
+        "src/attr/_make.py"
+      ],
+      "integrity": {
+        "bundle_digest": true,
+        "exact_subject": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true,
+        "standalone_source_binding": true
+      },
+      "integrity_ok": true,
+      "observed_workflow": true,
+      "pr_number": 1593,
+      "pr_url": "https://github.com/python-attrs/attrs/pull/1593",
+      "raw_status": "success",
+      "raw_verdict": "PASS",
+      "repository": "python-attrs/attrs",
+      "tests_changed": true,
+      "title": "Fix ClassVar forward reference detection",
+      "value_interpretation": "bounded_reassurance",
+      "verifier": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/test_annotations.py",
+        "-q"
+      ],
+      "verifier_total_ms": 5605,
+      "verifier_work_ratio": 3.179,
+      "wall_seconds": 7.064
+    },
+    {
+      "adaptive_action": "run",
+      "artifact_dir": "cases/more-itertools-1223",
+      "base_sha": "516f0a80fb7c2c8562dbb5e318fc2a3d44f4171f",
+      "case_id": "more-itertools-1223",
+      "challenge_runs_ms": 11275,
+      "cohort": "observed_code_and_tests",
+      "expected_raw_outcome": true,
+      "expected_raw_verdict": "PASS",
+      "head_run_ms": 5839,
+      "head_sha": "0e6acdf9b60765ecf9634d6f5c132ac1bebc616b",
+      "implementation_paths": [
+        "more_itertools/more.py"
+      ],
+      "integrity": {
+        "bundle_digest": true,
+        "exact_subject": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true,
+        "standalone_source_binding": true
+      },
+      "integrity_ok": true,
+      "observed_workflow": true,
+      "pr_number": 1223,
+      "pr_url": "https://github.com/more-itertools/more-itertools/pull/1223",
+      "raw_status": "success",
+      "raw_verdict": "PASS",
+      "repository": "more-itertools/more-itertools",
+      "tests_changed": true,
+      "title": "Raise a clear ValueError for negative n in chunked()",
+      "value_interpretation": "bounded_reassurance",
+      "verifier": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/test_more.py",
+        "-q"
+      ],
+      "verifier_total_ms": 17114,
+      "verifier_work_ratio": 2.931,
+      "wall_seconds": 18.361
+    },
+    {
+      "adaptive_action": "skip",
+      "artifact_dir": "cases/structlog-821",
+      "base_sha": "e3ae36ad918e8ec7a22fd600df6c03b72cdf455d",
+      "case_id": "structlog-821",
+      "challenge_runs_ms": 3348,
+      "cohort": "observed_behavior_preserving_control",
+      "expected_raw_outcome": true,
+      "expected_raw_verdict": "WARN",
+      "head_run_ms": 1539,
+      "head_sha": "7818f4e3b002d6cde99ceedf8d258b85239a4b47",
+      "implementation_paths": [
+        "src/structlog/_base.py"
+      ],
+      "integrity": {
+        "bundle_digest": true,
+        "exact_subject": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true,
+        "standalone_source_binding": true
+      },
+      "integrity_ok": true,
+      "observed_workflow": true,
+      "pr_number": 821,
+      "pr_url": "https://github.com/hynek/structlog/pull/821",
+      "raw_status": "not_distinguished",
+      "raw_verdict": "WARN",
+      "repository": "hynek/structlog",
+      "tests_changed": false,
+      "title": "Avoid kwargs unpacking in _process_event hot path",
+      "value_interpretation": "noisy_if_run_by_default",
+      "verifier": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/test_base.py",
+        "-q"
+      ],
+      "verifier_total_ms": 4887,
+      "verifier_work_ratio": 3.175,
+      "wall_seconds": 6.206
+    },
+    {
+      "adaptive_action": "skip",
+      "artifact_dir": "cases/more-itertools-1161",
+      "base_sha": "64be96ceb2a6e836f76f069f4a96d2394d59fd0c",
+      "case_id": "more-itertools-1161",
+      "challenge_runs_ms": 3050,
+      "cohort": "observed_behavior_preserving_control",
+      "expected_raw_outcome": true,
+      "expected_raw_verdict": "WARN",
+      "head_run_ms": 1460,
+      "head_sha": "f7b44bba5c4a73ed42bab52cb8ede9d742d95e16",
+      "implementation_paths": [
+        "more_itertools/more.py"
+      ],
+      "integrity": {
+        "bundle_digest": true,
+        "exact_subject": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true,
+        "standalone_source_binding": true
+      },
+      "integrity_ok": true,
+      "observed_workflow": true,
+      "pr_number": 1161,
+      "pr_url": "https://github.com/more-itertools/more-itertools/pull/1161",
+      "raw_status": "not_distinguished",
+      "raw_verdict": "WARN",
+      "repository": "more-itertools/more-itertools",
+      "tests_changed": false,
+      "title": "Small speedup for minmax()",
+      "value_interpretation": "noisy_if_run_by_default",
+      "verifier": [
+        "python",
+        "-m",
+        "pytest",
+        "tests/test_more.py::MinMaxTests",
+        "-q"
+      ],
+      "verifier_total_ms": 4510,
+      "verifier_work_ratio": 3.089,
+      "wall_seconds": 5.704
+    },
+    {
+      "adaptive_action": "run",
+      "artifact_dir": "cases/click-3678-under-scoped",
+      "base_sha": "8c1a0a7abbc1c36f70d1f65f3604acc46c5ce6ab",
+      "case_id": "click-3678-under-scoped",
+      "challenge_runs_ms": 10667,
+      "cohort": "controlled_under_scoped_verifier",
+      "expected_raw_outcome": true,
+      "expected_raw_verdict": "WARN",
+      "head_run_ms": 4988,
+      "head_sha": "a28d839d3e68bb81b77bcd862fb29e35dcf894f9",
+      "implementation_paths": [
+        "src/click/core.py"
+      ],
+      "integrity": {
+        "bundle_digest": true,
+        "exact_subject": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true,
+        "standalone_source_binding": true
+      },
+      "integrity_ok": true,
+      "observed_workflow": false,
+      "pr_number": 3678,
+      "pr_url": "https://github.com/pallets/click/pull/3678",
+      "raw_status": "not_distinguished",
+      "raw_verdict": "WARN",
+      "repository": "pallets/click",
+      "tests_changed": true,
+      "title": "Controlled run excluding every test file changed by the pull request",
+      "value_interpretation": "mechanism_only_actionable",
+      "verifier": [
+        "python",
+        "-m",
+        "pytest",
+        "tests",
+        "--ignore=three changed test files",
+        "-q"
+      ],
+      "verifier_total_ms": 15655,
+      "verifier_work_ratio": 3.139,
+      "wall_seconds": 16.948
+    }
+  ],
+  "claim_boundary": "This exploratory benchmark establishes bounded mechanism behavior and a low-noise trigger hypothesis. It does not establish alert precision, avoided defects, decision impact, retention, willingness to pay, or superiority over coverage or mutation testing.",
+  "default_enablement": "DO_NOT_ENABLE_BY_DEFAULT",
+  "mechanism_result": "PASS",
+  "metrics": {
+    "adaptive_eligible": 6,
+    "adaptive_skipped": 2,
+    "behavior_preserving_raw_warnings": {
+      "denominator": 2,
+      "numerator": 2,
+      "rate": 1.0
+    },
+    "cases": 8,
+    "controlled_under_scoped_detected": {
+      "denominator": 1,
+      "numerator": 1,
+      "rate": 1.0
+    },
+    "expected_raw_outcomes": {
+      "denominator": 8,
+      "numerator": 8,
+      "rate": 1.0
+    },
+    "external_actionable_findings": 0,
+    "external_decision_changes": 0,
+    "integrity": {
+      "denominator": 8,
+      "numerator": 8,
+      "rate": 1.0
+    },
+    "median_cli_wall_seconds": 7.008,
+    "median_head_run_seconds": 1.756,
+    "median_verifier_total_seconds": 5.611,
+    "median_verifier_work_ratio": 3.157,
+    "noisy_recommendations_avoided_by_scope": {
+      "denominator": 2,
+      "numerator": 2,
+      "rate": 1.0
+    },
+    "observed_code_and_tests_distinguished": {
+      "denominator": 5,
+      "numerator": 5,
+      "rate": 1.0
+    },
+    "raw_verdicts": {
+      "PASS": 5,
+      "WARN": 3
+    },
+    "repositories": 5
+  },
+  "product_direction": "CONTINUE_NARROW_PLUGIN_EXPERIMENT",
+  "recommended_scope": "Pull requests that change implementation and tests, or an explicit operator declaration that the verifier should distinguish a behavior change.",
+  "roi_status": "UNPROVEN_REQUIRES_EXTERNAL_USE",
+  "schema_version": "aos-change-proof-plugin-results/v0",
+  "study_id": "aos-change-proof-plugin-2026-08-01",
+  "study_status": "EXPLORATORY_NOT_PREREGISTERED",
+  "unmeasured_without_users": [
+    "alert acceptance rate",
+    "test-strengthening rate",
+    "merge decision-change rate",
+    "incremental defects prevented",
+    "review time saved",
+    "four-week retention",
+    "willingness to pay"
+  ]
+}

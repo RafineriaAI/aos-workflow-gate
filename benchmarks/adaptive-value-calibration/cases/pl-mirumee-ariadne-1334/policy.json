@@ -1,0 +1,52 @@
+{
+  "advisory_sources": [
+    "CodeRabbit",
+    "Generate and publish coverage report",
+    "Prelint",
+    "Prelint: Decision Review",
+    "branch.rules",
+    "build (3.10)",
+    "build (3.11)",
+    "build (3.12)",
+    "build (3.13)",
+    "build (3.14)",
+    "codecov/patch",
+    "codecov/project",
+    "integration (test-integration-fastapi, 3.10)",
+    "integration (test-integration-fastapi, 3.11)",
+    "integration (test-integration-fastapi, 3.12)",
+    "integration (test-integration-fastapi, 3.13)",
+    "integration (test-integration-fastapi, 3.14)",
+    "integration (test-integration-flask, 3.10)",
+    "integration (test-integration-flask, 3.11)",
+    "integration (test-integration-flask, 3.12)",
+    "integration (test-integration-flask, 3.13)",
+    "integration (test-integration-flask, 3.14)",
+    "integration (test-integration-starlette, 3.10)",
+    "integration (test-integration-starlette, 3.11)",
+    "integration (test-integration-starlette, 3.12)",
+    "integration (test-integration-starlette, 3.13)",
+    "integration (test-integration-starlette, 3.14)"
+  ],
+  "mode": "advisory",
+  "policy_id": "collected-advisory",
+  "required_sources": [],
+  "required_status_semantics": "github",
+  "rules": {
+    "advisory_warning": "PASS",
+    "failed_required_source": "BLOCK",
+    "incomplete_collection": "WARN",
+    "malformed_input": "BLOCK",
+    "missing_required_source": "BLOCK",
+    "no_required_sources": "WARN",
+    "non_independent_evidence": "WARN",
+    "sarif_findings": "WARN",
+    "verifier_change_unavailable": "WARN"
+  },
+  "schema_version": "draft-0",
+  "subject": {
+    "require_repository": true,
+    "require_sha": true
+  },
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

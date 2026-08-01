@@ -1,17 +1,36 @@
 # Executable Change Proof
 
-Status: experimental local product slice included in `v0.38.0`. It is not
-enabled by the default GitHub Action and is not evidence of external
-product-market fit.
+Status: experimental local plug-in included in `v0.38.0`. It is not enabled by
+the default GitHub Action and is not evidence of external product-market fit.
 
 `prove-change` answers one concrete code-review question:
 
-> Do the supplied checks distinguish the implementation in this commit from
-> the implementation at its merge base?
+> The tests pass, but would they still pass without the implementation change?
 
-It does not ask an LLM for a verdict. It runs an explicit verifier command at
-the exact `HEAD`, removes the selected implementation changes in a disposable
-Git worktree while retaining the PR's tests, and runs the same command again.
+AOS is an add-on to an existing targeted test command, not a replacement for a
+test runner, coverage service, scanner, or reviewer. It does not ask an LLM for
+a verdict. It runs the supplied verifier at exact `HEAD`, removes selected
+implementation changes in disposable Git worktrees while retaining the PR's
+tests, and runs the same verifier again.
+
+## Product role and calibrated scope
+
+Run Change Proof when a pull request changes implementation and tests, or when
+an operator explicitly states that the verifier should observe a behavior
+change. Skip it by default for formatting, documentation, behavior-preserving
+refactors, and performance-only changes unless the supplied verifier measures
+the intended effect.
+
+Use a fast targeted command. AOS runs one `HEAD` check and two challenge checks.
+It should be inserted after ordinary tests in CI or an agent workflow, not used
+as a separate quality system.
+
+The motivation is measurable but does not prove AOS value: a 2026
+[study of 4,882 agent-generated pull requests](https://arxiv.org/abs/2607.18057)
+found that agents changed tests in 49.6% of code-changing PRs, while only
+22.5% of Python code-and-test PRs improved coverage. Coverage and Change Proof
+answer different questions; this evidence
+only supports testing the product hypothesis.
 
 ## First run
 
@@ -127,10 +146,28 @@ and verifier command to remain available.
 - The experiment does not infer requirements from tickets, documentation, or
   business rules and does not generate adversarial tests yet.
 
-## Validation target
+## Current benchmark and advancement gate
 
-The feature should advance beyond experimental status only if external use
-shows that `change_not_distinguished` findings are accepted, cause stronger
-tests or changed merge decisions, add findings beyond ordinary CI and mutation
-tools, and remain low-noise at acceptable runtime cost. Internal fixtures prove
-mechanics only.
+The exploratory plug-in benchmark covers eight exact-SHA cases from five
+public repositories. The mechanism and replay passed in 8/8 cases. Tests
+distinguished the implementation in 5/5 real code-and-test PRs. A controlled
+under-scoped verifier produced the expected warning. Raw Change Proof also
+warned for 2/2 behavior-preserving or performance changes, showing why
+eligibility must be calibrated. Median CLI time was 7.008 seconds and median
+verifier work was 3.157 times one `HEAD` run in this small, fast sample.
+
+These are mechanism observations. There were no external accepted warnings,
+decision changes, retained installations, or ROI observations. See the
+[generated report](../benchmarks/change-proof-plugin/REPORT.md).
+
+Do not enable the feature by default or define a paid offer until external use
+meets all of these conditions:
+
+1. at least 50 eligible PRs across at least five independent repositories;
+2. at least 50% of warnings lead to an accepted verifier improvement;
+3. irrelevant or wrong warnings and inconclusive runs are each at most 10%;
+4. median added wall time is below two minutes for the targeted verifier;
+5. setup takes at most ten minutes in at least 80% of repositories;
+6. at least 20% of accepted warnings change merge readiness or catch a weak
+   test before review;
+7. at least half of trial repositories retain the plug-in after four weeks.

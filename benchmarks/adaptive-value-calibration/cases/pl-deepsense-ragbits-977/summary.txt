@@ -1,0 +1,77 @@
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).
+record: benchmarks\adaptive-value-calibration\cases\pl-deepsense-ragbits-977\gate-decision.json
+Merge protection: 0 required status check(s) enforced by none on 'main'.
+GitHub baseline (status checks only): no_required_checks.
+Effect: nothing in the branch rules blocks this merge on status checks; the record is evidence, not enforcement.
+Workflow visibility: 1 execution unit(s) on this commit have not started: github-pages
+Counterfactual: would BLOCK if required: packages / Run linters
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: WARN
+
+**Problem:** GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+**Decision contrast:** GitHub has no required status-check gate for this branch; AOS records that coverage fact separately.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 0 required (0 successful); 24 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on deepsense-ai/ragbits@d21c343e60e5; not full merge-readiness
+**Freshness:** observed 2026-08-01T09:37:22Z; collection complete; 1 workflow unit(s) had not started
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | deepsense-ai/ragbits |
+| Ref | `refs/pull/977/head` |
+| Commit | `d21c343e60e5dd1ede8fce2342d681672a4aedec` |
+| Pull request | #977 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:d7a2e04b45e87a1658ceb9dcf4605b1672e1244e81bd28515267fc020a6c605d` |
+| Input bundle digest | `sha256:7b36d850e6c9b40da9c039321d407313bf7c4dbca83c912153b0e3c5b6c7431b` |
+| Record digest | `sha256:dff8165c7c1d4c30a6adea260dc7b08cea2c96e457d4ab818ad238f218d8c95d` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+### Top gaps
+
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| Check changelog update | github\_check | no | success |
+| Check pull request title | github\_check | no | success |
+| Check source changes | github\_check | no | success |
+| Test Results (package, Python 3.10) | github\_check | no | success |
+| Test Results (package, Python 3.11) | github\_check | no | success |
+| Test Results (package, Python 3.12) | github\_check | no | success |
+| Test Results (package, Python 3.13) | github\_check | no | success |
+| Test Results (source, Python 3.10) | github\_check | no | success |
+| Test Results (source, Python 3.11) | github\_check | no | success |
+| Test Results (source, Python 3.12) | github\_check | no | success |
+| Test Results (source, Python 3.13) | github\_check | no | success |
+| branch.rules | branch\_rules\_summary | no | success |
+| client / Run client checks | github\_check | no | success |
+| packages / Run build | github\_check | no | success |
+| packages / Run linters | github\_check | no | failure |
+| packages / Run tests (3.10, package) | github\_check | no | success |
+| packages / Run tests (3.10, source) | github\_check | no | success |
+| packages / Run tests (3.11, package) | github\_check | no | success |
+| packages / Run tests (3.11, source) | github\_check | no | success |
+| packages / Run tests (3.12, package) | github\_check | no | success |
+| packages / Run tests (3.12, source) | github\_check | no | success |
+| packages / Run tests (3.13, package) | github\_check | no | success |
+| packages / Run tests (3.13, source) | github\_check | no | success |
+| ui / Run linters & tests | github\_check | no | success |
+
+### Coverage
+
+- Required sources: 0 of 24
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "Check changelog update, Check pull request title, Check source changes, Test Results (package, Python 3.10), Test Results (package, Python 3.11)"`

@@ -1,8 +1,26 @@
 # Contributing
 
-`aos-workflow-gate` is a public advisory preview. Contributions must preserve
-its deterministic decision model, replay path, read-only defaults, and explicit
-claim boundaries.
+`aos-workflow-gate` is a free public experiment. Its mechanism works, but the
+project has not yet proved that it solves a frequent problem for most
+developers.
+
+## What we need now
+
+The most useful contribution is a reproducible real case, especially:
+
+- AOS found a problem that GitHub did not make clear;
+- an AOS warning was wrong, obvious, or not worth acting on;
+- the suggested next step was unclear or impossible;
+- a common repository setup was interpreted incorrectly;
+- a repeated review problem could be expressed as one small, low-noise rule.
+
+Include the public pull request or a minimal fixture, what GitHub showed, what
+AOS showed, and what a maintainer actually did. Do not include secrets or
+private source code. Architecture changes are secondary until these cases show
+which problem is worth solving.
+
+Code contributions must preserve repeatable decisions, offline verification,
+read-only defaults, and honest limits on what the result proves.
 
 ## First setup
 
@@ -60,9 +78,9 @@ Commit messages should describe the observable change, for example:
 
 ## Review requirements
 
-CODEOWNERS routes review to the current maintainer. Changes to verdict
-semantics, canonicalization, evidence digests, source contracts, permissions,
-release controls, or public claims require explicit maintainer review.
+CODEOWNERS routes review to the current maintainer. Changes to verdict meaning,
+saved-record compatibility, permissions, release controls, or public claims
+require explicit maintainer review.
 
 A contribution is ready when:
 
