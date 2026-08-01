@@ -1,15 +1,26 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any
 
 import pytest
 
 from tools.community_value_calibration import (
     DEFAULT_STUDY,
+    _sha256_portable_text_file,
     analyze,
     render_report,
 )
+
+
+def test_frozen_text_digest_is_independent_of_line_endings(tmp_path: Path) -> None:
+    lf = tmp_path / "lf.json"
+    crlf = tmp_path / "crlf.json"
+    lf.write_bytes(b'{\n  "value": true\n}\n')
+    crlf.write_bytes(b'{\r\n  "value": true\r\n}\r\n')
+
+    assert _sha256_portable_text_file(lf) == _sha256_portable_text_file(crlf)
 
 
 @pytest.fixture(scope="module")

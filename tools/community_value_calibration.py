@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from collections import Counter
@@ -34,6 +35,12 @@ VALUE_CLASSES = {
     "insufficient",
 }
 ALIGNED = {"direct", "strong_indirect"}
+
+
+def _sha256_portable_text_file(path: Path) -> str:
+    """Hash repository text without platform-specific line endings."""
+    content = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return "sha256:" + hashlib.sha256(content).hexdigest()
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -288,9 +295,9 @@ def analyze(study_root: Path) -> dict[str, Any]:
     reviews = _review_map(study_root / "review-outcomes.json")
 
     expected_digests = {
-        "manifest_digest": _sha256_file(manifest_path),
-        "calibration_digest": _sha256_file(calibration_path),
-        "stage_a_digest": _sha256_file(stage_a_path),
+        "manifest_digest": _sha256_portable_text_file(manifest_path),
+        "calibration_digest": _sha256_portable_text_file(calibration_path),
+        "stage_a_digest": _sha256_portable_text_file(stage_a_path),
     }
     for field, expected in expected_digests.items():
         if selection.get(field) != expected:
@@ -344,9 +351,9 @@ def analyze(study_root: Path) -> dict[str, Any]:
     return {
         "schema_version": "aos-adaptive-value-results/v0",
         "study_id": manifest["study_id"],
-        "manifest_digest": _sha256_file(manifest_path),
-        "calibration_digest": _sha256_file(calibration_path),
-        "stage_a_digest": _sha256_file(stage_a_path),
+        "manifest_digest": _sha256_portable_text_file(manifest_path),
+        "calibration_digest": _sha256_portable_text_file(calibration_path),
+        "stage_a_digest": _sha256_portable_text_file(stage_a_path),
         "sample": {
             "cases": len(cases),
             "polish_cases": polish,

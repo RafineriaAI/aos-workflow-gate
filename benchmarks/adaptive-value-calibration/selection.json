@@ -5,7 +5,7 @@
     "status":  "LOCKED_BEFORE_HOLDOUT_AOS",
     "manifest_digest":  "sha256:3ea2c544c63b5bfd6c98b97dcc207e53cfe9f6cbf78e74f65be5c7aceb8b263b",
     "calibration_digest":  "sha256:8c99909cab656c4d593ec77ab087ffcf6ed4064aa7cd9d8e83181087b3818912",
-    "stage_a_digest":  "sha256:413dbce88fd3bd6dc38ed3d1d1dce49996cf0bb6715b61795d6c56d5ed58239d",
+    "stage_a_digest":  "sha256:2e2dc9c7a07571daa535bde38e1027b428f05f1d537000ae35dda7d4425b7bd4",
     "selection_source":  "Public GitHub pull-request metadata, exact-head pull_request workflow runs and public human review frozen before AOS.",
     "selected_cases":  10,
     "polish_cases":  5,
