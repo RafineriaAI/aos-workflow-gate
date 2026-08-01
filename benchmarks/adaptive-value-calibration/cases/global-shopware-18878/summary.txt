@@ -1,0 +1,18 @@
+PASS  Gate PASS: all required checks satisfied; no advisory warnings.
+record: benchmarks\adaptive-value-calibration\cases\global-shopware-18878\gate-decision.json
+Merge protection: 6 required status check(s) enforced by classic_branch_protection on 'trunk'.
+Fork PR: some checks may not run for forks by repository policy.
+Counterfactual: would BLOCK if required: Archive preview environment, CodeQL, Create or migrate preview environment, PHP update 6.6 -> 6.7, Smoke test with lowest dependencies, Windows check, acceptance-status-check, activation, agent, apply-team-label, claude, cleanup-needs-triage, close-stale-issues, conclusion, detection, mark-stale-issues, move-to-wip, pre_activation, priority-sync, safe_outputs, sw-impact check, sync-test-plan-sub-issue
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: PASS
+
+**Result:** Every required check AOS evaluated completed successfully for this commit.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+**Next step:** set enforce: "true" (or a blocking policy) so a BLOCK verdict fails the job
+
+**Signals:** 6 required (6 successful); 86 other observation(s)
+**Scope:** 6 required check(s) plus recorded workflow signals on shopware/shopware@aa21ca853d40; requirements read from classic\_branch\_protection; not full merge-readiness
+**Freshness:** observed 2026-08-01T09:36:46Z; collection complete
+
+Record `sha256:1bce75850645f91231c7c08da58538ad8284c81c6a7863b79679ca18e20664d4` | bundle `sha256:70589854bb0976bd0a57d0437bb59fb56925842df29f39cc0d019154c3f8b0b1` | self-check OK | UNSIGNED\_NOT\_OFFICIAL

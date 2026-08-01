@@ -1,0 +1,77 @@
+BLOCK  Gate BLOCK: 2 blocking issue(s). missing_required_source:argos; missing_required_source:deploy/netlify
+record: benchmarks\real-workflow-utility\cases\global-mui-material-ui-48888\gate-decision.json
+Merge protection: 16 required status check(s) enforced by rulesets on 'master'.
+GitHub baseline (status checks only): waiting.
+Fork PR: some checks may not run for forks by repository policy.
+Unverifiable (cannot be shown to satisfy the requirement - app-bound requirement identity mismatch or unreadable stream; fails closed as missing): argos, deploy/netlify
+Counterfactual: would BLOCK if required: test-label-applied
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: BLOCK
+
+**Problem:** AOS could not verify required check 'argos'.
+**Why it matters:** A result may exist, but AOS cannot confirm that it satisfies the required control identity.
+**Affected area:** Required control 'argos'
+**Severity:** BLOCK
+**Next step:** restore app identity or API visibility for required check 'argos' on this exact commit, then re-run the gate
+**Decision contrast:** GitHub already blocks or waits on required checks; AOS explains and preserves that existing control gap.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 16 required (14 successful); 3 other observation(s)
+**Scope:** 16 required check(s) plus recorded workflow signals on mui/material-ui@0638f439ab59; requirements read from rulesets; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:49:06Z; collection wait\_timeout
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | mui/material-ui |
+| Ref | `refs/pull/48888/head` |
+| Commit | `0638f439ab59289fa49a7d9202cfefc07364fbea` |
+| Pull request | #48888 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:5c328680a30ddd2ae3f2238ee850a45fccac80b482eed8231d699a9a00e2cb9c` |
+| Input bundle digest | `sha256:c56419182f90c32145f0b22372c31ef5b00d4d5115c4c2edc7d6cf8b6adffa66` |
+| Record digest | `sha256:10662b9ecf0ac5e5a0b9676c45c317779243524fed327df0593835917fdb925e` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+**Dominant problem:** 'argos': required source is absent from the bundle (requirement state: unverifiable)
+
+### Top gaps
+
+- BLOCK `missing_required_source` argos: required source is absent from the bundle (requirement state: unverifiable)
+  - Hint: restore app identity or API visibility for required check 'argos' on this exact commit, then re-run the gate
+- BLOCK `missing_required_source` deploy/netlify: required source is absent from the bundle (requirement state: unverifiable)
+  - Hint: restore app identity or API visibility for required check 'deploy/netlify' on this exact commit, then re-run the gate
+- WARN `incomplete_collection` -: collection ended 'wait\_timeout', not 'complete': signals that exist for this commit may be absent from the bundle, so a clean result cannot be read as a complete PASS
+  - Hint: increase the wait budget or wait for checks to settle, then collect this exact commit again
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| Continuous Releases | github\_check | yes | success |
+| Publish Dry Run | github\_check | no | success |
+| branch.rules | branch\_rules\_summary | no | success |
+| ci/circleci: test\_browser | commit\_status | yes | success |
+| ci/circleci: test\_browser\_legacy | commit\_status | yes | success |
+| ci/circleci: test\_bundle\_size\_monitor | commit\_status | yes | success |
+| ci/circleci: test\_e2e | commit\_status | yes | success |
+| ci/circleci: test\_e2e\_website | commit\_status | yes | success |
+| ci/circleci: test\_lint | commit\_status | yes | success |
+| ci/circleci: test\_regressions | commit\_status | yes | success |
+| ci/circleci: test\_static | commit\_status | yes | success |
+| ci/circleci: test\_types | commit\_status | yes | success |
+| ci/circleci: test\_unit | commit\_status | yes | success |
+| test-dev (macos-latest) | github\_check | yes | success |
+| test-dev (ubuntu-latest) | github\_check | yes | success |
+| test-dev (windows-latest) | github\_check | yes | success |
+| test-label-applied | github\_check | no | failure |
+
+### Coverage
+
+- Required sources: 14 of 17
+- Required evidence: `Continuous Releases`, `ci/circleci: test_browser`, `ci/circleci: test_browser_legacy`, `ci/circleci: test_bundle_size_monitor`, `ci/circleci: test_e2e`, `ci/circleci: test_e2e_website`, `ci/circleci: test_lint`, `ci/circleci: test_regressions`, `ci/circleci: test_static`, `ci/circleci: test_types`, `ci/circleci: test_unit`, `test-dev (macos-latest)`, `test-dev (ubuntu-latest)`, `test-dev (windows-latest)`
+
+- Advisory only: a BLOCK verdict would not fail the job (no enforcement configured).

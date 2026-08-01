@@ -3,9 +3,17 @@
 Current maturity: **Preview**.
 
 Published version: **v0.38.0**. Distribution is free, public, self-serve, and
-advisory by default. This is suitable for evaluating the product,
-not a recommendation for unattended production enforcement. Product-claim status
-remains **NO_GO**.
+advisory by default. Preview means: try it, check whether the warning helped,
+and report what happened. Do not let it block production changes without human
+review.
+
+The mechanism is tested. Everyday value is not proven. The GitHub-gate holdout
+found no new action matching material reviewer problems in ten real pull
+requests. The Change Proof plug-in experiment passed mechanics in 8/8 cases,
+but also showed raw noise in 2/2 behavior-preserving controls and observed no
+external accepted warning or decision change. Keep it opt-in and narrowly
+eligible. See [Change Proof](../benchmarks/change-proof-plugin/REPORT.md) and
+[Should AOS continue?](../benchmarks/adaptive-value-calibration/REPORT.md).
 
 The machine-readable declaration is
 [RELEASE_STATUS.json](RELEASE_STATUS.json). Release checks require it to
@@ -33,7 +41,9 @@ All are required:
 3. every non-PASS result keeps Reason + Impact + Next step + Severity;
 4. at least one independent controlled deployment completes with a named
    owner, rollback path, and recorded accepted/ignored findings;
-5. known limitations and false positives are public.
+5. known limitations and false positives are public;
+6. Change Proof, if included, is opt-in and limited to code-and-test changes or
+   an explicitly declared behavior-sensitive verifier.
 
 ### Pilot to Production Candidate
 

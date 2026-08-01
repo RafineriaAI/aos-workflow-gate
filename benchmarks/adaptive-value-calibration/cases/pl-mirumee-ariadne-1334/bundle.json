@@ -1,0 +1,589 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+      "repository": "mirumee/ariadne"
+    },
+    "observed_at": "2026-08-01T09:36:20Z",
+    "pr": {
+      "draft": false,
+      "from_fork": false,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "tests/asgi/test_websockets_graphql_ws.py"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "38059a47f7a0d1656a57a88d51f11cb7d5faed0e",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "pull_request": 1334,
+        "repository": "mirumee/ariadne"
+      },
+      "unchanged_workflow_runs": 2,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 8329,
+          "app_slug": "vercel",
+          "check_suite_id": 82848696544,
+          "conclusion": null,
+          "source": "check_suites",
+          "state": "pending",
+          "status": "queued"
+        },
+        {
+          "app_id": 867647,
+          "app_slug": "greptile-apps",
+          "check_suite_id": 82848697031,
+          "conclusion": null,
+          "source": "check_suites",
+          "state": "pending",
+          "status": "queued"
+        }
+      ],
+      "states": {
+        "action_required": 0,
+        "completed": 4,
+        "pending": 2
+      },
+      "units_total": 6
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:a98afce42b7bdc9c3ccc59bb602012365c1dd1b803714b66283f86937b6671bd",
+      "id": "CodeRabbit",
+      "identity": {
+        "context": "CodeRabbit",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'CodeRabbit' is success."
+    },
+    {
+      "digest": "sha256:62909ba5d9d32a2e7f78663c4e19542582a9b4f32cb4690f347fe6eae5f3ee75",
+      "id": "Generate and publish coverage report",
+      "identity": {
+        "check_run_id": 90916784964,
+        "completed_at": "2026-07-30T15:21:18Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "Generate and publish coverage report",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:21:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916784964 concluded success."
+    },
+    {
+      "digest": "sha256:3ecf169aa5355d5f74025d594a8b70e4b2b60b8016d2b3773f038a9c12348e3a",
+      "id": "Prelint",
+      "identity": {
+        "check_run_id": 90916763555,
+        "completed_at": "2026-07-30T15:20:19Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "Prelint",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:20:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916763555 concluded success."
+    },
+    {
+      "digest": "sha256:853e63af17c5472d9e1901949089499eec7731d9520dda1156fcaa885d4ff6e1",
+      "id": "Prelint: Decision Review",
+      "identity": {
+        "check_run_id": 90916764828,
+        "completed_at": "2026-07-30T15:20:57Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "Prelint: Decision Review",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:20:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916764828 concluded success."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:8e0a05413016a59b3a173843f3245327487428da94d509bdb6b721877d67b9ea",
+      "id": "build (3.10)",
+      "identity": {
+        "check_run_id": 90916785239,
+        "completed_at": "2026-07-30T15:21:48Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "build (3.10)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:21:48Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785239 concluded success."
+    },
+    {
+      "digest": "sha256:324abd5ea111516db5f97ab72fa0ba5938e251f78cc75da0ea8fdbf0dc0ad4a4",
+      "id": "build (3.11)",
+      "identity": {
+        "check_run_id": 90916785251,
+        "completed_at": "2026-07-30T15:21:43Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "build (3.11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:21:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785251 concluded success."
+    },
+    {
+      "digest": "sha256:005ae4f325a17c5ee3bf98cb30711b6719f890f47f6f0329c9e1e364fa5c20d0",
+      "id": "build (3.12)",
+      "identity": {
+        "check_run_id": 90916785465,
+        "completed_at": "2026-07-30T15:21:51Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "build (3.12)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:21:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785465 concluded success."
+    },
+    {
+      "digest": "sha256:9330f91ac7df34f79ea08bff0e37eedc2c2e9976c2f265e99a51c2372d2ae6b9",
+      "id": "build (3.13)",
+      "identity": {
+        "check_run_id": 90916785310,
+        "completed_at": "2026-07-30T15:21:55Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "build (3.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:21:55Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785310 concluded success."
+    },
+    {
+      "digest": "sha256:0db24144dc33ea829daa51de5e3efbc2de12fb71ab3646018d511c38182be0c5",
+      "id": "build (3.14)",
+      "identity": {
+        "check_run_id": 90916785167,
+        "completed_at": "2026-07-30T15:21:34Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "build (3.14)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:21:34Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785167 concluded success."
+    },
+    {
+      "digest": "sha256:cb7a413d884ba48b1cd4f27fed07092a9520504dc3c72313f71ad5ada0136e93",
+      "id": "codecov/patch",
+      "identity": {
+        "check_run_id": 91173134282,
+        "completed_at": "2026-07-31T13:47:03Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "codecov/patch",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T13:47:03Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91173134282 concluded success."
+    },
+    {
+      "digest": "sha256:01e8b88f366d99a8a4ac71d3422948a5f9ca0d2b90707751364def5b7ca2826d",
+      "id": "codecov/project",
+      "identity": {
+        "check_run_id": 91173131337,
+        "completed_at": "2026-07-31T13:47:03Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "codecov/project",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T13:47:03Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91173131337 concluded success."
+    },
+    {
+      "digest": "sha256:8bd889a3ab452ce3dc27ffc03d00b5ec0d060620643159817ebc06b312b20da5",
+      "id": "integration (test-integration-fastapi, 3.10)",
+      "identity": {
+        "check_run_id": 90916785228,
+        "completed_at": "2026-07-30T15:19:49Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-fastapi, 3.10)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:49Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785228 concluded success."
+    },
+    {
+      "digest": "sha256:29b9a907b7de26e74062a098ca322e1f50240d115362d682b5f09c4da41c8eca",
+      "id": "integration (test-integration-fastapi, 3.11)",
+      "identity": {
+        "check_run_id": 90916785211,
+        "completed_at": "2026-07-30T15:19:45Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-fastapi, 3.11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:45Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785211 concluded success."
+    },
+    {
+      "digest": "sha256:1aa9f6dc432e0847266fbcebd462bd54b98f6e775952ea31ecc1fd5773e6e772",
+      "id": "integration (test-integration-fastapi, 3.12)",
+      "identity": {
+        "check_run_id": 90916785199,
+        "completed_at": "2026-07-30T15:19:50Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-fastapi, 3.12)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:50Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785199 concluded success."
+    },
+    {
+      "digest": "sha256:432ce42a191250d9ebd1aa1ccaf20d564da879b72b21f9ab636c2c6c835ba8e1",
+      "id": "integration (test-integration-fastapi, 3.13)",
+      "identity": {
+        "check_run_id": 90916785479,
+        "completed_at": "2026-07-30T15:19:44Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-fastapi, 3.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:44Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785479 concluded success."
+    },
+    {
+      "digest": "sha256:481b7e21a8d439e96bbb8b9e8ac76274f7db48fa9fbb158061a8046c1f237249",
+      "id": "integration (test-integration-fastapi, 3.14)",
+      "identity": {
+        "check_run_id": 90916785400,
+        "completed_at": "2026-07-30T15:19:48Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-fastapi, 3.14)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:48Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785400 concluded success."
+    },
+    {
+      "digest": "sha256:d408a2c04cbe8cc5eff01e9e1cba982879c22a33dc63a305e04558bf41a64f04",
+      "id": "integration (test-integration-flask, 3.10)",
+      "identity": {
+        "check_run_id": 90916785543,
+        "completed_at": "2026-07-30T15:19:37Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-flask, 3.10)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:37Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785543 concluded success."
+    },
+    {
+      "digest": "sha256:dd0fcfbd4562f9518f78c3933418467629b3e660c8a3df6c3f452a86a83aca88",
+      "id": "integration (test-integration-flask, 3.11)",
+      "identity": {
+        "check_run_id": 90916785436,
+        "completed_at": "2026-07-30T15:19:37Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-flask, 3.11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:37Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785436 concluded success."
+    },
+    {
+      "digest": "sha256:ae3b1c1843ee4ef7dd5677c151bb70005a957c436cec3cf4811b7860249b3961",
+      "id": "integration (test-integration-flask, 3.12)",
+      "identity": {
+        "check_run_id": 90916785398,
+        "completed_at": "2026-07-30T15:19:40Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-flask, 3.12)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:40Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785398 concluded success."
+    },
+    {
+      "digest": "sha256:204db49d582f683b86003587dc3bd407931f557d14bd0c5632e58359626c30d7",
+      "id": "integration (test-integration-flask, 3.13)",
+      "identity": {
+        "check_run_id": 90916785306,
+        "completed_at": "2026-07-30T15:19:46Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-flask, 3.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:46Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785306 concluded success."
+    },
+    {
+      "digest": "sha256:01395c033746b41dbe34fcdb14457352e53d49886bd1d1c23bb2d9756073c672",
+      "id": "integration (test-integration-flask, 3.14)",
+      "identity": {
+        "check_run_id": 90916785565,
+        "completed_at": "2026-07-30T15:19:43Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-flask, 3.14)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785565 concluded success."
+    },
+    {
+      "digest": "sha256:586c61ef225db84e51568a0480b13385658697d2566faeb248686809158752eb",
+      "id": "integration (test-integration-starlette, 3.10)",
+      "identity": {
+        "check_run_id": 90916785378,
+        "completed_at": "2026-07-30T15:19:39Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-starlette, 3.10)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:39Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785378 concluded success."
+    },
+    {
+      "digest": "sha256:d24ab05fd31c34c2ed8ecfeba11d06ecd5c6ded8b496d1ca8e6611a0642aedc5",
+      "id": "integration (test-integration-starlette, 3.11)",
+      "identity": {
+        "check_run_id": 90916785334,
+        "completed_at": "2026-07-30T15:19:39Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-starlette, 3.11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:39Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785334 concluded success."
+    },
+    {
+      "digest": "sha256:e42c40e87ab287292a2b1d22d95d354224323f3caddda3918ac08704d56da067",
+      "id": "integration (test-integration-starlette, 3.12)",
+      "identity": {
+        "check_run_id": 90916785422,
+        "completed_at": "2026-07-30T15:19:36Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-starlette, 3.12)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785422 concluded success."
+    },
+    {
+      "digest": "sha256:ab7ad0ee7e393bc3bb0d68530181095f0c1f84a22c78530df182b29b762cfd61",
+      "id": "integration (test-integration-starlette, 3.13)",
+      "identity": {
+        "check_run_id": 90916785780,
+        "completed_at": "2026-07-30T15:19:35Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-starlette, 3.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785780 concluded success."
+    },
+    {
+      "digest": "sha256:49c2c01d6be0e6c12bd379ecac9bc6b070ca6d192de89eae342960a307bf5f41",
+      "id": "integration (test-integration-starlette, 3.14)",
+      "identity": {
+        "check_run_id": 90916785439,
+        "completed_at": "2026-07-30T15:19:36Z",
+        "conclusion": "success",
+        "head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+        "name": "integration (test-integration-starlette, 3.14)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T15:19:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90916785439 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 1334,
+    "ref": "refs/pull/1334/head",
+    "repository": "mirumee/ariadne",
+    "sha": "45461703cafebbf7723f0af86278d9c7cbdf4198"
+  }
+}

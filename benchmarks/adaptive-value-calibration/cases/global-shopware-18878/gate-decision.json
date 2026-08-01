@@ -1,0 +1,961 @@
+{
+  "can_block": false,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "ced7112d3e06d6fe402d578a8da7c888e9beea6d2b128c4b97036f1ce70a927d",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
+        "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
+        "cli.py": "b1ed35d34d404000feba0677c7d6d14dc54460d237c51bed6bf56b6ffe0201d9",
+        "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "3e92eb472d7d770e40123c093af238605a4fd4622c87dd968a3b64a60a953ee8",
+        "evidence.py": "2e67d6f1e92dd473b79c19abfb4cdaaba84cb0ee39b951223d3d5995d3869138",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "github_decision_check.py": "d23dbbc449026b69766d1f6267db414620d5cbf3f032028bd0614b753adab897",
+        "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/code-change-proof.yml": "892aaa426ae8a489dba230e4b7f3e2eabfb15202191c39ea1cb9537a9432e6ca",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/project-check.yml": "ff0d8c16a527687adac4eb3c2a391fda565d8c4f0c7f50bb4aa125e6ea145aa0",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "e1e4d6205aa2017bd706b5f0c3cfb479b8de3a0344356b3ecec751d773aa4070",
+        "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
+        "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
+        "requirements.py": "dad78b09daae9f567e9c4f2f53e3104bbdbe3944f8ffe8d87cee4f21544abac9",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "7ac1711975db965fcdcb47f6155cc5b8e219b6e649282cda28e2272d87e57775",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+    "version": "0.38.0"
+  },
+  "input_bundle_digest": "sha256:70589854bb0976bd0a57d0437bb59fb56925842df29f39cc0d019154c3f8b0b1",
+  "inputs": [
+    {
+      "digest": "sha256:824830997d16c48d422dbb50b249ea7ae0397b3fcbb83193046fe2c656d297ca",
+      "id": "8.2 Core/Checkout mysql:8.0",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1cd2f306e1fb7944731796a98e22384498bec738683c248caff6704f8c96d581",
+      "id": "8.2 Core/Content mysql:8.0",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b6b6925d039139a303a2bb2308af8ce4391e8f841d4730b4258b7744d12ed3c7",
+      "id": "8.2 Storefront mysql:8.0",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8d5f7f265654fb6c5fb0029df605cd95275a7e8c9afcf62ba74e8f9776b1b4f7",
+      "id": "8.2 core-framework-batch1 mysql:8.0",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:779a6335ce7e260dc52a570cf013e1ce5066ae2e8f479f51f1e6d68059991004",
+      "id": "8.2 core-framework-batch2 mysql:8.0",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b05d4e56dee7eb77930b5e1655828549485f9de1eebbe9a99f4197498ab0292a",
+      "id": "8.2 core-framework-batch3 mysql:8.0",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:fc44de64b68d323d0d9e529023785abfeff18a9af39077638e7f8962f3570fc0",
+      "id": "8.2 migration mariadb:11",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a236605f4604f4f949b68a9fa409ac0223da31b68b308ce266fe9a7e2dc5b16c",
+      "id": "8.2 migration mysql:8.0",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:40f4370fce1b685ff9688c6f349bcd56dac93d05ad8d516ba31260a1bc2e3401",
+      "id": "8.2 {Administration,Elasticsearch} mysql:8.0",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8e3f9b44a9e390f716e8b734ab58d9b2224b8149af4a775f9f03cf32de8cb206",
+      "id": "8.2 {Core/Installer,Core/Maintenance,Core/Service,Core/System} mysql:8.0",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:009f7e8f7cbbbdaed42db0714b390649336487b83f5ad912100daa9382732c45",
+      "id": "8.5 devops mariadb:11",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:dac3bbf6972c095d44052ab14583221a261d5eecd27aaa6faf182d8639fad42e",
+      "id": "Acceptance code style",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3f0cdaa747bb3f8f28ae2c1c68dab50b12ec0640f67097d8555178003b2de634",
+      "id": "Analyze (javascript)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b35bce988da8ae1dbef4c397a8e92a9da6abf90ee0e0d1d22271bcfb7063a9bb",
+      "id": "Archive preview environment",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:ca800ed48b48802eba8649515acc72640c8fce98394f8ec0dc1b68665cdfa357",
+      "id": "BC check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bcbefd4404147ff3c8acff7a92e5dcdc8df58c63641230a520e78722dccc819d",
+      "id": "CodeQL",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "neutral"
+    },
+    {
+      "digest": "sha256:46fcaa82268c779d908bd98bb2d99a274b0f84c5d6a308aa16fdc043afd17265",
+      "id": "Commercial",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:298444d8f9f6a7251d17dce61e912a232a267e6e3ba6950ef1542393a39628cc",
+      "id": "Composer dependencies",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c43cc73ea971d3d7b63e685f9f0c38eacfb93eee08e5085f1f238c5ced77bc0f",
+      "id": "Core/Checkout",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:87d13174bdc0d87a7f2ee7c4d2cefebe51c52f44419fdb23a918971f8861e684",
+      "id": "Core/Content",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3dc97e90de0614bed317cc89a8dd62c4aaf23d4b152f434522e08c5de7531660",
+      "id": "Create or migrate preview environment",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:36a25a4b1cffee13a44400bbd50ac4d13915773af9319bf36cbb9ff3d41e1a02",
+      "id": "Downstream Mergeability Check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a513a3ce3395c72a1f28f141b00586ae5c55d64499b0f3dbb9dfb0e29f4b6755",
+      "id": "Jest Admin (unit)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:7c6a308a5b8aef3e36986ae86ff5eda3b6a9a576cb8c94a46de3cb5e43412b1f",
+      "id": "Jest Storefront",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:7a936b3cbda68a891dcc2fd9284782373650c3bb172a2c6f01321830d52b441d",
+      "id": "License check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f00458290440509b77f0bd810f6f6b1cd63ce29b3709c589bc1ded8f9c05b10c",
+      "id": "Lighthouse CI",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b731937d343a7e6ac08b5eeb302daa5a5b55f4313835d8c31ee33eba339ca0e9",
+      "id": "PHP blue green 6.6 -> 6.7 -> 6.6",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:084114eb92ba2d75ffbb498f335491c9de7b28054a2b3e53592f104bfd61988f",
+      "id": "PHP blue green 6.7 -> 6.8 -> 6.7",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:48ebe587ebf0c2c28829acb7e644ffbdcf90235a2f376068884a8c7298375e3a",
+      "id": "PHP license check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:5c1d38d8cba98780bed681956b5b533792977f93a767cd095b9304608a4033cd",
+      "id": "PHP lint",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:5b06037688502996838502ad72ce4667c6d4d1f0f373ad4aa5b23989aed89c04",
+      "id": "PHP update 6.6 -> 6.7",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:1581a6bc3a124c9d4016818ac883fa7b829097c0149820b20c2cbb588bf4907f",
+      "id": "PHPStan",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6024069188da4c364b8c5000149ed9dc022ecae5e0e6f1e81fb898315a02d5ba",
+      "id": "PHPUnit for migration",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:93eedaf4a29d44e786fb6c971a2a3f73a826906a5ae0f76e3826525fd4cdaa9f",
+      "id": "PHPUnit for unit",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3c4e8b30315445a4bfcd9658c162775f2494fd6cf83a33498b9f7ccb0c1047bf",
+      "id": "Rector",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:34cc1f1901424987fd1149373999bfe81daea99c9d4f5645b6ca767595650aa0",
+      "id": "Rufus",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8ddc64dfa7604f2e6bde8e1e9b9d959fe522d68d46ae0a64b687466c14ebaf5a",
+      "id": "Run Codeowners Plus",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:185ce06f90c7ee407c48256bc7dd632b6dae348d66ba004dd4e91e3a26d8a9d6",
+      "id": "Smoke test with lowest dependencies",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:e9ad11e24ba504da766a5a2b0326fccb7a17939e9e418fefe202f3bf3839dd25",
+      "id": "Storefront",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b3c0f2da35ab3c7a709f206d57c25802827d6b91b59f297bc06070a51a45bf9b",
+      "id": "Storefront admin-modules code style",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a70cc421537bf8842da4dc09cd12f7705d6643aea31aff8b6e3ac5d7770c1d09",
+      "id": "Twig Lint (Storefront)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a4257611aa6d7065d220f3c93ea463660ee48d73fe119198cefd9b302742aa5c",
+      "id": "Vitest Storefront Components",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f7d726cb2a69fb47d575c611958103cd272f9c1e441cde8c882ca0aeb6b4677c",
+      "id": "Windows check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:aab89bf5252fea42124fc196c7ae0d3be37a6c60d5989043f4b45683c3ec309a",
+      "id": "acceptance (Install, 8.2, 1, 1, true)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ca905b3e8828a8a65dd5af592f115f3cca911e593cf62e0ebb64b126c0905059",
+      "id": "acceptance (Platform, 8.2, 1, 3, true)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:759e2766857cadd4f349d3e2ffd8942ea5e1d4f93e8d20558e0377da4cac622b",
+      "id": "acceptance (Platform, 8.2, 2, 3, true)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bdf872a72e1178708af754d94e43e133c8bc1380e4b7ab183e4197a9d138c68b",
+      "id": "acceptance (Platform, 8.2, 3, 3, true)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:2b90d3d5f9cccd02a273440b551aa8f042946ba2b4d144288eee89b38ea84e77",
+      "id": "acceptance-check",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f8656978124e69a37c6d18ad2d737a35ce2a1b0a5f8c4cb8058c925a50898951",
+      "id": "acceptance-status-check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:ea5cef8bf000fe64ae7638a22189b30d3d2c64210a15c19e932fb5f4577523a5",
+      "id": "acceptance-tests-changed",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8c9dcd19be6c3d43b60b5dbf1bb4020d6e1602e25653f121f140f5aa014565f2",
+      "id": "acceptance-update (v6.6.10.21, lts-latest)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d99773cff4fb02afea83f79896007db36ad4c76ea97cdbc57a893564ac1ebc0e",
+      "id": "acceptance-update (v6.7.0.0, first)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:407d55b70cd2a5e5f1229efb79b17f31352174d94aecaca7ad222de357b2222a",
+      "id": "acceptance-update (v6.7.12.2, latest)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:03aaddd3eac72e6c41527739233afbbd761435adca241dc46d682d43a02aa5fe",
+      "id": "activation",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:0595d30f6da1859bbe1e38695845930d18e9c34ca27587a8d5f0645c258dfa2c",
+      "id": "admin-check",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:103b57b83320dd5532d9b393512cd5d3f2d9803ef879f76671b71a7204020038",
+      "id": "admin-performance-check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:35194617c7ca47ec63b6140950c266a8fe1a75de4b904a783942f6ee3fcf58a3",
+      "id": "agent",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:d060779ed394ad6cf385cd1490e90eef364f1e7b013b1ef981d9abceb69b7ca8",
+      "id": "apply-team-label",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:7b2c5f0e6dac26ec1df34e4e5efdb7d86ece957241227a32080d924cb85d4c91",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d551390146e082fe316e0ece427fab6370cef8b86d9fc1abf035050252bc2b35",
+      "id": "check",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6e5b33b3e20668eb9229c9df7ec19e751c1119ef6ab811987b944ae9e566aaab",
+      "id": "claude",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:cb5c03ffac85dbacaaa51d1c3ce2fb1f28d2a853c701a5f1db76e045a885553b",
+      "id": "cleanup-needs-triage",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:f0b097348a42845362382a225f392f84a5cc879a4b73463aab6bbeaa655dee2d",
+      "id": "close-stale-issues",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:25ea93a968c5723cc74cac7719caa35a42d7535d308f5295da454183600fbdbc",
+      "id": "composer audit",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1ce796119cf1e4589760e14c7c49100ba756568ae496cb837326b2aa978b3184",
+      "id": "conclusion",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:eb81a11dfbfe2054cde4164790e850c811238ddea736181f93cc130b274fce4a",
+      "id": "core-framework-batch1",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:feda4caab5ab7f386eae30ea47da42a2da6c5e45a37b66b89cb07a0657309f25",
+      "id": "core-framework-batch2",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8d514d8243c6f81c63732835fb5234f43491d1c62bb05836efb2f15e1e5aa118",
+      "id": "core-framework-batch3",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d2746040b59b00d7632ba3557a45a15998fcc1d48fa705e82ca553e5679b173d",
+      "id": "detection",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:569fbcf500482f8485e7c2c10bb23165f62df62609dc463e1633f182138859d3",
+      "id": "downstream-check",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:763cb2a6d01cee163b3e3fc29d1daf69ba8e4822213c15695c5db40566f4b12d",
+      "id": "generate-acceptance-matrix",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:0464925df7a7104c1cad13f1949c159dbccde49f792783f46796cfc78c3aa113",
+      "id": "integration-major-check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1daeef3e5c74aa95efe5ada6e63e3ded95ec95a677ec96a685443d61cbd9a1c8",
+      "id": "label",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f560feeae5f76bae9bd82d9d5bbe44b9066cd755841048ec847898ce680a9edb",
+      "id": "license/cla",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:4d8f7cef2216a131a76c33a845bf92e9f8ab541099147e915123f9742f01fba4",
+      "id": "lint",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:85bc78c150c50d06056402c8a31aca8234d4bc57e991dd5a8293babd7edbd30d",
+      "id": "mark-stale-issues",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:f3024bff18f699cf7d81ec94fcf1d33c087cba1fee29b48902d17a053d99e35d",
+      "id": "markdown-only-changes",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:fb98551f6c438c5e22b68503a3c48c2790b46a4ea0dba66ab011dc04e3535026",
+      "id": "move-to-wip",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:ed31be172d281bf8ed62b9f7b762d9102515e50c27eac5b9aa8501426cdd5669",
+      "id": "openapi-lint",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:516ee1568b3f393fb1179a1ba5a8873818a21ad1de1eead15caf936b1152eae6",
+      "id": "php-check",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:16b6bed864719922773654c57bf06c197cacd3334000cbbf71cc034f2da148bb",
+      "id": "phpunit-major-matrix",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6ab85763f2af8a2e33fc607993591ed46bad0375d96cec6630900a678785179c",
+      "id": "phpunit-matrix",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ec5676a969e6835f2f4a6970eac6ec7a674159d8990ac06c84ac5c9ca2f3d547",
+      "id": "pr",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:87b93006465658e9d7c35ad26c45f781a570f0fb2062373951ad85ad6c198707",
+      "id": "pre_activation",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:845de11ca6d6dcd1592799161d1e59dccb61a384f50951eb9c5973920175ccfe",
+      "id": "priority-sync",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:d5782999687f95808dd85d5ff493bcec600d563588ff53002c1c7e539ca10195",
+      "id": "safe_outputs",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:9b2556885b83c43a4a32236686f0bd60a9371e93eb2cc49bfc4640aaf797bd12",
+      "id": "storefront-check",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6f826eccc008279d75232b469fd70101e895110dc66567f5e29272aa3ba46a7c",
+      "id": "sw-impact check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:f68a5ec4cb0820ac1273e9e7b430fda3af5c1741eebafa8a59257cecad9e8e36",
+      "id": "sync-test-plan-sub-issue",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:fbf27010fe8bb9a7331cf82eafa9ea84fabbe5c1beba50c3066fa70f0e2f6b41",
+      "id": "tested-versions",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b07fa58fc4143ffc24b5175313809764bbf4b2819e1eb5a6e62175a2de611f9d",
+      "id": "{Administration,Elasticsearch}",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:14430ca0764f20af2b66655dd37404f00bfa0bb1b7e93da98e117c203fe8d2c5",
+      "id": "{Core/Installer,Core/Maintenance,Core/Service,Core/System}",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    }
+  ],
+  "observation": {
+    "github_baseline": "clear",
+    "observation_scope": {
+      "head_sha": "aa21ca853d40b58c61e3700c5b3158d064551e43",
+      "repository": "shopware/shopware"
+    },
+    "observed_at": "2026-08-01T09:36:46Z",
+    "protection_source": "classic_branch_protection",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "acknowledged": false,
+      "available": true,
+      "non_independent_sources": 0,
+      "routine_bump_excluded": false
+    },
+    "workflow_visibility": {
+      "action_required": 0,
+      "available": true,
+      "not_started": 0,
+      "units_total": 42
+    }
+  },
+  "policy": {
+    "digest": "sha256:d1f36f12f970e23fefdcbfa69e71c0a4741fa4ccf426cb0b72edb853526ce227",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "required_status_semantics": "github",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Archive preview environment"
+    },
+    {
+      "detail": "advisory source status is 'neutral'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "CodeQL"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Create or migrate preview environment"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "PHP update 6.6 -> 6.7"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Smoke test with lowest dependencies"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Windows check"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "acceptance-status-check"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "activation"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "agent"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "apply-team-label"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "claude"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "cleanup-needs-triage"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "close-stale-issues"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "conclusion"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "detection"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "mark-stale-issues"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "move-to-wip"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "pre_activation"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "priority-sync"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "safe_outputs"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "sw-impact check"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "sync-test-plan-sub-issue"
+    }
+  ],
+  "record_digest": "sha256:1bce75850645f91231c7c08da58538ad8284c81c6a7863b79679ca18e20664d4",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 18878,
+    "ref": "refs/pull/18878/head",
+    "repository": "shopware/shopware",
+    "sha": "aa21ca853d40b58c61e3700c5b3158d064551e43"
+  },
+  "summary": "Gate PASS: all required checks satisfied; no advisory warnings.",
+  "verdict": "PASS",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

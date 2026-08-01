@@ -1,0 +1,18 @@
+PASS  Gate PASS: all required checks satisfied; no advisory warnings.
+record: benchmarks\real-workflow-utility\cases\global-scala-scala3-25393\gate-decision.json
+Merge protection: 14 required status check(s) enforced by classic_branch_protection on 'main'.
+Fork PR: some checks may not run for forks by repository policy.
+Counterfactual: would BLOCK if required: build-msi-package, community-build-tests, compiler-tests, mima-scala-library-nonbootstrapped, mima-tests, misc-tests, publish_release, scala3-bootstrapped-compilation-coverage, scala3-compiler-nonbootstrapped-coverage, scala3-language-server-coverage-ycheck, scala3-presentation-compiler-coverage-ycheck, scala3-repl-coverage-ycheck, scala3-sbt-bridge-bootstrapped-coverage-ycheck, scala3-staging-coverage-ycheck, scala3-tasty-inspector-coverage-ycheck, scaladoc-coverage, stdlib-sourcelinks-test, stdlib-tests, tasty-core-bootstrapped-coverage-ycheck, test-chocolatey-package, test-msi-package, test_windows_full
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: PASS
+
+**Result:** Every required check AOS evaluated completed successfully for this commit.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+**Next step:** set enforce: "true" (or a blocking policy) so a BLOCK verdict fails the job
+
+**Signals:** 14 required (14 successful); 51 other observation(s)
+**Scope:** 14 required check(s) plus recorded workflow signals on scala/scala3@dcb982e90283; requirements read from classic\_branch\_protection; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:48:25Z; collection complete
+
+Record `sha256:5e04787e2ebf529cd4de32922dd31136905d436779c0cbd209b399586ed91c1c` | bundle `sha256:d1b149c36d160fb1da5e41d3e3f2b23d121d589acaa2f364ec9766b40bf88d93` | self-check OK | UNSIGNED\_NOT\_OFFICIAL

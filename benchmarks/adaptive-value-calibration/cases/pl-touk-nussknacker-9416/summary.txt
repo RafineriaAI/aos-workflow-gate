@@ -1,0 +1,67 @@
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).
+record: benchmarks\adaptive-value-calibration\cases\pl-touk-nussknacker-9416\gate-decision.json
+Merge protection: 0 required status check(s) enforced by none on 'staging'.
+GitHub baseline (status checks only): no_required_checks.
+Effect: nothing in the branch rules blocks this merge on status checks; the record is evidence, not enforcement.
+Workflow visibility: 1 execution unit(s) on this commit have not started: github-pages
+Counterfactual: would BLOCK if required: Publish With Tests, Publish Without Tests, trigger-external-build
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: WARN
+
+**Problem:** GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+**Decision contrast:** GitHub has no required status-check gate for this branch; AOS records that coverage fact separately.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 0 required (0 successful); 14 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on TouK/nussknacker@b5868341d0ef; not full merge-readiness
+**Freshness:** observed 2026-08-01T09:37:08Z; collection complete; 1 workflow unit(s) had not started
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | TouK/nussknacker |
+| Ref | `refs/pull/9416/head` |
+| Commit | `b5868341d0ef7021d503b5d51894130f1bcf1690` |
+| Pull request | #9416 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:f8cb754fe0e1749caa04f0d7b2e5f3e4618717b6561ad10ec33fa96588cd0ec3` |
+| Input bundle digest | `sha256:2d146d74702f15429f28bd8dafe646004cabd4ba30bd6802190b83637b209327` |
+| Record digest | `sha256:8f4b5c915fcf3d8a7dbb87e08ee4be47163036c5d7b91bdf0c52556c98e46a16` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+### Top gaps
+
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| BackendE2ETests (2.13) | github\_check | no | success |
+| BackendTests (2.13) | github\_check | no | success |
+| Build | github\_check | no | success |
+| BuildFrontend | github\_check | no | success |
+| CypressTests | github\_check | no | success |
+| FrontendTests | github\_check | no | success |
+| IntegrationTests (2.13) | github\_check | no | success |
+| Publish With Tests | github\_check | no | skipped |
+| Publish Without Tests | github\_check | no | skipped |
+| SlowTests (2.13) | github\_check | no | success |
+| branch.rules | branch\_rules\_summary | no | success |
+| setup | github\_check | no | success |
+| triage | github\_check | no | success |
+| trigger-external-build | github\_check | no | skipped |
+
+### Coverage
+
+- Required sources: 0 of 14
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "BackendE2ETests (2.13), BackendTests (2.13), Build, BuildFrontend, CypressTests"`

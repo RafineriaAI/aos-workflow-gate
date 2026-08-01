@@ -1,0 +1,583 @@
+{
+  "can_block": false,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "ced7112d3e06d6fe402d578a8da7c888e9beea6d2b128c4b97036f1ce70a927d",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
+        "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
+        "cli.py": "b1ed35d34d404000feba0677c7d6d14dc54460d237c51bed6bf56b6ffe0201d9",
+        "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "3e92eb472d7d770e40123c093af238605a4fd4622c87dd968a3b64a60a953ee8",
+        "evidence.py": "2e67d6f1e92dd473b79c19abfb4cdaaba84cb0ee39b951223d3d5995d3869138",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "github_decision_check.py": "d23dbbc449026b69766d1f6267db414620d5cbf3f032028bd0614b753adab897",
+        "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/code-change-proof.yml": "892aaa426ae8a489dba230e4b7f3e2eabfb15202191c39ea1cb9537a9432e6ca",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/project-check.yml": "ff0d8c16a527687adac4eb3c2a391fda565d8c4f0c7f50bb4aa125e6ea145aa0",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "e1e4d6205aa2017bd706b5f0c3cfb479b8de3a0344356b3ecec751d773aa4070",
+        "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
+        "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
+        "requirements.py": "dad78b09daae9f567e9c4f2f53e3104bbdbe3944f8ffe8d87cee4f21544abac9",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "7ac1711975db965fcdcb47f6155cc5b8e219b6e649282cda28e2272d87e57775",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+    "version": "0.38.0"
+  },
+  "input_bundle_digest": "sha256:71084cc3763296a9cad92fcf9eca70c56b439b9a9f39bc9c0355f896aeb2921e",
+  "inputs": [
+    {
+      "digest": "sha256:fa1b3d0721e537fd488ec7a50c13a3d4a9a8f0c301e29c84b6a4dbc1af2af483",
+      "id": "Publish to SDKMAN",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:d131354a8983aee994b70c4b0a3bead66e0b577eedc042139ea6d1f4f5ab625a",
+      "id": "Update CentOS packages",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:1f7230b9b7835372fa366695c4c5230d92ef3310eaa118b01212231afde13f82",
+      "id": "Update Debian packages",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:fd44f2ebcbe964db1b8effa8e9e599c67a66848407bc475051a55f31bc9790e8",
+      "id": "Update Windows packages",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:4144c5a06535b232734ea7019446d73110120c1e0c3b11a535e7bd0c33f8c9cd",
+      "id": "Update installation script",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:dfa3329248a2b43e9cafb3b72430495d489f9424a414af478ee4cb51af9436bc",
+      "id": "Update scala-cli brew formula",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:c070093bcfec10e9f80f4e22a70c2aff9f1b52431d10a96f24f8063655d79288",
+      "id": "Update scala-cli setup",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:9ac44e90a8eace920ca0924587f3592e129b926e47dec12c4d9ce04954d3a79a",
+      "id": "Update scala-experimental brew formula",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:f39c32fa90ba48112dadfa4de323192f204f2a73370a073757455d68a087c553",
+      "id": "Update standalone launcher",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:9ae3d0993a8cbbae2f113091d3974c41df46c737cf114372d86195db3fd5643c",
+      "id": "bloop-memory-footprint",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:de570eef35fdaab43377a81dd503618076c73c8b6de163b8bda7f9c69288f2a2",
+      "id": "changes",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bfcfa045316c627f7859f050fb2c99961bd36b5b86d4324a62fb795fe3069cae",
+      "id": "checks",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d0611cdf53bcde65f2a5e0694e26ea7fe539dd18093604614a9d1ab4c1fedafd",
+      "id": "docs-tests",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6a3c0494fba228ff6d9257ba709ddabf6b7aec524b3d2819e211ce3cd0ccea49",
+      "id": "format",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:719d4f1ddf263cf65015a9bc815c45f5fc709b103d272054052bcf54316091a3",
+      "id": "generate-linux-arm64-native-launcher",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d55e4c856e22a533e8b013dfcf352c0c9dcfa6828fce8be4daddae242a961195",
+      "id": "generate-linux-launcher",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bef254adf5119fea2f2bce7a3c81ae8e7d1d9f50ecef47bb1ecc42bab6c27fd5",
+      "id": "generate-macos-arm64-launcher",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b7fa665b3ed7550461018b4040fe4acda063b24797c4c26a3eca48cfd2e1a682",
+      "id": "generate-macos-launcher",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d365a9c42fdd2c9bb016d22d1d4d2dd14a51a4cd18337d7dce88b1536bf2db62",
+      "id": "generate-mostly-static-launcher",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ac7355193653fcef6e7a04e8c65ef7a9d4f302159970d96b07265316b65a1325",
+      "id": "generate-static-launcher",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:559acffe2c12f0e473be707ba3248d08df02f2bc37b0c0888228d715d3f958fd",
+      "id": "generate-windows-launcher",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bd760889b00d959a6d97ead9940cce9341e258b6faa97793c859f1e7f5cd515f",
+      "id": "jvm-bootstrapped-tests-default",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c8bc81fc6dee516937df281c95aea4da2df66fcdaac787bf0c6755a01f2bbb7f",
+      "id": "jvm-tests-default",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3d9f27f06c9728c9b3c137ed064367b1d81259fab7c67b95a6c7bf36d4346ea4",
+      "id": "jvm-tests-lts",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f062eff36eac0f961500964da01f9c9cc4291a4f068f9d5aee661e57f1ad8cf8",
+      "id": "jvm-tests-rc",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:602f3e2b3795075c8b1be68d3e6430c3a48b7ed70f05098291538af7d4686c9d",
+      "id": "jvm-tests-scala-2-12",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6b611f9b14a6b892936c026e9238a8234cd47077a0bd0cea5d5ba9b9b93b0eae",
+      "id": "jvm-tests-scala-2-13",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:54e06dc0a80fda1aa6d7c505a057c42d4b3c9514f7221d08a44491315261f517",
+      "id": "launchers",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:0bc767ac149bb6ad801fe03fa2bf842060a4025b29db5af7f2b70fd1937461e7",
+      "id": "native-linux-arm64-tests-default",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3e285de442ca457ed3b91d57bac7912e8ef9c8f5644a2576307b097d0279c764",
+      "id": "native-linux-arm64-tests-rc",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ce97548159e88ac2f828c6a164517d3b92070b164f578bab0775de80b5835f35",
+      "id": "native-linux-tests-default",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e9a8a1969e1950161d99872da175a214e44c97498651e14da64fd37e96f4a7f7",
+      "id": "native-linux-tests-lts",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:0b6cfc1385cc5dd4693bb1583a0fc71cbffc4b4f270cba2dc7f66da8cdecc829",
+      "id": "native-linux-tests-rc",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:12f94be0f8699fd57a923884401459749c0fec2182ca26459b2f75ef6a752fef",
+      "id": "native-linux-tests-scala-2-12",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:451c8f5227ffc8708fe144f99ae4a1b0edca5ce90d97072039fda9abf3ea26e0",
+      "id": "native-linux-tests-scala-2-13",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:4a3e66b8d05e01001dafb789d5ee9a8322ac32a48ce7044e0d0ccc90748d3f2c",
+      "id": "native-macos-arm64-tests-default",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6afc777f622ee194b8b7401e645e539a0b97dc3966a32b9e56229da51b6b05c6",
+      "id": "native-macos-arm64-tests-rc",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:cde76ae17dd8506d4ef84de54fad6910fa6323bc118c4b7d816da98e331d38de",
+      "id": "native-macos-tests-default",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e2cf2f6b762da74f83700a5c7e0ab6859257c7a63df08eebce280c5c5718a311",
+      "id": "native-macos-tests-rc",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:2dfb8d096108f4c9069e8d7a0c9b3652978b8b5322e589c84e925eaaf4315ca3",
+      "id": "native-mostly-static-tests-default",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:082fef62328b02cc2dd1c46ec8bba3584b762be1c590e144af6a6cce27869a8e",
+      "id": "native-mostly-static-tests-rc",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:12310f93a734b6edb7caab11807b33520c4de66b96b39a0461bcc1cc87c81113",
+      "id": "native-static-tests-default",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d3458d4fd4b6ef1f32ab05ede84a505f9f7ab999871c0f15fdba0a91cee13f18",
+      "id": "native-static-tests-rc",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:744cb8b7e139b6c9ae96d41d8a149e86368192a8dda7ef0bf1c8393099c1cb6f",
+      "id": "native-windows-tests-default",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:264be49e55d73ee48814cfdb4a6bea1e8f2e64c9fb0e3945c1179ea58bedf2b6",
+      "id": "native-windows-tests-lts",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:42f7e2be3ac9bc1506c9b253aeac4fc2bc455837ea829494f101c3edf0993d45",
+      "id": "native-windows-tests-rc",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:fd0537e10fb7b2d674b40bd5c28821e69a33a5b3b75669f2526ee9eb564232a8",
+      "id": "publish",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:e75ed9d92c67f9a945ec28c97048f22087f3733e9116c69111b3e7ba3284a499",
+      "id": "reference-doc",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:812a6f5f689e8003f621b937cf42b0c92783fcbf297c2b03f38921c450eb44eb",
+      "id": "test-fish-shell",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:7f118a38858911f78b2afdf0da5b6344db01915e86f066897fb56306c3f5946d",
+      "id": "test-hypothetical-sbt-export",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:2dd009c42663d316ae0b654b421e83f8fdf913790fefd504bf6ee8b17e53bc4a",
+      "id": "unit-tests",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6eab63cc1068774b1c2f7ff922cea6430eaec0fcb5567550a990a230701f74a4",
+      "id": "vc-redist",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    }
+  ],
+  "observation": {
+    "github_baseline": "clear",
+    "observation_scope": {
+      "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+      "repository": "VirtusLab/scala-cli"
+    },
+    "observed_at": "2026-08-01T08:48:46Z",
+    "protection_source": "classic_branch_protection",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "acknowledged": false,
+      "available": true,
+      "non_independent_sources": 0,
+      "routine_bump_excluded": false
+    },
+    "workflow_visibility": {
+      "action_required": 0,
+      "available": true,
+      "not_started": 0,
+      "units_total": 1
+    }
+  },
+  "policy": {
+    "digest": "sha256:22b13a8193df7a7e689241ff0792e290e7808101e9d68f6acb6639305edb231d",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "required_status_semantics": "github",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Publish to SDKMAN"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Update CentOS packages"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Update Debian packages"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Update Windows packages"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Update installation script"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Update scala-cli brew formula"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Update scala-cli setup"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Update scala-experimental brew formula"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Update standalone launcher"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "launchers"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "publish"
+    }
+  ],
+  "record_digest": "sha256:b43e363738f328cec4e59b450e4cdb10d4bcaf13c2f589a7179b982ed57488bd",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 4403,
+    "ref": "refs/pull/4403/head",
+    "repository": "VirtusLab/scala-cli",
+    "sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6"
+  },
+  "summary": "Gate PASS: all required checks satisfied; no advisory warnings.",
+  "verdict": "PASS",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

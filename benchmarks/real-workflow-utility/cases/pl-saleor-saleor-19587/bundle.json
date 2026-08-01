@@ -1,0 +1,198 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "7580cf1771c8968a70fa141fbe3564140e3ef298",
+      "repository": "saleor/saleor"
+    },
+    "observed_at": "2026-08-01T08:48:32Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:870f20d2cd6826ec4a31d8486e9204d9e243314629fc57d10ed345713db057b9",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "saleor/graphql/order/tests/queries/test_order_total_balance.py",
+          "saleor/order/tests/test_order.py"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "224bf29fb39fd14645a5adfda42008ea5fb8d799",
+        "head_sha": "7580cf1771c8968a70fa141fbe3564140e3ef298",
+        "pull_request": 19587,
+        "repository": "saleor/saleor"
+      },
+      "unchanged_workflow_runs": 8,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83182806241,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30671527479,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "GraphQL Inspector"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83182806244,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30671527482,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Changelog check"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83182806247,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30671527481,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "e2e suite"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83182806263,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30671527486,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Migrations performance test"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83182806266,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30671527488,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Test migrations compatibility"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83182806274,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30671527491,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Migration performance test required"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83182806300,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30671527502,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Tests"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83182806366,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30671527535,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Linters"
+        }
+      ],
+      "states": {
+        "action_required": 8,
+        "completed": 1,
+        "pending": 0
+      },
+      "units_total": 9
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:40d7b12b3cccbf30dc85503b2ccf2dcca9a252bc61b119573cd165282ccc92a7",
+      "id": "Socket Security: Project Report",
+      "identity": {
+        "check_run_id": 91290095816,
+        "completed_at": "2026-07-31T22:58:01Z",
+        "conclusion": "success",
+        "head_sha": "7580cf1771c8968a70fa141fbe3564140e3ef298",
+        "name": "Socket Security: Project Report",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-31T22:58:01Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91290095816 concluded success."
+    },
+    {
+      "digest": "sha256:870f20d2cd6826ec4a31d8486e9204d9e243314629fc57d10ed345713db057b9",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: deletionx2, non_fast_forwardx2, pull_requestx2; 0 required status check(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": 19587,
+    "ref": "refs/pull/19587/head",
+    "repository": "saleor/saleor",
+    "sha": "7580cf1771c8968a70fa141fbe3564140e3ef298"
+  }
+}

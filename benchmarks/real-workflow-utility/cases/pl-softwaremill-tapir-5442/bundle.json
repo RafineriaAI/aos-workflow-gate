@@ -1,0 +1,391 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "counterfactual_blockers": [
+      "Publish release",
+      "auto-merge-dependabot",
+      "auto-merge-github-actions",
+      "ci (2.13, JVM, 21)",
+      "ci (3, JVM, 21)",
+      "label"
+    ],
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+      "repository": "softwaremill/tapir"
+    },
+    "observed_at": "2026-08-01T08:48:18Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "64212fa503202b8e3bc87de9947df6642b160322",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "pull_request": 5442,
+        "repository": "softwaremill/tapir"
+      },
+      "unchanged_workflow_runs": 1,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [],
+      "states": {
+        "action_required": 0,
+        "completed": 1,
+        "pending": 0
+      },
+      "units_total": 1
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:fa2ab572221ddbfe6d2d71520b4497b727c82555743a61af0d0d8e481b4ffbb0",
+      "id": "Publish release",
+      "identity": {
+        "check_run_id": 90836509461,
+        "completed_at": "2026-07-30T09:47:15Z",
+        "conclusion": "skipped",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "Publish release",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:47:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90836509461 concluded skipped."
+    },
+    {
+      "digest": "sha256:aa7a4c38d8883479be4eef949b6b4ddb6e92637c95f784fd4d6bca75a197f3f7",
+      "id": "auto-merge-dependabot",
+      "identity": {
+        "check_run_id": 90836509956,
+        "completed_at": "2026-07-30T09:47:15Z",
+        "conclusion": "skipped",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "auto-merge-dependabot",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:47:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90836509956 concluded skipped."
+    },
+    {
+      "digest": "sha256:44b90f6a1ae22ce86a8d1f1463c1b25e54b34a293555f22a1f776e5cc702bc3d",
+      "id": "auto-merge-github-actions",
+      "identity": {
+        "check_run_id": 90836509902,
+        "completed_at": "2026-07-30T09:47:15Z",
+        "conclusion": "skipped",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "auto-merge-github-actions",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:47:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90836509902 concluded skipped."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:24fc16b19d64ae45f99b7876559e2c7de86a961e37464fb4afcfa5bba1f38176",
+      "id": "ci (2.12, JS, 11)",
+      "identity": {
+        "check_run_id": 90831069754,
+        "completed_at": "2026-07-30T09:30:34Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (2.12, JS, 11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:30:34Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069754 concluded success."
+    },
+    {
+      "digest": "sha256:89ea6a9fb303650505bc808be8f9e5967ded759bac1a6a2abf772aee0c7c3bb5",
+      "id": "ci (2.12, JVM, 11)",
+      "identity": {
+        "check_run_id": 90831069717,
+        "completed_at": "2026-07-30T09:43:22Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (2.12, JVM, 11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:43:22Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069717 concluded success."
+    },
+    {
+      "digest": "sha256:f03f896a60e17e764c514f500aa0e27f46a0e8363cbab7fd32ae0fce70d6f70c",
+      "id": "ci (2.12, Native, 11)",
+      "identity": {
+        "check_run_id": 90831069672,
+        "completed_at": "2026-07-30T09:30:53Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (2.12, Native, 11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:30:53Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069672 concluded success."
+    },
+    {
+      "digest": "sha256:943baa8c8a6dddb686b6c5addc22f2a414d7bdb5be1b8f52cdb7f5a91a36e526",
+      "id": "ci (2.13, JS, 11)",
+      "identity": {
+        "check_run_id": 90831069707,
+        "completed_at": "2026-07-30T09:30:15Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (2.13, JS, 11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:30:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069707 concluded success."
+    },
+    {
+      "digest": "sha256:cabfb6ad441955039a0d46c3fbe776cae7b18bb8d3f4f2cb023106c36bdc80f0",
+      "id": "ci (2.13, JVM, 11)",
+      "identity": {
+        "check_run_id": 90831069684,
+        "completed_at": "2026-07-30T09:35:26Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (2.13, JVM, 11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:35:26Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069684 concluded success."
+    },
+    {
+      "digest": "sha256:6da04ebcfcf2b8169b512517ef6084cdfe6985f3d87187b0471c435cc719b1f1",
+      "id": "ci (2.13, JVM, 21)",
+      "identity": {
+        "check_run_id": 90831069800,
+        "completed_at": "2026-07-30T09:28:40Z",
+        "conclusion": "failure",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (2.13, JVM, 21)",
+        "run_status": "completed",
+        "status": "failure"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:28:40Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure",
+      "summary": "GitHub check run 90831069800 concluded failure."
+    },
+    {
+      "digest": "sha256:2c86afeecfafa1d288f9783b650eb1f2742b93a0dc2463da197f8c13682e7c11",
+      "id": "ci (2.13, Native, 11)",
+      "identity": {
+        "check_run_id": 90831069681,
+        "completed_at": "2026-07-30T09:30:48Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (2.13, Native, 11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:30:48Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069681 concluded success."
+    },
+    {
+      "digest": "sha256:ca823e358d9eb4357b1c757c7ca410ef6df93e5ecdb280f6a211708abf4a7205",
+      "id": "ci (3, JS, 11)",
+      "identity": {
+        "check_run_id": 90831069735,
+        "completed_at": "2026-07-30T09:30:52Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (3, JS, 11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:30:52Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069735 concluded success."
+    },
+    {
+      "digest": "sha256:8c6f93acbbf8b3130fea9bc3fe3b73b071a825a61a2bb78218fb992d0b1969c2",
+      "id": "ci (3, JVM, 11)",
+      "identity": {
+        "check_run_id": 90831069708,
+        "completed_at": "2026-07-30T09:47:15Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (3, JVM, 11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:47:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069708 concluded success."
+    },
+    {
+      "digest": "sha256:075dc68c253a0547f28445bc8bcbbec5518d4d7a920bca6ff009420a63525317",
+      "id": "ci (3, JVM, 21)",
+      "identity": {
+        "check_run_id": 90831069726,
+        "completed_at": "2026-07-30T09:37:00Z",
+        "conclusion": "failure",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (3, JVM, 21)",
+        "run_status": "completed",
+        "status": "failure"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:37:00Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure",
+      "summary": "GitHub check run 90831069726 concluded failure."
+    },
+    {
+      "digest": "sha256:2dd87830cb7d47e3554a06d45068497721c89bac21dd867f948748fda62030ad",
+      "id": "ci (3, Native, 11)",
+      "identity": {
+        "check_run_id": 90831069795,
+        "completed_at": "2026-07-30T09:32:38Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "ci (3, Native, 11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:32:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069795 concluded success."
+    },
+    {
+      "digest": "sha256:30417b983e56e5f14830b64a55184c62532ac82b4ec02c8783d4144cb917adde",
+      "id": "label",
+      "identity": {
+        "check_run_id": 90831101664,
+        "completed_at": "2026-07-30T09:21:53Z",
+        "conclusion": "skipped",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "label",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:21:53Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90831101664 concluded skipped."
+    },
+    {
+      "digest": "sha256:2f41a2d1f0b8a1c03dfc189364eaf04dbc41c53590b314f954926ca4ead123e3",
+      "id": "mima / mima",
+      "identity": {
+        "check_run_id": 90831069663,
+        "completed_at": "2026-07-30T09:31:38Z",
+        "conclusion": "success",
+        "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+        "name": "mima / mima",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T09:31:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90831069663 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 5442,
+    "ref": "refs/pull/5442/head",
+    "repository": "softwaremill/tapir",
+    "sha": "150d73d020779a01506df30c1b8c7f5fbf597113"
+  }
+}

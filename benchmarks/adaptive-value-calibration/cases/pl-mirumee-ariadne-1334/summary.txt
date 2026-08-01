@@ -1,0 +1,79 @@
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).
+record: benchmarks\adaptive-value-calibration\cases\pl-mirumee-ariadne-1334\gate-decision.json
+Merge protection: 0 required status check(s) enforced by none on 'main'.
+GitHub baseline (status checks only): no_required_checks.
+Effect: nothing in the branch rules blocks this merge on status checks; the record is evidence, not enforcement.
+Workflow visibility: 2 execution unit(s) on this commit have not started: vercel, greptile-apps
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: WARN
+
+**Problem:** GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+**Decision contrast:** GitHub has no required status-check gate for this branch; AOS records that coverage fact separately.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 0 required (0 successful); 27 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on mirumee/ariadne@45461703cafe; not full merge-readiness
+**Freshness:** observed 2026-08-01T09:36:20Z; collection complete; 2 workflow unit(s) had not started
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | mirumee/ariadne |
+| Ref | `refs/pull/1334/head` |
+| Commit | `45461703cafebbf7723f0af86278d9c7cbdf4198` |
+| Pull request | #1334 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:8bbf6945b9605963e6208f231647d800147358f6398ba77fa29de734f088aca8` |
+| Input bundle digest | `sha256:41fe62c39b7c364c662cfd6c726172f8a91195fce2f049d47122ce2015391b0b` |
+| Record digest | `sha256:988618f1daef4f6c4a0a1016c0161d94a8c7b109be73fcadb36a0494d2f63aaa` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+### Top gaps
+
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| CodeRabbit | commit\_status | no | success |
+| Generate and publish coverage report | github\_check | no | success |
+| Prelint | github\_check | no | success |
+| Prelint: Decision Review | github\_check | no | success |
+| branch.rules | branch\_rules\_summary | no | success |
+| build (3.10) | github\_check | no | success |
+| build (3.11) | github\_check | no | success |
+| build (3.12) | github\_check | no | success |
+| build (3.13) | github\_check | no | success |
+| build (3.14) | github\_check | no | success |
+| codecov/patch | github\_check | no | success |
+| codecov/project | github\_check | no | success |
+| integration (test-integration-fastapi, 3.10) | github\_check | no | success |
+| integration (test-integration-fastapi, 3.11) | github\_check | no | success |
+| integration (test-integration-fastapi, 3.12) | github\_check | no | success |
+| integration (test-integration-fastapi, 3.13) | github\_check | no | success |
+| integration (test-integration-fastapi, 3.14) | github\_check | no | success |
+| integration (test-integration-flask, 3.10) | github\_check | no | success |
+| integration (test-integration-flask, 3.11) | github\_check | no | success |
+| integration (test-integration-flask, 3.12) | github\_check | no | success |
+| integration (test-integration-flask, 3.13) | github\_check | no | success |
+| integration (test-integration-flask, 3.14) | github\_check | no | success |
+| integration (test-integration-starlette, 3.10) | github\_check | no | success |
+| integration (test-integration-starlette, 3.11) | github\_check | no | success |
+| integration (test-integration-starlette, 3.12) | github\_check | no | success |
+| integration (test-integration-starlette, 3.13) | github\_check | no | success |
+| integration (test-integration-starlette, 3.14) | github\_check | no | success |
+
+### Coverage
+
+- Required sources: 0 of 27
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "Generate and publish coverage report, Prelint, Prelint: Decision Review, build (3.10), build (3.11)"`

@@ -1,0 +1,829 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "counterfactual_blockers": [
+      "Coverage Tests (PostgreSQL)",
+      "PostgreSQL",
+      "PostgreSQL ${{ matrix.pg_major }}",
+      "Run_benchmarks",
+      "SQLite",
+      "Screenshots",
+      "Ubuntu, SQLite, Python 3.14t",
+      "check-commit-prefix",
+      "define-matrix",
+      "python"
+    ],
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+      "repository": "django/django"
+    },
+    "observed_at": "2026-08-01T08:48:39Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "tests/forms_tests/field_tests/test_filefield.py",
+          "tests/forms_tests/widget_tests/test_fileinput.py"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "60121939f6b225c7a719dd561e372e1d8e5e2c4a",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "pull_request": 21681,
+        "repository": "django/django"
+      },
+      "unchanged_workflow_runs": 11,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [],
+      "states": {
+        "action_required": 0,
+        "completed": 11,
+        "pending": 0
+      },
+      "units_total": 11
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:8cc5204b11a2e21a2428c032c916712ecd0780251ff596b3cb6a9261dd9f88e1",
+      "id": "Coverage Tests (PostgreSQL)",
+      "identity": {
+        "check_run_id": 91333864662,
+        "completed_at": "2026-08-01T05:54:17Z",
+        "conclusion": "skipped",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "Coverage Tests (PostgreSQL)",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91333864662 concluded skipped."
+    },
+    {
+      "digest": "sha256:e034e46500b50f3ab271a13b08c88c1c8342ddd192404817add1d9c1ee2d7cd8",
+      "id": "JavaScript tests",
+      "identity": {
+        "check_run_id": 91333864273,
+        "completed_at": "2026-08-01T05:54:50Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "JavaScript tests",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:50Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864273 concluded success."
+    },
+    {
+      "digest": "sha256:4071f830a401b3ff28915c984b86c9daa8e1970de94047010f977fdbf9e00046",
+      "id": "PostgreSQL",
+      "identity": {
+        "check_run_id": 91333872889,
+        "completed_at": "2026-08-01T05:54:17Z",
+        "conclusion": "skipped",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "PostgreSQL",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91333872889 concluded skipped."
+    },
+    {
+      "digest": "sha256:c50df4c9ed9bdbd2d5ab556d6c2c245889dc29b8020264728f97391ff3d52daf",
+      "id": "PostgreSQL ${{ matrix.pg_major }}",
+      "identity": {
+        "check_run_id": 91333876081,
+        "completed_at": "2026-08-01T05:54:17Z",
+        "conclusion": "skipped",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "PostgreSQL ${{ matrix.pg_major }}",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91333876081 concluded skipped."
+    },
+    {
+      "digest": "sha256:c01bc84ccfef62d13ccf8ae20b612bdec3a3baf4967dd45bcf725a78b9ea9f26",
+      "id": "Run Quality Checks on a PR",
+      "identity": {
+        "check_run_id": 91333861710,
+        "completed_at": "2026-08-01T05:54:29Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "Run Quality Checks on a PR",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:29Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333861710 concluded success."
+    },
+    {
+      "digest": "sha256:b069dbb43989d06faa98da8d575eae558823631417383970df31094ec60ecadc",
+      "id": "Run_benchmarks",
+      "identity": {
+        "check_run_id": 91333864606,
+        "completed_at": "2026-08-01T05:54:17Z",
+        "conclusion": "skipped",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "Run_benchmarks",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91333864606 concluded skipped."
+    },
+    {
+      "digest": "sha256:4a3620588ce07e490f0077f1ac813da631edc07e43600470e2ca235c84c2533b",
+      "id": "SQLite",
+      "identity": {
+        "check_run_id": 91333864664,
+        "completed_at": "2026-08-01T05:54:17Z",
+        "conclusion": "skipped",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "SQLite",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91333864664 concluded skipped."
+    },
+    {
+      "digest": "sha256:1442a92ea095f77df25b5c78d13b4552cc3942be352d58594e49044aa0d591f6",
+      "id": "Screenshots",
+      "identity": {
+        "check_run_id": 91333864503,
+        "completed_at": "2026-08-01T05:54:17Z",
+        "conclusion": "skipped",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "Screenshots",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91333864503 concluded skipped."
+    },
+    {
+      "digest": "sha256:1d4f000330d2c53fe2c8c21074f17492637d1dade14ba8837254b075097c6fda",
+      "id": "Scripts tests",
+      "identity": {
+        "check_run_id": 91333864272,
+        "completed_at": "2026-08-01T05:54:28Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "Scripts tests",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:28Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864272 concluded success."
+    },
+    {
+      "digest": "sha256:db0892986f47ecc04e69005fe50daf665636c3334fd6ef30a863ce35c1f92875",
+      "id": "Ubuntu, SQLite, Python 3.14t",
+      "identity": {
+        "check_run_id": 91333864279,
+        "completed_at": "2026-08-01T05:59:46Z",
+        "conclusion": "failure",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "Ubuntu, SQLite, Python 3.14t",
+        "run_status": "completed",
+        "status": "failure"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:59:46Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure",
+      "summary": "GitHub check run 91333864279 concluded failure."
+    },
+    {
+      "digest": "sha256:df28b1e0f4e26265f9ec3c19461f34e4d8bc15a9170508683ba85846b9d922c2",
+      "id": "Windows, SQLite, Python 3.14",
+      "identity": {
+        "check_run_id": 91333864236,
+        "completed_at": "2026-08-01T06:00:53Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "Windows, SQLite, Python 3.14",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T06:00:53Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864236 concluded success."
+    },
+    {
+      "digest": "sha256:d6ffe6f9fb1196c0cddbf8b4c16a17c4436798b46d58761196d29e87a73c9eeb",
+      "id": "biome",
+      "identity": {
+        "check_run_id": 91333864287,
+        "completed_at": "2026-08-01T05:54:43Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "biome",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864287 concluded success."
+    },
+    {
+      "digest": "sha256:1811734fc4e68673f7292aafff86d609dc8b2d213e1904aa8fb4a97c0e1bd69a",
+      "id": "black",
+      "identity": {
+        "check_run_id": 91333864286,
+        "completed_at": "2026-08-01T05:55:17Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "black",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:55:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864286 concluded success."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:234370ece5f7b32a21b4773a666aabf47c8ac178911092ed0c9873b9fcfdd8ad",
+      "id": "check-commit-prefix",
+      "identity": {
+        "check_run_id": 91333864649,
+        "completed_at": "2026-08-01T05:54:17Z",
+        "conclusion": "skipped",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "check-commit-prefix",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91333864649 concluded skipped."
+    },
+    {
+      "digest": "sha256:bc9dd0e8b29632b07448cb2bb353031fab17d490c286ba0097e07a98e0c6c32d",
+      "id": "check-commit-suffix",
+      "identity": {
+        "check_run_id": 91333864207,
+        "completed_at": "2026-08-01T05:54:27Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "check-commit-suffix",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:27Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864207 concluded success."
+    },
+    {
+      "digest": "sha256:c7d922aaf5c5fc811fa813b624e5e494d92c046484b03fae8bbe4518606efd5f",
+      "id": "define-matrix",
+      "identity": {
+        "check_run_id": 91333864799,
+        "completed_at": "2026-08-01T05:54:18Z",
+        "conclusion": "skipped",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "define-matrix",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91333864799 concluded skipped."
+    },
+    {
+      "digest": "sha256:1f49db363048de6f1759260a86353835ff631942f56e94b5e90e964137f3f768",
+      "id": "docs",
+      "identity": {
+        "check_run_id": 91333864289,
+        "completed_at": "2026-08-01T05:56:03Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "docs",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:56:03Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864289 concluded success."
+    },
+    {
+      "digest": "sha256:a8f12390260e68dd33459f3279dcedadb7d165c523b1ceeb8642049030e1aae9",
+      "id": "flake8",
+      "identity": {
+        "check_run_id": 91333864242,
+        "completed_at": "2026-08-01T05:54:59Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "flake8",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:59Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864242 concluded success."
+    },
+    {
+      "digest": "sha256:6166abe82a89f7496ea11bbe6e2289fa08644e073917a031e518983dcc7a6e4c",
+      "id": "isort",
+      "identity": {
+        "check_run_id": 91333864283,
+        "completed_at": "2026-08-01T05:54:34Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "isort",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:34Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864283 concluded success."
+    },
+    {
+      "digest": "sha256:13acc8e043c676e7faf7038748e769e3a36309fd68b5c9cc382718390ce26660",
+      "id": "pr-mariadb/database=mysql,label=mariadb,python=python3.14",
+      "identity": {
+        "context": "pr-mariadb/database=mysql,label=mariadb,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pr-mariadb/database=mysql,label=mariadb,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:9fbab1bb2b46ea1167e91e4ab0702a0a5cac44cf09112d76b6d03bfdb3f081f5",
+      "id": "pr-mariadb/database=mysql_gis,label=mariadb,python=python3.14",
+      "identity": {
+        "context": "pr-mariadb/database=mysql_gis,label=mariadb,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pr-mariadb/database=mysql_gis,label=mariadb,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:0645dc4acdd11af5fc0684e9adba0d2a705a3a52510733364d0ad41f17cbde88",
+      "id": "pull-requests-noble/database=mysql,label=noble-pr,python=python3.12",
+      "identity": {
+        "context": "pull-requests-noble/database=mysql,label=noble-pr,python=python3.12",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=mysql,label=noble-pr,python=python3.12' is success."
+    },
+    {
+      "digest": "sha256:881c6ffcb427f21638b621e1d6ca74c15c6ade629cda6625f502ac795b72e9d2",
+      "id": "pull-requests-noble/database=mysql,label=noble-pr,python=python3.13",
+      "identity": {
+        "context": "pull-requests-noble/database=mysql,label=noble-pr,python=python3.13",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=mysql,label=noble-pr,python=python3.13' is success."
+    },
+    {
+      "digest": "sha256:1e80c55f33320ad7f8a7b9e83b6b02fdc338f17f6c2f4a69a1f8042561f1e94c",
+      "id": "pull-requests-noble/database=mysql,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-noble/database=mysql,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=mysql,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:b7d2e5c8027e92e0ee76147069540b94d0ccff294e57febc42a25128a3768772",
+      "id": "pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.12",
+      "identity": {
+        "context": "pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.12",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.12' is success."
+    },
+    {
+      "digest": "sha256:75c1ee627b54d60cdb95fe5ebcc204ed948b11f166e7a3bae38953597badd14f",
+      "id": "pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.13",
+      "identity": {
+        "context": "pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.13",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.13' is success."
+    },
+    {
+      "digest": "sha256:1de5908f30b183c8c4e829c98cc2047531e36b38e88a830f4d955c161db9746d",
+      "id": "pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:c9fa99cfae49b07b3d83882fa62630f5154d047b56f4d618807aab03ea3b6de0",
+      "id": "pull-requests-noble/database=postgis,label=noble-pr,python=python3.12",
+      "identity": {
+        "context": "pull-requests-noble/database=postgis,label=noble-pr,python=python3.12",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=postgis,label=noble-pr,python=python3.12' is success."
+    },
+    {
+      "digest": "sha256:02a5e54b0ea3dd143e06d09b32351cf43c78ab3ff92048d49f50ca62817647d0",
+      "id": "pull-requests-noble/database=postgis,label=noble-pr,python=python3.13",
+      "identity": {
+        "context": "pull-requests-noble/database=postgis,label=noble-pr,python=python3.13",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=postgis,label=noble-pr,python=python3.13' is success."
+    },
+    {
+      "digest": "sha256:b4c38cf50ccea198a6843c431ce86ceee4c2b897396b872875c6448c32ebf857",
+      "id": "pull-requests-noble/database=postgis,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-noble/database=postgis,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=postgis,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:8edbcf25f4a0f547ae0d023426bdfbe65c8e2c0cec434a8f14c30ac3b1bb8dbf",
+      "id": "pull-requests-noble/database=postgres,label=noble-pr,python=python3.12",
+      "identity": {
+        "context": "pull-requests-noble/database=postgres,label=noble-pr,python=python3.12",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=postgres,label=noble-pr,python=python3.12' is success."
+    },
+    {
+      "digest": "sha256:510674e235f1b7b8bdba23039eb129d85eb30bde8fd8d7ef422b9001f8179d0a",
+      "id": "pull-requests-noble/database=postgres,label=noble-pr,python=python3.13",
+      "identity": {
+        "context": "pull-requests-noble/database=postgres,label=noble-pr,python=python3.13",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=postgres,label=noble-pr,python=python3.13' is success."
+    },
+    {
+      "digest": "sha256:a9e07126ce3028115e44d5c1e6ca1054c9a5f7707c82e63cd1a38d751f9fd543",
+      "id": "pull-requests-noble/database=postgres,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-noble/database=postgres,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=postgres,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:28138f3819bce097b831815420a43312d4025053ee15e4bed0356fcb403f610e",
+      "id": "pull-requests-noble/database=spatialite,label=noble-pr,python=python3.12",
+      "identity": {
+        "context": "pull-requests-noble/database=spatialite,label=noble-pr,python=python3.12",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=spatialite,label=noble-pr,python=python3.12' is success."
+    },
+    {
+      "digest": "sha256:33cef5e1170f42e268126c1ea99e0be2f7b78f2c3d28f40ee0b7742f707998a8",
+      "id": "pull-requests-noble/database=spatialite,label=noble-pr,python=python3.13",
+      "identity": {
+        "context": "pull-requests-noble/database=spatialite,label=noble-pr,python=python3.13",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=spatialite,label=noble-pr,python=python3.13' is success."
+    },
+    {
+      "digest": "sha256:3287ca409642a0f7ed2f719b8e841082f823d54ff09368e031ddc68bad9aeeff",
+      "id": "pull-requests-noble/database=spatialite,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-noble/database=spatialite,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=spatialite,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:f14f4732dab604ed28f5933e158231dacd35398affeffe94fa9094634f434669",
+      "id": "pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.12",
+      "identity": {
+        "context": "pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.12",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.12' is success."
+    },
+    {
+      "digest": "sha256:dd9a90fde8d568b6a48d6a5d6bef085731c07bf083237fa8b09ba65364fc93e3",
+      "id": "pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.13",
+      "identity": {
+        "context": "pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.13",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.13' is success."
+    },
+    {
+      "digest": "sha256:c8bd9419de31d8a6c93d2355f95f5a53fc792ac8b5ed76179b4f273f93e90ab4",
+      "id": "pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:4dbe30902bc93f1a4f58cb20b89687c7d90fff6fb81fb6b2f3552a32ead8dd71",
+      "id": "pull-requests-pg-server-side-binding/database=postgis,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-pg-server-side-binding/database=postgis,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-pg-server-side-binding/database=postgis,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:e49974700177d3526b9ec5a5e9dd708758cd6c5d79badb7756db09554aebe80c",
+      "id": "pull-requests-pg-server-side-binding/database=postgres,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-pg-server-side-binding/database=postgres,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-pg-server-side-binding/database=postgres,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:3ee1af62b30eab57b5a56c3f50eb08b23060e32c3b13eada17461e90f80c3f6d",
+      "id": "pull-requests-postgresql-psycopg2/database=postgis,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-postgresql-psycopg2/database=postgis,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-postgresql-psycopg2/database=postgis,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:b89a0049075d0c02a2271c97dcef023cc7c8a79be50423cb507ec13bf4e27309",
+      "id": "pull-requests-postgresql-psycopg2/database=postgres,label=noble-pr,python=python3.14",
+      "identity": {
+        "context": "pull-requests-postgresql-psycopg2/database=postgres,label=noble-pr,python=python3.14",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'pull-requests-postgresql-psycopg2/database=postgres,label=noble-pr,python=python3.14' is success."
+    },
+    {
+      "digest": "sha256:c45a3cdd2a50a10d584da49543862ce8b2c3423c316ad194606a06e84c800dc4",
+      "id": "python",
+      "identity": {
+        "check_run_id": 91333865172,
+        "completed_at": "2026-08-01T05:54:18Z",
+        "conclusion": "skipped",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "python",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91333865172 concluded skipped."
+    },
+    {
+      "digest": "sha256:084330f3702882be0c2627da6a89f47e1808de6e172bf3bddda9377c905518e9",
+      "id": "zizmor",
+      "identity": {
+        "check_run_id": 91333864300,
+        "completed_at": "2026-08-01T05:54:41Z",
+        "conclusion": "success",
+        "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+        "name": "zizmor",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T05:54:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91333864300 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 21681,
+    "ref": "refs/pull/21681/head",
+    "repository": "django/django",
+    "sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570"
+  }
+}

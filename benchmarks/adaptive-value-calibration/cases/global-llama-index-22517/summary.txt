@@ -1,0 +1,59 @@
+BLOCK  Gate BLOCK: 8 blocking issue(s). missing_required_source:CodeQL; missing_required_source:build (ubuntu-latest); missing_required_source:build (windows-latest); missing_required_source:core-typecheck; missing_required_source:lint; missing_required_source:test (3.10); missing_required_source:test (3.11); missing_required_source:test (3.12)
+record: benchmarks\adaptive-value-calibration\cases\global-llama-index-22517\gate-decision.json
+Merge protection: 8 required status check(s) enforced by classic_branch_protection on 'main'.
+GitHub baseline (status checks only): waiting.
+Fork PR: some checks may not run for forks by repository policy.
+Workflow visibility: 6 execution unit(s) on this commit have not started (6 awaiting approval/action): Linting, Unit Testing, Unit Testing
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: BLOCK
+
+**Problem:** Required check 'CodeQL' did not run for this commit.
+**Why it matters:** The protection expected from this control was not applied to this commit.
+**Affected area:** Required control 'CodeQL'
+**Severity:** BLOCK
+**Next step:** restore the workflow that emits 'CodeQL' or remove the obsolete required-check setting, then re-run the gate
+**Decision contrast:** GitHub already blocks or waits on required checks; AOS explains and preserves that existing control gap.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 8 required (0 successful); 1 other observation(s)
+**Scope:** 8 required check(s) plus recorded workflow signals on run-llama/llama\_index@cdc41100526b; requirements read from classic\_branch\_protection; not full merge-readiness
+**Freshness:** observed 2026-08-01T09:37:28Z; collection wait\_timeout; 6 workflow unit(s) had not started
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | run-llama/llama\_index |
+| Ref | `refs/pull/22517/head` |
+| Commit | `cdc41100526bac033de1f0d8790695ab8f9a055a` |
+| Pull request | #22517 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:70c694e2f0f970177643b56e88441a7774fa3c610a7674bf90dc35ce6dd31842` |
+| Input bundle digest | `sha256:ccc96dfcae3f6a632666783ac15f424ac3c18ba11c04070d4741c14e9c2179b2` |
+| Record digest | `sha256:56a0ed4ce7389af330ce0516fc44621054ffee3f4953e056c32095fac00ee00c` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+**Dominant problem:** 'CodeQL': required source is absent from the bundle (requirement state: missing)
+
+### Top gaps
+
+- BLOCK `missing_required_source` CodeQL: required source is absent from the bundle (requirement state: missing)
+  - Hint: restore the workflow that emits 'CodeQL' or remove the obsolete required-check setting, then re-run the gate
+- BLOCK `missing_required_source` build (ubuntu-latest): required source is absent from the bundle (requirement state: missing)
+  - Hint: restore the workflow that emits 'build (ubuntu-latest)' or remove the obsolete required-check setting, then re-run the gate
+- BLOCK `missing_required_source` build (windows-latest): required source is absent from the bundle (requirement state: missing)
+  - Hint: restore the workflow that emits 'build (windows-latest)' or remove the obsolete required-check setting, then re-run the gate
+- ...and 6 more reason(s) - every one is in the record JSON and the HTML evidence view.
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| branch.rules | branch\_rules\_summary | no | success |
+
+### Coverage
+
+- Required sources: 0 of 1
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.

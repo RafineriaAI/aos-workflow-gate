@@ -67,24 +67,21 @@ frozen for validation. `preflight`, `collect`, `import`, `agent-action`,
 `bench-verify` retain their semantics, as do `source-v0`, `agent-action-v0`,
 and `benchmark-case-v0`.
 
-`aos-check` is the mass-market entry experiment. It removes Git, GitHub,
-policy, and test-command knowledge from the first run, then reports existing
-build/test failures or missing behavioral verification in plain language. Its
-current scope validates onboarding and orchestration only; differentiation
-still requires accepted findings beyond merely re-running familiar project
-commands.
+`aos-check` remains the simple entry utility. It removes Git, GitHub, policy,
+and command-discovery knowledge from the first run, but familiar build/test
+orchestration is not treated as primary differentiation.
 
+`prove-change` is the selected next product experiment. It is a plug-in after
+an existing targeted test command and asks whether the tests still pass when
+the actual PR implementation patch is removed. The exploratory eight-case
+benchmark supports the mechanism and a narrow eligibility rule, not user value:
+run it for code-and-test PRs or an explicitly declared behavior change; skip
+behavior-preserving and performance-only changes by default.
 
-`prove-change` is one explicit experimental exception created to test the
-stronger code-value hypothesis: can AOS generate useful executable evidence
-that existing green tests do not distinguish a code change? It is local-only,
-not part of the default Action, introduces no LLM verdict, and reuses
-`source-v0`, policy evaluation, records, and replay.
-
-No dashboard, SaaS layer, broad adapter catalog, or release claim should
-precede measurement of `aos-check` first-run completion and repeat use plus
-`prove-change` actionable rate, decision-change rate, incremental findings,
-runtime cost, and repeated noise.
+No default enablement, dashboard, SaaS layer, broad adapter catalog, or paid
+offer should precede external measurement of warning acceptance,
+decision-change rate, incremental weak-test findings, runtime cost, noise,
+setup time, and four-week retention.
 
 ## Next milestone: external value validation
 
@@ -94,21 +91,18 @@ automation.
 
 Required sequence:
 
-1. Keep the install-to-diagnosis path below five minutes.
-2. Recruit beginners, vibe coders, professional developers, and maintainers;
-   measure the local first-run job separately from team control-assurance
-   demand.
-3. Collect opt-in, non-confidential feedback through the public form.
-4. When access exists, run the preregistered formative study with 8-12
-   independent developers and control owners.
-5. Measure comprehension and next-action clarity, then separately measure
-   actionable rate, decision-change rate, incremental findings, repeated
-   noise, time-to-resolution, and 30-day retention.
-6. Run the comparative signal study only with frozen selection,
-   classification, stopping, and claim rules.
-7. Test organization-level demand for control drift, exception governance,
-   evidence retention, and assurance reporting before defining a paid offer.
-8. Retain `NO_GO` for efficacy, production, or paid-value claims until the
+1. Keep installation and first diagnosis below five minutes.
+2. Offer Change Proof only as an opt-in plug-in after a targeted test command.
+3. Collect at least 50 eligible PR runs across five independent repositories.
+4. Measure accepted test improvements, merge-decision changes, incremental
+   findings, noise, inconclusive runs, setup time, runtime cost, and retention.
+5. Compare with ordinary CI, patch coverage, and established mutation tooling
+   already used by each repository.
+6. Run the preregistered formative study when 8-12 independent developers and
+   control owners become available.
+7. Test organization-level demand only after the developer plug-in produces
+   repeated accepted value.
+8. Retain `NO_GO` for efficacy, production, ROI, or paid-value claims until the
    corresponding thresholds are met.
 
 The outcome may be promotion, policy narrowing, repositioning, or product

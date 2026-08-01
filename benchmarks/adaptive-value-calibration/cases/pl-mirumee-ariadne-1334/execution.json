@@ -1,0 +1,13 @@
+{
+  "artifact_serialization": "ascii-safe-json",
+  "case_id": "pl-mirumee-ariadne-1334",
+  "completed_at": "2026-08-01T09:36:24Z",
+  "elapsed_seconds": 6.27,
+  "exit_code": 0,
+  "record_self_check": true,
+  "schema_version": "aos-real-workflow-execution/v0",
+  "selected_head_sha": "45461703cafebbf7723f0af86278d9c7cbdf4198",
+  "started_from_pr_url": "https://github.com/mirumee/ariadne/pull/1334",
+  "stdout_encoding": "utf-8",
+  "token_present": true
+}

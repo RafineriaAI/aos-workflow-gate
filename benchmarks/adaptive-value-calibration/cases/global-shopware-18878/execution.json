@@ -1,0 +1,13 @@
+{
+  "artifact_serialization": "ascii-safe-json",
+  "case_id": "global-shopware-18878",
+  "completed_at": "2026-08-01T09:36:52Z",
+  "elapsed_seconds": 11.978,
+  "exit_code": 0,
+  "record_self_check": true,
+  "schema_version": "aos-real-workflow-execution/v0",
+  "selected_head_sha": "aa21ca853d40b58c61e3700c5b3158d064551e43",
+  "started_from_pr_url": "https://github.com/shopware/shopware/pull/18878",
+  "stdout_encoding": "utf-8",
+  "token_present": true
+}

@@ -1,0 +1,544 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "counterfactual_blockers": [
+      "packages / Run linters"
+    ],
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+      "repository": "deepsense-ai/ragbits"
+    },
+    "observed_at": "2026-08-01T09:37:22Z",
+    "pr": {
+      "draft": false,
+      "from_fork": false,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:d7905e3064608c26c7bc506db21d9e368eefe768c584fd4196a2d22c9e4290fe",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "packages/ragbits-chat/tests/unit/api_routes/__init__.py",
+          "packages/ragbits-chat/tests/unit/api_routes/test_share_access.py",
+          "packages/ragbits-chat/tests/unit/api_routes/test_share_router.py",
+          "packages/ragbits-chat/tests/unit/interface/__init__.py",
+          "packages/ragbits-chat/tests/unit/interface/test_summary_persistence.py",
+          "packages/ragbits-chat/tests/unit/persistence/test_share.py",
+          "packages/ragbits-chat/tests/unit/persistence/test_sql_conversations.py",
+          "packages/ragbits-chat/tests/unit/providers/__init__.py",
+          "packages/ragbits-chat/tests/unit/providers/test_model_provider.py",
+          "packages/ragbits-core/tests/unit/storage/__init__.py",
+          "packages/ragbits-core/tests/unit/storage/test_from_config.py",
+          "packages/ragbits-core/tests/unit/storage/test_sqlite_connection.py",
+          "packages/ragbits-core/tests/unit/storage/test_sqlite_kv_store.py",
+          "packages/ragbits-core/tests/unit/storage/test_sqlite_sql_store.py"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "a9baa0e7d0c21d0e9e1f6728a559c20143ebf0bf",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "pull_request": 977,
+        "repository": "deepsense-ai/ragbits"
+      },
+      "unchanged_workflow_runs": 1,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 34598,
+          "app_slug": "github-pages",
+          "check_suite_id": 68052224113,
+          "conclusion": null,
+          "source": "check_suites",
+          "state": "pending",
+          "status": "queued"
+        }
+      ],
+      "states": {
+        "action_required": 0,
+        "completed": 1,
+        "pending": 1
+      },
+      "units_total": 2
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:7245a39924ccb655e913f067d95b5e338d9b69b3d73dfcdb8af84b5238cce1ee",
+      "id": "Check changelog update",
+      "identity": {
+        "check_run_id": 74984980637,
+        "completed_at": "2026-05-08T08:59:30Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Check changelog update",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T08:59:30Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74984980637 concluded success."
+    },
+    {
+      "digest": "sha256:e3a315cf5784b7074bf2b0ac0c5c6303511fa90e353ee27ef3f94b01d3e28b8e",
+      "id": "Check pull request title",
+      "identity": {
+        "check_run_id": 74984980635,
+        "completed_at": "2026-05-08T08:59:19Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Check pull request title",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T08:59:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74984980635 concluded success."
+    },
+    {
+      "digest": "sha256:24e50467b6e76b7042cba160642479cb7d41369b8b6c872c2e3e763b3992d25e",
+      "id": "Check source changes",
+      "identity": {
+        "check_run_id": 74984980622,
+        "completed_at": "2026-05-08T08:59:20Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Check source changes",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T08:59:20Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74984980622 concluded success."
+    },
+    {
+      "digest": "sha256:a7f3b44e453402b2537a439574a97db01a053b1c6b672dbab252f2ad71f1b0f0",
+      "id": "Test Results (package, Python 3.10)",
+      "identity": {
+        "check_run_id": 74986105868,
+        "completed_at": "2026-05-08T09:07:17Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Test Results (package, Python 3.10)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:07:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74986105868 concluded success."
+    },
+    {
+      "digest": "sha256:bb3150e39a8fcb4dd8648adce00e8a788ace588e238649d8bae49b64071faba5",
+      "id": "Test Results (package, Python 3.11)",
+      "identity": {
+        "check_run_id": 74985840539,
+        "completed_at": "2026-05-08T09:05:18Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Test Results (package, Python 3.11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985840539 concluded success."
+    },
+    {
+      "digest": "sha256:8189f11bc4b7738cf1f03918e3f975849fa29f4cbb37887cbad63d5e1de65c3e",
+      "id": "Test Results (package, Python 3.12)",
+      "identity": {
+        "check_run_id": 74986083235,
+        "completed_at": "2026-05-08T09:07:07Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Test Results (package, Python 3.12)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:07:07Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74986083235 concluded success."
+    },
+    {
+      "digest": "sha256:a50b48ec57b1b2b5af255cf5e6ff2e27a13fb0667e6ac3e620a81da7c2fc579b",
+      "id": "Test Results (package, Python 3.13)",
+      "identity": {
+        "check_run_id": 74985854908,
+        "completed_at": "2026-05-08T09:05:25Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Test Results (package, Python 3.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:25Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985854908 concluded success."
+    },
+    {
+      "digest": "sha256:e667993bef4f592f763baebe46de3ae66e2f7e7cbe1b0e16087e7f63b2ba1dc8",
+      "id": "Test Results (source, Python 3.10)",
+      "identity": {
+        "check_run_id": 74985853944,
+        "completed_at": "2026-05-08T09:05:24Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Test Results (source, Python 3.10)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:24Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985853944 concluded success."
+    },
+    {
+      "digest": "sha256:41c5ababa76b62c85a548d2d05f44f5a582f155c40b4e4447585a2568197966f",
+      "id": "Test Results (source, Python 3.11)",
+      "identity": {
+        "check_run_id": 74985830550,
+        "completed_at": "2026-05-08T09:05:14Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Test Results (source, Python 3.11)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:14Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985830550 concluded success."
+    },
+    {
+      "digest": "sha256:1e68b57a4f171895c01703e1156c5acc7715cd3a58aa1045c0515aeb762f70fd",
+      "id": "Test Results (source, Python 3.12)",
+      "identity": {
+        "check_run_id": 74985899461,
+        "completed_at": "2026-05-08T09:05:44Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Test Results (source, Python 3.12)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:44Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985899461 concluded success."
+    },
+    {
+      "digest": "sha256:f8636f6b963eec09b9775fd3fffa1fb73bf8c925c0f1d6dbb28a0013354cbad5",
+      "id": "Test Results (source, Python 3.13)",
+      "identity": {
+        "check_run_id": 74985853463,
+        "completed_at": "2026-05-08T09:05:24Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "Test Results (source, Python 3.13)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:24Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985853463 concluded success."
+    },
+    {
+      "digest": "sha256:d7905e3064608c26c7bc506db21d9e368eefe768c584fd4196a2d22c9e4290fe",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: creationx1, deletionx1, non_fast_forwardx1, pull_requestx1, required_linear_historyx1, updatex1; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:3eef8b7c33aab1ebc01037160c623663aa52cc627eadaf5b878c7f9eecd313d6",
+      "id": "client / Run client checks",
+      "identity": {
+        "check_run_id": 74985020562,
+        "completed_at": "2026-05-08T08:59:55Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "client / Run client checks",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T08:59:55Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985020562 concluded success."
+    },
+    {
+      "digest": "sha256:c91ceba306db734b99271066e8a67a180c2f7b1cb18d999bdd544946124d446a",
+      "id": "packages / Run build",
+      "identity": {
+        "check_run_id": 74985020556,
+        "completed_at": "2026-05-08T08:59:42Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run build",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T08:59:42Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985020556 concluded success."
+    },
+    {
+      "digest": "sha256:dbc66844d86cc249164d21f46fe9f0106b65968fb557486cb385042084156c67",
+      "id": "packages / Run linters",
+      "identity": {
+        "check_run_id": 74985020551,
+        "completed_at": "2026-05-08T09:02:55Z",
+        "conclusion": "failure",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run linters",
+        "run_status": "completed",
+        "status": "failure"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:02:55Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure",
+      "summary": "GitHub check run 74985020551 concluded failure."
+    },
+    {
+      "digest": "sha256:45f9c2f46aca0be010655927a7e237c310875ed8b4c59b4a2af03869d28b682d",
+      "id": "packages / Run tests (3.10, package)",
+      "identity": {
+        "check_run_id": 74985067965,
+        "completed_at": "2026-05-08T09:07:28Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run tests (3.10, package)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:07:28Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985067965 concluded success."
+    },
+    {
+      "digest": "sha256:652d9b79ec074371d9392459390edbb6281246e6450e728e04954e472a6a3106",
+      "id": "packages / Run tests (3.10, source)",
+      "identity": {
+        "check_run_id": 74985068011,
+        "completed_at": "2026-05-08T09:05:57Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run tests (3.10, source)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985068011 concluded success."
+    },
+    {
+      "digest": "sha256:0bc57d8793218e9e2a22c9fba1319279c365772a5a96eade6ac7d893f194adc4",
+      "id": "packages / Run tests (3.11, package)",
+      "identity": {
+        "check_run_id": 74985067984,
+        "completed_at": "2026-05-08T09:05:31Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run tests (3.11, package)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:31Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985067984 concluded success."
+    },
+    {
+      "digest": "sha256:2e2fa82c4f603760d7098a03a785c4dad548c5543acc0e88efee9c49033243e8",
+      "id": "packages / Run tests (3.11, source)",
+      "identity": {
+        "check_run_id": 74985067990,
+        "completed_at": "2026-05-08T09:05:46Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run tests (3.11, source)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:46Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985067990 concluded success."
+    },
+    {
+      "digest": "sha256:bc238960a06093dc33feb3480518bb27caf5d06106398474df202ac27b20f4b8",
+      "id": "packages / Run tests (3.12, package)",
+      "identity": {
+        "check_run_id": 74985067979,
+        "completed_at": "2026-05-08T09:07:18Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run tests (3.12, package)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:07:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985067979 concluded success."
+    },
+    {
+      "digest": "sha256:9b44297e0d800a6688fd2497637cf6282c7c17390e57fb5cc5e5dac8921f0ff0",
+      "id": "packages / Run tests (3.12, source)",
+      "identity": {
+        "check_run_id": 74985067989,
+        "completed_at": "2026-05-08T09:06:19Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run tests (3.12, source)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:06:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985067989 concluded success."
+    },
+    {
+      "digest": "sha256:5daddfab58d7ddb7be66130bdc1f4f5628cdb5ebbac7da3906a397dcf222f583",
+      "id": "packages / Run tests (3.13, package)",
+      "identity": {
+        "check_run_id": 74985067992,
+        "completed_at": "2026-05-08T09:05:37Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run tests (3.13, package)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:37Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985067992 concluded success."
+    },
+    {
+      "digest": "sha256:8bf8f4c290c08028690a8d2d94f6d2853646b12b2a966a01fca56f8cf86ef7ad",
+      "id": "packages / Run tests (3.13, source)",
+      "identity": {
+        "check_run_id": 74985067994,
+        "completed_at": "2026-05-08T09:05:57Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "packages / Run tests (3.13, source)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:05:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985067994 concluded success."
+    },
+    {
+      "digest": "sha256:d4e039f78ff292a1517261862e2afa1a526760190e24ef5aa0614a4f85b441b5",
+      "id": "ui / Run linters & tests",
+      "identity": {
+        "check_run_id": 74985020567,
+        "completed_at": "2026-05-08T09:02:05Z",
+        "conclusion": "success",
+        "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+        "name": "ui / Run linters & tests",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-05-08T09:02:05Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 74985020567 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 977,
+    "ref": "refs/pull/977/head",
+    "repository": "deepsense-ai/ragbits",
+    "sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec"
+  }
+}

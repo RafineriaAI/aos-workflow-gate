@@ -1,0 +1,706 @@
+{
+  "cases": [
+    {
+      "aos_incremental_by_contract": false,
+      "case_id": "pl-allegro-hermes-2052",
+      "cohort": "polish",
+      "collection_status": "complete",
+      "complete": true,
+      "contrast_code": "aligned_clear",
+      "diagnosis_specific": true,
+      "dominant_problem": "Every required check AOS evaluated completed successfully for this commit.",
+      "dominant_rule": null,
+      "elapsed_seconds": 8.293,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": false,
+      "github_baseline": "clear",
+      "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+      "historical_alignment": null,
+      "human_outcome_available": null,
+      "human_outcome_business_relevance": null,
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": true,
+      "next_step": "set enforce: \"true\" (or a blocking policy) so a BLOCK verdict fails the job",
+      "pair_id": "jvm-event-platform",
+      "pr_number": 2052,
+      "pr_url": "https://github.com/allegro/hermes/pull/2052",
+      "problem_scope": "none",
+      "repository": "allegro/hermes",
+      "review_stage_a": null,
+      "verdict": "PASS",
+      "workflow_visibility_available": true
+    },
+    {
+      "aos_incremental_by_contract": false,
+      "case_id": "global-apache-kafka-23015",
+      "cohort": "global",
+      "collection_status": "wait_timeout",
+      "complete": true,
+      "contrast_code": "github_already_blocks",
+      "diagnosis_specific": true,
+      "dominant_problem": "Required check 'build / CI checks completed' did not run for this commit.",
+      "dominant_rule": "missing_required_source",
+      "elapsed_seconds": 8.652,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": true,
+      "github_baseline": "waiting",
+      "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+      "historical_alignment": null,
+      "human_outcome_available": null,
+      "human_outcome_business_relevance": null,
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": true,
+      "next_step": "restore the workflow that emits 'build / CI checks completed' or remove the obsolete required-check setting, then re-run the gate",
+      "pair_id": "jvm-event-platform",
+      "pr_number": 23015,
+      "pr_url": "https://github.com/apache/kafka/pull/23015",
+      "problem_scope": "workflow_or_repository_control",
+      "repository": "apache/kafka",
+      "review_stage_a": null,
+      "verdict": "BLOCK",
+      "workflow_visibility_available": true
+    },
+    {
+      "aos_incremental_by_contract": true,
+      "case_id": "pl-softwaremill-tapir-5442",
+      "cohort": "polish",
+      "collection_status": "complete",
+      "complete": true,
+      "contrast_code": "github_no_required_gate",
+      "diagnosis_specific": true,
+      "dominant_problem": "GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.",
+      "dominant_rule": "no_required_sources",
+      "elapsed_seconds": 5.774,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": true,
+      "github_baseline": "no_required_checks",
+      "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+      "historical_alignment": null,
+      "human_outcome_available": null,
+      "human_outcome_business_relevance": null,
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": true,
+      "next_step": "configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS",
+      "pair_id": "scala-http-api",
+      "pr_number": 5442,
+      "pr_url": "https://github.com/softwaremill/tapir/pull/5442",
+      "problem_scope": "workflow_or_repository_control",
+      "repository": "softwaremill/tapir",
+      "review_stage_a": null,
+      "verdict": "WARN",
+      "workflow_visibility_available": true
+    },
+    {
+      "aos_incremental_by_contract": false,
+      "case_id": "global-scala-scala3-25393",
+      "cohort": "global",
+      "collection_status": "complete",
+      "complete": true,
+      "contrast_code": "aligned_clear",
+      "diagnosis_specific": true,
+      "dominant_problem": "Every required check AOS evaluated completed successfully for this commit.",
+      "dominant_rule": null,
+      "elapsed_seconds": 7.977,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": true,
+      "github_baseline": "clear",
+      "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+      "historical_alignment": null,
+      "human_outcome_available": null,
+      "human_outcome_business_relevance": null,
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": true,
+      "next_step": "set enforce: \"true\" (or a blocking policy) so a BLOCK verdict fails the job",
+      "pair_id": "scala-http-api",
+      "pr_number": 25393,
+      "pr_url": "https://github.com/scala/scala3/pull/25393",
+      "problem_scope": "none",
+      "repository": "scala/scala3",
+      "review_stage_a": null,
+      "verdict": "PASS",
+      "workflow_visibility_available": true
+    },
+    {
+      "aos_incremental_by_contract": true,
+      "case_id": "pl-saleor-saleor-19587",
+      "cohort": "polish",
+      "collection_status": "complete",
+      "complete": true,
+      "contrast_code": "github_no_required_gate",
+      "diagnosis_specific": true,
+      "dominant_problem": "GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.",
+      "dominant_rule": "no_required_sources",
+      "elapsed_seconds": 6.91,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": true,
+      "github_baseline": "no_required_checks",
+      "head_sha": "7580cf1771c8968a70fa141fbe3564140e3ef298",
+      "historical_alignment": null,
+      "human_outcome_available": null,
+      "human_outcome_business_relevance": null,
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": false,
+      "next_step": "configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS",
+      "pair_id": "python-web-platform",
+      "pr_number": 19587,
+      "pr_url": "https://github.com/saleor/saleor/pull/19587",
+      "problem_scope": "workflow_or_repository_control",
+      "repository": "saleor/saleor",
+      "review_stage_a": null,
+      "verdict": "WARN",
+      "workflow_visibility_available": true
+    },
+    {
+      "aos_incremental_by_contract": true,
+      "case_id": "global-django-django-21681",
+      "cohort": "global",
+      "collection_status": "complete",
+      "complete": true,
+      "contrast_code": "github_no_required_gate",
+      "diagnosis_specific": true,
+      "dominant_problem": "GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.",
+      "dominant_rule": "no_required_sources",
+      "elapsed_seconds": 7.068,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": true,
+      "github_baseline": "no_required_checks",
+      "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+      "historical_alignment": "none",
+      "human_outcome_available": true,
+      "human_outcome_business_relevance": "material",
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": true,
+      "next_step": "configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS",
+      "pair_id": "python-web-platform",
+      "pr_number": 21681,
+      "pr_url": "https://github.com/django/django/pull/21681",
+      "problem_scope": "workflow_or_repository_control",
+      "repository": "django/django",
+      "review_stage_a": "frozen_before_aos",
+      "verdict": "WARN",
+      "workflow_visibility_available": true
+    },
+    {
+      "aos_incremental_by_contract": false,
+      "case_id": "pl-virtuslab-scala-cli-4403",
+      "cohort": "polish",
+      "collection_status": "complete",
+      "complete": true,
+      "contrast_code": "aligned_clear",
+      "diagnosis_specific": true,
+      "dominant_problem": "Every required check AOS evaluated completed successfully for this commit.",
+      "dominant_rule": null,
+      "elapsed_seconds": 6.475,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": false,
+      "github_baseline": "clear",
+      "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+      "historical_alignment": "insufficient",
+      "human_outcome_available": false,
+      "human_outcome_business_relevance": "insufficient",
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": true,
+      "next_step": "set enforce: \"true\" (or a blocking policy) so a BLOCK verdict fails the job",
+      "pair_id": "scala-build-tooling",
+      "pr_number": 4403,
+      "pr_url": "https://github.com/VirtusLab/scala-cli/pull/4403",
+      "problem_scope": "none",
+      "repository": "VirtusLab/scala-cli",
+      "review_stage_a": "frozen_before_aos",
+      "verdict": "PASS",
+      "workflow_visibility_available": true
+    },
+    {
+      "aos_incremental_by_contract": true,
+      "case_id": "global-sbt-sbt-9515",
+      "cohort": "global",
+      "collection_status": "complete",
+      "complete": true,
+      "contrast_code": "github_no_required_gate",
+      "diagnosis_specific": true,
+      "dominant_problem": "GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.",
+      "dominant_rule": "no_required_sources",
+      "elapsed_seconds": 6.816,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": true,
+      "github_baseline": "no_required_checks",
+      "head_sha": "783fcc96709beb6c362d0cb3cbaba43dc5abce60",
+      "historical_alignment": "none",
+      "human_outcome_available": true,
+      "human_outcome_business_relevance": "material",
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": true,
+      "next_step": "configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS",
+      "pair_id": "scala-build-tooling",
+      "pr_number": 9515,
+      "pr_url": "https://github.com/sbt/sbt/pull/9515",
+      "problem_scope": "workflow_or_repository_control",
+      "repository": "sbt/sbt",
+      "review_stage_a": "frozen_before_aos",
+      "verdict": "WARN",
+      "workflow_visibility_available": true
+    },
+    {
+      "aos_incremental_by_contract": false,
+      "case_id": "pl-callstack-react-native-paper-5038",
+      "cohort": "polish",
+      "collection_status": "wait_timeout",
+      "complete": true,
+      "contrast_code": "github_already_blocks",
+      "diagnosis_specific": true,
+      "dominant_problem": "Required check 'Build docs' did not run for this commit.",
+      "dominant_rule": "missing_required_source",
+      "elapsed_seconds": 6.841,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": true,
+      "github_baseline": "waiting",
+      "head_sha": "2d099bd2a91ec946db547751b8e0f06a1c824155",
+      "historical_alignment": "insufficient",
+      "human_outcome_available": false,
+      "human_outcome_business_relevance": "insufficient",
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": false,
+      "next_step": "restore the workflow that emits 'Build docs' or remove the obsolete required-check setting, then re-run the gate",
+      "pair_id": "typescript-ui-library",
+      "pr_number": 5038,
+      "pr_url": "https://github.com/callstack/react-native-paper/pull/5038",
+      "problem_scope": "workflow_or_repository_control",
+      "repository": "callstack/react-native-paper",
+      "review_stage_a": "frozen_before_aos",
+      "verdict": "BLOCK",
+      "workflow_visibility_available": true
+    },
+    {
+      "aos_incremental_by_contract": false,
+      "case_id": "global-mui-material-ui-48888",
+      "cohort": "global",
+      "collection_status": "wait_timeout",
+      "complete": true,
+      "contrast_code": "github_already_blocks",
+      "diagnosis_specific": true,
+      "dominant_problem": "AOS could not verify required check 'argos'.",
+      "dominant_rule": "missing_required_source",
+      "elapsed_seconds": 6.193,
+      "errors": [],
+      "exact_sha_bound": true,
+      "frozen_workflow_naive_alert": true,
+      "github_baseline": "waiting",
+      "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+      "historical_alignment": "insufficient",
+      "human_outcome_available": false,
+      "human_outcome_business_relevance": "insufficient",
+      "integrity": {
+        "bundle_digest": true,
+        "policy_digest": true,
+        "record_digest": true,
+        "semantic_replay": true
+      },
+      "material_incremental_alignment": false,
+      "message_structure_complete": true,
+      "naive_baseline_alert": true,
+      "next_step": "restore app identity or API visibility for required check 'argos' on this exact commit, then re-run the gate",
+      "pair_id": "typescript-ui-library",
+      "pr_number": 48888,
+      "pr_url": "https://github.com/mui/material-ui/pull/48888",
+      "problem_scope": "workflow_or_repository_control",
+      "repository": "mui/material-ui",
+      "review_stage_a": "frozen_before_aos",
+      "verdict": "BLOCK",
+      "workflow_visibility_available": true
+    }
+  ],
+  "claim_boundary": "Read-only exploratory benchmark over public pull-request metadata and exact-head workflow observations. It may measure first-run completion, diagnostic specificity, actionable-message coverage, observed GitHub contrast, and historical-review concordance. Without enrolled users it cannot establish actual decision change, alert acceptance, retention, willingness to pay, defect prevention, or production readiness.",
+  "cohorts": {
+    "global": {
+      "aos_contract_contrast": {
+        "denominator": 5,
+        "numerator": 2,
+        "rate": 0.4
+      },
+      "blinded_human_outcome_coverage": {
+        "denominator": 3,
+        "numerator": 2,
+        "rate": 0.6667
+      },
+      "code_or_project_change_findings": {
+        "denominator": 4,
+        "numerator": 0,
+        "rate": 0.0
+      },
+      "collection_complete": {
+        "denominator": 5,
+        "numerator": 3,
+        "rate": 0.6
+      },
+      "completed_cases": 5,
+      "contract_contrast_reasons": {
+        "no_required_sources": 2
+      },
+      "contract_contrast_without_visible_non_success": {
+        "denominator": 2,
+        "numerator": 0,
+        "rate": 0.0
+      },
+      "diagnosis_specificity": {
+        "denominator": 4,
+        "numerator": 4,
+        "rate": 1.0
+      },
+      "evidence_integrity": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      },
+      "exact_sha_binding": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      },
+      "first_run_completion": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      },
+      "historical_action_alignment": {
+        "denominator": 2,
+        "numerator": 0,
+        "rate": 0.0
+      },
+      "material_incremental_alignment": {
+        "denominator": 2,
+        "numerator": 0,
+        "rate": 0.0
+      },
+      "material_incremental_signal_coverage": {
+        "denominator": 5,
+        "numerator": 0,
+        "rate": 0.0
+      },
+      "median_time_to_diagnosis_seconds": 7.068,
+      "noise_avoided_vs_all_non_success": {
+        "denominator": 5,
+        "numerator": 1,
+        "rate": 0.2
+      },
+      "non_pass_message_structure": {
+        "denominator": 4,
+        "numerator": 4,
+        "rate": 1.0
+      },
+      "selected_cases": 5,
+      "semantic_replay": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      },
+      "verdicts": {
+        "BLOCK": 2,
+        "PASS": 1,
+        "WARN": 2
+      },
+      "workflow_or_repository_control_findings": {
+        "denominator": 4,
+        "numerator": 4,
+        "rate": 1.0
+      },
+      "workflow_visibility": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      }
+    },
+    "polish": {
+      "aos_contract_contrast": {
+        "denominator": 5,
+        "numerator": 2,
+        "rate": 0.4
+      },
+      "blinded_human_outcome_coverage": {
+        "denominator": 2,
+        "numerator": 0,
+        "rate": 0.0
+      },
+      "code_or_project_change_findings": {
+        "denominator": 3,
+        "numerator": 0,
+        "rate": 0.0
+      },
+      "collection_complete": {
+        "denominator": 5,
+        "numerator": 4,
+        "rate": 0.8
+      },
+      "completed_cases": 5,
+      "contract_contrast_reasons": {
+        "no_required_sources": 2
+      },
+      "contract_contrast_without_visible_non_success": {
+        "denominator": 2,
+        "numerator": 1,
+        "rate": 0.5
+      },
+      "diagnosis_specificity": {
+        "denominator": 3,
+        "numerator": 3,
+        "rate": 1.0
+      },
+      "evidence_integrity": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      },
+      "exact_sha_binding": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      },
+      "first_run_completion": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      },
+      "historical_action_alignment": {
+        "denominator": 0,
+        "numerator": 0,
+        "rate": null
+      },
+      "material_incremental_alignment": {
+        "denominator": 0,
+        "numerator": 0,
+        "rate": null
+      },
+      "material_incremental_signal_coverage": {
+        "denominator": 5,
+        "numerator": 0,
+        "rate": 0.0
+      },
+      "median_time_to_diagnosis_seconds": 6.841,
+      "noise_avoided_vs_all_non_success": {
+        "denominator": 3,
+        "numerator": 2,
+        "rate": 0.6667
+      },
+      "non_pass_message_structure": {
+        "denominator": 3,
+        "numerator": 3,
+        "rate": 1.0
+      },
+      "selected_cases": 5,
+      "semantic_replay": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      },
+      "verdicts": {
+        "BLOCK": 1,
+        "PASS": 2,
+        "WARN": 2
+      },
+      "workflow_or_repository_control_findings": {
+        "denominator": 3,
+        "numerator": 3,
+        "rate": 1.0
+      },
+      "workflow_visibility": {
+        "denominator": 5,
+        "numerator": 5,
+        "rate": 1.0
+      }
+    }
+  },
+  "manifest_digest": "sha256:41ea5ee62856a3d057781bfb4988cc742e33bbc50ae0c0ee636d76e52197e1f8",
+  "mechanism_result": "PASS",
+  "metrics": {
+    "aos_contract_contrast": {
+      "denominator": 10,
+      "numerator": 4,
+      "rate": 0.4
+    },
+    "blinded_human_outcome_coverage": {
+      "denominator": 5,
+      "numerator": 2,
+      "rate": 0.4
+    },
+    "code_or_project_change_findings": {
+      "denominator": 7,
+      "numerator": 0,
+      "rate": 0.0
+    },
+    "collection_complete": {
+      "denominator": 10,
+      "numerator": 7,
+      "rate": 0.7
+    },
+    "completed_cases": 10,
+    "contract_contrast_reasons": {
+      "no_required_sources": 4
+    },
+    "contract_contrast_without_visible_non_success": {
+      "denominator": 4,
+      "numerator": 1,
+      "rate": 0.25
+    },
+    "diagnosis_specificity": {
+      "denominator": 7,
+      "numerator": 7,
+      "rate": 1.0
+    },
+    "evidence_integrity": {
+      "denominator": 10,
+      "numerator": 10,
+      "rate": 1.0
+    },
+    "exact_sha_binding": {
+      "denominator": 10,
+      "numerator": 10,
+      "rate": 1.0
+    },
+    "first_run_completion": {
+      "denominator": 10,
+      "numerator": 10,
+      "rate": 1.0
+    },
+    "historical_action_alignment": {
+      "denominator": 2,
+      "numerator": 0,
+      "rate": 0.0
+    },
+    "material_incremental_alignment": {
+      "denominator": 2,
+      "numerator": 0,
+      "rate": 0.0
+    },
+    "material_incremental_signal_coverage": {
+      "denominator": 10,
+      "numerator": 0,
+      "rate": 0.0
+    },
+    "median_time_to_diagnosis_seconds": 6.876,
+    "noise_avoided_vs_all_non_success": {
+      "denominator": 8,
+      "numerator": 3,
+      "rate": 0.375
+    },
+    "non_pass_message_structure": {
+      "denominator": 7,
+      "numerator": 7,
+      "rate": 1.0
+    },
+    "selected_cases": 10,
+    "semantic_replay": {
+      "denominator": 10,
+      "numerator": 10,
+      "rate": 1.0
+    },
+    "verdicts": {
+      "BLOCK": 3,
+      "PASS": 3,
+      "WARN": 4
+    },
+    "workflow_or_repository_control_findings": {
+      "denominator": 7,
+      "numerator": 7,
+      "rate": 1.0
+    },
+    "workflow_visibility": {
+      "denominator": 10,
+      "numerator": 10,
+      "rate": 1.0
+    }
+  },
+  "protocol_deviations": [
+    "Stage A review extraction followed AOS execution for five cases; those cases are excluded from blinded historical-action alignment."
+  ],
+  "sample": {
+    "cases": 10,
+    "completed_pairs": 5,
+    "global_cases": 5,
+    "polish_cases": 5
+  },
+  "schema_version": "aos-real-workflow-results/v0",
+  "selection_status": "LOCKED_BEFORE_AOS",
+  "study_id": "aos-real-workflow-utility-2026-08-01",
+  "unmeasured_without_enrolled_users": {
+    "actual_actionable_rate": null,
+    "actual_decision_change_rate": null,
+    "alert_acceptance_rate": null,
+    "incident_reduction": null,
+    "incremental_value_noticed_by_user": null,
+    "retention": null,
+    "time_saved": null,
+    "willingness_to_pay": null
+  },
+  "workflow_utility_result": "NO_CLEAR_WORKFLOW_UTILITY"
+}

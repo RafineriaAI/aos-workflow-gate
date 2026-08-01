@@ -1,0 +1,95 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "85116718fd3bfbc4c63b42f889527247ab2ca57c",
+      "repository": "apache/flink"
+    },
+    "observed_at": "2026-08-01T09:37:15Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "flink-table/flink-table-planner/src/test/java/org/apache/flink/table/planner/codegen/JsonParseReuseTest.java",
+          "flink-table/flink-table-planner/src/test/java/org/apache/flink/table/planner/functions/JsonFunctionsITCase.java"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "0ecc34d3bb53d6214e1bb4997967fa2cff3b8bf0",
+        "head_sha": "85116718fd3bfbc4c63b42f889527247ab2ca57c",
+        "pull_request": 28850,
+        "repository": "apache/flink"
+      },
+      "unchanged_workflow_runs": 1,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 82874177827,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30564583384,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Docs 404 check (beta)"
+        }
+      ],
+      "states": {
+        "action_required": 1,
+        "completed": 0,
+        "pending": 0
+      },
+      "units_total": 1
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": 28850,
+    "ref": "refs/pull/28850/head",
+    "repository": "apache/flink",
+    "sha": "85116718fd3bfbc4c63b42f889527247ab2ca57c"
+  }
+}

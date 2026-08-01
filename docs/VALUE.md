@@ -9,59 +9,49 @@ business outcomes remain hypotheses. The
 usability, alert precision, retention, decision impact, and willingness to pay
 remain unvalidated.
 
-## Mass-market product hypothesis
+## Entry utility, not primary differentiation
 
-The `v0.38.0` release tests a broader and more frequent job:
+`aos-check` removes command-discovery and first-run friction for conventional
+projects. It is useful onboarding, but re-running familiar build and test
+commands is not a strong standalone market advantage. The frozen
+60-repository remeasurement improved nested project discovery in 7 cases
+(11.7%); it did not measure accepted actions, decision change, retention, or
+willingness to pay.
 
-> I built or changed a project. Check it before I share or deploy it, explain
-> what actually ran, and tell me the next action without requiring Git or test
-> expertise.
-
-`aos-check` detects root project metadata, falls back to bounded nested
-projects when root test coverage is absent, executes existing build and
-behavioral checks, and locally scans changed files for two
-high-confidence sharing blockers without retaining source text. This reduces
-setup and interpretation friction and creates an incremental signal beyond
-ordinary root command orchestration. Its real acceptance, severity, and
-retention are still unmeasured; it must not be sold as general code
-correctness.
-
-A metadata-only remeasurement on the frozen 60-repository exact-SHA corpus
-removed the root-only missing-test reason in 8 cases (13.3%); 7 cases (11.7%)
-also had complete bounded nested discovery. This is a measured engineering
-gain over the prior AOS detector, not evidence of acceptance, decision change,
-retention, willingness to pay, or superiority over another product. See
-[Project Check remeasurement](../benchmarks/mass-market/PROJECT_CHECK_REMEASUREMENT.md).
-
-Mass-product advancement requires accepted incremental findings beyond the
-project's familiar commands: browser-level flow failures, adversarial tests,
-change-sensitive verification, or successful agent remediation followed by
-independent re-check. Required metrics are time to first result, completion,
-actionable and remediation-acceptance rates, incremental finding rate,
-inconclusive/noise rate, repeat use, and 30-day retention.
+The current product direction is therefore an add-on to existing verification,
+not a new all-purpose developer tool. `aos-check` remains the simple entry
+surface while differentiated value is tested separately.
 
 
-## Stronger code-value experiment
+## Selected experiment: Change Proof plug-in
 
-Control assurance is a low-frequency, potentially high-cost job. It may be too
-infrequent to sustain daily developer value on its own. The experimental
-`prove-change` path tests a separate, higher-frequency pain:
+Control assurance is a low-frequency, potentially high-cost job and may be too
+infrequent for daily developer value. The strongest current hypothesis is a
+plug-in to the team's existing targeted tests:
 
-> Green tests can pass even when they do not distinguish the implementation
-> introduced by the PR from the implementation it replaces.
+> The tests pass, but would they still pass without the implementation change?
 
-AOS runs the same explicit verifier at `HEAD` and with selected implementation
-changes removed. The immediate artifact is executable evidence that the checks
-are change-sensitive, insensitive, failing at `HEAD`, or inconclusive. This is
-more actionable than another review comment, but it remains a product
-hypothesis rather than a proven market advantage.
+`prove-change` keeps PR tests, removes the selected implementation patch, and
+runs the same verifier in clean worktrees. The result is bounded evidence that
+the verifier is sensitive or insensitive to the actual patch. This complements
+CI and coverage; it overlaps most closely with mutation testing and is not a
+category-exclusive invention.
 
-The commercial hypothesis is reduced reviewer uncertainty and fewer weak tests
-on agent-assisted PRs. It is viable only if external maintainers accept the
-finding, add or strengthen tests, change merge decisions, and retain the check
-at a runtime cost lower than the review or regression cost avoided. The
-comparison baseline must include ordinary CI, changed-test heuristics, and
-established mutation-testing tools.
+The exploratory benchmark produced correct, replayable mechanics in 8/8 cases
+across five public repositories. Five real code-and-test PRs were
+distinguished. Two behavior-preserving controls generated raw warnings that
+would be noise if enabled indiscriminately; calibrated eligibility skipped
+both. One under-scoped verifier was a controlled counterfactual, not an
+observed user outcome. Median CLI time was 7.008 seconds for targeted tests.
+
+Therefore the current decision is `CONTINUE_NARROW_PLUGIN_EXPERIMENT` and
+`DO_NOT_ENABLE_BY_DEFAULT`. ROI remains unproven. Advancement requires at least
+50 eligible external PRs across five repositories, warning acceptance of at
+least 50%, noise and inconclusive rates no higher than 10% each, median added
+time below two minutes, setup below ten minutes in 80% of repositories, a
+merge-readiness or weak-test impact for at least 20% of accepted warnings, and
+four-week retention in at least half of trial repositories. See the
+[generated benchmark](../benchmarks/change-proof-plugin/REPORT.md).
 
 ## Business problem
 
@@ -90,11 +80,12 @@ records how those controls governed one exact commit.
 
 ## Best-fit user and buyer
 
-- **Primary operator:** maintainer, platform engineer, or DevSecOps owner.
-- **Assurance consumer:** security, engineering governance, or audit-support
-  reviewer.
-- **Potential buyer:** the owner of consistent software-delivery controls
-  across repositories.
+- **Primary plug-in operator:** code author or reviewer responsible for tests,
+  especially on agent-assisted PRs.
+- **Control-assurance operator:** maintainer, platform engineer, or DevSecOps
+  owner.
+- **Potential buyer:** unvalidated; a team owner would need repeated accepted
+  findings and measurable review or regression cost reduction.
 - **Weak paid fit:** an individual developer, a single low-control repository,
   or a team whose failures are inexpensive and easy to reconstruct.
 

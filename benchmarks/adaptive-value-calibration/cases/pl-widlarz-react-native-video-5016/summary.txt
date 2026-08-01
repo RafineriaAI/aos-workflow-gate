@@ -1,0 +1,56 @@
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).
+record: benchmarks\adaptive-value-calibration\cases\pl-widlarz-react-native-video-5016\gate-decision.json
+Merge protection: 0 required status check(s) enforced by none on 'support/6.x.x'.
+GitHub baseline (status checks only): no_required_checks.
+Effect: nothing in the branch rules blocks this merge on status checks; the record is evidence, not enforcement.
+Fork PR: some checks may not run for forks by repository policy.
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: WARN
+
+**Problem:** GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+**Decision contrast:** GitHub has no required status-check gate for this branch; AOS records that coverage fact separately.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 0 required (0 successful); 4 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on TheWidlarzGroup/react-native-video@72f0e547cc48; not full merge-readiness
+**Freshness:** observed 2026-08-01T09:36:55Z; collection complete
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | TheWidlarzGroup/react-native-video |
+| Ref | `refs/pull/5016/head` |
+| Commit | `72f0e547cc48120df3e3e39792d087356792b51d` |
+| Pull request | #5016 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:f80741027c7210009fec21228b98444c681aa096466e8eb1b81384b9919c764a` |
+| Input bundle digest | `sha256:f53b21dd77dd15a63906aeda87d1890dd14a3b015c296c21ca69b137ef7583a4` |
+| Record digest | `sha256:b6bdc65f86cc6239f63cab76755a1f0c62b152bcebd54d7c206476b0793e322e` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+### Top gaps
+
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| Build Android Example App | github\_check | no | success |
+| Build Android Example App With Ads | github\_check | no | success |
+| Kotlin-Lint | github\_check | no | success |
+| branch.rules | branch\_rules\_summary | no | success |
+
+### Coverage
+
+- Required sources: 0 of 4
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "Build Android Example App, Build Android Example App With Ads, Kotlin-Lint"`

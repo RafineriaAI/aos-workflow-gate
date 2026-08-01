@@ -1,0 +1,53 @@
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).
+record: benchmarks\adaptive-value-calibration\cases\global-react-native-webview-3984\gate-decision.json
+Merge protection: 0 required status check(s) enforced by none on 'master'.
+GitHub baseline (status checks only): no_required_checks.
+Effect: nothing in the branch rules blocks this merge on status checks; the record is evidence, not enforcement.
+Fork PR: some checks may not run for forks by repository policy.
+Workflow visibility: 5 execution unit(s) on this commit have not started (5 awaiting approval/action): Lint, Windows CI, Android
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: WARN
+
+**Problem:** GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+**Decision contrast:** GitHub has no required status-check gate for this branch; AOS records that coverage fact separately.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 0 required (0 successful); 1 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on react-native-webview/react-native-webview@afdfd283c9ab; not full merge-readiness
+**Freshness:** observed 2026-08-01T09:37:02Z; collection complete; 5 workflow unit(s) had not started
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | react-native-webview/react-native-webview |
+| Ref | `refs/pull/3984/head` |
+| Commit | `afdfd283c9abb570a50b60050f8f9224a96ed5c3` |
+| Pull request | #3984 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:ee447e2154880cecd5c477e6b3ec7c3d0211a0dc2cbfdf6ab977c55672cbd19a` |
+| Input bundle digest | `sha256:c15e65a2f2705101c88c913b0cc7f7e50b3d431575d1f7168391065a1e54b40b` |
+| Record digest | `sha256:31673333abc07eb1bc4caa60bec174e185188ce9d2aec75ea14d7350edd90f4a` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+### Top gaps
+
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| branch.rules | branch\_rules\_summary | no | success |
+
+### Coverage
+
+- Required sources: 0 of 1
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.

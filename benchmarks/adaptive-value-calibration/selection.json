@@ -1,0 +1,364 @@
+{
+    "schema_version":  "aos-adaptive-value-selection/v0",
+    "study_id":  "aos-adaptive-value-calibration-2026-08-01",
+    "selected_at":  "2026-08-01T09:31:57Z",
+    "status":  "LOCKED_BEFORE_HOLDOUT_AOS",
+    "manifest_digest":  "sha256:3ea2c544c63b5bfd6c98b97dcc207e53cfe9f6cbf78e74f65be5c7aceb8b263b",
+    "calibration_digest":  "sha256:8c99909cab656c4d593ec77ab087ffcf6ed4064aa7cd9d8e83181087b3818912",
+    "stage_a_digest":  "sha256:2e2dc9c7a07571daa535bde38e1027b428f05f1d537000ae35dda7d4425b7bd4",
+    "selection_source":  "Public GitHub pull-request metadata, exact-head pull_request workflow runs and public human review frozen before AOS.",
+    "selected_cases":  10,
+    "polish_cases":  5,
+    "global_cases":  5,
+    "cases":  [
+                  {
+                      "case_id":  "pl-mirumee-ariadne-1334",
+                      "pair_id":  "python-graphql",
+                      "cohort":  "polish",
+                      "repository":  "mirumee/ariadne",
+                      "pr_number":  1334,
+                      "pr_url":  "https://github.com/mirumee/ariadne/pull/1334",
+                      "pr_state":  "open",
+                      "head_sha":  "45461703cafebbf7723f0af86278d9c7cbdf4198",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  30556086898,
+                                                "name":  "Codecov Report Upload",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30556086844,
+                                                "name":  "Tests",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            }
+                                        ]
+                  },
+                  {
+                      "case_id":  "global-strawberry-4554",
+                      "pair_id":  "python-graphql",
+                      "cohort":  "global",
+                      "repository":  "strawberry-graphql/strawberry",
+                      "pr_number":  4554,
+                      "pr_url":  "https://github.com/strawberry-graphql/strawberry/pull/4554",
+                      "pr_state":  "open",
+                      "head_sha":  "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  30345199914,
+                                                "name":  "zizmor",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30345199384,
+                                                "name":  "CodeQL",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30345199740,
+                                                "name":  "Unit tests",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            }
+                                        ]
+                  },
+                  {
+                      "case_id":  "pl-sylius-sylius-19134",
+                      "pair_id":  "commerce-platform",
+                      "cohort":  "polish",
+                      "repository":  "Sylius/Sylius",
+                      "pr_number":  19134,
+                      "pr_url":  "https://github.com/Sylius/Sylius/pull/19134",
+                      "pr_state":  "open",
+                      "head_sha":  "787949193130eec2c98851d00f98e334ca07e331",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  29827413884,
+                                                "name":  "Bunnyshell - Prepare Preview Environment Configuration",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  29827413373,
+                                                "name":  "Auto-merge",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  29827413471,
+                                                "name":  "Continuous Integration (Minimal)",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            }
+                                        ]
+                  },
+                  {
+                      "case_id":  "global-shopware-18878",
+                      "pair_id":  "commerce-platform",
+                      "cohort":  "global",
+                      "repository":  "shopware/shopware",
+                      "pr_number":  18878,
+                      "pr_url":  "https://github.com/shopware/shopware/pull/18878",
+                      "pr_state":  "open",
+                      "head_sha":  "aa21ca853d40b58c61e3700c5b3158d064551e43",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  30629952541,
+                                                "name":  "Shopware Bugfixer #18878",
+                                                "status":  "completed",
+                                                "conclusion":  "skipped"
+                                            },
+                                            {
+                                                "id":  30629952909,
+                                                "name":  "Check PR title",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776156,
+                                                "name":  "Acceptance tests",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776161,
+                                                "name":  "Integration tests (major)",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776162,
+                                                "name":  "Integration tests",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776159,
+                                                "name":  "PHP checks",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776191,
+                                                "name":  "sw-impact check",
+                                                "status":  "completed",
+                                                "conclusion":  "skipped"
+                                            },
+                                            {
+                                                "id":  30629776194,
+                                                "name":  "SaaS preview environment",
+                                                "status":  "completed",
+                                                "conclusion":  "skipped"
+                                            },
+                                            {
+                                                "id":  30629776158,
+                                                "name":  "Check PR title",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776209,
+                                                "name":  "Label Issues and PRs",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776160,
+                                                "name":  "Downstream",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776175,
+                                                "name":  "Storefront checks and tests",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776224,
+                                                "name":  "Admin Performance",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  30629776173,
+                                                "name":  "Admin checks and tests",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            }
+                                        ]
+                  },
+                  {
+                      "case_id":  "pl-widlarz-react-native-video-5016",
+                      "pair_id":  "react-native-component",
+                      "cohort":  "polish",
+                      "repository":  "TheWidlarzGroup/react-native-video",
+                      "pr_number":  5016,
+                      "pr_url":  "https://github.com/TheWidlarzGroup/react-native-video/pull/5016",
+                      "pr_state":  "open",
+                      "head_sha":  "72f0e547cc48120df3e3e39792d087356792b51d",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  28146535723,
+                                                "name":  "Build Android",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            },
+                                            {
+                                                "id":  28146535690,
+                                                "name":  "Check Android",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            }
+                                        ]
+                  },
+                  {
+                      "case_id":  "global-react-native-webview-3984",
+                      "pair_id":  "react-native-component",
+                      "cohort":  "global",
+                      "repository":  "react-native-webview/react-native-webview",
+                      "pr_number":  3984,
+                      "pr_url":  "https://github.com/react-native-webview/react-native-webview/pull/3984",
+                      "pr_state":  "open",
+                      "head_sha":  "afdfd283c9abb570a50b60050f8f9224a96ed5c3",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  29155106287,
+                                                "name":  "Windows CI",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            },
+                                            {
+                                                "id":  29155106271,
+                                                "name":  "Lint",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            },
+                                            {
+                                                "id":  29155106290,
+                                                "name":  "Android",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            },
+                                            {
+                                                "id":  29155106308,
+                                                "name":  "iOS",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            },
+                                            {
+                                                "id":  29155106295,
+                                                "name":  "macOS",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            }
+                                        ]
+                  },
+                  {
+                      "case_id":  "pl-touk-nussknacker-9416",
+                      "pair_id":  "data-platform",
+                      "cohort":  "polish",
+                      "repository":  "TouK/nussknacker",
+                      "pr_number":  9416,
+                      "pr_url":  "https://github.com/TouK/nussknacker/pull/9416",
+                      "pr_state":  "open",
+                      "head_sha":  "b5868341d0ef7021d503b5d51894130f1bcf1690",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  30645983104,
+                                                "name":  "CI",
+                                                "status":  "completed",
+                                                "conclusion":  "success"
+                                            }
+                                        ]
+                  },
+                  {
+                      "case_id":  "global-apache-flink-28850",
+                      "pair_id":  "data-platform",
+                      "cohort":  "global",
+                      "repository":  "apache/flink",
+                      "pr_number":  28850,
+                      "pr_url":  "https://github.com/apache/flink/pull/28850",
+                      "pr_state":  "open",
+                      "head_sha":  "85116718fd3bfbc4c63b42f889527247ab2ca57c",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  30564583384,
+                                                "name":  "Docs 404 check (beta)",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            }
+                                        ]
+                  },
+                  {
+                      "case_id":  "pl-deepsense-ragbits-977",
+                      "pair_id":  "python-ai-framework",
+                      "cohort":  "polish",
+                      "repository":  "deepsense-ai/ragbits",
+                      "pr_number":  977,
+                      "pr_url":  "https://github.com/deepsense-ai/ragbits/pull/977",
+                      "pr_state":  "open",
+                      "head_sha":  "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  25546830254,
+                                                "name":  "Pull request checks",
+                                                "status":  "completed",
+                                                "conclusion":  "failure"
+                                            }
+                                        ]
+                  },
+                  {
+                      "case_id":  "global-llama-index-22517",
+                      "pair_id":  "python-ai-framework",
+                      "cohort":  "global",
+                      "repository":  "run-llama/llama_index",
+                      "pr_number":  22517,
+                      "pr_url":  "https://github.com/run-llama/llama_index/pull/22517",
+                      "pr_state":  "open",
+                      "head_sha":  "cdc41100526bac033de1f0d8790695ab8f9a055a",
+                      "workflow_runs":  [
+                                            {
+                                                "id":  30618363785,
+                                                "name":  "CodeQL",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            },
+                                            {
+                                                "id":  30618363680,
+                                                "name":  "Linting",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            },
+                                            {
+                                                "id":  30618363682,
+                                                "name":  "Unit Testing",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            },
+                                            {
+                                                "id":  30618363729,
+                                                "name":  "Core Typecheck",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            },
+                                            {
+                                                "id":  30618363691,
+                                                "name":  "Unit Testing",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            },
+                                            {
+                                                "id":  30618363756,
+                                                "name":  "Build Package",
+                                                "status":  "completed",
+                                                "conclusion":  "action_required"
+                                            }
+                                        ]
+                  }
+              ],
+    "stage_a_path":  "benchmarks/adaptive-value-calibration/review-outcomes-stage-a.json"
+}

@@ -1,0 +1,3437 @@
+{
+  "collection": {
+    "api_calls": 6,
+    "github_baseline": "clear",
+    "observation_scope": {
+      "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+      "repository": "Sylius/Sylius"
+    },
+    "observed_at": "2026-08-01T09:36:36Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:c933f1980f30a9913ff7605564b4574eddd1ee9d43d1433ff593b4b02bb639e5",
+    "protection_source": "classic_branch_protection",
+    "required_controls": [
+      {
+        "context": "WIP",
+        "integration_id": 3414,
+        "source_id": "WIP"
+      }
+    ],
+    "requirements": [
+      {
+        "context": "WIP",
+        "github_equivalent": "would_pass",
+        "integration_id": 3414,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      }
+    ],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "src/Sylius/Bundle/AdminBundle/tests/CommandHandler/CreateAdminUserHandlerTest.php",
+          "src/Sylius/Bundle/AdminBundle/tests/Console/Command/CreateAdminUserCommandTest.php",
+          "src/Sylius/Bundle/CoreBundle/tests/Validator/Constraints/AtLeastOneAccessLevelValidatorTest.php",
+          "src/Sylius/Component/Core/tests/Model/AdminUserTest.php",
+          "tests/Api/Admin/AdminUsersTest.php",
+          "tests/Api/Responses/admin/admin_user/create_administrator_response.json",
+          "tests/Api/Responses/admin/admin_user/create_administrator_with_access_levels_response.json",
+          "tests/Api/Responses/admin/admin_user/create_administrator_without_access_levels_response.json",
+          "tests/Api/Responses/admin/admin_user/get_administrator_response.json",
+          "tests/Api/Responses/admin/admin_user/get_administrators_response.json",
+          "tests/Api/Responses/admin/admin_user/put_administrator_access_levels_response.json",
+          "tests/Api/Responses/admin/admin_user/put_administrator_response.json"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "2b98d406d72b3f40e65e76f3323365e42a33bbfb",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "pull_request": 19134,
+        "repository": "Sylius/Sylius"
+      },
+      "unchanged_workflow_runs": 3,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [],
+      "states": {
+        "action_required": 0,
+        "completed": 4,
+        "pending": 0
+      },
+      "units_total": 4
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:6220c5922657f09ecb8dae760ad074218cfed5af379413b081755d0ca400c31f",
+      "id": "Deploy Environment / Checks",
+      "identity": {
+        "check_run_id": 88623846157,
+        "completed_at": "2026-07-21T11:46:41Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Deploy Environment / Checks",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:46:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88623846157 concluded success."
+    },
+    {
+      "digest": "sha256:b23a2000c0355631f5ff1ead289fd460d4e0f56dbc7b175aae87fdeddd405bfc",
+      "id": "Deploy Environment / Prepare bunnyshell.yaml",
+      "identity": {
+        "check_run_id": 88623919631,
+        "completed_at": "2026-07-21T11:47:10Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Deploy Environment / Prepare bunnyshell.yaml",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:47:10Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88623919631 concluded success."
+    },
+    {
+      "digest": "sha256:eae64c6af7ca4d61ff3755182c4397f45e47458f79e1aaf1559a2db5cca86503",
+      "id": "Frontend / Get matrix",
+      "identity": {
+        "check_run_id": 88624323343,
+        "completed_at": "2026-07-21T11:48:48Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Frontend / Get matrix",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:48Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624323343 concluded success."
+    },
+    {
+      "digest": "sha256:f07e6e961769eebd71e096aa4ea159a0e13829eceb673bbd4b8520b4b96708a6",
+      "id": "Frontend / NodeJS 24.x",
+      "identity": {
+        "check_run_id": 88624356581,
+        "completed_at": "2026-07-21T11:51:02Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Frontend / NodeJS 24.x",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:02Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624356581 concluded success."
+    },
+    {
+      "digest": "sha256:64971eddbf049c0609cfb9de67dd19b3707f533b78a717ca106e8793f788ec3e",
+      "id": "Javascript Tests (MySQL) / Get matrix",
+      "identity": {
+        "check_run_id": 88624323434,
+        "completed_at": "2026-07-21T11:48:47Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / Get matrix",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:47Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624323434 concluded success."
+    },
+    {
+      "digest": "sha256:22f3b5296384738bae85be7a7da4017a99fc1029b84a6d0c17c1e0a3511f2995",
+      "id": "Javascript Tests (MySQL) / Panther, PHP 8.4, Symfony ~6.4.0, MySQL 8.4",
+      "identity": {
+        "check_run_id": 88624352358,
+        "completed_at": "2026-07-21T11:54:59Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / Panther, PHP 8.4, Symfony ~6.4.0, MySQL 8.4",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:54:59Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352358 concluded success."
+    },
+    {
+      "digest": "sha256:1948bd97817e7cb5763cbbfd12d0b72200f88f541049816a856dd7f851324187",
+      "id": "Javascript Tests (MySQL) / Panther, PHP 8.4, Symfony ~7.4.0, MySQL 8.4",
+      "identity": {
+        "check_run_id": 88624352324,
+        "completed_at": "2026-07-21T11:55:16Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / Panther, PHP 8.4, Symfony ~7.4.0, MySQL 8.4",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:55:16Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352324 concluded success."
+    },
+    {
+      "digest": "sha256:12dcfdc3347bac7a65c1ad7abd906aacab20491ed6bdad8e0827e497d3c2cbbd",
+      "id": "Javascript Tests (MySQL) / Panther, PHP 8.4, Symfony ~8.1.0, MySQL 8.4",
+      "identity": {
+        "check_run_id": 88624352370,
+        "completed_at": "2026-07-21T11:55:41Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / Panther, PHP 8.4, Symfony ~8.1.0, MySQL 8.4",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:55:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352370 concluded success."
+    },
+    {
+      "digest": "sha256:8a0a51966ee484abf04855a08a8589f9ccedd96765b6ae2f45c357c74c7e8c75",
+      "id": "Javascript Tests (MySQL) / [Checkout, Cart, Address Book] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352673,
+        "completed_at": "2026-07-21T11:51:40Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Checkout, Cart, Address Book] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:40Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352673 concluded success."
+    },
+    {
+      "digest": "sha256:f5b66aa1d433574dbd8fa9cc118f058732866ba8054b3636fbf45c95ddd240d9",
+      "id": "Javascript Tests (MySQL) / [Checkout, Cart, Address Book] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352672,
+        "completed_at": "2026-07-21T11:51:42Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Checkout, Cart, Address Book] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:42Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352672 concluded success."
+    },
+    {
+      "digest": "sha256:8ce3fac898085bebd2d041915f5d802e522600f7956a5b48f6dcb38b4ffbbc4d",
+      "id": "Javascript Tests (MySQL) / [Checkout, Cart, Address Book] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352763,
+        "completed_at": "2026-07-21T12:05:13Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Checkout, Cart, Address Book] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:05:13Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352763 concluded success."
+    },
+    {
+      "digest": "sha256:03e51fca05ceebef06421180f1cedcf1c20831b66534c1a10f96f59c2ca0c46f",
+      "id": "Javascript Tests (MySQL) / [Managing Products] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352664,
+        "completed_at": "2026-07-21T11:58:54Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Managing Products] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:58:54Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352664 concluded success."
+    },
+    {
+      "digest": "sha256:0137fb3648bbd28b1665d18868aef31783304ef4333f7c48f2757e18afa23db7",
+      "id": "Javascript Tests (MySQL) / [Managing Products] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352645,
+        "completed_at": "2026-07-21T11:55:22Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Managing Products] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:55:22Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352645 concluded success."
+    },
+    {
+      "digest": "sha256:95b63350e250bd5a7a5e8d0b1d980fd0eb0e544a70dc16949ea4979e5b8162bd",
+      "id": "Javascript Tests (MySQL) / [Managing Products] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352776,
+        "completed_at": "2026-07-21T11:55:36Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Managing Products] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:55:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352776 concluded success."
+    },
+    {
+      "digest": "sha256:44002610a05f5366be354dc52e2341311414877e88e817debc284faaff81e4b4",
+      "id": "Javascript Tests (MySQL) / [Promotions, Catalog Promotions, Coupons] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352619,
+        "completed_at": "2026-07-21T11:52:27Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Promotions, Catalog Promotions, Coupons] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:52:27Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352619 concluded success."
+    },
+    {
+      "digest": "sha256:69e04959cde0c39d87351295f57691722594dc1e994d065b17ddf55b2f871494",
+      "id": "Javascript Tests (MySQL) / [Promotions, Catalog Promotions, Coupons] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352724,
+        "completed_at": "2026-07-21T11:52:23Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Promotions, Catalog Promotions, Coupons] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:52:23Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352724 concluded success."
+    },
+    {
+      "digest": "sha256:7b6ef02662c68a48e65207927e7987df853fb41afad0778cb9f0c3aa4634dbc2",
+      "id": "Javascript Tests (MySQL) / [Promotions, Catalog Promotions, Coupons] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352847,
+        "completed_at": "2026-07-21T11:52:19Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Promotions, Catalog Promotions, Coupons] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:52:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352847 concluded success."
+    },
+    {
+      "digest": "sha256:1fb2f452be3588d41d528552974558774928d57971419b2bfb9c131c48be682a",
+      "id": "Javascript Tests (MySQL) / [Remaining] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352710,
+        "completed_at": "2026-07-21T11:54:46Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Remaining] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:54:46Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352710 concluded success."
+    },
+    {
+      "digest": "sha256:9ac3f224b7f233ac965ddc392dbc7f7901c536aa6f88e9183647481f35f8e3a8",
+      "id": "Javascript Tests (MySQL) / [Remaining] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352679,
+        "completed_at": "2026-07-21T11:54:50Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Remaining] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:54:50Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352679 concluded success."
+    },
+    {
+      "digest": "sha256:45f3af6affa4ddd51cf14f5453e75be55316fcf277ce915c2c995eb209c97abd",
+      "id": "Javascript Tests (MySQL) / [Remaining] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352747,
+        "completed_at": "2026-07-21T11:54:49Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Remaining] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:54:49Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352747 concluded success."
+    },
+    {
+      "digest": "sha256:42a6f37abb009c62e3dc2b89c98f525907dfeb86460328efeb15914515c652d9",
+      "id": "Javascript Tests (MySQL) / [Taxons, Shipping Methods, Countries, Zones] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352738,
+        "completed_at": "2026-07-21T11:52:37Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Taxons, Shipping Methods, Countries, Zones] [PHP 8.4, Symfony ~6.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:52:37Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352738 concluded success."
+    },
+    {
+      "digest": "sha256:d36176d3ab36fa8d58457ecf0b44e7366336318f02a128823a019af62766809a",
+      "id": "Javascript Tests (MySQL) / [Taxons, Shipping Methods, Countries, Zones] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352706,
+        "completed_at": "2026-07-21T11:52:22Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Taxons, Shipping Methods, Countries, Zones] [PHP 8.4, Symfony ~7.4.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:52:22Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352706 concluded success."
+    },
+    {
+      "digest": "sha256:9fd1346dbca9e9600996ac5870984c8624d1153b1104cb6009c45e9032a44904",
+      "id": "Javascript Tests (MySQL) / [Taxons, Shipping Methods, Countries, Zones] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+      "identity": {
+        "check_run_id": 88624352662,
+        "completed_at": "2026-07-21T11:52:33Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Javascript Tests (MySQL) / [Taxons, Shipping Methods, Countries, Zones] [PHP 8.4, Symfony ~8.1.0, MySQL 8.4]",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:52:33Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624352662 concluded success."
+    },
+    {
+      "digest": "sha256:cae49e3acefc49fedebdb23acce6d156e0af42733eae7fffefa8c7dcfa2a093d",
+      "id": "Packages / Get matrix",
+      "identity": {
+        "check_run_id": 88624323393,
+        "completed_at": "2026-07-21T11:48:51Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / Get matrix",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624323393 concluded success."
+    },
+    {
+      "digest": "sha256:3fa0fa56b337168deb78f8e6ef205e09a87a6450306c4f23f347c666cbee0c7e",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Abstraction/StateMachine",
+      "identity": {
+        "check_run_id": 88624366769,
+        "completed_at": "2026-07-21T11:49:42Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Abstraction/StateMachine",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:42Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366769 concluded success."
+    },
+    {
+      "digest": "sha256:3598585a849c41814bfbb569b353938501b107365becb2831ae1e60f3486bc4e",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/AddressingBundle",
+      "identity": {
+        "check_run_id": 88624366660,
+        "completed_at": "2026-07-21T11:49:16Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/AddressingBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:16Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366660 concluded success."
+    },
+    {
+      "digest": "sha256:1b8a7bd0f133fe591b3cc80357c0a23e7099c87a6a740efe39ff988e39d44253",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/AdminBundle",
+      "identity": {
+        "check_run_id": 88624366647,
+        "completed_at": "2026-07-21T11:49:14Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/AdminBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:14Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366647 concluded success."
+    },
+    {
+      "digest": "sha256:5f141eeb62674a3a61f2d8ac96af229840db005b225fee1e580f0d187f6fc029",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ApiBundle",
+      "identity": {
+        "check_run_id": 88624366651,
+        "completed_at": "2026-07-21T11:49:42Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ApiBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:42Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366651 concluded success."
+    },
+    {
+      "digest": "sha256:5e340b1827667019b3d60763e6447d2f82fbf67afa3b5a306c5d66afbfa0c2f3",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/AttributeBundle",
+      "identity": {
+        "check_run_id": 88624366720,
+        "completed_at": "2026-07-21T11:49:42Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/AttributeBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:42Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366720 concluded success."
+    },
+    {
+      "digest": "sha256:ee9c36d4ba644ef0d28e8a5e1e0844e26607eb683468b1651d900b3044bf9e49",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ChannelBundle",
+      "identity": {
+        "check_run_id": 88624366669,
+        "completed_at": "2026-07-21T11:49:12Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ChannelBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:12Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366669 concluded success."
+    },
+    {
+      "digest": "sha256:356c25ae32c8b363e5fc5300b061233ba2bfd88a4ae6ca708679b1e46a68a2f1",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/CoreBundle",
+      "identity": {
+        "check_run_id": 88624366680,
+        "completed_at": "2026-07-21T11:49:18Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/CoreBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366680 concluded success."
+    },
+    {
+      "digest": "sha256:85601c6344acd3f4a9a541bfac5a98c69440d5c31591a259fc309bc43d2cef91",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/CurrencyBundle",
+      "identity": {
+        "check_run_id": 88624366687,
+        "completed_at": "2026-07-21T11:49:18Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/CurrencyBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366687 concluded success."
+    },
+    {
+      "digest": "sha256:413c85ad48d32d49d4206beb6a92e5a32880bbc6d21d940cc6a99b7547f88e39",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/CustomerBundle",
+      "identity": {
+        "check_run_id": 88624366703,
+        "completed_at": "2026-07-21T11:49:19Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/CustomerBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366703 concluded success."
+    },
+    {
+      "digest": "sha256:d0b043f4dd692e94b5fec55d367b8ba3709b2df3387cf2fb6e666922266cfa86",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/InventoryBundle",
+      "identity": {
+        "check_run_id": 88624366793,
+        "completed_at": "2026-07-21T11:49:16Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/InventoryBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:16Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366793 concluded success."
+    },
+    {
+      "digest": "sha256:25ab50b062d8660b8d02422a6610c5ef23b6943566af1068c70b3606aac21047",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/LocaleBundle",
+      "identity": {
+        "check_run_id": 88624366732,
+        "completed_at": "2026-07-21T11:49:38Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/LocaleBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366732 concluded success."
+    },
+    {
+      "digest": "sha256:99b82179bef7e03cb2bc779d7cd3fc476aafe60badc1900b38ec9b024f544932",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/MoneyBundle",
+      "identity": {
+        "check_run_id": 88624366771,
+        "completed_at": "2026-07-21T11:49:53Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/MoneyBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:53Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366771 concluded success."
+    },
+    {
+      "digest": "sha256:2fbd29609ed9e543c7c781e7f0c881d3b2bc31eec7b2e459834c8360cdc85820",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/OrderBundle",
+      "identity": {
+        "check_run_id": 88624366670,
+        "completed_at": "2026-07-21T11:49:13Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/OrderBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:13Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366670 concluded success."
+    },
+    {
+      "digest": "sha256:13b66de64333a9eb13fa1e09c45f7a14d12390d1dc253787ebe15c18b1f1da5e",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/PaymentBundle",
+      "identity": {
+        "check_run_id": 88624366729,
+        "completed_at": "2026-07-21T11:49:17Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/PaymentBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366729 concluded success."
+    },
+    {
+      "digest": "sha256:0840132b02c25de36ea7881a4f935f4331e2017cfba5a859c1834cd29b07a026",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/PayumBundle",
+      "identity": {
+        "check_run_id": 88624366718,
+        "completed_at": "2026-07-21T11:49:18Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/PayumBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366718 concluded success."
+    },
+    {
+      "digest": "sha256:8c245eb2fe549c7bfa98df0d6827b0d728616c622cf8d1715b76b3b3c93c893a",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ProductBundle",
+      "identity": {
+        "check_run_id": 88624366700,
+        "completed_at": "2026-07-21T11:49:13Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ProductBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:13Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366700 concluded success."
+    },
+    {
+      "digest": "sha256:d57d491271adc2cfca8559fbe1d2a1ddc2b13160e441df6e67a7b38c70bd388b",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/PromotionBundle",
+      "identity": {
+        "check_run_id": 88624366734,
+        "completed_at": "2026-07-21T11:49:10Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/PromotionBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:10Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366734 concluded success."
+    },
+    {
+      "digest": "sha256:d21e603bd31628f185f4d0f57cad071cc9c4577e56a4e6c73556a34d59593bbf",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ReviewBundle",
+      "identity": {
+        "check_run_id": 88624366741,
+        "completed_at": "2026-07-21T11:49:41Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ReviewBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366741 concluded success."
+    },
+    {
+      "digest": "sha256:2ef46bebffc330ddef3b6ac976fb0877ece1c2b28f5376c7d76bc520d645d728",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ShippingBundle",
+      "identity": {
+        "check_run_id": 88624366778,
+        "completed_at": "2026-07-21T11:49:15Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ShippingBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366778 concluded success."
+    },
+    {
+      "digest": "sha256:ea5b7f24f5494b728bb212d5e58e9e53b82b435d49bce04c0093a9f7e36b0db5",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ShopBundle",
+      "identity": {
+        "check_run_id": 88624366742,
+        "completed_at": "2026-07-21T11:49:19Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/ShopBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366742 concluded success."
+    },
+    {
+      "digest": "sha256:00d2990d31cf7099d5ecb3a4e78960d3fbf0a71a2668bdef222ce8ecb5b2da0d",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/TaxationBundle",
+      "identity": {
+        "check_run_id": 88624366799,
+        "completed_at": "2026-07-21T11:49:11Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/TaxationBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:11Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366799 concluded success."
+    },
+    {
+      "digest": "sha256:da6273805d784643bb64689978cd12231addceb3f31d286af1563a1a94401db3",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/TaxonomyBundle",
+      "identity": {
+        "check_run_id": 88624366900,
+        "completed_at": "2026-07-21T11:49:59Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/TaxonomyBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:59Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366900 concluded success."
+    },
+    {
+      "digest": "sha256:71a2d7c4d772b4212e366c8cb925c3b0871a1e9cefa1304f8737761e3c11a580",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/UiBundle",
+      "identity": {
+        "check_run_id": 88624366809,
+        "completed_at": "2026-07-21T11:49:12Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/UiBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:12Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366809 concluded success."
+    },
+    {
+      "digest": "sha256:b978b2e1d2b514380b37fea3626aa9616793194830a854c286d4196aeb50652c",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/UserBundle",
+      "identity": {
+        "check_run_id": 88624366868,
+        "completed_at": "2026-07-21T11:49:56Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Bundle/UserBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:56Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366868 concluded success."
+    },
+    {
+      "digest": "sha256:751596098bbc7813c2a552872569ef94fc4c170934868fc08264443540f3bbf6",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Addressing",
+      "identity": {
+        "check_run_id": 88624366830,
+        "completed_at": "2026-07-21T11:49:11Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Addressing",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:11Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366830 concluded success."
+    },
+    {
+      "digest": "sha256:53534c0c01c06f79c605beaf99cf572b1686dd674b1ed671c00a690eaf1d43c7",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Attribute",
+      "identity": {
+        "check_run_id": 88624366843,
+        "completed_at": "2026-07-21T11:49:38Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Attribute",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366843 concluded success."
+    },
+    {
+      "digest": "sha256:3506a0116914c41cd2312d23c9b2ce3cc0d5ae13d38277a9a0b20ce262e22931",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Channel",
+      "identity": {
+        "check_run_id": 88624366807,
+        "completed_at": "2026-07-21T11:49:39Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Channel",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:39Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366807 concluded success."
+    },
+    {
+      "digest": "sha256:3e2c0aed369b94f51eddd30585683a4dc7782b5a87792029aee2ffca4204fffd",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Core",
+      "identity": {
+        "check_run_id": 88624366850,
+        "completed_at": "2026-07-21T11:49:40Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Core",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:40Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366850 concluded success."
+    },
+    {
+      "digest": "sha256:2d02557a625027a776e6fcaa4a6a8ac3b37def31b3c667331cd323b6731be1e9",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Currency",
+      "identity": {
+        "check_run_id": 88624367045,
+        "completed_at": "2026-07-21T11:50:29Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Currency",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:29Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367045 concluded success."
+    },
+    {
+      "digest": "sha256:a683a647a5c9558f362e874c59616ac4bdbcdfbef2392c114250ccc2f4ad9ef8",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Customer",
+      "identity": {
+        "check_run_id": 88624366878,
+        "completed_at": "2026-07-21T11:49:18Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Customer",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366878 concluded success."
+    },
+    {
+      "digest": "sha256:afe2bde91d7cbe5e6729ed5c6bcce2b8cb0e431f6a11aa7997229b3ea1e81e3f",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Inventory",
+      "identity": {
+        "check_run_id": 88624366977,
+        "completed_at": "2026-07-21T11:49:40Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Inventory",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:40Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366977 concluded success."
+    },
+    {
+      "digest": "sha256:4aee21fdc958e8f211d6e492038ac7a2f11b350daea4509758e74067a82ca4d8",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Locale",
+      "identity": {
+        "check_run_id": 88624366882,
+        "completed_at": "2026-07-21T11:49:15Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Locale",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366882 concluded success."
+    },
+    {
+      "digest": "sha256:751be38d1134e20f5c403df30f8643f4c5e339cedb9916ad6397df8684bffbcb",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Order",
+      "identity": {
+        "check_run_id": 88624366892,
+        "completed_at": "2026-07-21T11:49:37Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Order",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:37Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366892 concluded success."
+    },
+    {
+      "digest": "sha256:f7737bee35d57c8c2ec240c5c5ec6dc29c31458abcce381d6eec70de67436138",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Payment",
+      "identity": {
+        "check_run_id": 88624366946,
+        "completed_at": "2026-07-21T11:49:10Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Payment",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:10Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366946 concluded success."
+    },
+    {
+      "digest": "sha256:36d781c9bf032f49bae638de102761b86223689797dda3b700e3cc3cd3f6811d",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Product",
+      "identity": {
+        "check_run_id": 88624366942,
+        "completed_at": "2026-07-21T11:49:54Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Product",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:54Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366942 concluded success."
+    },
+    {
+      "digest": "sha256:494601ffbc65642a3443429896a9bc70ef14c0f9f6b72842273647bdfeff174d",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Promotion",
+      "identity": {
+        "check_run_id": 88624366851,
+        "completed_at": "2026-07-21T11:49:33Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Promotion",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:33Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366851 concluded success."
+    },
+    {
+      "digest": "sha256:de4046fb277069253ac69c8204df74fd38264ebf74b603383c8484752fc68261",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Review",
+      "identity": {
+        "check_run_id": 88624366883,
+        "completed_at": "2026-07-21T11:49:36Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Review",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366883 concluded success."
+    },
+    {
+      "digest": "sha256:09bbbccbbe0887ccc6ca29d3513be27b9f78109796841a398b3b0e7a865d7cb8",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Shipping",
+      "identity": {
+        "check_run_id": 88624367150,
+        "completed_at": "2026-07-21T11:50:09Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Shipping",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:09Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367150 concluded success."
+    },
+    {
+      "digest": "sha256:e5c125553b8d77593462164701883b13654b75f5122c0b70eea6b2e3e8ce58c2",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Taxation",
+      "identity": {
+        "check_run_id": 88624366956,
+        "completed_at": "2026-07-21T11:50:20Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Taxation",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:20Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366956 concluded success."
+    },
+    {
+      "digest": "sha256:88441c53c80d33abcbeeb44d404b94bc8eb90acd32230c9762b3cab7454fce38",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Taxonomy",
+      "identity": {
+        "check_run_id": 88624366927,
+        "completed_at": "2026-07-21T11:49:41Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/Taxonomy",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366927 concluded success."
+    },
+    {
+      "digest": "sha256:775825c5dff9909dd5db7c42c30f88e88a263f0069c7d76658661d0552973196",
+      "id": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/User",
+      "identity": {
+        "check_run_id": 88624367075,
+        "completed_at": "2026-07-21T11:50:23Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~6.4.0 - Component/User",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:23Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367075 concluded success."
+    },
+    {
+      "digest": "sha256:c7bed75050f50ce3f6033aebd4f8b1ddff3d7abad85a2519ca19a1fed8e1c6aa",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Abstraction/StateMachine",
+      "identity": {
+        "check_run_id": 88624369363,
+        "completed_at": "2026-07-21T11:51:29Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Abstraction/StateMachine",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:29Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369363 concluded success."
+    },
+    {
+      "digest": "sha256:0220f274a2bcfeb930b936c4bcd1a858cbebaa7e6832a3231a3afc4efbcff37a",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/AddressingBundle",
+      "identity": {
+        "check_run_id": 88624369390,
+        "completed_at": "2026-07-21T11:50:02Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/AddressingBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:02Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369390 concluded success."
+    },
+    {
+      "digest": "sha256:194a86c9aa8e2ca067f317b4bcf5926cfe6133c31c04598cf1445fd49fff9e57",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/AdminBundle",
+      "identity": {
+        "check_run_id": 88624369368,
+        "completed_at": "2026-07-21T11:50:30Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/AdminBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:30Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369368 concluded success."
+    },
+    {
+      "digest": "sha256:0c5729d852b71773531c08f8114dbea61eeefb2f1700d3f26dd25e5fd9f600f4",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ApiBundle",
+      "identity": {
+        "check_run_id": 88624369407,
+        "completed_at": "2026-07-21T11:50:22Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ApiBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:22Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369407 concluded success."
+    },
+    {
+      "digest": "sha256:52869937738ea97a5ed90aab98bd223b88630f03812c848f998bf3b132314f49",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/AttributeBundle",
+      "identity": {
+        "check_run_id": 88624369376,
+        "completed_at": "2026-07-21T11:51:02Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/AttributeBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:02Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369376 concluded success."
+    },
+    {
+      "digest": "sha256:33a93ed13192b69a7080ab0032a77816f0c86e84badded96eb668a06a0330f4b",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ChannelBundle",
+      "identity": {
+        "check_run_id": 88624369396,
+        "completed_at": "2026-07-21T11:51:11Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ChannelBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:11Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369396 concluded success."
+    },
+    {
+      "digest": "sha256:48462d2cf755beb7528145cfaa911c7af00d90748844bf96b087fc7597b60d4a",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/CoreBundle",
+      "identity": {
+        "check_run_id": 88624369388,
+        "completed_at": "2026-07-21T11:51:12Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/CoreBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:12Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369388 concluded success."
+    },
+    {
+      "digest": "sha256:a3ea9a52ac2ac38b13837b6dc6c92892839218ddaa893f4707ae2de060317d82",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/CurrencyBundle",
+      "identity": {
+        "check_run_id": 88624369430,
+        "completed_at": "2026-07-21T11:51:11Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/CurrencyBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:11Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369430 concluded success."
+    },
+    {
+      "digest": "sha256:ed80c52bf4a22f756323d9b732585c63fdede952224c4a1cae7ff77976a0fe2a",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/CustomerBundle",
+      "identity": {
+        "check_run_id": 88624369405,
+        "completed_at": "2026-07-21T11:51:32Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/CustomerBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:32Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369405 concluded success."
+    },
+    {
+      "digest": "sha256:7486cdbfb2432d2656002b885f3aa833e5d77c7eb9a065ff1d68b0127f7824b2",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/InventoryBundle",
+      "identity": {
+        "check_run_id": 88624369422,
+        "completed_at": "2026-07-21T11:51:40Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/InventoryBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:40Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369422 concluded success."
+    },
+    {
+      "digest": "sha256:25ae588b761f19fa1f248936493f5765d6ff136433925e42e0a75a82bed85935",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/LocaleBundle",
+      "identity": {
+        "check_run_id": 88624369415,
+        "completed_at": "2026-07-21T11:50:37Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/LocaleBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:37Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369415 concluded success."
+    },
+    {
+      "digest": "sha256:b4957eab27a791cb6c2902d7c57c492c3872d1977b276cef41fbb9bcb9af3d09",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/MoneyBundle",
+      "identity": {
+        "check_run_id": 88624369408,
+        "completed_at": "2026-07-21T11:51:23Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/MoneyBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:23Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369408 concluded success."
+    },
+    {
+      "digest": "sha256:3f065ed07e5acff0cfd975b34930c14b6e5482d625f902db2e5d24e94fdce4d1",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/OrderBundle",
+      "identity": {
+        "check_run_id": 88624369473,
+        "completed_at": "2026-07-21T11:51:10Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/OrderBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:10Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369473 concluded success."
+    },
+    {
+      "digest": "sha256:07a13f992290a2fd4b211d4b0458963ac9e3f2b907c213fbf383143aabc1adda",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/PaymentBundle",
+      "identity": {
+        "check_run_id": 88624369433,
+        "completed_at": "2026-07-21T11:51:01Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/PaymentBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:01Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369433 concluded success."
+    },
+    {
+      "digest": "sha256:5a468eed20deb12551906da2a0498ad278258df8924ffec893eb4a37accc2359",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/PayumBundle",
+      "identity": {
+        "check_run_id": 88624369394,
+        "completed_at": "2026-07-21T11:50:48Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/PayumBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:48Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369394 concluded success."
+    },
+    {
+      "digest": "sha256:6d364187de3068a9627ece8807efe94a2971b07c847ab250de3b415fb1f69668",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ProductBundle",
+      "identity": {
+        "check_run_id": 88624369429,
+        "completed_at": "2026-07-21T11:51:17Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ProductBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369429 concluded success."
+    },
+    {
+      "digest": "sha256:7492fbdba06447bc58a15187e6e6c39a7ced9e0a5d1c7233219fd2c24e59a00c",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/PromotionBundle",
+      "identity": {
+        "check_run_id": 88624369406,
+        "completed_at": "2026-07-21T11:51:12Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/PromotionBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:12Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369406 concluded success."
+    },
+    {
+      "digest": "sha256:1da0dbcf134c4911d2a87b4569fca6f3be085dac86d7a61e0942d80f13d036f3",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ReviewBundle",
+      "identity": {
+        "check_run_id": 88624369470,
+        "completed_at": "2026-07-21T11:51:36Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ReviewBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369470 concluded success."
+    },
+    {
+      "digest": "sha256:e3c034451ce93474d5c6920d27e2ad55c02fececc33038d24a394f4353e550c0",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ShippingBundle",
+      "identity": {
+        "check_run_id": 88624369428,
+        "completed_at": "2026-07-21T11:51:17Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ShippingBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369428 concluded success."
+    },
+    {
+      "digest": "sha256:7a096dd1c4ab975f91ca4c9f2b83aa8fb0ef1588d8524c4862a6a91c656f9591",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ShopBundle",
+      "identity": {
+        "check_run_id": 88624369434,
+        "completed_at": "2026-07-21T11:50:35Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/ShopBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369434 concluded success."
+    },
+    {
+      "digest": "sha256:c7a98ede936910a6a77292fc01bfb5d908a737759132cc669b78863eb0fb866b",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/TaxationBundle",
+      "identity": {
+        "check_run_id": 88624369467,
+        "completed_at": "2026-07-21T11:50:45Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/TaxationBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:45Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369467 concluded success."
+    },
+    {
+      "digest": "sha256:918af5c02f76154f46cf6de4c4ec1095f813d59a2bcf0f8719f3da253dd9f2a1",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/TaxonomyBundle",
+      "identity": {
+        "check_run_id": 88624369412,
+        "completed_at": "2026-07-21T11:50:51Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/TaxonomyBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369412 concluded success."
+    },
+    {
+      "digest": "sha256:ad0407e165bb2156614268ba1b8789ee9475ccaa0cd2a5cdf19ce88b8a938552",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/UiBundle",
+      "identity": {
+        "check_run_id": 88624369441,
+        "completed_at": "2026-07-21T11:51:26Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/UiBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:26Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369441 concluded success."
+    },
+    {
+      "digest": "sha256:824805b13fd62a7e891ccc1dfd291cdc31aefc324bd2b7f1b2911626f5f31bf5",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/UserBundle",
+      "identity": {
+        "check_run_id": 88624369436,
+        "completed_at": "2026-07-21T11:50:51Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Bundle/UserBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369436 concluded success."
+    },
+    {
+      "digest": "sha256:31143b69ba22e06b92f0ac5668ac5d48430104ee36294a1108cab9c12675fd01",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Addressing",
+      "identity": {
+        "check_run_id": 88624369455,
+        "completed_at": "2026-07-21T11:50:52Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Addressing",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:52Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369455 concluded success."
+    },
+    {
+      "digest": "sha256:591a3cf5d2b9daba4358bef3811df313480e98cab279fa4b2bd0f2f019833a76",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Attribute",
+      "identity": {
+        "check_run_id": 88624369432,
+        "completed_at": "2026-07-21T11:50:42Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Attribute",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:42Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369432 concluded success."
+    },
+    {
+      "digest": "sha256:fdf9517ac69085248add78bca5d90c4967036c5160816954344140c2d33fabb0",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Channel",
+      "identity": {
+        "check_run_id": 88624369440,
+        "completed_at": "2026-07-21T11:50:46Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Channel",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:46Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369440 concluded success."
+    },
+    {
+      "digest": "sha256:34013fc0edd6e491a904f044d4c4a73a4d647cb758084891cedd93a6f08d869f",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Core",
+      "identity": {
+        "check_run_id": 88624369466,
+        "completed_at": "2026-07-21T11:51:17Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Core",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369466 concluded success."
+    },
+    {
+      "digest": "sha256:6381781f870683473047fc83e7a32f0a4144b9c025d3d10d4345ec1ff71ae00b",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Currency",
+      "identity": {
+        "check_run_id": 88624369471,
+        "completed_at": "2026-07-21T11:51:29Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Currency",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:29Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369471 concluded success."
+    },
+    {
+      "digest": "sha256:651f13e18be5731638d423b9db64357152682d7a9e7841d8406ee9ec68e2449f",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Customer",
+      "identity": {
+        "check_run_id": 88624369474,
+        "completed_at": "2026-07-21T11:51:11Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Customer",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:11Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369474 concluded success."
+    },
+    {
+      "digest": "sha256:d3558d984ca20918b8800d04dd4b3dce4479699e11d022d685ed77088affc1c7",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Inventory",
+      "identity": {
+        "check_run_id": 88624369549,
+        "completed_at": "2026-07-21T11:51:38Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Inventory",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369549 concluded success."
+    },
+    {
+      "digest": "sha256:68df5a8b5ab1d8f466089674039ed5dc1b6deb082fb68b48796813c141f29ce3",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Locale",
+      "identity": {
+        "check_run_id": 88624369546,
+        "completed_at": "2026-07-21T11:51:31Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Locale",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:31Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369546 concluded success."
+    },
+    {
+      "digest": "sha256:9ba504a5e99ad8a680863a4ba17789d52dd1b7a6beb14b53bdb8b1e8b352154b",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Order",
+      "identity": {
+        "check_run_id": 88624369583,
+        "completed_at": "2026-07-21T11:51:41Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Order",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369583 concluded success."
+    },
+    {
+      "digest": "sha256:621d9fe347af9473f788b5abeed240f1e11a29c49fb6be63f6d465f202fd8f68",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Payment",
+      "identity": {
+        "check_run_id": 88624369469,
+        "completed_at": "2026-07-21T11:50:53Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Payment",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:53Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369469 concluded success."
+    },
+    {
+      "digest": "sha256:aa60ce536036bfd56692b0e555de8e70437c6de919fcdd16151b78789a062ae1",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Product",
+      "identity": {
+        "check_run_id": 88624369484,
+        "completed_at": "2026-07-21T11:50:47Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Product",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:47Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369484 concluded success."
+    },
+    {
+      "digest": "sha256:dbcf69af21c18374d27d94778d7f9116840b157728afef8597ada74ff67113c7",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Promotion",
+      "identity": {
+        "check_run_id": 88624369492,
+        "completed_at": "2026-07-21T11:50:44Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Promotion",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:44Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369492 concluded success."
+    },
+    {
+      "digest": "sha256:fe4259cf677f01e515760b8876a2296fa395903c7d6bbd945b03b70641fc9584",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Review",
+      "identity": {
+        "check_run_id": 88624369493,
+        "completed_at": "2026-07-21T11:51:23Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Review",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:23Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369493 concluded success."
+    },
+    {
+      "digest": "sha256:ddb1af2f47ecd4666375438fd0fb418fa1cc4d146d5f47482b9621633ac9c13c",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Shipping",
+      "identity": {
+        "check_run_id": 88624369495,
+        "completed_at": "2026-07-21T11:51:29Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Shipping",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:29Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369495 concluded success."
+    },
+    {
+      "digest": "sha256:bca0e6d9096cb1042332b56d85f0ee1724ed3bf3e378266ed1b255bcfd789584",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Taxation",
+      "identity": {
+        "check_run_id": 88624369485,
+        "completed_at": "2026-07-21T11:51:09Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Taxation",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:09Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369485 concluded success."
+    },
+    {
+      "digest": "sha256:c004b8cb156a3e48efa9741ac06517a5f08963a0cd51f5dcac0e48e8aa65734d",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Taxonomy",
+      "identity": {
+        "check_run_id": 88624369551,
+        "completed_at": "2026-07-21T11:51:38Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/Taxonomy",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369551 concluded success."
+    },
+    {
+      "digest": "sha256:53ad52e5255e7b13316fea7a5c6803c0f39b99b6b1de111db2851617193ccc57",
+      "id": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/User",
+      "identity": {
+        "check_run_id": 88624369526,
+        "completed_at": "2026-07-21T11:51:42Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.4, Symfony ~8.1.0 - Component/User",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:42Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369526 concluded success."
+    },
+    {
+      "digest": "sha256:1f38ca4c11dd4e6681de8073160c5e4679f50d4a55614dc744043f5f569ba908",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Abstraction/StateMachine",
+      "identity": {
+        "check_run_id": 88624366978,
+        "completed_at": "2026-07-21T11:49:57Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Abstraction/StateMachine",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366978 concluded success."
+    },
+    {
+      "digest": "sha256:f05c630725bf8cbdb2376f7199d7bdf5f43f1089f851c0d4ea537a9ea91d3f30",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/AddressingBundle",
+      "identity": {
+        "check_run_id": 88624367014,
+        "completed_at": "2026-07-21T11:50:23Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/AddressingBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:23Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367014 concluded success."
+    },
+    {
+      "digest": "sha256:20b3e9d7cfedaccbce3dcee75eec04f1caad62d01ee1cd0a3796003ce03abe69",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/AdminBundle",
+      "identity": {
+        "check_run_id": 88624367026,
+        "completed_at": "2026-07-21T11:50:04Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/AdminBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:04Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367026 concluded success."
+    },
+    {
+      "digest": "sha256:c505ee44093418b1d5ea653507fcc48b66202a9aded7b34fa75346efb1433d4a",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ApiBundle",
+      "identity": {
+        "check_run_id": 88624366962,
+        "completed_at": "2026-07-21T11:50:48Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ApiBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:48Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366962 concluded success."
+    },
+    {
+      "digest": "sha256:32c85164891528bd7aafaaac570498d57bca6edd8ee9c78444ee94e36be40c60",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/AttributeBundle",
+      "identity": {
+        "check_run_id": 88624366936,
+        "completed_at": "2026-07-21T11:49:19Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/AttributeBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366936 concluded success."
+    },
+    {
+      "digest": "sha256:3f94fba2429a1e29493ed34c451183b5577b0e888124f0758085b3a7bdfb0122",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ChannelBundle",
+      "identity": {
+        "check_run_id": 88624367063,
+        "completed_at": "2026-07-21T11:50:06Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ChannelBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:06Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367063 concluded success."
+    },
+    {
+      "digest": "sha256:8e7006a55482d398d61500c9ac983c032c0861d65f8fbf4e9e81d6a6c5715cf6",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/CoreBundle",
+      "identity": {
+        "check_run_id": 88624366984,
+        "completed_at": "2026-07-21T11:49:47Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/CoreBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:47Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366984 concluded success."
+    },
+    {
+      "digest": "sha256:a8c7e3a3ba059871d2739b065dde46e13dfb86eb385718d82cd23afb11ed980f",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/CurrencyBundle",
+      "identity": {
+        "check_run_id": 88624366907,
+        "completed_at": "2026-07-21T11:49:12Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/CurrencyBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:12Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366907 concluded success."
+    },
+    {
+      "digest": "sha256:dea5d74e75a7039a31eb036177d1135847353375f38593687e81d2aa1ffba9db",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/CustomerBundle",
+      "identity": {
+        "check_run_id": 88624366999,
+        "completed_at": "2026-07-21T11:50:06Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/CustomerBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:06Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366999 concluded success."
+    },
+    {
+      "digest": "sha256:5b2cc9c4592fcad794ff60bc241d7339ee0d2f95e2a0fd32771e25336ba1da06",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/InventoryBundle",
+      "identity": {
+        "check_run_id": 88624367008,
+        "completed_at": "2026-07-21T11:49:34Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/InventoryBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:34Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367008 concluded success."
+    },
+    {
+      "digest": "sha256:1b0ec23151753ecdbe8e28b6d2e720d4c53fc04ac2623ea57855c9727082a7ef",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/LocaleBundle",
+      "identity": {
+        "check_run_id": 88624366986,
+        "completed_at": "2026-07-21T11:50:23Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/LocaleBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:23Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624366986 concluded success."
+    },
+    {
+      "digest": "sha256:1ea2b707651d4ed6d007f8bdc4010153e2377294d02da51b89de2784d37bf29d",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/MoneyBundle",
+      "identity": {
+        "check_run_id": 88624367217,
+        "completed_at": "2026-07-21T11:50:22Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/MoneyBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:22Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367217 concluded success."
+    },
+    {
+      "digest": "sha256:91bd373b225962d81b342b1d18b91d3dff7bd9fa97b5d5825849a64ea900c881",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/OrderBundle",
+      "identity": {
+        "check_run_id": 88624367135,
+        "completed_at": "2026-07-21T11:50:08Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/OrderBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:08Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367135 concluded success."
+    },
+    {
+      "digest": "sha256:8ea8633cd5ceffe052a3e0dc6972f2131629d375a0286c0b622bec6f463bd786",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/PaymentBundle",
+      "identity": {
+        "check_run_id": 88624367173,
+        "completed_at": "2026-07-21T11:50:16Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/PaymentBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:16Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367173 concluded success."
+    },
+    {
+      "digest": "sha256:e27a440613988898d53e28decd6f5fbe9dc8243aa9da10633a8c3ee790a523d0",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/PayumBundle",
+      "identity": {
+        "check_run_id": 88624367204,
+        "completed_at": "2026-07-21T11:50:24Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/PayumBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:24Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367204 concluded success."
+    },
+    {
+      "digest": "sha256:e703149a7167e675324851fc6127033160c33785fcf5211bf318c00048a63625",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ProductBundle",
+      "identity": {
+        "check_run_id": 88624367061,
+        "completed_at": "2026-07-21T11:49:30Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ProductBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:30Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367061 concluded success."
+    },
+    {
+      "digest": "sha256:ee03bf756ed4ddf1696c81e841363bfd58c601e9b18bd12d9dcb792987784786",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/PromotionBundle",
+      "identity": {
+        "check_run_id": 88624367032,
+        "completed_at": "2026-07-21T11:49:43Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/PromotionBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:49:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367032 concluded success."
+    },
+    {
+      "digest": "sha256:07034665b5625f4e9f5b5b413c665eb28627297769cc3571fe53d6b24adf45ff",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ReviewBundle",
+      "identity": {
+        "check_run_id": 88624367099,
+        "completed_at": "2026-07-21T11:50:07Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ReviewBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:07Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367099 concluded success."
+    },
+    {
+      "digest": "sha256:246ef9e49dc4c72d661974b461d03b754b9d98d37d1b680588b997b7d37f5a44",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ShippingBundle",
+      "identity": {
+        "check_run_id": 88624367120,
+        "completed_at": "2026-07-21T11:50:09Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ShippingBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:09Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367120 concluded success."
+    },
+    {
+      "digest": "sha256:940eddc5e76b8f8cb950ef7665fee0d58f2f509e0fcd48356eb6ec1124117e45",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ShopBundle",
+      "identity": {
+        "check_run_id": 88624367500,
+        "completed_at": "2026-07-21T11:50:30Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/ShopBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:30Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367500 concluded success."
+    },
+    {
+      "digest": "sha256:4359eaddbb22c3ffdf4e0524c8dc15482c74051821a87de336d733ca69b26fff",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/TaxationBundle",
+      "identity": {
+        "check_run_id": 88624367268,
+        "completed_at": "2026-07-21T11:50:04Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/TaxationBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:04Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367268 concluded success."
+    },
+    {
+      "digest": "sha256:bd1747286625da17fd1cd085f3140c0896009eb51814ac040ac015859668e640",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/TaxonomyBundle",
+      "identity": {
+        "check_run_id": 88624367064,
+        "completed_at": "2026-07-21T11:50:02Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/TaxonomyBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:02Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367064 concluded success."
+    },
+    {
+      "digest": "sha256:df6a395c8cb5a8ca502709e08ed2ea1e7140fcda1d2dce7cf4ced549384902c9",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/UiBundle",
+      "identity": {
+        "check_run_id": 88624367084,
+        "completed_at": "2026-07-21T11:50:32Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/UiBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:32Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367084 concluded success."
+    },
+    {
+      "digest": "sha256:3686105d2dd823304f3220f6031cc31e0676d0990ac32d9f078473210cd663ce",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/UserBundle",
+      "identity": {
+        "check_run_id": 88624369327,
+        "completed_at": "2026-07-21T11:51:30Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Bundle/UserBundle",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:30Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369327 concluded success."
+    },
+    {
+      "digest": "sha256:ec1cc630c1d6ecf2188a5338374bd9e6f7aad09d733fbbde2f2f272f244e12ba",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Addressing",
+      "identity": {
+        "check_run_id": 88624369275,
+        "completed_at": "2026-07-21T11:50:36Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Addressing",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369275 concluded success."
+    },
+    {
+      "digest": "sha256:cffb97b74ed0a17a6841f5043a1f51f24ee2dc96e81776a5dbe8431b677facd2",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Attribute",
+      "identity": {
+        "check_run_id": 88624369316,
+        "completed_at": "2026-07-21T11:51:00Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Attribute",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:00Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369316 concluded success."
+    },
+    {
+      "digest": "sha256:d5697716ab0aa1b0ae7f09712e8bca779ca22045079e0d527747d07940a20486",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Channel",
+      "identity": {
+        "check_run_id": 88624369209,
+        "completed_at": "2026-07-21T11:50:34Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Channel",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:34Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369209 concluded success."
+    },
+    {
+      "digest": "sha256:1f24c08c1d83ec2ec45bc376a9c8fbbad6f893cd1e1470af1aa09325d3830571",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Core",
+      "identity": {
+        "check_run_id": 88624369280,
+        "completed_at": "2026-07-21T11:51:12Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Core",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:12Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369280 concluded success."
+    },
+    {
+      "digest": "sha256:1f7aab521c95e843ca3d32003f38dff20c0fa4299bcad254d13af46d585b823e",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Currency",
+      "identity": {
+        "check_run_id": 88624369336,
+        "completed_at": "2026-07-21T11:50:51Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Currency",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369336 concluded success."
+    },
+    {
+      "digest": "sha256:9f75a1ee911d39c1da74a3fa05bc0a4a38a022ee87f1c8fcc789a16b9ca6580a",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Customer",
+      "identity": {
+        "check_run_id": 88624369319,
+        "completed_at": "2026-07-21T11:51:14Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Customer",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:14Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369319 concluded success."
+    },
+    {
+      "digest": "sha256:1e1f2e304e1caaa84542a2b3820d617aa8d286f6aac3ddbdaa0c345a9c064c4f",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Inventory",
+      "identity": {
+        "check_run_id": 88624369265,
+        "completed_at": "2026-07-21T11:50:33Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Inventory",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:33Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369265 concluded success."
+    },
+    {
+      "digest": "sha256:2de82a9b7efe8e8c841168dc4c5c7c031ab8ae45525bc5efc1c00591b224de53",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Locale",
+      "identity": {
+        "check_run_id": 88624369290,
+        "completed_at": "2026-07-21T11:51:28Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Locale",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:28Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369290 concluded success."
+    },
+    {
+      "digest": "sha256:44858664944bd915bc82210472d859e6ed33d39ea88b0955df4da1961541d5fb",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Order",
+      "identity": {
+        "check_run_id": 88624369225,
+        "completed_at": "2026-07-21T11:51:28Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Order",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:28Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369225 concluded success."
+    },
+    {
+      "digest": "sha256:acc39a061ec79ae9f9cfd86a607c82fb8f751a6ea55a9a8f7f728cab6cb484e4",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Payment",
+      "identity": {
+        "check_run_id": 88624369268,
+        "completed_at": "2026-07-21T11:51:30Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Payment",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:30Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369268 concluded success."
+    },
+    {
+      "digest": "sha256:35596a8feb9d55bffdad86736662b81329f2f546622309519701417c44070224",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Product",
+      "identity": {
+        "check_run_id": 88624369349,
+        "completed_at": "2026-07-21T11:50:02Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Product",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:02Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369349 concluded success."
+    },
+    {
+      "digest": "sha256:aeb64d1c5ea4bbb1e5a4680655d75a7c164d092603fa82414e042e9b5210cf5c",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Promotion",
+      "identity": {
+        "check_run_id": 88624369338,
+        "completed_at": "2026-07-21T11:50:45Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Promotion",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:45Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369338 concluded success."
+    },
+    {
+      "digest": "sha256:23a976e9e0f6b9bca1fcff313f32c9035c0c3d2a5b0e3f0849494805e5436a88",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Review",
+      "identity": {
+        "check_run_id": 88624369418,
+        "completed_at": "2026-07-21T11:51:40Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Review",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:40Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369418 concluded success."
+    },
+    {
+      "digest": "sha256:d87c56890170e70740e06cb26c24e8c411d62afe31d36906d2e267ea266ff835",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Shipping",
+      "identity": {
+        "check_run_id": 88624369389,
+        "completed_at": "2026-07-21T11:51:14Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Shipping",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:14Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369389 concluded success."
+    },
+    {
+      "digest": "sha256:c0e0b8adaf28c245b3659d9e4a44cb71f87b37709f6a581194e25ef7586e7d2f",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Taxation",
+      "identity": {
+        "check_run_id": 88624369351,
+        "completed_at": "2026-07-21T11:51:06Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Taxation",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:06Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369351 concluded success."
+    },
+    {
+      "digest": "sha256:467496a371b475a01758916594fce028de9765ff3d8ac7e5eb3f3dda8a203255",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Taxonomy",
+      "identity": {
+        "check_run_id": 88624369358,
+        "completed_at": "2026-07-21T11:50:52Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/Taxonomy",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:50:52Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369358 concluded success."
+    },
+    {
+      "digest": "sha256:a0daa98ea7dbf36746c378426539389223ca0a5146a72c0752d2146a848ed057",
+      "id": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/User",
+      "identity": {
+        "check_run_id": 88624369384,
+        "completed_at": "2026-07-21T11:51:13Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Packages / PHP 8.5, Symfony ~7.4.0 - Component/User",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:51:13Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624369384 concluded success."
+    },
+    {
+      "digest": "sha256:83e26b4bf1563f265065a466d738316cb1d97d1e004cd04b37d4ca6520b7101b",
+      "id": "Static checks / Get matrix",
+      "identity": {
+        "check_run_id": 88623911215,
+        "completed_at": "2026-07-21T11:46:47Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Static checks / Get matrix",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:46:47Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88623911215 concluded success."
+    },
+    {
+      "digest": "sha256:62f1bc8e5d4048e214ef4f455f23ca859408096aa160b5c656961f7cd6310d6e",
+      "id": "Static checks / PHP 8.4, Symfony ~6.4.0",
+      "identity": {
+        "check_run_id": 88623939288,
+        "completed_at": "2026-07-21T11:48:17Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Static checks / PHP 8.4, Symfony ~6.4.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88623939288 concluded success."
+    },
+    {
+      "digest": "sha256:e8dbcfc32d2556e9d1e603f10f08d99b909d71e15787a013b333f35942a1a1fe",
+      "id": "Static checks / PHP 8.4, Symfony ~7.4.0",
+      "identity": {
+        "check_run_id": 88623939304,
+        "completed_at": "2026-07-21T11:48:38Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Static checks / PHP 8.4, Symfony ~7.4.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88623939304 concluded success."
+    },
+    {
+      "digest": "sha256:8c440d554127d8500ef334636c829486aa825c31f74fa7fe4e05f334cab86247",
+      "id": "Static checks / PHP 8.5, Symfony ~7.4.0",
+      "identity": {
+        "check_run_id": 88623939328,
+        "completed_at": "2026-07-21T11:48:36Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Static checks / PHP 8.5, Symfony ~7.4.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88623939328 concluded success."
+    },
+    {
+      "digest": "sha256:9b89d52803e377854bd30ef5fe7c8643be2d1a23548c4ee0516f7e5c1b8efb03",
+      "id": "Static checks / PHP 8.5, Symfony ~8.1.0",
+      "identity": {
+        "check_run_id": 88623939305,
+        "completed_at": "2026-07-21T11:48:38Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Static checks / PHP 8.5, Symfony ~8.1.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88623939305 concluded success."
+    },
+    {
+      "digest": "sha256:903f07d04f82b250ecca2abafe461d1de33cefc70b05153515f80b632a6aa96e",
+      "id": "Tests (MariaDB) / Get matrix",
+      "identity": {
+        "check_run_id": 88624323433,
+        "completed_at": "2026-07-21T11:48:51Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MariaDB) / Get matrix",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624323433 concluded success."
+    },
+    {
+      "digest": "sha256:cc1c3cbdf690b9a2082994e2eb6e23ba39e651409c49dccdd1cda421cfe45e95",
+      "id": "Tests (MariaDB) / PHPUnit, CLI, API, PHP 8.4, Symfony ~6.4.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, LegacyGridConfig true",
+      "identity": {
+        "check_run_id": 88624367117,
+        "completed_at": "2026-07-21T11:59:21Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MariaDB) / PHPUnit, CLI, API, PHP 8.4, Symfony ~6.4.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, LegacyGridConfig true",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:59:21Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367117 concluded success."
+    },
+    {
+      "digest": "sha256:9154e2c86982f30bd970302c691f389e1ddac286e0d273aa704abb9f791d260c",
+      "id": "Tests (MariaDB) / PHPUnit, CLI, API, PHP 8.5, Symfony ~7.4.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624367113,
+        "completed_at": "2026-07-21T11:59:31Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MariaDB) / PHPUnit, CLI, API, PHP 8.5, Symfony ~7.4.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:59:31Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367113 concluded success."
+    },
+    {
+      "digest": "sha256:cd8fc56fb89903d117aa5700282f4d8df725a36ddd0dc11463684db01279b37a",
+      "id": "Tests (MariaDB) / PHPUnit, CLI, API, PHP 8.5, Symfony ~8.1.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624367171,
+        "completed_at": "2026-07-21T11:58:59Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MariaDB) / PHPUnit, CLI, API, PHP 8.5, Symfony ~8.1.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:58:59Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367171 concluded success."
+    },
+    {
+      "digest": "sha256:fa87b8e9043c9c482af518871ff8e97148dc115fc6c13e754abbc256f490b733",
+      "id": "Tests (MariaDB) / UI, PHP 8.4, Symfony ~6.4.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, LegacyGridConfig true",
+      "identity": {
+        "check_run_id": 88624367076,
+        "completed_at": "2026-07-21T12:00:34Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MariaDB) / UI, PHP 8.4, Symfony ~6.4.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, LegacyGridConfig true",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:00:34Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367076 concluded success."
+    },
+    {
+      "digest": "sha256:1e2fdb3e4a8678fbe1748e9df12b267ec93d67619575c87af0344ab02de44047",
+      "id": "Tests (MariaDB) / UI, PHP 8.5, Symfony ~7.4.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624367246,
+        "completed_at": "2026-07-21T11:58:57Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MariaDB) / UI, PHP 8.5, Symfony ~7.4.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:58:57Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367246 concluded success."
+    },
+    {
+      "digest": "sha256:95169abfdbb241cc95d92359f65c8fe701efc1464bbea420587c17739b3c02a2",
+      "id": "Tests (MariaDB) / UI, PHP 8.5, Symfony ~8.1.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624367085,
+        "completed_at": "2026-07-21T11:59:15Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MariaDB) / UI, PHP 8.5, Symfony ~8.1.0, MariaDB 11.4.12, State Machine Adapter symfony_workflow, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:59:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624367085 concluded success."
+    },
+    {
+      "digest": "sha256:5f2c78617cdfb222312ee01d2fc15381d3f9e2873f4600bf5c83c4ce360819ce",
+      "id": "Tests (MySQL) / Get matrix",
+      "identity": {
+        "check_run_id": 88624323373,
+        "completed_at": "2026-07-21T11:48:50Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MySQL) / Get matrix",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:50Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624323373 concluded success."
+    },
+    {
+      "digest": "sha256:480d0db14f54fda757a575ddd08813389fbd2576bea583b0c1686511e2471829",
+      "id": "Tests (MySQL) / PHPUnit, CLI, API, PHP 8.4, Symfony ~6.4.0, MySQL 8.4",
+      "identity": {
+        "check_run_id": 88624361942,
+        "completed_at": "2026-07-21T12:00:43Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MySQL) / PHPUnit, CLI, API, PHP 8.4, Symfony ~6.4.0, MySQL 8.4",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:00:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624361942 concluded success."
+    },
+    {
+      "digest": "sha256:997f40f2024ada0921b372d86811de646c2bffbe4f9e938af9b51515b0d680e9",
+      "id": "Tests (MySQL) / PHPUnit, CLI, API, PHP 8.5, Symfony ~7.4.0, MySQL 8.4, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624362000,
+        "completed_at": "2026-07-21T11:59:09Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MySQL) / PHPUnit, CLI, API, PHP 8.5, Symfony ~7.4.0, MySQL 8.4, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:59:09Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624362000 concluded success."
+    },
+    {
+      "digest": "sha256:8eb1744d37b143b5d46c85d398f52860cb7ed15f567e68b9ae47ce901d3efa06",
+      "id": "Tests (MySQL) / PHPUnit, CLI, API, PHP 8.5, Symfony ~8.1.0, MySQL 8.4, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624361944,
+        "completed_at": "2026-07-21T12:01:37Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MySQL) / PHPUnit, CLI, API, PHP 8.5, Symfony ~8.1.0, MySQL 8.4, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:01:37Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624361944 concluded success."
+    },
+    {
+      "digest": "sha256:f45cf1dfcf0dd5b5f0df5459084c6a3ddf7679508163bdbc60878ce0f577618c",
+      "id": "Tests (MySQL) / UI, PHP 8.4, Symfony ~6.4.0, MySQL 8.4",
+      "identity": {
+        "check_run_id": 88624361961,
+        "completed_at": "2026-07-21T12:00:35Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MySQL) / UI, PHP 8.4, Symfony ~6.4.0, MySQL 8.4",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:00:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624361961 concluded success."
+    },
+    {
+      "digest": "sha256:aa21d92cd50ed1969c6744b0166a5c2301c6ca2b66dad9425bcb27f5afbdd6c8",
+      "id": "Tests (MySQL) / UI, PHP 8.5, Symfony ~7.4.0, MySQL 8.4, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624361927,
+        "completed_at": "2026-07-21T11:59:35Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MySQL) / UI, PHP 8.5, Symfony ~7.4.0, MySQL 8.4, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:59:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624361927 concluded success."
+    },
+    {
+      "digest": "sha256:058bc3f75dbb6cfd896e258c3c6c08ebdf0754c201c06e152df565d9a47e17cc",
+      "id": "Tests (MySQL) / UI, PHP 8.5, Symfony ~8.1.0, MySQL 8.4, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624362004,
+        "completed_at": "2026-07-21T11:59:31Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (MySQL) / UI, PHP 8.5, Symfony ~8.1.0, MySQL 8.4, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:59:31Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624362004 concluded success."
+    },
+    {
+      "digest": "sha256:9d9bce50f8a896e9c0b9bb5d7a4cc77294458f31e9e3dd07b0cf54de2148390b",
+      "id": "Tests (PostgreSQL) / Get matrix",
+      "identity": {
+        "check_run_id": 88624323416,
+        "completed_at": "2026-07-21T11:48:51Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (PostgreSQL) / Get matrix",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:48:51Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624323416 concluded success."
+    },
+    {
+      "digest": "sha256:89a2604ab980ff61230bf4d856f348dcae8474347890ffe598f989b8c575844b",
+      "id": "Tests (PostgreSQL) / PHPUnit, CLI, API, PHP 8.4, Symfony ~6.4.0, PostgreSQL 18.4",
+      "identity": {
+        "check_run_id": 88624365715,
+        "completed_at": "2026-07-21T12:02:18Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (PostgreSQL) / PHPUnit, CLI, API, PHP 8.4, Symfony ~6.4.0, PostgreSQL 18.4",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:02:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624365715 concluded success."
+    },
+    {
+      "digest": "sha256:f5d4dd21d513815db68c4c231f3516c0c546fb7227e2831feacb03e39dc66aa3",
+      "id": "Tests (PostgreSQL) / PHPUnit, CLI, API, PHP 8.5, Symfony ~7.4.0, PostgreSQL 18.4, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624365703,
+        "completed_at": "2026-07-21T12:02:04Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (PostgreSQL) / PHPUnit, CLI, API, PHP 8.5, Symfony ~7.4.0, PostgreSQL 18.4, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:02:04Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624365703 concluded success."
+    },
+    {
+      "digest": "sha256:af41f48215b717b10bc5a0119b35315fb6a9e446c6c37cd934a1087a62626b05",
+      "id": "Tests (PostgreSQL) / PHPUnit, CLI, API, PHP 8.5, Symfony ~8.1.0, PostgreSQL 18.4, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624365738,
+        "completed_at": "2026-07-21T12:01:35Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (PostgreSQL) / PHPUnit, CLI, API, PHP 8.5, Symfony ~8.1.0, PostgreSQL 18.4, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:01:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624365738 concluded success."
+    },
+    {
+      "digest": "sha256:2b35c4a1b8d4567bbdeed10f7b61d07e1916829eba3eaf62f54f06975c720c02",
+      "id": "Tests (PostgreSQL) / UI, PHP 8.4, Symfony ~6.4.0, PostgreSQL 18.4",
+      "identity": {
+        "check_run_id": 88624365711,
+        "completed_at": "2026-07-21T12:01:45Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (PostgreSQL) / UI, PHP 8.4, Symfony ~6.4.0, PostgreSQL 18.4",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:01:45Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624365711 concluded success."
+    },
+    {
+      "digest": "sha256:15c386fa67db768e1e8add334e1416f18b91ffd501896be8198ec2e6e00b5a9f",
+      "id": "Tests (PostgreSQL) / UI, PHP 8.5, Symfony ~7.4.0, PostgreSQL 18.4, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624365722,
+        "completed_at": "2026-07-21T12:00:55Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (PostgreSQL) / UI, PHP 8.5, Symfony ~7.4.0, PostgreSQL 18.4, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:00:55Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624365722 concluded success."
+    },
+    {
+      "digest": "sha256:2eb53ad43678659f35f1438f0ca39c8be0ba18b6e09bb964de9855da9c53c2e1",
+      "id": "Tests (PostgreSQL) / UI, PHP 8.5, Symfony ~8.1.0, PostgreSQL 18.4, DoctrineBundle ^3.0",
+      "identity": {
+        "check_run_id": 88624365731,
+        "completed_at": "2026-07-21T12:01:48Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "Tests (PostgreSQL) / UI, PHP 8.5, Symfony ~8.1.0, PostgreSQL 18.4, DoctrineBundle ^3.0",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T12:01:48Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88624365731 concluded success."
+    },
+    {
+      "digest": "sha256:d25f6da2a9716e8d00140ef33649072df0561073f409cc45cb66663c4dfbb5ab",
+      "id": "WIP",
+      "identity": {
+        "check_run_id": 88623940533,
+        "completed_at": "2026-07-21T11:46:47Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "WIP",
+        "requirement_identity": {
+          "context": "WIP",
+          "integration_id": 3414
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:46:47Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88623940533 concluded success."
+    },
+    {
+      "digest": "sha256:cc98e60b7d70602a0048d0bc9d7c7eeed95f6a59b715047a0424b4e0b5f785f5",
+      "id": "auto-merge",
+      "identity": {
+        "check_run_id": 88623844447,
+        "completed_at": "2026-07-21T11:46:37Z",
+        "conclusion": "success",
+        "head_sha": "787949193130eec2c98851d00f98e334ca07e331",
+        "name": "auto-merge",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-21T11:46:37Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 88623844447 concluded success."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": 19134,
+    "ref": "refs/pull/19134/head",
+    "repository": "Sylius/Sylius",
+    "sha": "787949193130eec2c98851d00f98e334ca07e331"
+  }
+}

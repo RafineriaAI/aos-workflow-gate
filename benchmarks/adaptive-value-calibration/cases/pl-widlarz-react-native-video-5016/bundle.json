@@ -1,0 +1,136 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "72f0e547cc48120df3e3e39792d087356792b51d",
+      "repository": "TheWidlarzGroup/react-native-video"
+    },
+    "observed_at": "2026-08-01T09:36:55Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:6ca900b6ae36495b3d6a8bbb5dc8cce310161155581ef5deae23c59f3e2d0ff4",
+    "protection_source": "none",
+    "required_controls": [],
+    "requirements": [],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "3b186f1987c29a5170ed341131389b5c56c715f2",
+        "head_sha": "72f0e547cc48120df3e3e39792d087356792b51d",
+        "pull_request": 5016,
+        "repository": "TheWidlarzGroup/react-native-video"
+      },
+      "unchanged_workflow_runs": 2,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [],
+      "states": {
+        "action_required": 0,
+        "completed": 2,
+        "pending": 0
+      },
+      "units_total": 2
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:090daef07e701ee59d3286e46547fcdd1c1eca18911a9d7f5e5cd7259fb0235b",
+      "id": "Build Android Example App",
+      "identity": {
+        "check_run_id": 83354787582,
+        "completed_at": "2026-06-25T04:22:26Z",
+        "conclusion": "success",
+        "head_sha": "72f0e547cc48120df3e3e39792d087356792b51d",
+        "name": "Build Android Example App",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-06-25T04:22:26Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 83354787582 concluded success."
+    },
+    {
+      "digest": "sha256:71e541c78a5a151c4ca9103bba3eafb7efcd32b1075d1af585523dfde9388a9f",
+      "id": "Build Android Example App With Ads",
+      "identity": {
+        "check_run_id": 83354787578,
+        "completed_at": "2026-06-25T04:22:52Z",
+        "conclusion": "success",
+        "head_sha": "72f0e547cc48120df3e3e39792d087356792b51d",
+        "name": "Build Android Example App With Ads",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-06-25T04:22:52Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 83354787578 concluded success."
+    },
+    {
+      "digest": "sha256:e05de27b6067da1a26bb0cb9b121e0c84487caad8e4902b94bdd8b8717d72cca",
+      "id": "Kotlin-Lint",
+      "identity": {
+        "check_run_id": 83354787513,
+        "completed_at": "2026-06-25T04:18:07Z",
+        "conclusion": "success",
+        "head_sha": "72f0e547cc48120df3e3e39792d087356792b51d",
+        "name": "Kotlin-Lint",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-06-25T04:18:07Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 83354787513 concluded success."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": 5016,
+    "ref": "refs/pull/5016/head",
+    "repository": "TheWidlarzGroup/react-native-video",
+    "sha": "72f0e547cc48120df3e3e39792d087356792b51d"
+  }
+}

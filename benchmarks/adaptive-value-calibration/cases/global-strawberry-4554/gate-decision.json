@@ -1,0 +1,708 @@
+{
+  "can_block": false,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "ced7112d3e06d6fe402d578a8da7c888e9beea6d2b128c4b97036f1ce70a927d",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
+        "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
+        "cli.py": "b1ed35d34d404000feba0677c7d6d14dc54460d237c51bed6bf56b6ffe0201d9",
+        "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "3e92eb472d7d770e40123c093af238605a4fd4622c87dd968a3b64a60a953ee8",
+        "evidence.py": "2e67d6f1e92dd473b79c19abfb4cdaaba84cb0ee39b951223d3d5995d3869138",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "github_decision_check.py": "d23dbbc449026b69766d1f6267db414620d5cbf3f032028bd0614b753adab897",
+        "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/code-change-proof.yml": "892aaa426ae8a489dba230e4b7f3e2eabfb15202191c39ea1cb9537a9432e6ca",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/project-check.yml": "ff0d8c16a527687adac4eb3c2a391fda565d8c4f0c7f50bb4aa125e6ea145aa0",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "e1e4d6205aa2017bd706b5f0c3cfb479b8de3a0344356b3ecec751d773aa4070",
+        "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
+        "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
+        "requirements.py": "dad78b09daae9f567e9c4f2f53e3104bbdbe3944f8ffe8d87cee4f21544abac9",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "7ac1711975db965fcdcb47f6155cc5b8e219b6e649282cda28e2272d87e57775",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+    "version": "0.38.0"
+  },
+  "input_bundle_digest": "sha256:85522a464b39a2c6a0aaced321ea3598859d35349686c8fee39b24c2c28c48fd",
+  "inputs": [
+    {
+      "digest": "sha256:4139a35d9b014028b0264850738ce4e1b2b153ec8b6a053b8625c2bdcbaccd8b",
+      "id": "CodSpeed Performance Analysis",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:11598318a4c0932fd713257d5a78506ea659c0392ac37503c8327cb686636b23",
+      "id": "CodeQL",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c7d3ef70e51f47dbb9e612127abfbdbfe08d846cb33de7bd4beda39ae4838896",
+      "id": "GitGuardian Security Checks",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f43ced995d2e4276c4ff0d63090e94194e235d103716e1b9b3b83042c95cce39",
+      "id": "Release check",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8fe085a0dbce33dd9b9fddf5eaf8d19063e0aa6c2d562120720aa006c776473e",
+      "id": "Required CI",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9eed3434950527254320fa00891309fd66cfd28942865aff263173328a6b8a79",
+      "id": "Sourcery review",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:fde3ba2852df8ce08f9162c1a10e37fcc77d3ef3a916f0800a27c064b00f6c29",
+      "id": "analyze",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:5d1943df8397526e2629090cc30c081c1fdf9887104f2f2d3b826ee77ae804ac",
+      "id": "pre-commit.ci - pr",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:91e355f8afc2911ef24c68ce88919142048f3434e155661c4968f1c5a5125a0f",
+      "id": "zizmor",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f476ac970cbab7075b17c5e4d373d6c969d73d1391226dd1d625b614ac08f486",
+      "id": "\u2728 Lint",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:67bc4014065ff4014ac147ac7d6599306359cc29161cb11fe72e4f918c009c79",
+      "id": "\ud83d\udcbb Generate test matrix",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:5a00022387b4965f40788007a4285f334913b6d74ac7c9d8f0eac8153188a3a5",
+      "id": "\ud83d\udcc8 Benchmarks",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a3fbbcc310b87f1bc8206eeb2ee3dc28d17fdb894346367adf67734c18327986",
+      "id": "\ud83d\udcca Combine & check coverage",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9b22893eb1d99d4d238ca57c0ad5200acdbc60456b8097b478fa5caa4e98bd76",
+      "id": "\ud83d\udd2c CLI tests on 3.10",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:7239ec04c31f6a1f602fe28f7e879ff891ec4e93d662660e78625f8d8facd52b",
+      "id": "\ud83d\udd2c CLI tests on 3.11",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8d2a88bcf6cb98ed41906aea8ab3eb27b787f13a0b1fd5485948381d398b20fa",
+      "id": "\ud83d\udd2c CLI tests on 3.12",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e0c1e379e81e9d38c64acee8b9cf3e3d4738e7baa68672c3f95687bb8b3a2e6e",
+      "id": "\ud83d\udd2c CLI tests on 3.13",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d34176e652dd3b32bd31c5a7e7fc69d9a0a1df22e4a7a86e83130db3d0099870",
+      "id": "\ud83d\udd2c CLI tests on 3.14",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ea449a624251cc00c893db6e38456fdeae8cfbb0c8f0f80fab3f21c2ae9da649",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=4.2.0, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bd9700c6b64de6929f10c61cf875653e873527dfc751a31ba2bffabbd28a0d9f",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=4.2.0, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:66bc8a4d9e49be8dddc0a8b42d2f8a41d95c29b67397a52cb361e06e90ded907",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=5.0.9, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3a407b073ccbd2fb120b7b5de26f39bb2833d1fb6f5cdfdb44c7b2ba651a01d8",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=5.0.9, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:090835cb581fe3d67b49c08187218b6a3071f4b3fd17992ca1011738c9191964",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=5.1.3, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:82f58bc57fa0c26a7465038d937374024748146faef7b48af4d46ea9a675fa90",
+      "id": "\ud83d\udd2c Django tests on 3.12 (django=5.1.3, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:21f6dcca5f5aa3d2b859a525242aabc4c0f99818c61f5a19def49d242399f738",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.10 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bc5ef19230c385470b02274b1e1cae65049f3b128fd3efe72a1203cafa59a69d",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.10 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d759e628212579ab55178c1c6df1e116683f39aef8d604b915acd3cf2c4f82d3",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.11 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:83160f63ccb8c64709d96f24e4499e173d8bb9c09df436c8e8e028f9a4de5427",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.11 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9db231ca3f663694b56e54303bcf2aa241872b7f4edada04d894426cac1f7535",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.12 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3baf4c3f69a09dd21f5eee2d07ea7f2b8d3b186d76be69bf1532b36a4b9c0179",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.12 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d24b281d93a642de99be4409dc6b24acee63cf8d31c06ef167b9e7a836f69f4d",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.13 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:61cc91342846073cfcd082e6922b9beb4727267df364e7efc4ba7bf9e23b0f95",
+      "id": "\ud83d\udd2c Pydantic V1 tests on 3.13 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8fc7be7e1c76c0c0ca747e33d2bcf127ea16c242ea6823b2d60c23e2ad1ffa7b",
+      "id": "\ud83d\udd2c Pydantic tests on 3.10 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6095ef1667b5cf0538cf61b87c0d00d6f10ff8098f099ea49c92d35cc02c3e52",
+      "id": "\ud83d\udd2c Pydantic tests on 3.10 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bcdb920570d7913a6001928c9b15005adbf8d7c0ebb1a2f31723432c049c2d2c",
+      "id": "\ud83d\udd2c Pydantic tests on 3.11 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:63ad40a936290ede1d85d81f792d144681bd57217e8843432bcb75bf58daaa7e",
+      "id": "\ud83d\udd2c Pydantic tests on 3.11 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ab5ce7cd1e5405f3f123dabd3ce6f8df907e97ac7c1814e9ea432019a364430b",
+      "id": "\ud83d\udd2c Pydantic tests on 3.12 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:fbcf2c133f3f025afb7096dea67f9d367c704d9e59759cd7a502582a85a14c7c",
+      "id": "\ud83d\udd2c Pydantic tests on 3.12 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1bf3b8ed39e5696d625ea18d82229893842f25906f473b327f1b61f2d524c47b",
+      "id": "\ud83d\udd2c Pydantic tests on 3.13 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ee8cbcce802f4585196e0be087e2c938dacfe1e2cba544a806e46bdd85194a03",
+      "id": "\ud83d\udd2c Pydantic tests on 3.13 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:35217d2b01afc920196ecb5e9350d68303aa18fbb97cd294cec76a23a433539e",
+      "id": "\ud83d\udd2c Pydantic tests on 3.14 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:97e785a1854a60497f94906c2b273e8324f95058a42702528dad0357e943ef9b",
+      "id": "\ud83d\udd2c Pydantic tests on 3.14 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:2e513f0d966cb27e171264e5eb18066581e2b91ed13dae2a86bc00400073377c",
+      "id": "\ud83d\udd2c Starlette tests on 3.11 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e93995e2360792d11b9696a2bd5ab50f81e6b794444749c5d3396204107af928",
+      "id": "\ud83d\udd2c Starlette tests on 3.11 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3e40ff4bd13a50ca0b541e919cb23d79c79d75263c27bfa9c12858f3f812da42",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=aiohttp, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ab06df76eb1be18c2f8da4e4c515f1e91ec66b35a06c289605f7f42b7cfee68d",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=aiohttp, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:51d0c901dc6bb55a59ed25877ea61567fb5db0a311ff9e97af5ad7cb1049b49b",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=chalice, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:716a8557b76422d5924799bffb2d90744d8d19a943bcda96702c4fe620c2b56a",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=chalice, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ddae6944a528745cdc724fa896b48d7bb36dfb618df58905293a6edf7acf04c4",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=channels, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:56953f47763b25ac545d42333348324f8b21ef0ad0764a720a41c57005d9c5ff",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=channels, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:889a602cf9a7a3d6c12607c98e479790325a99b0297f34b191b2b08976259e56",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=fastapi, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a09d850ca8bdd58b6ed0dda25e3a6923a87db81b66268aa78fc6e47ef698858d",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=fastapi, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e67386a1bbed7fc24e446191785089c49953638fddf01c2166d40f93d179b0be",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=flask, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:0f4b9205857755254a4abdadfd284d77e69f85301cda4c5d9cb76e19eaa1c372",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=flask, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:960fd68137746d5b6e7f5994238131c04d6c8f6841cf5cea26ffd180fd57e7a5",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=litestar, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e9263270952f025fb679a1c630fa57fca7f0161e00fa0fc19f0f0bae9abd5ab7",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=litestar, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:79cb9fe539d6cdb82a6be4568269dde01f32cbdf9c31723f858700f5c9359de0",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=quart, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f9fbf9667ebb8f276ca33bd5b6e8a9efaa8c6ffb50b37721e3ba5e98501026a4",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=quart, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6431c85d430d6c4b2a798d4a70e983ef63ee9ea655e4d35cd4a8a4a702870a07",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=sanic, gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e7708e290c863e1d3c379e3bd05bc6c040ba0fde716cf757ea9ff22a58a913d3",
+      "id": "\ud83d\udd2c Test integrations on 3.11 (integration=sanic, gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1905dc8a68328eb99fc4e07d33977739d44f0e9bba845812e822e6c807f93f08",
+      "id": "\ud83d\udd2c Tests on 3.10 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bd8c19b6e0746a8e165437f3fedfefb482b0a68af2bd2c570e101d0e8c658eeb",
+      "id": "\ud83d\udd2c Tests on 3.10 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:eb69e2cdd1a4f0a90d04181eb53eefac65f002c9d41bc1bceb7491c3ef7261a0",
+      "id": "\ud83d\udd2c Tests on 3.11 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:5270ee704380e26472c4a76c7fe7561086f17a69be2ba0b056e0845b3edc6cb5",
+      "id": "\ud83d\udd2c Tests on 3.11 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d0f79468e0f9ccf6ef1eb926db6ca64908f8439a3d5a9a0f4bc5de5ed775c785",
+      "id": "\ud83d\udd2c Tests on 3.12 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:02498fc4fc466efdc8b65033697c83d09d411d63d5b1d10ed315b10ac0dfea80",
+      "id": "\ud83d\udd2c Tests on 3.12 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d28bf7ffa75fad0da050fb3a9bbe123d30b5cc13a90ac6b82b447c27ab95508b",
+      "id": "\ud83d\udd2c Tests on 3.13 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:da051608ac5aef330c6f910d3007312951fb5f20e02fe7017587cc71475ab50f",
+      "id": "\ud83d\udd2c Tests on 3.13 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a21fbed28c6b400936a508f2ea4618b57e7989fffbfa26a609045c99e9a5443f",
+      "id": "\ud83d\udd2c Tests on 3.14 (gql_core=3.2.6)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1bccb4b5d649e1db33f63b736bdfdf8bd986c7d4f408ea2cbccace278e9effec",
+      "id": "\ud83d\udd2c Tests on 3.14 (gql_core=3.3.0rc0)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9325a6f9f062ddd33792668499f94507e45cf11fc18c77f0f1d8cb9c48dbbf0a",
+      "id": "\ud83d\udd2c Type checkers tests on 3.10",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:94535048bee32ba3e1558a6ee153b69fabcadf91fd1c55eb9f49bd883b29423f",
+      "id": "\ud83d\udd2c Type checkers tests on 3.11",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:413b6fab8c552f2e9d15dfa74d8caf4742024556b4b350b25957932cae8d61b7",
+      "id": "\ud83d\udd2c Type checkers tests on 3.12",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ac57ef8be4e5d0d8a64c5536bcc9f40adf1e025368d0e5d8503ac939620c85cc",
+      "id": "\ud83d\udd2c Type checkers tests on 3.13",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:76f12dcce5e33958d7f2c863e8930d812f0a3fa3d00a656feab0e34734f653ce",
+      "id": "\ud83d\udd2c Type checkers tests on 3.14",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f56fe36be74f574c2796deca7a963ed40f888cd9a0d0ed6c1ddadf36ae9f1909",
+      "id": "\ud83e\ude9f Tests on Windows",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    }
+  ],
+  "observation": {
+    "github_baseline": "clear",
+    "observation_scope": {
+      "head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+      "repository": "strawberry-graphql/strawberry"
+    },
+    "observed_at": "2026-08-01T09:36:27Z",
+    "protection_source": "classic_branch_protection",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "acknowledged": false,
+      "available": true,
+      "non_independent_sources": 0,
+      "routine_bump_excluded": false
+    },
+    "workflow_visibility": {
+      "action_required": 0,
+      "available": true,
+      "not_started": 0,
+      "units_total": 8
+    }
+  },
+  "policy": {
+    "digest": "sha256:0ae182b04ddd1a0f1d52428e31a9ad5ce889b22b7788e075dd3dcc63b776e463",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "required_status_semantics": "github",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [],
+  "record_digest": "sha256:1d001fb831493245d58a2e365c83c9c4644dbe6ac39daab19e3dfd018785e241",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 4554,
+    "ref": "refs/pull/4554/head",
+    "repository": "strawberry-graphql/strawberry",
+    "sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3"
+  },
+  "summary": "Gate PASS: all required checks satisfied; no advisory warnings.",
+  "verdict": "PASS",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

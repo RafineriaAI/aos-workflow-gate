@@ -29,53 +29,39 @@ python tools/check_public_surface.py
 REQUIRED_SNIPPETS = {
     "README.md": [
         "[English](#english) | [Polski](#polski)",
-        "AOS checks a project before code review or a release.",
-        ("AOS sprawdza projekt przed przeglądem kodu lub wydaniem "
-        "nowej wersji."),
+        "### Do I need this?",
+        "AOS adds a small, deterministic check to tools you already use.",
+        "AOS is useful when:",
+        "AOS is probably not useful when:",
+        "AOS is not another AI reviewer.",
+        "AOS is free under Apache-2.0.",
         "aos-check",
-        "No runnable behavioral test command was detected at this project root.",
+        "No runnable test command was found.",
         "Why it matters:",
         "Affected area:",
-        "Severity: WARN",
         "Next step:",
-        "The GitHub gate verifies controls, not code.",
-        (
-            "control\nthat is missing, stale, produced by the wrong app, "
-            "or modified by the same PR"
-        ),
-        "pre-merge control assurance",
-        (
-            "Exact commit · Default Action read-only · Advisory by default · "
-            "No source-code upload"
-        ),
+        "### Check a public pull request",
+        "aos-workflow-gate check-pr",
+        "### Add it to GitHub",
+        "RafineriaAI/aos-workflow-gate@v0.38.0",
+        "No policy file or manual check list is needed for the first run.",
+        "read-only and does not stop a merge",
         "docs/assets/readme-contrast.png",
         "docs/assets/readme-contrast-mobile.png",
-        "RafineriaAI/aos-kernel",
-        "### Add AOS to GitHub",
-        (
-            "The first run needs no checkout, custom policy, or manual "
-            "list of required"
-        ),
-        "To check any public pull request without changing its repository:",
-        "The verdict says whether the collected evidence satisfies the policy.",
-        "Dostęp jest bezpłatny",
-        "No LLM participates in the verdict path.",
-        "UNSIGNED_NOT_OFFICIAL",
-        (
-            "Deterministic evaluation, record integrity, and offline replay "
-            "are covered by"
-        ),
-        (
-            "Everyday usefulness and alert accuracy have not been "
-            "independently\nvalidated"
-        ),
-        "`NO_GO`",
-        "free for self-service testing",
-        "There is no active paid offering.",
+        "The Action adds a short summary and an HTML report.",
+        "Everyday usefulness has not been independently proven.",
+        "added 0/10 new",
+        "narrow Change Proof plug-in experiment",
+        "### Contribute to the experiment",
+        "### Czy to narzędzie jest dla mnie?",
+        "AOS jest niewielkim, deterministycznym dodatkiem",
+        "AOS nie jest kolejnym recenzentem AI.",
+        "Narzędzie jest bezpłatne",
+        "Nie potwierdzono jeszcze codziennej użyteczności",
+        "warto dalej testować Change Proof jako wąski dodatek do testów",
         README_LOCAL_HYGIENE_BLOCK,
         "python tools/check_public_surface.py",
-        "Apache-2.0. See [LICENSE](LICENSE).",
-        "See [NOTICE](NOTICE).",
+        "Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).",
         "checks: read",
         "actions: read",
         "pull-requests: read",
@@ -87,9 +73,9 @@ REQUIRED_SNIPPETS = {
         "docs/CI_INTEGRATIONS.md",
         "docs/MATURITY.md",
         "docs/TRUST.md",
-        "docs/SECURITY_READINESS.md",
-        "docs/STANDARDS_COMPATIBILITY.md",
-        "benchmarks/value/ASSESSMENT.md",
+        "benchmarks/adaptive-value-calibration/REPORT.md",
+        "benchmarks/change-proof-plugin/REPORT.md",
+        "aos-workflow-gate prove-change",
         "CONTRIBUTING.md",
     ],
     "action.yml": [
@@ -99,7 +85,6 @@ REQUIRED_SNIPPETS = {
     "pyproject.toml": [
         "Local code verification and deterministic workflow decisions.",
     ],
-
     "docs/VALUE.md": [
         "low-frequency, potentially high-cost",
         "## Best-fit user and buyer",
@@ -107,6 +92,8 @@ REQUIRED_SNIPPETS = {
         "actionable rate and alert acceptance rate",
         "Measured, not promised",
         "What this does not promise",
+        "CONTINUE_NARROW_PLUGIN_EXPERIMENT",
+        "DO_NOT_ENABLE_BY_DEFAULT",
         "UNSIGNED_NOT_OFFICIAL",
     ],
     "docs/ONE_PAGER.md": [
@@ -133,8 +120,10 @@ REQUIRED_SNIPPETS = {
     ],
     "docs/MATURITY.md": [
         "Current maturity: **Preview**.",
-        "not a recommendation for unattended production enforcement",
+        "Do not let it block production changes",
         "Tests cannot promote maturity by themselves.",
+        "Change Proof plug-in experiment",
+        "opt-in and narrowly\neligible",
         "Preview to Pilot",
         "Pilot to Production Candidate",
         "Production Candidate to Production Ready",
@@ -401,6 +390,15 @@ REQUIRED_SNIPPETS = {
         "a sample, not a study",
         "ranks no\ntools and scores no competitors",
         "UNSIGNED_NOT_OFFICIAL",
+        "## Change Proof plug-in experiment",
+        "does not establish alert acceptance",
+    ],
+    "benchmarks/change-proof-plugin/REPORT.md": [
+        "CONTINUE_NARROW_PLUGIN_EXPERIMENT",
+        "DO_NOT_ENABLE_BY_DEFAULT",
+        "UNPROVEN_REQUIRES_EXTERNAL_USE",
+        "Behavior-preserving or performance changes",
+        "Mutation testing is the closest established alternative",
     ],
     "docs/BENCHMARK_HARNESS.md": [
         "**it runs nothing**",
@@ -443,11 +441,10 @@ REQUIRED_SNIPPETS = {
         "not authenticity",
     ],
     "docs/POLICY_PACKS.md": [
-        "copy one, rename the `policy_id`",
+        "You do not need a policy file for the first GitHub run.",
         "## Accepted risks",
         "The selector is exact",
-        "wildcard selectors, `BLOCK` rules, and `malformed_input` are\n"
-        "rejected",
+        "wildcard selectors, `BLOCK` rules, and `malformed_input` are\nrejected",
         "original `WARN` severity",
         "not model training",
         "packs encode structure, not judgment",
@@ -485,7 +482,6 @@ REQUIRED_SNIPPETS = {
         "does not prove this package's source-status rules",
         "kernel-backed claim requires an explicit shared contract",
     ],
-
     "docs/SCOPE.md": [
         "pre-merge control assurance",
         "No active paid product",
@@ -496,12 +492,24 @@ REQUIRED_SNIPPETS = {
         "No artifact produced here is kernel-generated or kernel-verified",
     ],
     "docs/ADOPTION_GUIDE.md": [
-        "AOS verifies the gate, not the code",
-        "## Competency unblock",
-        "## Barriers and design responses",
-        "Correct alerts may still lack business importance",
-        "Individual developers may not need another paid tool",
-        "## Research inputs",
+        "AOS is a free add-on to existing tests and GitHub checks.",
+        "It does not decide whether the code is correct.",
+        "## Use it when",
+        "## Skip it when",
+        "Removing a tool that adds no new action is the correct outcome.",
+        "## Ten-minute trial",
+        "## Try Change Proof as a plug-in",
+        "## What counts as value?",
+        "**New action:**",
+        "**Useful explanation:**",
+        "**Time saved:**",
+        "## Current evidence",
+        "The GitHub-gate result is weak.",
+        "No external action or decision",
+        "continue only the narrow plug-in experiment",
+        "## Decide after real use",
+        "These measures require real users.",
+        "## Technical terms, translated",
     ],
     "docs/STANDARDS_COMPATIBILITY.md": [
         "## Compatibility principles",
@@ -528,7 +536,7 @@ REQUIRED_SNIPPETS = {
         ),
         "Do not delete, recreate, or force-push a published `v*` tag",
         "## Public Merge Metadata",
-        "--subject \"<public outcome>\"",
+        '--subject "<public outcome>"',
         "tools/check_public_surface.py --check-head-commit",
         (
             "no production, compliance, security-audit, signing, SBOM, SLSA, "
@@ -547,7 +555,7 @@ REQUIRED_SNIPPETS = {
         "### Phase 2: advisory GitHub Action",
         "## Stable surface and product experiments",
         "## Next milestone: external value validation",
-        "No dashboard, SaaS layer, broad adapter catalog, or release claim",
+        "No default enablement, dashboard, SaaS layer, broad adapter catalog",
         "technically correct mechanism is not sufficient evidence",
         "## Deferred",
     ],
@@ -591,7 +599,13 @@ UNSUPPORTED_POSITIVE_CLAIMS = [
 CLAIM_SCAN_EXTRA_PATHS = ["action.yml", "SECURITY.md"]
 
 INDEX_SECTIONS = (
-    "documents", "examples", "policies", "benchmarks", "tools", "ci", "assets",
+    "documents",
+    "examples",
+    "policies",
+    "benchmarks",
+    "tools",
+    "ci",
+    "assets",
 )
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 HTML_LINK_RE = re.compile(r"""(?:href|src)=["']([^"']+)["']""", re.IGNORECASE)
@@ -604,7 +618,12 @@ ACTION_USE_RE = re.compile(
     r"RafineriaAI/aos-workflow-gate@)",
 )
 EXTERNAL_LINK_PREFIXES = (
-    "http://", "https://", "mailto:", "data:", "javascript:", "tel:",
+    "http://",
+    "https://",
+    "mailto:",
+    "data:",
+    "javascript:",
+    "tel:",
 )
 
 
@@ -644,9 +663,7 @@ def _expected_index_paths() -> set[str]:
     expected.update(_files_under(ROOT / "tools"))
     expected.update(_files_under(ROOT / ".github"))
     expected.update(
-        _relative(path)
-        for path in (ROOT / "tests").glob("test_*.py")
-        if path.is_file()
+        _relative(path) for path in (ROOT / "tests").glob("test_*.py") if path.is_file()
     )
     expected.update(_files_under(ROOT / "tests" / "data" / "historical"))
     return expected
@@ -705,10 +722,7 @@ def check_local_links() -> None:
             if candidate != root and root not in candidate.parents:
                 fail(f"{relative_path} links outside the repository: {raw_target!r}")
             if not candidate.exists():
-                fail(
-                    f"{relative_path} references a missing local path: "
-                    f"{raw_target!r}"
-                )
+                fail(f"{relative_path} references a missing local path: {raw_target!r}")
 
 
 def _command_options() -> dict[str, set[str]]:
@@ -718,9 +732,7 @@ def _command_options() -> dict[str, set[str]]:
 
     parser = _build_parser()
     global_options = {
-        option
-        for action in parser._actions
-        for option in action.option_strings
+        option for action in parser._actions for option in action.option_strings
     }
     result: dict[str, set[str]] = {}
     for action in parser._actions:
@@ -780,10 +792,7 @@ def check_cli_examples() -> None:
                         fail(f"{relative_path} has a CLI example without a command")
                     command = tokens[1]
                     if command not in options:
-                        fail(
-                            f"{relative_path} uses unknown CLI command "
-                            f"{command!r}"
-                        )
+                        fail(f"{relative_path} uses unknown CLI command {command!r}")
                     for token in tokens[2:]:
                         if token == "--":
                             break
@@ -800,9 +809,7 @@ def check_cli_examples() -> None:
 def check_action_examples() -> None:
     action = read_text("action.yml")
     try:
-        input_block = action.split("\ninputs:\n", 1)[1].split(
-            "\noutputs:\n", 1
-        )[0]
+        input_block = action.split("\ninputs:\n", 1)[1].split("\noutputs:\n", 1)[0]
     except IndexError:
         fail("action.yml must contain top-level inputs and outputs sections")
         return
@@ -812,8 +819,7 @@ def check_action_examples() -> None:
     data: dict[str, object] = json.loads(read_text("docs.json"))
     candidate_paths = set(_text_document_paths(data))
     candidate_paths.update(
-        _relative(path)
-        for path in (ROOT / ".github" / "workflows").glob("*.yml")
+        _relative(path) for path in (ROOT / ".github" / "workflows").glob("*.yml")
     )
     for relative_path in sorted(candidate_paths):
         lines = read_text(relative_path).splitlines()
@@ -839,8 +845,7 @@ def check_action_examples() -> None:
                 match = re.match(r"([a-zA-Z0-9_-]+):", stripped)
                 if match is not None and match.group(1) not in valid_inputs:
                     fail(
-                        f"{relative_path} uses unknown Action input "
-                        f"{match.group(1)!r}"
+                        f"{relative_path} uses unknown Action input {match.group(1)!r}"
                     )
 
 
@@ -869,10 +874,7 @@ def check_head_commit_metadata() -> None:
     )
     issues = merge_metadata_issues(result.stdout)
     if issues:
-        fail(
-            "HEAD commit metadata is not public-safe: "
-            + "; ".join(issues)
-        )
+        fail("HEAD commit metadata is not public-safe: " + "; ".join(issues))
 
 
 def read_text(path: str) -> str:
@@ -886,9 +888,7 @@ def check_docs_index() -> None:
 
     paths = _indexed_paths(data)
     if len(paths) != len(set(paths)):
-        duplicates = sorted(
-            path for path in set(paths) if paths.count(path) > 1
-        )
+        duplicates = sorted(path for path in set(paths) if paths.count(path) > 1)
         fail(f"docs.json contains duplicate paths: {duplicates}")
 
     root = ROOT.resolve()
@@ -919,9 +919,7 @@ def check_claim_boundary() -> None:
     for section in ("examples", "policies"):
         values = data.get(section, [])
         if isinstance(values, list):
-            checked_paths.update(
-                item for item in values if isinstance(item, str)
-            )
+            checked_paths.update(item for item in values if isinstance(item, str))
 
     for path in sorted(checked_paths):
         text = read_text(path)
@@ -1000,15 +998,11 @@ def check_repository_hygiene() -> None:
     if not isinstance(optional, dict):
         fail("pyproject.toml must contain optional dependencies")
     dev = optional.get("dev")
-    if not isinstance(dev, list) or not all(
-        isinstance(item, str) for item in dev
-    ):
+    if not isinstance(dev, list) or not all(isinstance(item, str) for item in dev):
         fail("pyproject.toml dev extra must be a list of requirements")
     for package in ("mypy", "pytest", "ruff", "setuptools", "wheel"):
         if not any(
-            re.fullmatch(
-                rf"{re.escape(package)}(?:[<>=!~].*)?", requirement
-            )
+            re.fullmatch(rf"{re.escape(package)}(?:[<>=!~].*)?", requirement)
             for requirement in dev
         ):
             fail(f"pyproject.toml dev extra is missing {package!r}")
@@ -1069,6 +1063,7 @@ def check_repository_hygiene() -> None:
             "aos-workflow-gate-ci.yml"
         )
 
+
 def check_permissions_contract() -> None:
     """The gate's workflows must never request a write scope."""
     workflow_dir = ROOT / ".github" / "workflows"
@@ -1097,9 +1092,7 @@ def check_version_consistency() -> None:
 
     published_version = read_text("docs/PUBLISHED_VERSION").strip()
     candidate_match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", version)
-    published_match = re.fullmatch(
-        r"(\d+)\.(\d+)\.(\d+)", published_version
-    )
+    published_match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", published_version)
     if candidate_match is None or published_match is None:
         fail("version.py and docs/PUBLISHED_VERSION must use X.Y.Z")
         return
@@ -1114,9 +1107,7 @@ def check_version_consistency() -> None:
     documents.add(".github/ISSUE_TEMPLATE/feedback.yml")
     for path in sorted(documents):
         text = read_text(path)
-        for match in re.finditer(
-            r"aos-workflow-gate@v[0-9][^\s\"'\`)\\<]*", text
-        ):
+        for match in re.finditer(r"aos-workflow-gate@v[0-9][^\s\"'\`)\\<]*", text):
             if match.group(0) != expected:
                 fail(
                     f"{path} references stale version {match.group(0)!r}; "
@@ -1126,6 +1117,7 @@ def check_version_consistency() -> None:
     roadmap_version = f"Current public release: `v{published_version}`."
     if roadmap_version not in read_text("ROADMAP.md"):
         fail("ROADMAP.md does not identify the current public release")
+
 
 def check_release_maturity() -> None:
     status = json.loads(read_text("docs/RELEASE_STATUS.json"))
@@ -1168,10 +1160,10 @@ def check_release_maturity() -> None:
         fail("production_use_recommended must be a boolean")
     if recommended and maturity != "Production ready":
         fail("only Production ready may recommend production use")
-    if (
-        status["product_claim_status"] == "NO_GO"
-        and maturity in {"Production candidate", "Production ready"}
-    ):
+    if status["product_claim_status"] == "NO_GO" and maturity in {
+        "Production candidate",
+        "Production ready",
+    }:
         fail("NO_GO product claims conflict with production maturity")
 
     maturity_doc = read_text("docs/MATURITY.md")
@@ -1215,8 +1207,7 @@ def check_action_surface() -> None:
         "attach the files to a\n      release for permanence",
         "name: aos-gate-evidence",
         'include-hidden-files: "true"',
-        "uses: actions/upload-artifact@"
-        "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+        "uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
     )
     for snippet in required_action_snippets:
         if snippet not in action:
@@ -1229,8 +1220,7 @@ def check_action_surface() -> None:
         "  pull-requests: read\n  statuses: read",
         "persist-credentials: false",
         "uses: ./",
-        "uses: actions/upload-artifact@"
-        "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+        "uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
     )
     for snippet in required_self_snippets:
         if snippet not in workflow:

@@ -1,119 +1,155 @@
-# Adoption Guide
+# Should your team keep AOS?
 
-This guide is for developers who understand pull requests and CI but do not
-need to know AOS internals, formal methods, or supply-chain standards.
+AOS is a free add-on to existing tests and GitHub checks. It has two narrow
+jobs:
 
-## One-sentence model
+1. explain whether expected GitHub controls ran for the exact commit;
+2. experimentally check whether a targeted verifier notices removal of the
+   actual implementation patch.
 
-Existing tools produce findings and statuses. `aos-workflow-gate` verifies
-whether the intended controls actually governed the exact commit and preserves
-one explainable, replayable decision.
+It does not decide whether the code is correct. It does not replace a reviewer,
+a test suite, coverage, mutation testing, or a security scanner.
 
-## First value
+## Use it when
 
-Inspect any public pull request without a token or repository change:
+AOS is a reasonable experiment when at least one of these is true:
+
+- reviewers often ask whether a required workflow actually ran;
+- fork pull requests or conditional workflows make GitHub status hard to read;
+- required checks have stale names or are produced by more than one app;
+- a pull request can change the same workflow that judges it;
+- code and tests changed together and a reviewer wants bounded evidence that
+  the tests notice the implementation;
+- you need to keep a readable record for one exact commit.
+
+## Skip it when
+
+AOS is unlikely to help when:
+
+- you want code-quality or architecture feedback;
+- the proposed Change Proof run is a behavior-preserving refactor or
+  performance-only change with no relevant performance verifier;
+- the repository has no meaningful GitHub merge rules;
+- the team already understands every failed or missing check immediately;
+- nobody will act on the result or keep the saved report.
+
+Removing a tool that adds no new action is the correct outcome.
+
+## Ten-minute trial
+
+1. Install AOS.
+2. Run it on five representative pull requests.
+3. For every `WARN` or `BLOCK`, ask:
+   - Did AOS show something GitHub did not?
+   - Is the next step specific and worth doing?
+   - Would a maintainer change a decision or take an extra action?
+4. Keep the Action in advisory mode.
+5. Remove it if the answers remain no.
+
+Check a public pull request without changing it:
 
 ```bash
 python -m pip install "git+https://github.com/RafineriaAI/aos-workflow-gate@v0.38.0"
 aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/NUMBER
 ```
 
-The result answers three questions:
+## Try Change Proof as a plug-in
 
-1. What did AOS observe for this exact commit?
-2. Which required control is satisfied, missing, pending, failed, or
-   unverifiable?
-3. What is the single next action?
+Use a fast targeted verifier on a PR that changes implementation and tests:
 
-For continuous use, copy the zero-config advisory workflow from
-[README.md](../README.md). It needs no checkout, policy file, bundle, account,
-telemetry, or code upload.
+```bash
+aos-workflow-gate prove-change \
+  --base origin/main \
+  --repository OWNER/REPO \
+  -- \
+  python -m pytest tests/changed_area -q
+```
 
-## Competency unblock
+Keep it only if a `WARN` causes a justified test improvement or merge decision.
+Do not count a `PASS` alone as saved money, and do not run it indiscriminately
+on refactors or performance work. The verifier runs three times.
 
-Only four concepts are needed:
+## What counts as value?
 
-- **Signal:** an observation such as a check run, commit status, or scanner
-  summary.
-- **Policy:** explicit rules that define required and advisory evidence.
-- **Verdict:** `PASS`, `WARN`, or `BLOCK` for that policy.
-- **Evidence record:** canonical JSON that binds subject, inputs, policy,
-  verifier, reason, and digest for replay.
+Count a result as useful only when it does one of these:
 
-`UNSIGNED_NOT_OFFICIAL` means the record is content-addressed and
-replay-checkable but not signed by RafineriaAI. A verdict does not certify
-security, correctness, or compliance.
+- **New action:** identifies a necessary action that GitHub did not already
+  make visible.
+- **Useful explanation:** turns a confusing GitHub state into a clear cause and
+  a concrete next step.
+- **Time saved:** replaces manual checking that a maintainer would otherwise
+  perform.
 
-## Adoption ladder
+Do not count these as value:
 
-1. Run `check-pr` locally on representative PRs.
-2. Add the Action in advisory mode with automatic requirement discovery.
-3. Compare named gaps and next actions with the repository's intended rules.
-4. Keep advisory until owners classify the findings, accepted actions, and
-   repeated noise.
-5. Add a small explicit policy only where GitHub requirements do not model a
-   real, recurring, costly team rule.
-6. Enable enforcement only after owners agree on override and rollback.
-7. Remove the Action if it adds no incremental decision or retained evidence
-   value after several weeks.
+- a different label with no different action;
+- repeating a red or pending check already obvious in GitHub;
+- a correct but low-impact setup observation;
+- saved JSON that nobody needs or reads;
+- `PASS` without a meaningful rule to satisfy.
 
-Do not begin with a broad policy catalog. One recurring, costly evidence gap is
-a stronger adoption basis than many theoretical checks.
+## Current evidence
 
-## Promotion criteria
+The mechanism is reliable in the committed benchmark: exact-commit binding,
+file integrity, and replay passed for every case.
 
-Before enforcement, verify:
+The GitHub-gate result is weak. In the 10-case review-rich holdout AOS added no
+new action matching a material human-review problem, explained one existing
+GitHub state, and missed all six material code, data, or runtime problems found
+by people.
 
-- exact-SHA collection is complete;
-- required controls have stable app-bound identity;
-- no permission or API failure is being mistaken for absence;
-- each non-PASS result names one practical next action;
-- owners can explain and replay the record;
-- false positives are measured in that repository;
-- rollback is a one-line workflow change.
+The separate Change Proof experiment passed mechanism checks in 8/8 cases from
+five repositories. Five code-and-test PRs were distinguished, one controlled
+under-scoped verifier warned, and two behavior-preserving changes showed that
+uncalibrated default warnings would be noise. No external action or decision
+change was observed.
 
-## Barriers and design responses
+Therefore continue only the narrow plug-in experiment, keep the GitHub gate
+narrow, and do not position AOS as general code review or a paid product. See
+[Change Proof](../benchmarks/change-proof-plugin/REPORT.md) and
+[Should AOS continue?](../benchmarks/adaptive-value-calibration/REPORT.md).
 
-| Barrier | Design response |
-| --- | --- |
-| Category sounds abstract. | Say “AOS verifies the gate, not the code,” then name the missing control, wrong app or SHA, or verifier modified by the same PR. |
-| “Control assurance” may sound like certification. | State the exact-commit scope beside every claim; `PASS` is not security, compliance, or full merge-readiness. |
-| A new check may create alert fatigue. | Advisory default, one dominant gap, bounded output, explicit policy promotion. |
-| Correct alerts may still lack business importance. | Measure accepted actions, decision changes, repeated noise, and retention; technical correctness alone does not justify rollout. |
-| Individual developers may not need another paid tool. | Keep the local Action and CLI free; validate organization-level platform and assurance jobs separately. |
-| Zero configuration may infer the wrong intent. | Autodiscovery models only active GitHub requirements; explicit inputs fully replace it. |
-| API or permission failures may look like success. | Preflight and collection fail closed with stable diagnostics. |
-| Teams distrust opaque AI verdicts. | No LLM in the verdict path; canonical evidence, reason code, policy digest, verify, and replay. |
-| Formal or security language obscures daily value. | Main output says what was checked, what is missing, effect, and next action; technical evidence is secondary. |
-| A `BLOCK` could stop delivery unexpectedly. | Verdict and exit code are separate; advisory is default and enforcement is explicit. |
+## Start simple
 
-## Documentation path
+The first GitHub run needs no policy file. AOS reads active GitHub requirements.
 
-- First run: [README](../README.md).
-- Interpret output: [User FAQ](USER_FAQ.md).
-- Diagnose access: [Preflight](PREFLIGHT.md).
-- Configure CI: [CI Integrations](CI_INTEGRATIONS.md).
-- Define policy: [Policy Packs](POLICY_PACKS.md).
-- Verify trust and data boundaries: [Trust](TRUST.md),
-  [Security Readiness](SECURITY_READINESS.md), and [Scope](SCOPE.md).
-- Contribute: [Contributing](../CONTRIBUTING.md) and
-  [Development Guide](DEVELOPMENT.md).
+Add configuration only after a repeated problem is clear:
 
-## Research inputs
+1. Start in advisory mode.
+2. Record useful, ignored, and wrong warnings.
+3. Add one explicit rule for one recurring problem.
+4. Keep a written exception for a known accepted risk.
+5. Enable blocking only after the team agrees on rollback and ownership.
 
-The documentation structure follows task-first GitHub README guidance and
-Diataxis. Interaction design follows progressive disclosure and
-recognition-over-recall: the main result is concise, while digests and replay
-remain available as technical evidence. GitHub Actions integrations follow
-least privilege and pinned third-party actions.
+## Decide after real use
 
-Reference sources:
+A team should keep AOS only when, after several weeks:
 
-- https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes
-- https://diataxis.fr/
-- https://www.nngroup.com/articles/ten-usability-heuristics/
-- https://docs.github.com/en/actions/reference/security/secure-use
-- https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks
-- https://slsa.dev/spec/v1.2/source-requirements
-- https://dora.dev/insights/balancing-ai-tensions/
-- https://github.com/ossf/scorecard
+- people act on a meaningful share of its recommendations;
+- it changes at least some merge decisions or avoids manual investigation;
+- ignored warnings stay low;
+- the same users continue to rely on it;
+- the saved report is used for review, release, or audit work.
+
+These measures require real users. Public-repository analysis cannot replace
+them.
+
+## Technical terms, translated
+
+- **Required check:** a GitHub check that must pass before merge.
+- **Advisory:** AOS reports a problem but does not stop the job.
+- **Enforcement:** a non-PASS result can stop the job.
+- **Replay:** run the saved inputs again and confirm the same result.
+- **Policy:** the small set of rules that says which checks matter.
+- **Evidence record:** the saved files showing what AOS read and decided.
+
+You do not need these terms for the first run.
+
+## Next documents
+
+- First-run questions: [User FAQ](USER_FAQ.md)
+- GitHub permissions and setup: [CI Integrations](CI_INTEGRATIONS.md)
+- Optional rules: [Policy Packs](POLICY_PACKS.md)
+- Data and trust boundaries: [Trust](TRUST.md)
+- Exact product limits: [Scope](SCOPE.md)
+- Contributing: [Contributing](../CONTRIBUTING.md)

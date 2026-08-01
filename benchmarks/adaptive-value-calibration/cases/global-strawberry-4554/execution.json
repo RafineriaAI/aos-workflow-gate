@@ -1,0 +1,13 @@
+{
+  "artifact_serialization": "ascii-safe-json",
+  "case_id": "global-strawberry-4554",
+  "completed_at": "2026-08-01T09:36:31Z",
+  "elapsed_seconds": 7.7,
+  "exit_code": 0,
+  "record_self_check": true,
+  "schema_version": "aos-real-workflow-execution/v0",
+  "selected_head_sha": "f20d630e5dbef0982bf613a6de3f34cd139c78f3",
+  "started_from_pr_url": "https://github.com/strawberry-graphql/strawberry/pull/4554",
+  "stdout_encoding": "utf-8",
+  "token_present": true
+}

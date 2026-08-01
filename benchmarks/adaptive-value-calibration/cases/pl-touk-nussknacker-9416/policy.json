@@ -1,0 +1,39 @@
+{
+  "advisory_sources": [
+    "BackendE2ETests (2.13)",
+    "BackendTests (2.13)",
+    "Build",
+    "BuildFrontend",
+    "CypressTests",
+    "FrontendTests",
+    "IntegrationTests (2.13)",
+    "Publish With Tests",
+    "Publish Without Tests",
+    "SlowTests (2.13)",
+    "branch.rules",
+    "setup",
+    "triage",
+    "trigger-external-build"
+  ],
+  "mode": "advisory",
+  "policy_id": "collected-advisory",
+  "required_sources": [],
+  "required_status_semantics": "github",
+  "rules": {
+    "advisory_warning": "PASS",
+    "failed_required_source": "BLOCK",
+    "incomplete_collection": "WARN",
+    "malformed_input": "BLOCK",
+    "missing_required_source": "BLOCK",
+    "no_required_sources": "WARN",
+    "non_independent_evidence": "WARN",
+    "sarif_findings": "WARN",
+    "verifier_change_unavailable": "WARN"
+  },
+  "schema_version": "draft-0",
+  "subject": {
+    "require_repository": true,
+    "require_sha": true
+  },
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

@@ -1,0 +1,13 @@
+{
+  "artifact_serialization": "ascii-safe-json",
+  "case_id": "pl-virtuslab-scala-cli-4403",
+  "completed_at": "2026-08-01T08:48:50Z",
+  "elapsed_seconds": 6.475,
+  "exit_code": 0,
+  "record_self_check": true,
+  "schema_version": "aos-real-workflow-execution/v0",
+  "selected_head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+  "started_from_pr_url": "https://github.com/VirtusLab/scala-cli/pull/4403",
+  "stdout_encoding": "utf-8",
+  "token_present": true
+}

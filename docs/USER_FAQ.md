@@ -1,7 +1,41 @@
 # User FAQ
 
-First-run answers for operators. Buyer and security-reviewer questions live
-in [BUYER_FAQ.md](BUYER_FAQ.md); verification steps in [TRUST.md](TRUST.md).
+## Start here
+
+**What can AOS help me with?**
+
+It can run the build and test commands already defined in a local project. On
+GitHub, it can tell you whether checks required before merge actually ran for
+the pull request's current commit.
+
+**Does it review code or find bugs?**
+
+No. AOS does not understand product requirements, business logic, or
+architecture. It may show that an expected test did not run; it does not know
+whether the test is sufficient.
+
+**Which command should I use?**
+
+- In a project folder: `aos-check`.
+- For a public GitHub pull request:
+  `aos-workflow-gate check-pr https://github.com/OWNER/REPO/pull/NUMBER`.
+- In GitHub Actions: copy the workflow from the
+  [README](../README.md#add-it-to-github).
+
+**How do I know whether AOS is worth keeping?**
+
+Run it in advisory mode on representative pull requests. Keep it only if its
+warnings lead to a new action, make a confusing GitHub state easier to
+understand, or save repeated manual checking. A different label alone is not
+value.
+
+The current benchmark supports a narrow workflow-control use case, not a
+general code-review claim. See
+[Should AOS continue?](../benchmarks/adaptive-value-calibration/REPORT.md).
+
+The rest of this page contains operational details. Buyer and security-reviewer
+questions live in [Buyer FAQ](BUYER_FAQ.md); verification steps are in
+[Trust](TRUST.md).
 
 **Can I use AOS without Git or GitHub?**
 Yes. From a `0.38.0` source checkout, install the package, open a terminal in

@@ -1,0 +1,1570 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "counterfactual_blockers": [
+      "build-msi-package",
+      "community-build-tests",
+      "compiler-tests",
+      "mima-scala-library-nonbootstrapped",
+      "mima-tests",
+      "misc-tests",
+      "publish_release",
+      "scala3-bootstrapped-compilation-coverage",
+      "scala3-compiler-nonbootstrapped-coverage",
+      "scala3-language-server-coverage-ycheck",
+      "scala3-presentation-compiler-coverage-ycheck",
+      "scala3-repl-coverage-ycheck",
+      "scala3-sbt-bridge-bootstrapped-coverage-ycheck",
+      "scala3-staging-coverage-ycheck",
+      "scala3-tasty-inspector-coverage-ycheck",
+      "scaladoc-coverage",
+      "stdlib-sourcelinks-test",
+      "stdlib-tests",
+      "tasty-core-bootstrapped-coverage-ycheck",
+      "test-chocolatey-package",
+      "test-msi-package",
+      "test_windows_full"
+    ],
+    "github_baseline": "clear",
+    "observation_scope": {
+      "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+      "repository": "scala/scala3"
+    },
+    "observed_at": "2026-08-01T08:48:25Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:5b44133dd446ed49f34d24565d63dc13676c03a770c5fb960dc7e85cb4662af8",
+    "protection_source": "classic_branch_protection",
+    "required_controls": [
+      {
+        "context": "community_build_a",
+        "integration_id": 15368,
+        "source_id": "community_build_a"
+      },
+      {
+        "context": "community_build_b",
+        "integration_id": 15368,
+        "source_id": "community_build_b"
+      },
+      {
+        "context": "community_build_c",
+        "integration_id": 15368,
+        "source_id": "community_build_c"
+      },
+      {
+        "context": "mima-scala3-interfaces",
+        "integration_id": 15368,
+        "source_id": "mima-scala3-interfaces"
+      },
+      {
+        "context": "mima-tasty-core-bootstrapped",
+        "integration_id": 15368,
+        "source_id": "mima-tasty-core-bootstrapped"
+      },
+      {
+        "context": "scala-library-docs",
+        "integration_id": 15368,
+        "source_id": "scala-library-docs"
+      },
+      {
+        "context": "scripted-tests (17)",
+        "integration_id": 15368,
+        "source_id": "scripted-tests (17)"
+      },
+      {
+        "context": "scripted-tests (25)",
+        "integration_id": 15368,
+        "source_id": "scripted-tests (25)"
+      },
+      {
+        "context": "test-language-server",
+        "integration_id": 15368,
+        "source_id": "test-language-server"
+      },
+      {
+        "context": "test-presentation-compiler",
+        "integration_id": 15368,
+        "source_id": "test-presentation-compiler"
+      },
+      {
+        "context": "test-repl (17)",
+        "integration_id": 15368,
+        "source_id": "test-repl (17)"
+      },
+      {
+        "context": "test-repl (25)",
+        "integration_id": 15368,
+        "source_id": "test-repl (25)"
+      },
+      {
+        "context": "test-scala3-compiler-bootstrapped",
+        "integration_id": 15368,
+        "source_id": "test-scala3-compiler-bootstrapped"
+      },
+      {
+        "context": "test-scala3-compiler-nonbootstrapped",
+        "integration_id": 15368,
+        "source_id": "test-scala3-compiler-nonbootstrapped"
+      }
+    ],
+    "requirements": [
+      {
+        "context": "community_build_a",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "community_build_b",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "community_build_c",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "mima-scala3-interfaces",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "mima-tasty-core-bootstrapped",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "scala-library-docs",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "scripted-tests (17)",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "scripted-tests (25)",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "test-language-server",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "test-presentation-compiler",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "test-repl (17)",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "test-repl (25)",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "test-scala3-compiler-bootstrapped",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "test-scala3-compiler-nonbootstrapped",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      }
+    ],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "tests/explicit-nulls/neg/basic.scala"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "aac9dc1c71a876aae130559f8eb59628b3ec1814",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "pull_request": 25393,
+        "repository": "scala/scala3"
+      },
+      "unchanged_workflow_runs": 10,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [],
+      "states": {
+        "action_required": 0,
+        "completed": 10,
+        "pending": 0
+      },
+      "units_total": 10
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:3f4646206a22fbb856c3c4ef6139b762022990deebd92ed76ce76b32deea9b47",
+      "id": "Bootstrapped Library Unit Tests",
+      "identity": {
+        "check_run_id": 91311877937,
+        "completed_at": "2026-08-01T02:05:27Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "Bootstrapped Library Unit Tests",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:05:27Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877937 concluded success."
+    },
+    {
+      "digest": "sha256:1165d460a2e3db09e733f2caaeb7bc96cfe57eb8d0f7cd593f5bafef94847d0c",
+      "id": "Deploy and Test on Linux ARM64 architecture",
+      "identity": {
+        "check_run_id": 91311877863,
+        "completed_at": "2026-08-01T02:04:03Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "Deploy and Test on Linux ARM64 architecture",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:04:03Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877863 concluded success."
+    },
+    {
+      "digest": "sha256:9ab814b2728d16116f118a7afbaaadfe92e236735749bbf83156a4ac877dc2b3",
+      "id": "Deploy and Test on Linux x64 architecture",
+      "identity": {
+        "check_run_id": 91311877892,
+        "completed_at": "2026-08-01T02:05:15Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "Deploy and Test on Linux x64 architecture",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:05:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877892 concluded success."
+    },
+    {
+      "digest": "sha256:abe2307366876d4f5fb99b568a89248a649f60f73a575ba191d7ae5a881ac6ea",
+      "id": "Deploy and Test on Mac ARM64 architecture",
+      "identity": {
+        "check_run_id": 91311877865,
+        "completed_at": "2026-08-01T02:12:38Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "Deploy and Test on Mac ARM64 architecture",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:12:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877865 concluded success."
+    },
+    {
+      "digest": "sha256:37ddb036c3fa31c2fa7e49dccd379975536db0eb0c30059bca70301b5f6049b0",
+      "id": "Deploy and Test on Mac x64 architecture",
+      "identity": {
+        "check_run_id": 91311877867,
+        "completed_at": "2026-08-01T02:13:06Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "Deploy and Test on Mac x64 architecture",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:13:06Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877867 concluded success."
+    },
+    {
+      "digest": "sha256:12cb498f33cc8b069e18a59e7af9161c78dcaf947dafacfc84ef268daefb5b29",
+      "id": "Deploy and Test on Windows x64 architecture",
+      "identity": {
+        "check_run_id": 91311877855,
+        "completed_at": "2026-08-01T02:08:40Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "Deploy and Test on Windows x64 architecture",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:08:40Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877855 concluded success."
+    },
+    {
+      "digest": "sha256:86e7b1ba3d5bb2513ddcd36a79e889479fe1cc46171f4d79cc672682664faee2",
+      "id": "Non-Bootstrapped Library Unit Tests",
+      "identity": {
+        "check_run_id": 91311877943,
+        "completed_at": "2026-08-01T02:01:59Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "Non-Bootstrapped Library Unit Tests",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:01:59Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877943 concluded success."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:5e885d12416801ef877107417390977d400ce8e45908d9de9744922bf647d006",
+      "id": "build",
+      "identity": {
+        "check_run_id": 91311877946,
+        "completed_at": "2026-08-01T02:16:16Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "build",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:16:16Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877946 concluded success."
+    },
+    {
+      "digest": "sha256:5abd62d5bc31c2b82fe358723c4f69cc620ba1a17a7a56d40a09d696c5678063",
+      "id": "build-chocolatey-package / build",
+      "identity": {
+        "check_run_id": 91313149696,
+        "completed_at": "2026-08-01T02:08:08Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "build-chocolatey-package / build",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:08:08Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91313149696 concluded success."
+    },
+    {
+      "digest": "sha256:240e7964087988b0864da2a94a9b5cfdc663985a19d9175adff1b20ae15f2c95",
+      "id": "build-msi-package",
+      "identity": {
+        "check_run_id": 91311878726,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "build-msi-package",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878726 concluded skipped."
+    },
+    {
+      "digest": "sha256:78dbe699123c05afe68a3aac75eed0f2525492f990dc741409fa7e8621b559bb",
+      "id": "build-sdk-package / build",
+      "identity": {
+        "check_run_id": 91311878458,
+        "completed_at": "2026-08-01T02:07:38Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "build-sdk-package / build",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:07:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311878458 concluded success."
+    },
+    {
+      "digest": "sha256:8fde7ea15819b32d946900eb653665ab9e61abab35893fddf99f75deb4edf501",
+      "id": "check-error-code-snippets",
+      "identity": {
+        "check_run_id": 91311877922,
+        "completed_at": "2026-08-01T02:05:41Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "check-error-code-snippets",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:05:41Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877922 concluded success."
+    },
+    {
+      "digest": "sha256:b94afc808a5edc6df31d14db18a9f98c216e1f5d08625c1cf77ead8e5499a2f2",
+      "id": "community-build-tests",
+      "identity": {
+        "check_run_id": 91311878733,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "community-build-tests",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878733 concluded skipped."
+    },
+    {
+      "digest": "sha256:4b66b09775f5bab241a03eebb86ac7ba48a8baefde979086cca6a7fab69bba83",
+      "id": "community_build_a",
+      "identity": {
+        "check_run_id": 91311877831,
+        "completed_at": "2026-08-01T02:11:40Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "community_build_a",
+        "requirement_identity": {
+          "context": "community_build_a",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:11:40Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877831 concluded success."
+    },
+    {
+      "digest": "sha256:2218d7359f62ae58aefbd1705114f82a80ca35d85748d2b95d0531d002e733d7",
+      "id": "community_build_b",
+      "identity": {
+        "check_run_id": 91311877828,
+        "completed_at": "2026-08-01T02:34:31Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "community_build_b",
+        "requirement_identity": {
+          "context": "community_build_b",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:34:31Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877828 concluded success."
+    },
+    {
+      "digest": "sha256:1d8deb946b543fc313a4fdeea147866db28ad0d5cbb3949bb0d257d9df7623d5",
+      "id": "community_build_c",
+      "identity": {
+        "check_run_id": 91311877781,
+        "completed_at": "2026-08-01T02:35:30Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "community_build_c",
+        "requirement_identity": {
+          "context": "community_build_c",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:35:30Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877781 concluded success."
+    },
+    {
+      "digest": "sha256:225412ae3ff996a6f0a76b68aa042bf91e122f3f3a0bbbd788a2287d0d6d92be",
+      "id": "compiler-tests",
+      "identity": {
+        "check_run_id": 91311878789,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "compiler-tests",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878789 concluded skipped."
+    },
+    {
+      "digest": "sha256:f560feeae5f76bae9bd82d9d5bbe44b9066cd755841048ec847898ce680a9edb",
+      "id": "license/cla",
+      "identity": {
+        "context": "license/cla",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'license/cla' is success."
+    },
+    {
+      "digest": "sha256:4cef0c7a2e8400f1b8f332bf5a2c6020f129b9390679c2583a66a088b2c65f6f",
+      "id": "mima-scala-library-nonbootstrapped",
+      "identity": {
+        "check_run_id": 91311878379,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "mima-scala-library-nonbootstrapped",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878379 concluded skipped."
+    },
+    {
+      "digest": "sha256:83c1dbbb79a4b874e5125c357f1d0f6d463213d846e98275181ffe1f6075c9b5",
+      "id": "mima-scala-library-sjs",
+      "identity": {
+        "check_run_id": 91311878160,
+        "completed_at": "2026-08-01T02:02:29Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "mima-scala-library-sjs",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:02:29Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311878160 concluded success."
+    },
+    {
+      "digest": "sha256:9179f214e2faa521bec0d6e52de4564df9f58b4de6b48df43c02b0a046c87fe1",
+      "id": "mima-scala3-interfaces",
+      "identity": {
+        "check_run_id": 91311878159,
+        "completed_at": "2026-08-01T01:56:30Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "mima-scala3-interfaces",
+        "requirement_identity": {
+          "context": "mima-scala3-interfaces",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:56:30Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311878159 concluded success."
+    },
+    {
+      "digest": "sha256:b09d14409460c15bc40d22cbf87f63dcfd7230140c11e4a752040d5a3b9cc701",
+      "id": "mima-tasty-core-bootstrapped",
+      "identity": {
+        "check_run_id": 91311878145,
+        "completed_at": "2026-08-01T02:01:52Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "mima-tasty-core-bootstrapped",
+        "requirement_identity": {
+          "context": "mima-tasty-core-bootstrapped",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:01:52Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311878145 concluded success."
+    },
+    {
+      "digest": "sha256:f810cd02e3ff8b2590f2df824485b4c7d4039026b808e573267f746caf5cd3f1",
+      "id": "mima-tasty-core-nonbootstrapped",
+      "identity": {
+        "check_run_id": 91311878167,
+        "completed_at": "2026-08-01T01:59:10Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "mima-tasty-core-nonbootstrapped",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:59:10Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311878167 concluded success."
+    },
+    {
+      "digest": "sha256:684bae5efbb206159d8b76b059342a0fe5d4bb0c5cb5f6fb6a95fc5b1bfd3b00",
+      "id": "mima-tests",
+      "identity": {
+        "check_run_id": 91311879310,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "mima-tests",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311879310 concluded skipped."
+    },
+    {
+      "digest": "sha256:087ebc10ee356c5a6951851f30969cc081b48221804dab9ec7ff1e646fb174f7",
+      "id": "misc-tests",
+      "identity": {
+        "check_run_id": 91311878872,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "misc-tests",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878872 concluded skipped."
+    },
+    {
+      "digest": "sha256:d2352d5a61d4b7cfdfaf8897cc7626651ce9db46ef75c3001aeacb3c4393ad36",
+      "id": "publish_release",
+      "identity": {
+        "check_run_id": 91311879063,
+        "completed_at": "2026-08-01T01:55:36Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "publish_release",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311879063 concluded skipped."
+    },
+    {
+      "digest": "sha256:d538ccac5bf1d586fda80cbc84420c4ffbb0f85f463ed8260cad44cf8c5b2ad4",
+      "id": "scala-library-docs",
+      "identity": {
+        "check_run_id": 91311877907,
+        "completed_at": "2026-08-01T02:07:11Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scala-library-docs",
+        "requirement_identity": {
+          "context": "scala-library-docs",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:07:11Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877907 concluded success."
+    },
+    {
+      "digest": "sha256:86c067e5a96ebbc31c656e99258db8946c41635749c4b602b9849fd1a671c10f",
+      "id": "scala3-bootstrapped-compilation-coverage",
+      "identity": {
+        "check_run_id": 91311878315,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scala3-bootstrapped-compilation-coverage",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878315 concluded skipped."
+    },
+    {
+      "digest": "sha256:49e05cf29700067adb5db7eafc0ad86b2b92b44b9a57e9c249b3f3bda4f26cf8",
+      "id": "scala3-compiler-nonbootstrapped-coverage",
+      "identity": {
+        "check_run_id": 91311878390,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scala3-compiler-nonbootstrapped-coverage",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878390 concluded skipped."
+    },
+    {
+      "digest": "sha256:a684b543be3a89c316bd74b896a195e148e2886506f3b3d6398e448ac101bfa4",
+      "id": "scala3-language-server-coverage-ycheck",
+      "identity": {
+        "check_run_id": 91311893429,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scala3-language-server-coverage-ycheck",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311893429 concluded skipped."
+    },
+    {
+      "digest": "sha256:73db9a6a8377d7e1836a665b530dcf0eaa051fbb740524c1100b53938a46b035",
+      "id": "scala3-presentation-compiler-coverage-ycheck",
+      "identity": {
+        "check_run_id": 91311891316,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scala3-presentation-compiler-coverage-ycheck",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311891316 concluded skipped."
+    },
+    {
+      "digest": "sha256:262ad7f504ac3f317de65d81eb893f4a419d29ead437464833d3102fe97e7b1e",
+      "id": "scala3-repl-coverage-ycheck",
+      "identity": {
+        "check_run_id": 91311878231,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scala3-repl-coverage-ycheck",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878231 concluded skipped."
+    },
+    {
+      "digest": "sha256:b016ea8d0b60193448a0dfbaf3b4d4a59b412ca2ceaeb059d7e3967a284c3234",
+      "id": "scala3-sbt-bridge-bootstrapped-coverage-ycheck",
+      "identity": {
+        "check_run_id": 91311893089,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scala3-sbt-bridge-bootstrapped-coverage-ycheck",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311893089 concluded skipped."
+    },
+    {
+      "digest": "sha256:08f253f2334ca843e0f893e60196fdfef6f35fde1e76b3002cae01c70d25c6bd",
+      "id": "scala3-staging-coverage-ycheck",
+      "identity": {
+        "check_run_id": 91311887695,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scala3-staging-coverage-ycheck",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311887695 concluded skipped."
+    },
+    {
+      "digest": "sha256:50d06bee919c2e25edc78a7cad11b502d29455d695c4332fe7fcc3155c3e2c13",
+      "id": "scala3-tasty-inspector-coverage-ycheck",
+      "identity": {
+        "check_run_id": 91311878399,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scala3-tasty-inspector-coverage-ycheck",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878399 concluded skipped."
+    },
+    {
+      "digest": "sha256:476c7d602876139f93a0b8d32f9e1608cc1850dc285531891b9b09d5f768b61a",
+      "id": "scaladoc-coverage",
+      "identity": {
+        "check_run_id": 91311891952,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scaladoc-coverage",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311891952 concluded skipped."
+    },
+    {
+      "digest": "sha256:27cb7ffea01196edd7adba4a6903745013b00cc6a3c8c8d97162094f57f379ce",
+      "id": "scalafmt",
+      "identity": {
+        "check_run_id": 91311878409,
+        "completed_at": "2026-08-01T01:56:19Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scalafmt",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:56:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311878409 concluded success."
+    },
+    {
+      "digest": "sha256:e1d3ea02e4f97f9665ca91c836852c5ac5cd1599345c306cc6de86545549fb86",
+      "id": "scripted-tests (17)",
+      "identity": {
+        "check_run_id": 91311877985,
+        "completed_at": "2026-08-01T02:13:15Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scripted-tests (17)",
+        "requirement_identity": {
+          "context": "scripted-tests (17)",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:13:15Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877985 concluded success."
+    },
+    {
+      "digest": "sha256:8f0b8e441346a233820382c0423807cf7a6def0d64cbcce49806be9ffc759773",
+      "id": "scripted-tests (25)",
+      "identity": {
+        "check_run_id": 91311878024,
+        "completed_at": "2026-08-01T02:03:20Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "scripted-tests (25)",
+        "requirement_identity": {
+          "context": "scripted-tests (25)",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:03:20Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311878024 concluded success."
+    },
+    {
+      "digest": "sha256:bda36c1a0300cf4cdc6742bf09320669833365b12e58d685030365587c282555",
+      "id": "specification",
+      "identity": {
+        "check_run_id": 91311877993,
+        "completed_at": "2026-08-01T01:57:35Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "specification",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:57:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877993 concluded success."
+    },
+    {
+      "digest": "sha256:c8dcd06bb3b819cf95162ca92279c2cf4316a97c31e7e0165bebcec03ebe1f3d",
+      "id": "static-analysis-scala-library-bootstrapped",
+      "identity": {
+        "check_run_id": 91311878157,
+        "completed_at": "2026-08-01T02:01:20Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "static-analysis-scala-library-bootstrapped",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:01:20Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311878157 concluded success."
+    },
+    {
+      "digest": "sha256:d60db818b25f0e3d176304d359adc553c058e98ba2d5a69048e7953b284590e2",
+      "id": "stdlib-sourcelinks-test",
+      "identity": {
+        "check_run_id": 91311878241,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "stdlib-sourcelinks-test",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878241 concluded skipped."
+    },
+    {
+      "digest": "sha256:535125ae2af0fd2a3f83b9fae304cc3e703e66c04794e0f1971509cf557389fe",
+      "id": "stdlib-tests",
+      "identity": {
+        "check_run_id": 91311878891,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "stdlib-tests",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878891 concluded skipped."
+    },
+    {
+      "digest": "sha256:e52227596dbdc0c9faf593dfdbe836c0885dcc9b7faaa546844474d8471ef1df",
+      "id": "tasty-core-bootstrapped-coverage-ycheck",
+      "identity": {
+        "check_run_id": 91311889866,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "tasty-core-bootstrapped-coverage-ycheck",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311889866 concluded skipped."
+    },
+    {
+      "digest": "sha256:2cc764a7ce9f8064ef9d8c1e59149cb12a5b6c251a174afcf9f78f7207de46dc",
+      "id": "test-bisect-script",
+      "identity": {
+        "check_run_id": 91311877959,
+        "completed_at": "2026-08-01T01:56:19Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-bisect-script",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:56:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877959 concluded success."
+    },
+    {
+      "digest": "sha256:c4ecdd8d09ec22465d6f20f89ad992e93e07abecccd75f04d6437964f5367091",
+      "id": "test-chocolatey-package",
+      "identity": {
+        "check_run_id": 91313204603,
+        "completed_at": "2026-08-01T02:08:08Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-chocolatey-package",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:08:08Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91313204603 concluded skipped."
+    },
+    {
+      "digest": "sha256:0b0dfd21d643a221c434e55e62af13c7947a504dde17462fbb5342e439b9e67e",
+      "id": "test-language-server",
+      "identity": {
+        "check_run_id": 91345853898,
+        "completed_at": "2026-08-01T02:07:12Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-language-server",
+        "requirement_identity": {
+          "context": "test-language-server",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:07:12Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345853898 concluded success."
+    },
+    {
+      "digest": "sha256:52e6985d1ec0c5cc0ab90e025fd46cd61fe428d6ade1e04db34c20b336b3ef60",
+      "id": "test-msi-package",
+      "identity": {
+        "check_run_id": 91311879047,
+        "completed_at": "2026-08-01T01:55:36Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-msi-package",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311879047 concluded skipped."
+    },
+    {
+      "digest": "sha256:7f2eb202d99436a3352f4476af8a9475ceff2b65acbcf515eee4b497ff4f5376",
+      "id": "test-presentation-compiler",
+      "identity": {
+        "check_run_id": 91345861762,
+        "completed_at": "2026-08-01T02:06:24Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-presentation-compiler",
+        "requirement_identity": {
+          "context": "test-presentation-compiler",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:06:24Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345861762 concluded success."
+    },
+    {
+      "digest": "sha256:c4afd4334c610704586db33a2562ea8c451b5ccc576a01039b433882a4dd22a8",
+      "id": "test-repl (17)",
+      "identity": {
+        "check_run_id": 91345853823,
+        "completed_at": "2026-08-01T02:06:34Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-repl (17)",
+        "requirement_identity": {
+          "context": "test-repl (17)",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:06:34Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345853823 concluded success."
+    },
+    {
+      "digest": "sha256:cb4c9fea17192746db446489cc1b7f397436353e24e2e1c0e26f2887c53e41ad",
+      "id": "test-repl (25)",
+      "identity": {
+        "check_run_id": 91345861793,
+        "completed_at": "2026-08-01T02:07:13Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-repl (25)",
+        "requirement_identity": {
+          "context": "test-repl (25)",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:07:13Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345861793 concluded success."
+    },
+    {
+      "digest": "sha256:3e62ff0604b521be90f166dc318c57c0063afa88131972412082e7f5ac86141e",
+      "id": "test-repl (26)",
+      "identity": {
+        "check_run_id": 91345853460,
+        "completed_at": "2026-08-01T08:18:17Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-repl (26)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T08:18:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345853460 concluded success."
+    },
+    {
+      "digest": "sha256:c41f5287c49eb3725f260a6ebf86535c67897073d87f4d77de4c6b5ef66695a5",
+      "id": "test-scala-js",
+      "identity": {
+        "check_run_id": 91345866708,
+        "completed_at": "2026-08-01T02:21:49Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-scala-js",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:21:49Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345866708 concluded success."
+    },
+    {
+      "digest": "sha256:2979381f44c5bef43441ae8f126ed3b12fb63127d0571f00e38df1a6d0e3e7f9",
+      "id": "test-scala3-compiler-bootstrapped",
+      "identity": {
+        "check_run_id": 91345866117,
+        "completed_at": "2026-08-01T03:05:42Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-scala3-compiler-bootstrapped",
+        "requirement_identity": {
+          "context": "test-scala3-compiler-bootstrapped",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T03:05:42Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345866117 concluded success."
+    },
+    {
+      "digest": "sha256:55001889989137426173354cd4ab6e1b1c779f520c9bb2a1583ce0e9b14416f5",
+      "id": "test-scala3-compiler-nonbootstrapped",
+      "identity": {
+        "check_run_id": 91345864682,
+        "completed_at": "2026-08-01T02:50:32Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-scala3-compiler-nonbootstrapped",
+        "requirement_identity": {
+          "context": "test-scala3-compiler-nonbootstrapped",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:50:32Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345864682 concluded success."
+    },
+    {
+      "digest": "sha256:68a6712934cc90dfdcd414ceb86e5714d581ff47ec357d186df697d6b11272bd",
+      "id": "test-scala3-directives-parser-bootstrapped",
+      "identity": {
+        "check_run_id": 91345863025,
+        "completed_at": "2026-08-01T02:02:19Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-scala3-directives-parser-bootstrapped",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:02:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345863025 concluded success."
+    },
+    {
+      "digest": "sha256:4ae03e3b599904d890a22c39835549e4ee0f39c3d445354ade41feb4d98795af",
+      "id": "test-scala3-directives-parser-nonbootstrapped",
+      "identity": {
+        "check_run_id": 91345853705,
+        "completed_at": "2026-08-01T01:58:54Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-scala3-directives-parser-nonbootstrapped",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:58:54Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345853705 concluded success."
+    },
+    {
+      "digest": "sha256:038bb5b9f54c46bdaed0caf4f6768f1d476a92b989f10f60431299b4a1a5cf29",
+      "id": "test-scala3-sbt-bridge-bootstrapped",
+      "identity": {
+        "check_run_id": 91345863418,
+        "completed_at": "2026-08-01T02:04:26Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-scala3-sbt-bridge-bootstrapped",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:04:26Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345863418 concluded success."
+    },
+    {
+      "digest": "sha256:0866b486ad81846c637838369fe1a593ae7e175d1902239f0b22a0ebd1809313",
+      "id": "test-scala3-sbt-bridge-nonbootstrapped",
+      "identity": {
+        "check_run_id": 91345868373,
+        "completed_at": "2026-08-01T02:01:04Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-scala3-sbt-bridge-nonbootstrapped",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:01:04Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345868373 concluded success."
+    },
+    {
+      "digest": "sha256:f1b8ce20d9eaa2dfa43bd248389ac307a83da4c198a21c8aecc1825548b7ac3f",
+      "id": "test-tasty-core-bootstrapped",
+      "identity": {
+        "check_run_id": 91345867447,
+        "completed_at": "2026-08-01T02:02:40Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-tasty-core-bootstrapped",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:02:40Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345867447 concluded success."
+    },
+    {
+      "digest": "sha256:1433f96209e18843550d882689cc3c5c342161df758d344e925015a1e8e6e394",
+      "id": "test-tasty-core-nonbootstrapped",
+      "identity": {
+        "check_run_id": 91345853412,
+        "completed_at": "2026-08-01T08:10:07Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test-tasty-core-nonbootstrapped",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T08:10:07Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91345853412 concluded success."
+    },
+    {
+      "digest": "sha256:8cdbec80c4daa2345e65edaff24adab32826eb76faf4ffaa9f56589f0add5b16",
+      "id": "test_windows_full",
+      "identity": {
+        "check_run_id": 91311878737,
+        "completed_at": "2026-08-01T01:55:35Z",
+        "conclusion": "skipped",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "test_windows_full",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:55:35Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 91311878737 concluded skipped."
+    },
+    {
+      "digest": "sha256:42c08b526ee9f4ef0fc0cead5f54b2f52c445a978a5de8ef4333b70b9b510f8c",
+      "id": "validate-docs",
+      "identity": {
+        "check_run_id": 91311877944,
+        "completed_at": "2026-08-01T01:56:12Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "validate-docs",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T01:56:12Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91311877944 concluded success."
+    },
+    {
+      "digest": "sha256:666bbc374656b20209f8c876309daaecfc584a965a7ed6468b521ba7d2d438ed",
+      "id": "validate-generated-docs",
+      "identity": {
+        "check_run_id": 91314034162,
+        "completed_at": "2026-08-01T02:33:25Z",
+        "conclusion": "success",
+        "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+        "name": "validate-generated-docs",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T02:33:25Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91314034162 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 25393,
+    "ref": "refs/pull/25393/head",
+    "repository": "scala/scala3",
+    "sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654"
+  }
+}

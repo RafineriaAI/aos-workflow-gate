@@ -1,0 +1,223 @@
+{
+  "can_block": false,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "ced7112d3e06d6fe402d578a8da7c888e9beea6d2b128c4b97036f1ce70a927d",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
+        "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
+        "cli.py": "b1ed35d34d404000feba0677c7d6d14dc54460d237c51bed6bf56b6ffe0201d9",
+        "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "3e92eb472d7d770e40123c093af238605a4fd4622c87dd968a3b64a60a953ee8",
+        "evidence.py": "2e67d6f1e92dd473b79c19abfb4cdaaba84cb0ee39b951223d3d5995d3869138",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "github_decision_check.py": "d23dbbc449026b69766d1f6267db414620d5cbf3f032028bd0614b753adab897",
+        "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/code-change-proof.yml": "892aaa426ae8a489dba230e4b7f3e2eabfb15202191c39ea1cb9537a9432e6ca",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/project-check.yml": "ff0d8c16a527687adac4eb3c2a391fda565d8c4f0c7f50bb4aa125e6ea145aa0",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "e1e4d6205aa2017bd706b5f0c3cfb479b8de3a0344356b3ecec751d773aa4070",
+        "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
+        "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
+        "requirements.py": "dad78b09daae9f567e9c4f2f53e3104bbdbe3944f8ffe8d87cee4f21544abac9",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "7ac1711975db965fcdcb47f6155cc5b8e219b6e649282cda28e2272d87e57775",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+    "version": "0.38.0"
+  },
+  "input_bundle_digest": "sha256:b3df2358f8614cef947f9cb2dc6755e46b8e791b1a8e28754767798c5bd39afd",
+  "inputs": [
+    {
+      "digest": "sha256:3d3032f9303836cc101cd8888330015c9e1ee73fe1af6e455aa8d07d49382bad",
+      "id": "Add triage label",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:39e27d50c074234033cfa802dc0615e4fd06595e5d4b63491ea6730f67aeb9ab",
+      "id": "Approve CI",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:74f6e09aebc1262347d1ad30d8e6aad6d35c18803237d70243e67518a5d8ef11",
+      "id": "Labeler",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:dc8de085d175f49aa01b449b87239e99fa3b87f92fd5d3487128fceb8707bd3a",
+      "id": "PR Linter",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:37be4e73a26c08dac8520bd4589a6fb0b8fccd24d913f8676962076fa94ad233",
+      "id": "Save PR Number",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:be8d7249366d01a87c8cbdbe7fc5b957e30f8bb790b95c118e69fd21a23a677d",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:4b7942e19beb96a0d4806671e874974fd2a32592978910e364097ec5884899d3",
+      "id": "build / Compile and Check (Merge Ref)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9a6b856cd51c4e37c82c2dcd1f77dd5a2a6ddc2ef6be9cb43c10f2ad162f7f90",
+      "id": "build / Configure Workflow",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:50b65e8a23ddcf4d1bd95132d472a05b590d7dbb196c0dc45fc518a184af5ac4",
+      "id": "build / JUnit tests Java 17 (flaky)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure"
+    },
+    {
+      "digest": "sha256:757b3666518f59124147a5a55047855ae7f96aec77acf51a77b0c18df501b2dc",
+      "id": "build / JUnit tests Java 17 (new)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:ab7126ff1880cee8add61a3596f0272d1ed6a1411df8ec1d4a8fd4df7da0bea0",
+      "id": "build / JUnit tests Java 25 (flaky)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure"
+    },
+    {
+      "digest": "sha256:bedf1e54ebefae35e510157e959c5eb099081e089a4b655f4a3b1d7208c77d60",
+      "id": "build / JUnit tests Java 25 (new)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:0fcc8e6f9d80338b8e85c732337a4698e14950fa7f344c518614fea31368c684",
+      "id": "build / Load Test Catalog",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    }
+  ],
+  "observation": {
+    "github_baseline": "waiting",
+    "observation_scope": {
+      "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+      "repository": "apache/kafka"
+    },
+    "observed_at": "2026-08-01T08:48:11Z",
+    "protection_source": "rulesets",
+    "status": "wait_timeout",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "acknowledged": false,
+      "available": true,
+      "non_independent_sources": 0,
+      "routine_bump_excluded": false
+    },
+    "workflow_visibility": {
+      "action_required": 2,
+      "available": true,
+      "not_started": 3,
+      "units_total": 7
+    }
+  },
+  "policy": {
+    "digest": "sha256:294f757089c5865b48bb05bb05a934f09316177c38a927d33c94f049622abe95",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "required_status_semantics": "github",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "collection ended 'wait_timeout', not 'complete': signals that exist for this commit may be absent from the bundle, so a clean result cannot be read as a complete PASS",
+      "rule": "incomplete_collection",
+      "severity": "WARN",
+      "source_id": null,
+      "state": "wait_timeout"
+    },
+    {
+      "detail": "required source is absent from the bundle (requirement state: missing)",
+      "rule": "missing_required_source",
+      "severity": "BLOCK",
+      "source_id": "build / CI checks completed",
+      "state": "missing"
+    },
+    {
+      "detail": "advisory source status is 'failure'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "build / JUnit tests Java 17 (flaky)"
+    },
+    {
+      "detail": "advisory source status is 'failure'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "build / JUnit tests Java 25 (flaky)"
+    }
+  ],
+  "record_digest": "sha256:7ca9738bffd1ca016b5b5e7673fed002f70137717f4736f4ab5a291a4caba79b",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 23015,
+    "ref": "refs/pull/23015/head",
+    "repository": "apache/kafka",
+    "sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31"
+  },
+  "summary": "Gate BLOCK: 1 blocking issue(s). missing_required_source:build / CI checks completed",
+  "verdict": "BLOCK",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

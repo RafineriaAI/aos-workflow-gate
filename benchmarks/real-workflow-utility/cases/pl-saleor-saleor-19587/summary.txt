@@ -1,0 +1,55 @@
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).
+record: benchmarks\real-workflow-utility\cases\pl-saleor-saleor-19587\gate-decision.json
+Merge protection: 0 required status check(s) enforced by none on 'main'.
+GitHub baseline (status checks only): no_required_checks.
+Effect: nothing in the branch rules blocks this merge on status checks; the record is evidence, not enforcement.
+Fork PR: some checks may not run for forks by repository policy.
+Workflow visibility: 8 execution unit(s) on this commit have not started (8 awaiting approval/action): GraphQL Inspector, Changelog check, e2e suite
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: WARN
+
+**Problem:** GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+**Decision contrast:** GitHub has no required status-check gate for this branch; AOS records that coverage fact separately.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 0 required (0 successful); 2 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on saleor/saleor@7580cf1771c8; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:48:32Z; collection complete; 8 workflow unit(s) had not started
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | saleor/saleor |
+| Ref | `refs/pull/19587/head` |
+| Commit | `7580cf1771c8968a70fa141fbe3564140e3ef298` |
+| Pull request | #19587 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:809daccbeb44005a10e831cc01045db5c79810741d184f6f5af13dfd30b13afa` |
+| Input bundle digest | `sha256:48d3622e93dc4d9f09c3ec2ad76e10ad07773b785a14d37e616d76ce22bb0cb5` |
+| Record digest | `sha256:f3ec4c4488531b2cb2ce12b1e12de082b32c2ce6b85ed7afd22a5d6c66aedbdc` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+### Top gaps
+
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| Socket Security: Project Report | github\_check | no | success |
+| branch.rules | branch\_rules\_summary | no | success |
+
+### Coverage
+
+- Required sources: 0 of 2
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "Socket Security: Project Report"`

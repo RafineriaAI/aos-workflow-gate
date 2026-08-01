@@ -1,0 +1,94 @@
+{
+  "collection": {
+    "change_proof": {
+      "base_sha": "8c1a0a7abbc1c36f70d1f65f3604acc46c5ce6ab",
+      "head_sha": "a28d839d3e68bb81b77bcd862fb29e35dcf894f9",
+      "implementation_paths": 1,
+      "merge_base_sha": "8c1a0a7abbc1c36f70d1f65f3604acc46c5ce6ab",
+      "schema_version": "aos-change-proof/v0",
+      "status": "not_distinguished"
+    },
+    "observation_scope": {
+      "head_sha": "a28d839d3e68bb81b77bcd862fb29e35dcf894f9",
+      "repository": "pallets/click"
+    },
+    "observed_at": "2026-08-01T10:33:26+00:00",
+    "status": "complete"
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "contract": "source-v0",
+      "digest": "sha256:04a0cb8cfc038f4ce223b524cd082e3709b1466fc4d9a9eb20216a288d91e89f",
+      "id": "code.change-proof",
+      "identity": {
+        "base_sha": "8c1a0a7abbc1c36f70d1f65f3604acc46c5ce6ab",
+        "challenge_runs": [
+          {
+            "elapsed_ms": 5323,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1359,
+            "stdout_digest": "sha256:51040ee21b697e7aca5eeced06ef7b61f54119df526ad4aa2e57b2e60d4977f2"
+          },
+          {
+            "elapsed_ms": 5344,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1359,
+            "stdout_digest": "sha256:7fa814a98492a1e8d7709ac7258622f0412d431aec1678859acb17218e64e774"
+          }
+        ],
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-p",
+          "no:cacheprovider",
+          "tests",
+          "--ignore=tests/test_basic.py",
+          "--ignore=tests/test_info_dict.py",
+          "--ignore=tests/test_options.py",
+          "-q"
+        ],
+        "command_digest": "sha256:4f5cef76a5edd952bf34ff39d868b49265bbd3441a2d448eb874ce8fffafaf9d",
+        "head_runs": [
+          {
+            "elapsed_ms": 4988,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 1359,
+            "stdout_digest": "sha256:e5a055a513ec5ec1f5c99ee87f045ab3fd318f0e32239b49b7ddc451901cca9c"
+          }
+        ],
+        "head_sha": "a28d839d3e68bb81b77bcd862fb29e35dcf894f9",
+        "implementation_patch_digest": "sha256:4f20126bfc0c5f42d708dee8f769bcc15793cec54bfeb54658b09b54fd794da0",
+        "implementation_paths": [
+          "src/click/core.py"
+        ],
+        "implementation_paths_digest": "sha256:cd0c4a8a4101bc9d7a1eec9a03e56b98e33f6d2dcc276743f62fd31f57df4460",
+        "merge_base_sha": "8c1a0a7abbc1c36f70d1f65f3604acc46c5ce6ab",
+        "repository": "pallets/click",
+        "schema_version": "aos-change-proof/v0",
+        "status": "not_distinguished"
+      },
+      "kind": "aos_change_proof",
+      "observed_at": "2026-08-01T10:33:26+00:00",
+      "signal_source": "local_change_proof",
+      "status": "not_distinguished",
+      "summary": "Change proof gap: the verifier also passed after reverting 1 implementation file(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": null,
+    "ref": "HEAD",
+    "repository": "pallets/click",
+    "sha": "a28d839d3e68bb81b77bcd862fb29e35dcf894f9"
+  }
+}

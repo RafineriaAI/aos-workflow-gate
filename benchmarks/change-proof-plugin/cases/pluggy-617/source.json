@@ -1,0 +1,66 @@
+{
+  "contract": "source-v0",
+  "digest": "sha256:e076d065444d49f43c7dbc246ab1bc6ce97264effdf6e71e676339bbdb7af3a8",
+  "id": "code.change-proof",
+  "identity": {
+    "base_sha": "cba86adc815a68a09f2765e70ed0cca305cc6ce2",
+    "challenge_runs": [
+      {
+        "elapsed_ms": 1812,
+        "exit_code": 1,
+        "state": "failed",
+        "stderr_bytes": 0,
+        "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 3349,
+        "stdout_digest": "sha256:73d3a061e320e34482cee8c58902ed57bb34450218409283552ef24f210d1578"
+      },
+      {
+        "elapsed_ms": 1996,
+        "exit_code": 1,
+        "state": "failed",
+        "stderr_bytes": 0,
+        "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 3349,
+        "stdout_digest": "sha256:55f3e5b8bdf4ef2b6f3772ee17c3719fa44532038b913dc6d30e6c80d2281a73"
+      }
+    ],
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "testing/test_details.py",
+      "testing/test_pluginmanager.py",
+      "-q"
+    ],
+    "command_digest": "sha256:c0dd0375cd81b6c394557c849d0da28992ae6b187fa0bfce9c35ab4b5c1a76b6",
+    "head_runs": [
+      {
+        "elapsed_ms": 1729,
+        "exit_code": 0,
+        "state": "passed",
+        "stderr_bytes": 0,
+        "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 101,
+        "stdout_digest": "sha256:13f97c7fa35d8a847c9a7f739f8447bff4677fcb4913f413b1bbf8f63dc3fcdf"
+      }
+    ],
+    "head_sha": "53eeddf56e09fede281ac5f3cd6a6b5a83e1799a",
+    "implementation_patch_digest": "sha256:4b125517cc57ba19a9402ceb844cf8ba6fb1c375f505978c51567b35d14752c8",
+    "implementation_paths": [
+      "src/pluggy/_compat.py",
+      "src/pluggy/_manager.py"
+    ],
+    "implementation_paths_digest": "sha256:c826480f26f13d3168533325c89ab897db59fc5b5ed453d5edaeb77407314e2f",
+    "merge_base_sha": "cba86adc815a68a09f2765e70ed0cca305cc6ce2",
+    "repository": "pytest-dev/pluggy",
+    "schema_version": "aos-change-proof/v0",
+    "status": "success"
+  },
+  "kind": "aos_change_proof",
+  "observed_at": "2026-08-01T10:28:37+00:00",
+  "signal_source": "local_change_proof",
+  "status": "success",
+  "summary": "Change proof passed: the verifier succeeded at HEAD and failed twice after reverting 2 implementation file(s)."
+}

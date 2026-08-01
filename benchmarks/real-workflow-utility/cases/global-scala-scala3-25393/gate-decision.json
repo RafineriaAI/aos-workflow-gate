@@ -1,0 +1,745 @@
+{
+  "can_block": false,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "ced7112d3e06d6fe402d578a8da7c888e9beea6d2b128c4b97036f1ce70a927d",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
+        "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
+        "cli.py": "b1ed35d34d404000feba0677c7d6d14dc54460d237c51bed6bf56b6ffe0201d9",
+        "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "3e92eb472d7d770e40123c093af238605a4fd4622c87dd968a3b64a60a953ee8",
+        "evidence.py": "2e67d6f1e92dd473b79c19abfb4cdaaba84cb0ee39b951223d3d5995d3869138",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "github_decision_check.py": "d23dbbc449026b69766d1f6267db414620d5cbf3f032028bd0614b753adab897",
+        "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/code-change-proof.yml": "892aaa426ae8a489dba230e4b7f3e2eabfb15202191c39ea1cb9537a9432e6ca",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/project-check.yml": "ff0d8c16a527687adac4eb3c2a391fda565d8c4f0c7f50bb4aa125e6ea145aa0",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "e1e4d6205aa2017bd706b5f0c3cfb479b8de3a0344356b3ecec751d773aa4070",
+        "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
+        "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
+        "requirements.py": "dad78b09daae9f567e9c4f2f53e3104bbdbe3944f8ffe8d87cee4f21544abac9",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "7ac1711975db965fcdcb47f6155cc5b8e219b6e649282cda28e2272d87e57775",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+    "version": "0.38.0"
+  },
+  "input_bundle_digest": "sha256:d1b149c36d160fb1da5e41d3e3f2b23d121d589acaa2f364ec9766b40bf88d93",
+  "inputs": [
+    {
+      "digest": "sha256:3f4646206a22fbb856c3c4ef6139b762022990deebd92ed76ce76b32deea9b47",
+      "id": "Bootstrapped Library Unit Tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1165d460a2e3db09e733f2caaeb7bc96cfe57eb8d0f7cd593f5bafef94847d0c",
+      "id": "Deploy and Test on Linux ARM64 architecture",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9ab814b2728d16116f118a7afbaaadfe92e236735749bbf83156a4ac877dc2b3",
+      "id": "Deploy and Test on Linux x64 architecture",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:abe2307366876d4f5fb99b568a89248a649f60f73a575ba191d7ae5a881ac6ea",
+      "id": "Deploy and Test on Mac ARM64 architecture",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:37ddb036c3fa31c2fa7e49dccd379975536db0eb0c30059bca70301b5f6049b0",
+      "id": "Deploy and Test on Mac x64 architecture",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:12cb498f33cc8b069e18a59e7af9161c78dcaf947dafacfc84ef268daefb5b29",
+      "id": "Deploy and Test on Windows x64 architecture",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:86e7b1ba3d5bb2513ddcd36a79e889479fe1cc46171f4d79cc672682664faee2",
+      "id": "Non-Bootstrapped Library Unit Tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:5e885d12416801ef877107417390977d400ce8e45908d9de9744922bf647d006",
+      "id": "build",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:5abd62d5bc31c2b82fe358723c4f69cc620ba1a17a7a56d40a09d696c5678063",
+      "id": "build-chocolatey-package / build",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:240e7964087988b0864da2a94a9b5cfdc663985a19d9175adff1b20ae15f2c95",
+      "id": "build-msi-package",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:78dbe699123c05afe68a3aac75eed0f2525492f990dc741409fa7e8621b559bb",
+      "id": "build-sdk-package / build",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8fde7ea15819b32d946900eb653665ab9e61abab35893fddf99f75deb4edf501",
+      "id": "check-error-code-snippets",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b94afc808a5edc6df31d14db18a9f98c216e1f5d08625c1cf77ead8e5499a2f2",
+      "id": "community-build-tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:4b66b09775f5bab241a03eebb86ac7ba48a8baefde979086cca6a7fab69bba83",
+      "id": "community_build_a",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:2218d7359f62ae58aefbd1705114f82a80ca35d85748d2b95d0531d002e733d7",
+      "id": "community_build_b",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1d8deb946b543fc313a4fdeea147866db28ad0d5cbb3949bb0d257d9df7623d5",
+      "id": "community_build_c",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:225412ae3ff996a6f0a76b68aa042bf91e122f3f3a0bbbd788a2287d0d6d92be",
+      "id": "compiler-tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:f560feeae5f76bae9bd82d9d5bbe44b9066cd755841048ec847898ce680a9edb",
+      "id": "license/cla",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:4cef0c7a2e8400f1b8f332bf5a2c6020f129b9390679c2583a66a088b2c65f6f",
+      "id": "mima-scala-library-nonbootstrapped",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:83c1dbbb79a4b874e5125c357f1d0f6d463213d846e98275181ffe1f6075c9b5",
+      "id": "mima-scala-library-sjs",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9179f214e2faa521bec0d6e52de4564df9f58b4de6b48df43c02b0a046c87fe1",
+      "id": "mima-scala3-interfaces",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b09d14409460c15bc40d22cbf87f63dcfd7230140c11e4a752040d5a3b9cc701",
+      "id": "mima-tasty-core-bootstrapped",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f810cd02e3ff8b2590f2df824485b4c7d4039026b808e573267f746caf5cd3f1",
+      "id": "mima-tasty-core-nonbootstrapped",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:684bae5efbb206159d8b76b059342a0fe5d4bb0c5cb5f6fb6a95fc5b1bfd3b00",
+      "id": "mima-tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:087ebc10ee356c5a6951851f30969cc081b48221804dab9ec7ff1e646fb174f7",
+      "id": "misc-tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:d2352d5a61d4b7cfdfaf8897cc7626651ce9db46ef75c3001aeacb3c4393ad36",
+      "id": "publish_release",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:d538ccac5bf1d586fda80cbc84420c4ffbb0f85f463ed8260cad44cf8c5b2ad4",
+      "id": "scala-library-docs",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:86c067e5a96ebbc31c656e99258db8946c41635749c4b602b9849fd1a671c10f",
+      "id": "scala3-bootstrapped-compilation-coverage",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:49e05cf29700067adb5db7eafc0ad86b2b92b44b9a57e9c249b3f3bda4f26cf8",
+      "id": "scala3-compiler-nonbootstrapped-coverage",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:a684b543be3a89c316bd74b896a195e148e2886506f3b3d6398e448ac101bfa4",
+      "id": "scala3-language-server-coverage-ycheck",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:73db9a6a8377d7e1836a665b530dcf0eaa051fbb740524c1100b53938a46b035",
+      "id": "scala3-presentation-compiler-coverage-ycheck",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:262ad7f504ac3f317de65d81eb893f4a419d29ead437464833d3102fe97e7b1e",
+      "id": "scala3-repl-coverage-ycheck",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:b016ea8d0b60193448a0dfbaf3b4d4a59b412ca2ceaeb059d7e3967a284c3234",
+      "id": "scala3-sbt-bridge-bootstrapped-coverage-ycheck",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:08f253f2334ca843e0f893e60196fdfef6f35fde1e76b3002cae01c70d25c6bd",
+      "id": "scala3-staging-coverage-ycheck",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:50d06bee919c2e25edc78a7cad11b502d29455d695c4332fe7fcc3155c3e2c13",
+      "id": "scala3-tasty-inspector-coverage-ycheck",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:476c7d602876139f93a0b8d32f9e1608cc1850dc285531891b9b09d5f768b61a",
+      "id": "scaladoc-coverage",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:27cb7ffea01196edd7adba4a6903745013b00cc6a3c8c8d97162094f57f379ce",
+      "id": "scalafmt",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e1d3ea02e4f97f9665ca91c836852c5ac5cd1599345c306cc6de86545549fb86",
+      "id": "scripted-tests (17)",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8f0b8e441346a233820382c0423807cf7a6def0d64cbcce49806be9ffc759773",
+      "id": "scripted-tests (25)",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bda36c1a0300cf4cdc6742bf09320669833365b12e58d685030365587c282555",
+      "id": "specification",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c8dcd06bb3b819cf95162ca92279c2cf4316a97c31e7e0165bebcec03ebe1f3d",
+      "id": "static-analysis-scala-library-bootstrapped",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d60db818b25f0e3d176304d359adc553c058e98ba2d5a69048e7953b284590e2",
+      "id": "stdlib-sourcelinks-test",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:535125ae2af0fd2a3f83b9fae304cc3e703e66c04794e0f1971509cf557389fe",
+      "id": "stdlib-tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:e52227596dbdc0c9faf593dfdbe836c0885dcc9b7faaa546844474d8471ef1df",
+      "id": "tasty-core-bootstrapped-coverage-ycheck",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:2cc764a7ce9f8064ef9d8c1e59149cb12a5b6c251a174afcf9f78f7207de46dc",
+      "id": "test-bisect-script",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c4ecdd8d09ec22465d6f20f89ad992e93e07abecccd75f04d6437964f5367091",
+      "id": "test-chocolatey-package",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:0b0dfd21d643a221c434e55e62af13c7947a504dde17462fbb5342e439b9e67e",
+      "id": "test-language-server",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:52e6985d1ec0c5cc0ab90e025fd46cd61fe428d6ade1e04db34c20b336b3ef60",
+      "id": "test-msi-package",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:7f2eb202d99436a3352f4476af8a9475ceff2b65acbcf515eee4b497ff4f5376",
+      "id": "test-presentation-compiler",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c4afd4334c610704586db33a2562ea8c451b5ccc576a01039b433882a4dd22a8",
+      "id": "test-repl (17)",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:cb4c9fea17192746db446489cc1b7f397436353e24e2e1c0e26f2887c53e41ad",
+      "id": "test-repl (25)",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3e62ff0604b521be90f166dc318c57c0063afa88131972412082e7f5ac86141e",
+      "id": "test-repl (26)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c41f5287c49eb3725f260a6ebf86535c67897073d87f4d77de4c6b5ef66695a5",
+      "id": "test-scala-js",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:2979381f44c5bef43441ae8f126ed3b12fb63127d0571f00e38df1a6d0e3e7f9",
+      "id": "test-scala3-compiler-bootstrapped",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:55001889989137426173354cd4ab6e1b1c779f520c9bb2a1583ce0e9b14416f5",
+      "id": "test-scala3-compiler-nonbootstrapped",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:68a6712934cc90dfdcd414ceb86e5714d581ff47ec357d186df697d6b11272bd",
+      "id": "test-scala3-directives-parser-bootstrapped",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:4ae03e3b599904d890a22c39835549e4ee0f39c3d445354ade41feb4d98795af",
+      "id": "test-scala3-directives-parser-nonbootstrapped",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:038bb5b9f54c46bdaed0caf4f6768f1d476a92b989f10f60431299b4a1a5cf29",
+      "id": "test-scala3-sbt-bridge-bootstrapped",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:0866b486ad81846c637838369fe1a593ae7e175d1902239f0b22a0ebd1809313",
+      "id": "test-scala3-sbt-bridge-nonbootstrapped",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f1b8ce20d9eaa2dfa43bd248389ac307a83da4c198a21c8aecc1825548b7ac3f",
+      "id": "test-tasty-core-bootstrapped",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1433f96209e18843550d882689cc3c5c342161df758d344e925015a1e8e6e394",
+      "id": "test-tasty-core-nonbootstrapped",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8cdbec80c4daa2345e65edaff24adab32826eb76faf4ffaa9f56589f0add5b16",
+      "id": "test_windows_full",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:42c08b526ee9f4ef0fc0cead5f54b2f52c445a978a5de8ef4333b70b9b510f8c",
+      "id": "validate-docs",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:666bbc374656b20209f8c876309daaecfc584a965a7ed6468b521ba7d2d438ed",
+      "id": "validate-generated-docs",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    }
+  ],
+  "observation": {
+    "github_baseline": "clear",
+    "observation_scope": {
+      "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+      "repository": "scala/scala3"
+    },
+    "observed_at": "2026-08-01T08:48:25Z",
+    "protection_source": "classic_branch_protection",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "acknowledged": false,
+      "available": true,
+      "non_independent_sources": 0,
+      "routine_bump_excluded": false
+    },
+    "workflow_visibility": {
+      "action_required": 0,
+      "available": true,
+      "not_started": 0,
+      "units_total": 10
+    }
+  },
+  "policy": {
+    "digest": "sha256:75e067884afd51ae4e7c028ab58af2448a57728de7e3824551cc79306c1a6872",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "required_status_semantics": "github",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "build-msi-package"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "community-build-tests"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "compiler-tests"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "mima-scala-library-nonbootstrapped"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "mima-tests"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "misc-tests"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "publish_release"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "scala3-bootstrapped-compilation-coverage"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "scala3-compiler-nonbootstrapped-coverage"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "scala3-language-server-coverage-ycheck"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "scala3-presentation-compiler-coverage-ycheck"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "scala3-repl-coverage-ycheck"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "scala3-sbt-bridge-bootstrapped-coverage-ycheck"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "scala3-staging-coverage-ycheck"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "scala3-tasty-inspector-coverage-ycheck"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "scaladoc-coverage"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "stdlib-sourcelinks-test"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "stdlib-tests"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "tasty-core-bootstrapped-coverage-ycheck"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "test-chocolatey-package"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "test-msi-package"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "test_windows_full"
+    }
+  ],
+  "record_digest": "sha256:5e04787e2ebf529cd4de32922dd31136905d436779c0cbd209b399586ed91c1c",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 25393,
+    "ref": "refs/pull/25393/head",
+    "repository": "scala/scala3",
+    "sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654"
+  },
+  "summary": "Gate PASS: all required checks satisfied; no advisory warnings.",
+  "verdict": "PASS",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

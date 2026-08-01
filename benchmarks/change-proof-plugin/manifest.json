@@ -1,0 +1,63 @@
+{
+  "schema_version": "aos-change-proof-plugin-study/v0",
+  "study_id": "aos-change-proof-plugin-2026-08-01",
+  "status": "EXPLORATORY_NOT_PREREGISTERED",
+  "run_date": "2026-08-01",
+  "question": "Can AOS add a useful, deterministic check after an existing test command without replacing the test runner, coverage service, scanner, or reviewer?",
+  "candidate": {
+    "name": "Change Proof",
+    "user_question": "The tests pass, but would they still pass without the implementation change?",
+    "integration": "Run the repository's existing targeted verifier at the exact head, retain the pull request's test changes, remove the selected implementation patch, and run the verifier twice more.",
+    "default_scope": "Pull requests that change implementation and tests, or an explicit operator declaration that the verifier should distinguish a behavior change.",
+    "excluded_by_default": [
+      "performance-only changes checked only by functional tests",
+      "behavior-preserving refactors",
+      "documentation, generated, fixture, example, benchmark, and vendor changes"
+    ]
+  },
+  "selection": {
+    "method": "Purpose-built convenience sample of small merged Python pull requests with reproducible targeted test commands.",
+    "observed_code_and_tests": 5,
+    "observed_behavior_preserving_controls": 2,
+    "controlled_under_scoped_verifier": 1,
+    "repository_count": 5,
+    "limitations": [
+      "not random or representative",
+      "Python only",
+      "no independent maintainer acted on an AOS result",
+      "the under-scoped verifier is a controlled counterfactual, not the observed public workflow"
+    ]
+  },
+  "comparison_baselines": [
+    {
+      "name": "GitHub required status checks",
+      "url": "https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks"
+    },
+    {
+      "name": "Codecov patch coverage",
+      "url": "https://docs.codecov.com/docs/frequently-asked-questions"
+    },
+    {
+      "name": "Stryker incremental mutation testing",
+      "url": "https://stryker-mutator.io/docs/stryker-js/incremental/"
+    },
+    {
+      "name": "SonarQube pull request analysis",
+      "url": "https://docs.sonarsource.com/sonarqube-server/2026.1/analyzing-source-code/pull-request-analysis/introduction"
+    },
+    {
+      "name": "Google incremental mutation testing research",
+      "url": "https://research.google/pubs/practical-mutation-testing-at-scale-a-view-from-google/"
+    }
+  ],
+  "claim_boundary": "This exploratory benchmark establishes bounded mechanism behavior and a low-noise trigger hypothesis. It does not establish alert precision, avoided defects, decision impact, retention, willingness to pay, or superiority over coverage or mutation testing.",
+  "unmeasured_without_users": [
+    "alert acceptance rate",
+    "test-strengthening rate",
+    "merge decision-change rate",
+    "incremental defects prevented",
+    "review time saved",
+    "four-week retention",
+    "willingness to pay"
+  ]
+}

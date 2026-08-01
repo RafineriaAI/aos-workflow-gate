@@ -1,0 +1,119 @@
+{
+  "schema_version": "aos-adaptive-value-study/v0",
+  "study_id": "aos-adaptive-value-calibration-2026-08-01",
+  "preregistered_at": "2026-08-01T09:31:57Z",
+  "data_cutoff": "2026-08-01T09:31:57Z",
+  "status": "PREREGISTERED",
+  "question": "Does AOS add enough practical value to justify further development, and is the repository clear and safe enough to invite community experimentation?",
+  "plain_summary": "The first benchmark taught us what not to count as value. This holdout checks whether AOS finds a useful next action that GitHub did not already show and whether a new reader can understand the result.",
+  "claim_boundary": "This is a read-only historical workflow study, not a live user trial. It can test exact-commit behavior, alignment with public human review, message clarity proxies and community-readiness mechanics. It cannot prove adoption, retention, willingness to pay, time saved, decision change in live use or defect prevention.",
+  "calibration": {
+    "path": "benchmarks/adaptive-value-calibration/calibration.json",
+    "must_be_frozen_before_holdout_aos": true,
+    "holdout_may_not_change_rules": true
+  },
+  "sampling": {
+    "unit": "review_rich_repository_workflow",
+    "holdout_cases": 10,
+    "matched_pairs": 5,
+    "polish_cases": 5,
+    "global_cases": 5,
+    "maximum_cases_per_repository": 1,
+    "repository_overlap_with_executed_discovery_cases": 0,
+    "selection_rule": [
+      "Use the most recently updated open, non-draft pull request among the first 20 candidates that is not bot-authored, has an exact head SHA, has at least one visible pull_request workflow run and has an explicit public human review outcome.",
+      "An eligible human outcome must state a problem, validation result, requested action or independently checked result. Bot-only comments, silent approvals, merge alone and author-only discussion do not qualify.",
+      "If no open pull request qualifies, use the most recently merged qualifying pull request since 2026-05-01.",
+      "Do not filter on AOS verdict, GitHub check conclusion, changed path or expected alignment with AOS."
+    ],
+    "outcome_enrichment_boundary": "The holdout estimates alignment among review-rich pull requests. It does not estimate alert incidence across all pull requests."
+  },
+  "cohorts": {
+    "polish_definition": "Repository maintained by an organization whose official material identifies a Polish registered office, headquarters or founding location. Individual nationality and comment language are not used.",
+    "pairs": [
+      {
+        "id": "python-graphql",
+        "polish": {
+          "repository": "mirumee/ariadne",
+          "affiliation_source": "https://mirumee.com/contact"
+        },
+        "global": {
+          "repository": "strawberry-graphql/strawberry"
+        }
+      },
+      {
+        "id": "commerce-platform",
+        "polish": {
+          "repository": "Sylius/Sylius",
+          "affiliation_source": "https://sylius.com/contact"
+        },
+        "global": {
+          "repository": "shopware/shopware"
+        }
+      },
+      {
+        "id": "react-native-component",
+        "polish": {
+          "repository": "TheWidlarzGroup/react-native-video",
+          "affiliation_source": "https://www.thewidlarzgroup.com/"
+        },
+        "global": {
+          "repository": "react-native-webview/react-native-webview"
+        }
+      },
+      {
+        "id": "data-platform",
+        "polish": {
+          "repository": "TouK/nussknacker",
+          "affiliation_source": "https://touk.pl/privacy"
+        },
+        "global": {
+          "repository": "apache/flink"
+        }
+      },
+      {
+        "id": "python-ai-framework",
+        "polish": {
+          "repository": "deepsense-ai/ragbits",
+          "affiliation_source": "https://deepsense.ai/contact-us/"
+        },
+        "global": {
+          "repository": "run-llama/llama_index"
+        }
+      }
+    ]
+  },
+  "execution": {
+    "mode": "advisory",
+    "repository_modification": "forbidden",
+    "code_execution_from_subject_repositories": "forbidden",
+    "code_upload": "none",
+    "exact_head_sha_required": true,
+    "maximum_runtime_seconds_per_case": 300,
+    "retain_raw_comment_text": false
+  },
+  "comparators": [
+    "GitHub state visible for the exact head SHA",
+    "A naive alert on every non-successful workflow",
+    "Independent public human review frozen before AOS"
+  ],
+  "primary_metrics": [
+    "new_action_rate",
+    "useful_explanation_rate",
+    "duplicate_rate",
+    "material_alignment_rate",
+    "material_miss_rate",
+    "plain_main_message_rate",
+    "exact_sha_and_replay_rate"
+  ],
+  "unmeasured_without_users": [
+    "actual_actionable_rate",
+    "actual_decision_change_rate",
+    "alert_acceptance_rate",
+    "retention",
+    "time_saved",
+    "willingness_to_pay"
+  ],
+  "stopping_rule": "Run all ten locked holdout cases. Do not stop after a favorable or unfavorable result. Fewer than eight completed cases yields INSUFFICIENT_SAMPLE.",
+  "publication_rule": "Community release may be recommended only as a free experimental preview when mechanism integrity, plain-language and reproducible contribution gates pass. Historical alignment alone cannot justify a production or commercial claim."
+}

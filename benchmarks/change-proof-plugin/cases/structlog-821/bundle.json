@@ -1,0 +1,91 @@
+{
+  "collection": {
+    "change_proof": {
+      "base_sha": "e3ae36ad918e8ec7a22fd600df6c03b72cdf455d",
+      "head_sha": "7818f4e3b002d6cde99ceedf8d258b85239a4b47",
+      "implementation_paths": 1,
+      "merge_base_sha": "e3ae36ad918e8ec7a22fd600df6c03b72cdf455d",
+      "schema_version": "aos-change-proof/v0",
+      "status": "not_distinguished"
+    },
+    "observation_scope": {
+      "head_sha": "7818f4e3b002d6cde99ceedf8d258b85239a4b47",
+      "repository": "hynek/structlog"
+    },
+    "observed_at": "2026-08-01T10:31:16+00:00",
+    "status": "complete"
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "contract": "source-v0",
+      "digest": "sha256:42c540b8134ca4b55e0d7988ec94eb1f9657fa50927266ee0ae71f95e192f475",
+      "id": "code.change-proof",
+      "identity": {
+        "base_sha": "e3ae36ad918e8ec7a22fd600df6c03b72cdf455d",
+        "challenge_runs": [
+          {
+            "elapsed_ms": 1661,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 101,
+            "stdout_digest": "sha256:a8ebf3477966d462ff0e71964de753c3049c12dd9fe79adb4d738e99b5df8528"
+          },
+          {
+            "elapsed_ms": 1687,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 101,
+            "stdout_digest": "sha256:7b878a7519ba9ea1c1c88907dfdeef36460010c15069656289c0a621e0836a89"
+          }
+        ],
+        "command": [
+          "python",
+          "-m",
+          "pytest",
+          "-p",
+          "no:cacheprovider",
+          "tests/test_base.py",
+          "-q"
+        ],
+        "command_digest": "sha256:c989cdf5c9391534fd2e0045004e7ea63963dd115e65dfa64c5b533abbea173c",
+        "head_runs": [
+          {
+            "elapsed_ms": 1539,
+            "exit_code": 0,
+            "state": "passed",
+            "stderr_bytes": 0,
+            "stderr_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_bytes": 101,
+            "stdout_digest": "sha256:a8ebf3477966d462ff0e71964de753c3049c12dd9fe79adb4d738e99b5df8528"
+          }
+        ],
+        "head_sha": "7818f4e3b002d6cde99ceedf8d258b85239a4b47",
+        "implementation_patch_digest": "sha256:4c79bda703089ad61248ff35815af0b91ad06a6ff42f2fdde8a2db5e1d10377c",
+        "implementation_paths": [
+          "src/structlog/_base.py"
+        ],
+        "implementation_paths_digest": "sha256:cee379a73fa09ace43c73a417afbaa7121bd135679e9cd4740b57d3e104e2938",
+        "merge_base_sha": "e3ae36ad918e8ec7a22fd600df6c03b72cdf455d",
+        "repository": "hynek/structlog",
+        "schema_version": "aos-change-proof/v0",
+        "status": "not_distinguished"
+      },
+      "kind": "aos_change_proof",
+      "observed_at": "2026-08-01T10:31:16+00:00",
+      "signal_source": "local_change_proof",
+      "status": "not_distinguished",
+      "summary": "Change proof gap: the verifier also passed after reverting 1 implementation file(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": null,
+    "ref": "HEAD",
+    "repository": "hynek/structlog",
+    "sha": "7818f4e3b002d6cde99ceedf8d258b85239a4b47"
+  }
+}

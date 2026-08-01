@@ -1,0 +1,70 @@
+BLOCK  Gate BLOCK: 1 blocking issue(s). missing_required_source:build / CI checks completed
+record: benchmarks\real-workflow-utility\cases\global-apache-kafka-23015\gate-decision.json
+Merge protection: 1 required status check(s) enforced by rulesets on 'trunk'.
+GitHub baseline (status checks only): waiting.
+Fork PR: some checks may not run for forks by repository policy.
+Workflow visibility: 3 execution unit(s) on this commit have not started (2 awaiting approval/action): Pull Request Reviewed, CI, Pull Request Reviewed
+Counterfactual: would BLOCK if required: build / JUnit tests Java 17 (flaky), build / JUnit tests Java 25 (flaky)
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: BLOCK
+
+**Problem:** Required check 'build / CI checks completed' did not run for this commit.
+**Why it matters:** The protection expected from this control was not applied to this commit.
+**Affected area:** Required control 'build / CI checks completed'
+**Severity:** BLOCK
+**Next step:** restore the workflow that emits 'build / CI checks completed' or remove the obsolete required-check setting, then re-run the gate
+**Decision contrast:** GitHub already blocks or waits on required checks; AOS explains and preserves that existing control gap.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 1 required (0 successful); 13 other observation(s)
+**Scope:** 1 required check(s) plus recorded workflow signals on apache/kafka@49b2a0658edf; requirements read from rulesets; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:48:11Z; collection wait\_timeout; 3 workflow unit(s) had not started
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | apache/kafka |
+| Ref | `refs/pull/23015/head` |
+| Commit | `49b2a0658edfe3ac956ce4bff050deeb11f70a31` |
+| Pull request | #23015 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:294f757089c5865b48bb05bb05a934f09316177c38a927d33c94f049622abe95` |
+| Input bundle digest | `sha256:b3df2358f8614cef947f9cb2dc6755e46b8e791b1a8e28754767798c5bd39afd` |
+| Record digest | `sha256:7ca9738bffd1ca016b5b5e7673fed002f70137717f4736f4ab5a291a4caba79b` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+**Dominant problem:** 'build / CI checks completed': required source is absent from the bundle (requirement state: missing)
+
+### Top gaps
+
+- BLOCK `missing_required_source` build / CI checks completed: required source is absent from the bundle (requirement state: missing)
+  - Hint: restore the workflow that emits 'build / CI checks completed' or remove the obsolete required-check setting, then re-run the gate
+- WARN `incomplete_collection` -: collection ended 'wait\_timeout', not 'complete': signals that exist for this commit may be absent from the bundle, so a clean result cannot be read as a complete PASS
+  - Hint: increase the wait budget or wait for checks to settle, then collect this exact commit again
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| Add triage label | github\_check | no | success |
+| Approve CI | github\_check | no | success |
+| Labeler | github\_check | no | success |
+| PR Linter | commit\_status | no | success |
+| Save PR Number | github\_check | no | success |
+| branch.rules | branch\_rules\_summary | no | success |
+| build / Compile and Check (Merge Ref) | github\_check | no | success |
+| build / Configure Workflow | github\_check | no | success |
+| build / JUnit tests Java 17 (flaky) | github\_check | no | failure |
+| build / JUnit tests Java 17 (new) | github\_check | no | success |
+| build / JUnit tests Java 25 (flaky) | github\_check | no | failure |
+| build / JUnit tests Java 25 (new) | github\_check | no | success |
+| build / Load Test Catalog | github\_check | no | success |
+
+### Coverage
+
+- Required sources: 0 of 13
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "Add triage label, Approve CI, Labeler, Save PR Number, build / Compile and Check (Merge Ref)"`

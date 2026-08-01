@@ -1,0 +1,49 @@
+{
+  "advisory_sources": [
+    "Check changelog update",
+    "Check pull request title",
+    "Check source changes",
+    "Test Results (package, Python 3.10)",
+    "Test Results (package, Python 3.11)",
+    "Test Results (package, Python 3.12)",
+    "Test Results (package, Python 3.13)",
+    "Test Results (source, Python 3.10)",
+    "Test Results (source, Python 3.11)",
+    "Test Results (source, Python 3.12)",
+    "Test Results (source, Python 3.13)",
+    "branch.rules",
+    "client / Run client checks",
+    "packages / Run build",
+    "packages / Run linters",
+    "packages / Run tests (3.10, package)",
+    "packages / Run tests (3.10, source)",
+    "packages / Run tests (3.11, package)",
+    "packages / Run tests (3.11, source)",
+    "packages / Run tests (3.12, package)",
+    "packages / Run tests (3.12, source)",
+    "packages / Run tests (3.13, package)",
+    "packages / Run tests (3.13, source)",
+    "ui / Run linters & tests"
+  ],
+  "mode": "advisory",
+  "policy_id": "collected-advisory",
+  "required_sources": [],
+  "required_status_semantics": "github",
+  "rules": {
+    "advisory_warning": "PASS",
+    "failed_required_source": "BLOCK",
+    "incomplete_collection": "WARN",
+    "malformed_input": "BLOCK",
+    "missing_required_source": "BLOCK",
+    "no_required_sources": "WARN",
+    "non_independent_evidence": "WARN",
+    "sarif_findings": "WARN",
+    "verifier_change_unavailable": "WARN"
+  },
+  "schema_version": "draft-0",
+  "subject": {
+    "require_repository": true,
+    "require_sha": true
+  },
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

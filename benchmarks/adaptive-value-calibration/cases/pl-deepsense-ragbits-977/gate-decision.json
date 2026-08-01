@@ -1,0 +1,297 @@
+{
+  "can_block": false,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "ced7112d3e06d6fe402d578a8da7c888e9beea6d2b128c4b97036f1ce70a927d",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
+        "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
+        "cli.py": "b1ed35d34d404000feba0677c7d6d14dc54460d237c51bed6bf56b6ffe0201d9",
+        "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "3e92eb472d7d770e40123c093af238605a4fd4622c87dd968a3b64a60a953ee8",
+        "evidence.py": "2e67d6f1e92dd473b79c19abfb4cdaaba84cb0ee39b951223d3d5995d3869138",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "github_decision_check.py": "d23dbbc449026b69766d1f6267db414620d5cbf3f032028bd0614b753adab897",
+        "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/code-change-proof.yml": "892aaa426ae8a489dba230e4b7f3e2eabfb15202191c39ea1cb9537a9432e6ca",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/project-check.yml": "ff0d8c16a527687adac4eb3c2a391fda565d8c4f0c7f50bb4aa125e6ea145aa0",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "e1e4d6205aa2017bd706b5f0c3cfb479b8de3a0344356b3ecec751d773aa4070",
+        "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
+        "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
+        "requirements.py": "dad78b09daae9f567e9c4f2f53e3104bbdbe3944f8ffe8d87cee4f21544abac9",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "7ac1711975db965fcdcb47f6155cc5b8e219b6e649282cda28e2272d87e57775",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+    "version": "0.38.0"
+  },
+  "input_bundle_digest": "sha256:7b36d850e6c9b40da9c039321d407313bf7c4dbca83c912153b0e3c5b6c7431b",
+  "inputs": [
+    {
+      "digest": "sha256:7245a39924ccb655e913f067d95b5e338d9b69b3d73dfcdb8af84b5238cce1ee",
+      "id": "Check changelog update",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e3a315cf5784b7074bf2b0ac0c5c6303511fa90e353ee27ef3f94b01d3e28b8e",
+      "id": "Check pull request title",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:24e50467b6e76b7042cba160642479cb7d41369b8b6c872c2e3e763b3992d25e",
+      "id": "Check source changes",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a7f3b44e453402b2537a439574a97db01a053b1c6b672dbab252f2ad71f1b0f0",
+      "id": "Test Results (package, Python 3.10)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bb3150e39a8fcb4dd8648adce00e8a788ace588e238649d8bae49b64071faba5",
+      "id": "Test Results (package, Python 3.11)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8189f11bc4b7738cf1f03918e3f975849fa29f4cbb37887cbad63d5e1de65c3e",
+      "id": "Test Results (package, Python 3.12)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a50b48ec57b1b2b5af255cf5e6ff2e27a13fb0667e6ac3e620a81da7c2fc579b",
+      "id": "Test Results (package, Python 3.13)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e667993bef4f592f763baebe46de3ae66e2f7e7cbe1b0e16087e7f63b2ba1dc8",
+      "id": "Test Results (source, Python 3.10)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:41c5ababa76b62c85a548d2d05f44f5a582f155c40b4e4447585a2568197966f",
+      "id": "Test Results (source, Python 3.11)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1e68b57a4f171895c01703e1156c5acc7715cd3a58aa1045c0515aeb762f70fd",
+      "id": "Test Results (source, Python 3.12)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f8636f6b963eec09b9775fd3fffa1fb73bf8c925c0f1d6dbb28a0013354cbad5",
+      "id": "Test Results (source, Python 3.13)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d7905e3064608c26c7bc506db21d9e368eefe768c584fd4196a2d22c9e4290fe",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3eef8b7c33aab1ebc01037160c623663aa52cc627eadaf5b878c7f9eecd313d6",
+      "id": "client / Run client checks",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c91ceba306db734b99271066e8a67a180c2f7b1cb18d999bdd544946124d446a",
+      "id": "packages / Run build",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:dbc66844d86cc249164d21f46fe9f0106b65968fb557486cb385042084156c67",
+      "id": "packages / Run linters",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure"
+    },
+    {
+      "digest": "sha256:45f9c2f46aca0be010655927a7e237c310875ed8b4c59b4a2af03869d28b682d",
+      "id": "packages / Run tests (3.10, package)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:652d9b79ec074371d9392459390edbb6281246e6450e728e04954e472a6a3106",
+      "id": "packages / Run tests (3.10, source)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:0bc57d8793218e9e2a22c9fba1319279c365772a5a96eade6ac7d893f194adc4",
+      "id": "packages / Run tests (3.11, package)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:2e2fa82c4f603760d7098a03a785c4dad548c5543acc0e88efee9c49033243e8",
+      "id": "packages / Run tests (3.11, source)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bc238960a06093dc33feb3480518bb27caf5d06106398474df202ac27b20f4b8",
+      "id": "packages / Run tests (3.12, package)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9b44297e0d800a6688fd2497637cf6282c7c17390e57fb5cc5e5dac8921f0ff0",
+      "id": "packages / Run tests (3.12, source)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:5daddfab58d7ddb7be66130bdc1f4f5628cdb5ebbac7da3906a397dcf222f583",
+      "id": "packages / Run tests (3.13, package)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8bf8f4c290c08028690a8d2d94f6d2853646b12b2a966a01fca56f8cf86ef7ad",
+      "id": "packages / Run tests (3.13, source)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d4e039f78ff292a1517261862e2afa1a526760190e24ef5aa0614a4f85b441b5",
+      "id": "ui / Run linters & tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    }
+  ],
+  "observation": {
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec",
+      "repository": "deepsense-ai/ragbits"
+    },
+    "observed_at": "2026-08-01T09:37:22Z",
+    "protection_source": "none",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "acknowledged": false,
+      "available": true,
+      "non_independent_sources": 0,
+      "routine_bump_excluded": false
+    },
+    "workflow_visibility": {
+      "action_required": 0,
+      "available": true,
+      "not_started": 1,
+      "units_total": 2
+    }
+  },
+  "policy": {
+    "digest": "sha256:d7a2e04b45e87a1658ceb9dcf4605b1672e1244e81bd28515267fc020a6c605d",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "required_status_semantics": "github",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "the policy requires nothing, so no missing or failed check can make this gate BLOCK \u2014 the record is evidence, not enforcement",
+      "rule": "no_required_sources",
+      "severity": "WARN",
+      "source_id": null
+    },
+    {
+      "detail": "advisory source status is 'failure'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "packages / Run linters"
+    }
+  ],
+  "record_digest": "sha256:dff8165c7c1d4c30a6adea260dc7b08cea2c96e457d4ab818ad238f218d8c95d",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 977,
+    "ref": "refs/pull/977/head",
+    "repository": "deepsense-ai/ragbits",
+    "sha": "d21c343e60e5dd1ede8fce2342d681672a4aedec"
+  },
+  "summary": "Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).",
+  "verdict": "WARN",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}
