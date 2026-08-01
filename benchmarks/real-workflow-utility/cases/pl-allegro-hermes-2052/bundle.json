@@ -1,0 +1,415 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "counterfactual_blockers": [
+      "Generate Allure Report"
+    ],
+    "github_baseline": "clear",
+    "observation_scope": {
+      "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+      "repository": "allegro/hermes"
+    },
+    "observed_at": "2026-08-01T08:48:03Z",
+    "pr": {
+      "draft": false,
+      "from_fork": false,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:3aacbd3ba0bb47f2c3e0b1717b9d62974ed3cc5b23926278c16dbde051fbea3c",
+    "protection_source": "classic_branch_protection",
+    "required_controls": [
+      {
+        "context": "integrationTests",
+        "integration_id": 15368,
+        "source_id": "integrationTests"
+      },
+      {
+        "context": "unitTests",
+        "integration_id": 15368,
+        "source_id": "unitTests"
+      },
+      {
+        "context": "validate-pr-labels",
+        "integration_id": 15368,
+        "source_id": "validate-pr-labels"
+      }
+    ],
+    "requirements": [
+      {
+        "context": "integrationTests",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "unitTests",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "validate-pr-labels",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      }
+    ],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "hermes-frontend/src/test/groovy/pl/allegro/tech/hermes/frontend/server/PublishingReadinessHandlerTest.groovy"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "d6c7b2c124345e0a6bd4f11c8cb92ad4c3a8fb74",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "pull_request": 2052,
+        "repository": "allegro/hermes"
+      },
+      "unchanged_workflow_runs": 6,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 34598,
+          "app_slug": "github-pages",
+          "check_suite_id": 81316136017,
+          "conclusion": null,
+          "source": "check_suites",
+          "state": "pending",
+          "status": "queued"
+        },
+        {
+          "app_id": 68187,
+          "app_slug": "github-classroom",
+          "check_suite_id": 81316136291,
+          "conclusion": null,
+          "source": "check_suites",
+          "state": "pending",
+          "status": "queued"
+        },
+        {
+          "app_id": 254,
+          "app_slug": "codecov",
+          "check_suite_id": 81316136535,
+          "conclusion": null,
+          "source": "check_suites",
+          "state": "pending",
+          "status": "queued"
+        }
+      ],
+      "states": {
+        "action_required": 0,
+        "completed": 7,
+        "pending": 3
+      },
+      "units_total": 10
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:6fc47eb76bea613e17ea3468e734e2ae1ba7510dfb6086543ff61019b9ffed32",
+      "id": "Analyze (java)",
+      "identity": {
+        "check_run_id": 89224453326,
+        "completed_at": "2026-07-23T13:52:27Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "Analyze (java)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:52:27Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224453326 concluded success."
+    },
+    {
+      "digest": "sha256:753877a7f2a8e218d3a6faf7d1ca735e7bd30a79c6e6da0cbd6a95cf5f7752c6",
+      "id": "Analyze (javascript)",
+      "identity": {
+        "check_run_id": 89224452976,
+        "completed_at": "2026-07-23T13:47:18Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "Analyze (javascript)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:47:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224452976 concluded success."
+    },
+    {
+      "digest": "sha256:fee040b14715957c65ed37661fcd308797800b9b3846fb052e8e22ef59db4650",
+      "id": "Analyze (python)",
+      "identity": {
+        "check_run_id": 89224453100,
+        "completed_at": "2026-07-23T13:47:02Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "Analyze (python)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:47:02Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224453100 concluded success."
+    },
+    {
+      "digest": "sha256:d7153ce7250a552bb40bf8a4cc5bf99b18fe1b7046eca23e12c0ed4e7ae0a642",
+      "id": "CodeQL",
+      "identity": {
+        "check_run_id": 89224713105,
+        "completed_at": "2026-07-23T13:46:53Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "CodeQL",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:46:53Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224713105 concluded success."
+    },
+    {
+      "digest": "sha256:1ca9c38dce4cca72ae25087ad4c1666b8c4ca46dd7bbddbf71d1abdbff16f218",
+      "id": "Compare performance reports from base and current branches",
+      "identity": {
+        "check_run_id": 89227542595,
+        "completed_at": "2026-07-23T13:57:38Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "Compare performance reports from base and current branches",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:57:38Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89227542595 concluded success."
+    },
+    {
+      "digest": "sha256:0e3ad612786bb8c9696778349b66d8c1f2ceb2fb25e71a3946fec2906372e070",
+      "id": "Create Performance report on base and current branch",
+      "identity": {
+        "check_run_id": 89224453716,
+        "completed_at": "2026-07-23T13:57:27Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "Create Performance report on base and current branch",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:57:27Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224453716 concluded success."
+    },
+    {
+      "digest": "sha256:8288a3b9499ca04874b30b19f1378933b859d736e2d6e702199c87ba128dfcad",
+      "id": "Generate Allure Report",
+      "identity": {
+        "check_run_id": 89227979134,
+        "completed_at": "2026-07-23T13:59:06Z",
+        "conclusion": "skipped",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "Generate Allure Report",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:59:06Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 89227979134 concluded skipped."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:67c59317ca82e09d4abd9e55947ec83637ddb76979db5f3ff49179cf75ad5a1e",
+      "id": "build",
+      "identity": {
+        "check_run_id": 89224453118,
+        "completed_at": "2026-07-23T13:46:32Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "build",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:46:32Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224453118 concluded success."
+    },
+    {
+      "digest": "sha256:e83c163a380360ae76141c93892e9e9d71964d1efd258566d4f25b6c7cf9bbb3",
+      "id": "ci-console",
+      "identity": {
+        "check_run_id": 89224454289,
+        "completed_at": "2026-07-23T13:48:20Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "ci-console",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:48:20Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224454289 concluded success."
+    },
+    {
+      "digest": "sha256:48e387060220c08ff913771686f1ecc1f80c5cd833f6a742c4f509546fa4012c",
+      "id": "integrationTests",
+      "identity": {
+        "check_run_id": 89224454236,
+        "completed_at": "2026-07-23T13:59:05Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "integrationTests",
+        "requirement_identity": {
+          "context": "integrationTests",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:59:05Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224454236 concluded success."
+    },
+    {
+      "digest": "sha256:2a946c9e6718c8af6c39d445f2ba1997b256190920a7f64dcbc0df74aff8d64d",
+      "id": "slowIntegrationTests",
+      "identity": {
+        "check_run_id": 89224454230,
+        "completed_at": "2026-07-23T13:56:15Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "slowIntegrationTests",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:56:15Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224454230 concluded success."
+    },
+    {
+      "digest": "sha256:0cbeffa2fccf01b27f1fe6eb1d472ea0de21853f6c9e1d9aa61cc8b36f902f53",
+      "id": "unitTests",
+      "identity": {
+        "check_run_id": 89224454434,
+        "completed_at": "2026-07-23T13:55:53Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "unitTests",
+        "requirement_identity": {
+          "context": "unitTests",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:55:53Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89224454434 concluded success."
+    },
+    {
+      "digest": "sha256:3b8734e246ff87cd6a2ee69eeacc6a1cd3aa8096200d67fe07774d5f12ef777b",
+      "id": "validate-pr-labels",
+      "identity": {
+        "check_run_id": 89225175894,
+        "completed_at": "2026-07-23T13:48:57Z",
+        "conclusion": "success",
+        "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+        "name": "validate-pr-labels",
+        "requirement_identity": {
+          "context": "validate-pr-labels",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-23T13:48:57Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 89225175894 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 2052,
+    "ref": "refs/pull/2052/head",
+    "repository": "allegro/hermes",
+    "sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9"
+  }
+}

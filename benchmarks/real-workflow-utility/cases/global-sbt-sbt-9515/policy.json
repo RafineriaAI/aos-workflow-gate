@@ -1,0 +1,41 @@
+{
+  "advisory_sources": [
+    "branch.rules",
+    "check",
+    "test",
+    "test (macos-latest, 17, temurin)",
+    "test (ubuntu-22.04, 21, temurin, 1)",
+    "test (ubuntu-latest, 17, temurin, 10)",
+    "test (ubuntu-latest, 17, temurin, 11)",
+    "test (ubuntu-latest, 17, zulu)",
+    "test (ubuntu-latest, 17, zulu, 2)",
+    "test (ubuntu-latest, 25, zulu, 3)",
+    "test (ubuntu-latest, 25, zulu, 4)",
+    "test (ubuntu-latest, 25, zulu, 5)",
+    "test (ubuntu-latest, 25, zulu, 7)",
+    "test (windows-latest, 17, temurin, 10)",
+    "test (windows-latest, 17, zulu)",
+    "test (windows-latest, 17, zulu, 12)"
+  ],
+  "mode": "advisory",
+  "policy_id": "collected-advisory",
+  "required_sources": [],
+  "required_status_semantics": "github",
+  "rules": {
+    "advisory_warning": "PASS",
+    "failed_required_source": "BLOCK",
+    "incomplete_collection": "WARN",
+    "malformed_input": "BLOCK",
+    "missing_required_source": "BLOCK",
+    "no_required_sources": "WARN",
+    "non_independent_evidence": "WARN",
+    "sarif_findings": "WARN",
+    "verifier_change_unavailable": "WARN"
+  },
+  "schema_version": "draft-0",
+  "subject": {
+    "require_repository": true,
+    "require_sha": true
+  },
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

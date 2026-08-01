@@ -1,0 +1,232 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "github_baseline": "waiting",
+    "incomplete_required": [
+      "Build docs",
+      "Build example",
+      "Build package",
+      "Lint",
+      "Typecheck",
+      "Unit tests",
+      "Validate PR title"
+    ],
+    "observation_scope": {
+      "head_sha": "2d099bd2a91ec946db547751b8e0f06a1c824155",
+      "repository": "callstack/react-native-paper"
+    },
+    "observed_at": "2026-08-01T08:48:59Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:af8700f85d36a5ed527c64a1c3757b7894a9567110bb66173ab136eeab08d1eb",
+    "protection_source": "rulesets",
+    "required_controls": [
+      {
+        "context": "Build docs",
+        "integration_id": 15368,
+        "source_id": "Build docs"
+      },
+      {
+        "context": "Build example",
+        "integration_id": 15368,
+        "source_id": "Build example"
+      },
+      {
+        "context": "Build package",
+        "integration_id": 15368,
+        "source_id": "Build package"
+      },
+      {
+        "context": "Lint",
+        "integration_id": 15368,
+        "source_id": "Lint"
+      },
+      {
+        "context": "Typecheck",
+        "integration_id": 15368,
+        "source_id": "Typecheck"
+      },
+      {
+        "context": "Unit tests",
+        "integration_id": 15368,
+        "source_id": "Unit tests"
+      },
+      {
+        "context": "Validate PR title",
+        "integration_id": 15368,
+        "source_id": "Validate PR title"
+      }
+    ],
+    "requirements": [
+      {
+        "context": "Build docs",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "Build example",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "Build package",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "Lint",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "Typecheck",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "Unit tests",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "missing"
+      },
+      {
+        "context": "Validate PR title",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "missing"
+      }
+    ],
+    "rules_digest": "sha256:f615d940103a54d3300bc359bcf17a8d923bf821d28a8c8569a68d772c35ae2f",
+    "status": "wait_timeout",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "1b2b0433ea918b2949b192dfc52bef30f568430c",
+        "head_sha": "2d099bd2a91ec946db547751b8e0f06a1c824155",
+        "pull_request": 5038,
+        "repository": "callstack/react-native-paper"
+      },
+      "unchanged_workflow_runs": 3,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 82064177138,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30282918148,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "CI"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 82064177364,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30282918216,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Semantic Pull Request"
+        }
+      ],
+      "states": {
+        "action_required": 2,
+        "completed": 1,
+        "pending": 0
+      },
+      "units_total": 3
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:d8790d6c37a2ef17cf2695022712875dfcff258579e1fa3a4be4d77e291108a6",
+      "id": "Add contributor label",
+      "identity": {
+        "check_run_id": 90033495489,
+        "completed_at": "2026-07-27T16:03:18Z",
+        "conclusion": "success",
+        "head_sha": "2d099bd2a91ec946db547751b8e0f06a1c824155",
+        "name": "Add contributor label",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-27T16:03:18Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90033495489 concluded success."
+    },
+    {
+      "digest": "sha256:f615d940103a54d3300bc359bcf17a8d923bf821d28a8c8569a68d772c35ae2f",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: copilot_code_reviewx1, deletionx1, non_fast_forwardx1, pull_requestx1, required_linear_historyx1, required_status_checksx1, updatex1; 7 required status check(s)."
+    }
+  ],
+  "subject": {
+    "pull_request": 5038,
+    "ref": "refs/pull/5038/head",
+    "repository": "callstack/react-native-paper",
+    "sha": "2d099bd2a91ec946db547751b8e0f06a1c824155"
+  }
+}

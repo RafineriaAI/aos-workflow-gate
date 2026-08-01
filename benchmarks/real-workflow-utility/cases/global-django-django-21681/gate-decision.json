@@ -1,0 +1,527 @@
+{
+  "can_block": false,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "ced7112d3e06d6fe402d578a8da7c888e9beea6d2b128c4b97036f1ce70a927d",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
+        "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
+        "cli.py": "b1ed35d34d404000feba0677c7d6d14dc54460d237c51bed6bf56b6ffe0201d9",
+        "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "3e92eb472d7d770e40123c093af238605a4fd4622c87dd968a3b64a60a953ee8",
+        "evidence.py": "2e67d6f1e92dd473b79c19abfb4cdaaba84cb0ee39b951223d3d5995d3869138",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "github_decision_check.py": "d23dbbc449026b69766d1f6267db414620d5cbf3f032028bd0614b753adab897",
+        "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/code-change-proof.yml": "892aaa426ae8a489dba230e4b7f3e2eabfb15202191c39ea1cb9537a9432e6ca",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/project-check.yml": "ff0d8c16a527687adac4eb3c2a391fda565d8c4f0c7f50bb4aa125e6ea145aa0",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "e1e4d6205aa2017bd706b5f0c3cfb479b8de3a0344356b3ecec751d773aa4070",
+        "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
+        "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
+        "requirements.py": "dad78b09daae9f567e9c4f2f53e3104bbdbe3944f8ffe8d87cee4f21544abac9",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "7ac1711975db965fcdcb47f6155cc5b8e219b6e649282cda28e2272d87e57775",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+    "version": "0.38.0"
+  },
+  "input_bundle_digest": "sha256:37c6fd84f6b5c7f6c9c89f6f5372e12e46662027b13e5ed7532cd9d685d85a92",
+  "inputs": [
+    {
+      "digest": "sha256:8cc5204b11a2e21a2428c032c916712ecd0780251ff596b3cb6a9261dd9f88e1",
+      "id": "Coverage Tests (PostgreSQL)",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:e034e46500b50f3ab271a13b08c88c1c8342ddd192404817add1d9c1ee2d7cd8",
+      "id": "JavaScript tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:4071f830a401b3ff28915c984b86c9daa8e1970de94047010f977fdbf9e00046",
+      "id": "PostgreSQL",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:c50df4c9ed9bdbd2d5ab556d6c2c245889dc29b8020264728f97391ff3d52daf",
+      "id": "PostgreSQL ${{ matrix.pg_major }}",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:c01bc84ccfef62d13ccf8ae20b612bdec3a3baf4967dd45bcf725a78b9ea9f26",
+      "id": "Run Quality Checks on a PR",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b069dbb43989d06faa98da8d575eae558823631417383970df31094ec60ecadc",
+      "id": "Run_benchmarks",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:4a3620588ce07e490f0077f1ac813da631edc07e43600470e2ca235c84c2533b",
+      "id": "SQLite",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:1442a92ea095f77df25b5c78d13b4552cc3942be352d58594e49044aa0d591f6",
+      "id": "Screenshots",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:1d4f000330d2c53fe2c8c21074f17492637d1dade14ba8837254b075097c6fda",
+      "id": "Scripts tests",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:db0892986f47ecc04e69005fe50daf665636c3334fd6ef30a863ce35c1f92875",
+      "id": "Ubuntu, SQLite, Python 3.14t",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure"
+    },
+    {
+      "digest": "sha256:df28b1e0f4e26265f9ec3c19461f34e4d8bc15a9170508683ba85846b9d922c2",
+      "id": "Windows, SQLite, Python 3.14",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d6ffe6f9fb1196c0cddbf8b4c16a17c4436798b46d58761196d29e87a73c9eeb",
+      "id": "biome",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1811734fc4e68673f7292aafff86d609dc8b2d213e1904aa8fb4a97c0e1bd69a",
+      "id": "black",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:234370ece5f7b32a21b4773a666aabf47c8ac178911092ed0c9873b9fcfdd8ad",
+      "id": "check-commit-prefix",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:bc9dd0e8b29632b07448cb2bb353031fab17d490c286ba0097e07a98e0c6c32d",
+      "id": "check-commit-suffix",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c7d922aaf5c5fc811fa813b624e5e494d92c046484b03fae8bbe4518606efd5f",
+      "id": "define-matrix",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:1f49db363048de6f1759260a86353835ff631942f56e94b5e90e964137f3f768",
+      "id": "docs",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a8f12390260e68dd33459f3279dcedadb7d165c523b1ceeb8642049030e1aae9",
+      "id": "flake8",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6166abe82a89f7496ea11bbe6e2289fa08644e073917a031e518983dcc7a6e4c",
+      "id": "isort",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:13acc8e043c676e7faf7038748e769e3a36309fd68b5c9cc382718390ce26660",
+      "id": "pr-mariadb/database=mysql,label=mariadb,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9fbab1bb2b46ea1167e91e4ab0702a0a5cac44cf09112d76b6d03bfdb3f081f5",
+      "id": "pr-mariadb/database=mysql_gis,label=mariadb,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:0645dc4acdd11af5fc0684e9adba0d2a705a3a52510733364d0ad41f17cbde88",
+      "id": "pull-requests-noble/database=mysql,label=noble-pr,python=python3.12",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:881c6ffcb427f21638b621e1d6ca74c15c6ade629cda6625f502ac795b72e9d2",
+      "id": "pull-requests-noble/database=mysql,label=noble-pr,python=python3.13",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1e80c55f33320ad7f8a7b9e83b6b02fdc338f17f6c2f4a69a1f8042561f1e94c",
+      "id": "pull-requests-noble/database=mysql,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b7d2e5c8027e92e0ee76147069540b94d0ccff294e57febc42a25128a3768772",
+      "id": "pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.12",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:75c1ee627b54d60cdb95fe5ebcc204ed948b11f166e7a3bae38953597badd14f",
+      "id": "pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.13",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:1de5908f30b183c8c4e829c98cc2047531e36b38e88a830f4d955c161db9746d",
+      "id": "pull-requests-noble/database=mysql_gis,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c9fa99cfae49b07b3d83882fa62630f5154d047b56f4d618807aab03ea3b6de0",
+      "id": "pull-requests-noble/database=postgis,label=noble-pr,python=python3.12",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:02a5e54b0ea3dd143e06d09b32351cf43c78ab3ff92048d49f50ca62817647d0",
+      "id": "pull-requests-noble/database=postgis,label=noble-pr,python=python3.13",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b4c38cf50ccea198a6843c431ce86ceee4c2b897396b872875c6448c32ebf857",
+      "id": "pull-requests-noble/database=postgis,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8edbcf25f4a0f547ae0d023426bdfbe65c8e2c0cec434a8f14c30ac3b1bb8dbf",
+      "id": "pull-requests-noble/database=postgres,label=noble-pr,python=python3.12",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:510674e235f1b7b8bdba23039eb129d85eb30bde8fd8d7ef422b9001f8179d0a",
+      "id": "pull-requests-noble/database=postgres,label=noble-pr,python=python3.13",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:a9e07126ce3028115e44d5c1e6ca1054c9a5f7707c82e63cd1a38d751f9fd543",
+      "id": "pull-requests-noble/database=postgres,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:28138f3819bce097b831815420a43312d4025053ee15e4bed0356fcb403f610e",
+      "id": "pull-requests-noble/database=spatialite,label=noble-pr,python=python3.12",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:33cef5e1170f42e268126c1ea99e0be2f7b78f2c3d28f40ee0b7742f707998a8",
+      "id": "pull-requests-noble/database=spatialite,label=noble-pr,python=python3.13",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3287ca409642a0f7ed2f719b8e841082f823d54ff09368e031ddc68bad9aeeff",
+      "id": "pull-requests-noble/database=spatialite,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:f14f4732dab604ed28f5933e158231dacd35398affeffe94fa9094634f434669",
+      "id": "pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.12",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:dd9a90fde8d568b6a48d6a5d6bef085731c07bf083237fa8b09ba65364fc93e3",
+      "id": "pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.13",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c8bd9419de31d8a6c93d2355f95f5a53fc792ac8b5ed76179b4f273f93e90ab4",
+      "id": "pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:4dbe30902bc93f1a4f58cb20b89687c7d90fff6fb81fb6b2f3552a32ead8dd71",
+      "id": "pull-requests-pg-server-side-binding/database=postgis,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:e49974700177d3526b9ec5a5e9dd708758cd6c5d79badb7756db09554aebe80c",
+      "id": "pull-requests-pg-server-side-binding/database=postgres,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:3ee1af62b30eab57b5a56c3f50eb08b23060e32c3b13eada17461e90f80c3f6d",
+      "id": "pull-requests-postgresql-psycopg2/database=postgis,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:b89a0049075d0c02a2271c97dcef023cc7c8a79be50423cb507ec13bf4e27309",
+      "id": "pull-requests-postgresql-psycopg2/database=postgres,label=noble-pr,python=python3.14",
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:c45a3cdd2a50a10d584da49543862ce8b2c3423c316ad194606a06e84c800dc4",
+      "id": "python",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped"
+    },
+    {
+      "digest": "sha256:084330f3702882be0c2627da6a89f47e1808de6e172bf3bddda9377c905518e9",
+      "id": "zizmor",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    }
+  ],
+  "observation": {
+    "github_baseline": "no_required_checks",
+    "observation_scope": {
+      "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+      "repository": "django/django"
+    },
+    "observed_at": "2026-08-01T08:48:39Z",
+    "protection_source": "none",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "acknowledged": false,
+      "available": true,
+      "non_independent_sources": 0,
+      "routine_bump_excluded": false
+    },
+    "workflow_visibility": {
+      "action_required": 0,
+      "available": true,
+      "not_started": 0,
+      "units_total": 11
+    }
+  },
+  "policy": {
+    "digest": "sha256:08973911ff0dddc1298a6d23a1a53965177bc907bf2c5c43d19a5e2146b99001",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "required_status_semantics": "github",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "the policy requires nothing, so no missing or failed check can make this gate BLOCK \u2014 the record is evidence, not enforcement",
+      "rule": "no_required_sources",
+      "severity": "WARN",
+      "source_id": null
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Coverage Tests (PostgreSQL)"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "PostgreSQL"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "PostgreSQL ${{ matrix.pg_major }}"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Run_benchmarks"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "SQLite"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Screenshots"
+    },
+    {
+      "detail": "advisory source status is 'failure'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "Ubuntu, SQLite, Python 3.14t"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "check-commit-prefix"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "define-matrix"
+    },
+    {
+      "detail": "advisory source status is 'skipped'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "python"
+    }
+  ],
+  "record_digest": "sha256:ce7250c6d6f64caafb821f12c416d4394281f146cd44c4654dca6c4956c6c5f1",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 21681,
+    "ref": "refs/pull/21681/head",
+    "repository": "django/django",
+    "sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570"
+  },
+  "summary": "Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).",
+  "verdict": "WARN",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

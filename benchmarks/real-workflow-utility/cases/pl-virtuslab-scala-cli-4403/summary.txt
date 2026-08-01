@@ -1,0 +1,19 @@
+PASS  Gate PASS: all required checks satisfied; no advisory warnings.
+record: benchmarks\real-workflow-utility\cases\pl-virtuslab-scala-cli-4403\gate-decision.json
+Merge protection: 36 required status check(s) enforced by classic_branch_protection on 'main'.
+Retrospective: this pull request is merged; the rules observed are CURRENT state, not merge-time state (compare rules_digest across records to detect drift).
+Fork PR: some checks may not run for forks by repository policy.
+Counterfactual: would BLOCK if required: Publish to SDKMAN, Update CentOS packages, Update Debian packages, Update Windows packages, Update installation script, Update scala-cli brew formula, Update scala-cli setup, Update scala-experimental brew formula, Update standalone launcher, launchers, publish
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: PASS
+
+**Result:** Every required check AOS evaluated completed successfully for this commit.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+**Next step:** set enforce: "true" (or a blocking policy) so a BLOCK verdict fails the job
+
+**Signals:** 36 required (36 successful); 17 other observation(s)
+**Scope:** 36 required check(s) plus recorded workflow signals on VirtusLab/scala-cli@65fca6bb1517; requirements read from classic\_branch\_protection; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:48:46Z; collection complete
+
+Record `sha256:b43e363738f328cec4e59b450e4cdb10d4bcaf13c2f589a7179b982ed57488bd` | bundle `sha256:71084cc3763296a9cad92fcf9eca70c56b439b9a9f39bc9c0355f896aeb2921e` | self-check OK | UNSIGNED\_NOT\_OFFICIAL

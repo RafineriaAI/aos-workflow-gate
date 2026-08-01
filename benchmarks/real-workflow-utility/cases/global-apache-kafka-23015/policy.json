@@ -1,0 +1,40 @@
+{
+  "advisory_sources": [
+    "Add triage label",
+    "Approve CI",
+    "Labeler",
+    "PR Linter",
+    "Save PR Number",
+    "branch.rules",
+    "build / Compile and Check (Merge Ref)",
+    "build / Configure Workflow",
+    "build / JUnit tests Java 17 (flaky)",
+    "build / JUnit tests Java 17 (new)",
+    "build / JUnit tests Java 25 (flaky)",
+    "build / JUnit tests Java 25 (new)",
+    "build / Load Test Catalog"
+  ],
+  "mode": "advisory",
+  "policy_id": "collected-advisory",
+  "required_sources": [
+    "build / CI checks completed"
+  ],
+  "required_status_semantics": "github",
+  "rules": {
+    "advisory_warning": "PASS",
+    "failed_required_source": "BLOCK",
+    "incomplete_collection": "WARN",
+    "malformed_input": "BLOCK",
+    "missing_required_source": "BLOCK",
+    "no_required_sources": "WARN",
+    "non_independent_evidence": "WARN",
+    "sarif_findings": "WARN",
+    "verifier_change_unavailable": "WARN"
+  },
+  "schema_version": "draft-0",
+  "subject": {
+    "require_repository": true,
+    "require_sha": true
+  },
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

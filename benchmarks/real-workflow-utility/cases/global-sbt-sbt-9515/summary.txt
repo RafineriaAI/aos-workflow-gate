@@ -1,0 +1,69 @@
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).
+record: benchmarks\real-workflow-utility\cases\global-sbt-sbt-9515\gate-decision.json
+Merge protection: 0 required status check(s) enforced by none on 'develop'.
+GitHub baseline (status checks only): no_required_checks.
+Effect: nothing in the branch rules blocks this merge on status checks; the record is evidence, not enforcement.
+Fork PR: some checks may not run for forks by repository policy.
+Counterfactual: would BLOCK if required: test (ubuntu-latest, 17, temurin, 11)
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: WARN
+
+**Problem:** GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+**Decision contrast:** GitHub has no required status-check gate for this branch; AOS records that coverage fact separately.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 0 required (0 successful); 16 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on sbt/sbt@783fcc96709b; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:48:53Z; collection complete
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | sbt/sbt |
+| Ref | `refs/pull/9515/head` |
+| Commit | `783fcc96709beb6c362d0cb3cbaba43dc5abce60` |
+| Pull request | #9515 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:9a321b5ff0abc7a4178d50a8efb3d75f7856cd8174812a7f54580267bd500e85` |
+| Input bundle digest | `sha256:134e8ce586c312a6b50be2e2192c54988892acec590e413b0fb164bff9209898` |
+| Record digest | `sha256:1dbc2d67ca690c58a89b72ab0ac52764004fe9816814b1b4310ab3c1f27b4d16` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+### Top gaps
+
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| branch.rules | branch\_rules\_summary | no | success |
+| check | github\_check | no | success |
+| test | github\_check | no | success |
+| test (macos-latest, 17, temurin) | github\_check | no | success |
+| test (ubuntu-22.04, 21, temurin, 1) | github\_check | no | success |
+| test (ubuntu-latest, 17, temurin, 10) | github\_check | no | success |
+| test (ubuntu-latest, 17, temurin, 11) | github\_check | no | failure |
+| test (ubuntu-latest, 17, zulu) | github\_check | no | success |
+| test (ubuntu-latest, 17, zulu, 2) | github\_check | no | success |
+| test (ubuntu-latest, 25, zulu, 3) | github\_check | no | success |
+| test (ubuntu-latest, 25, zulu, 4) | github\_check | no | success |
+| test (ubuntu-latest, 25, zulu, 5) | github\_check | no | success |
+| test (ubuntu-latest, 25, zulu, 7) | github\_check | no | success |
+| test (windows-latest, 17, temurin, 10) | github\_check | no | success |
+| test (windows-latest, 17, zulu) | github\_check | no | success |
+| test (windows-latest, 17, zulu, 12) | github\_check | no | success |
+
+### Coverage
+
+- Required sources: 0 of 16
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "check, test, test (macos-latest, 17, temurin), test (ubuntu-22.04, 21, temurin, 1), test (ubuntu-latest, 17, temurin, 10)"`

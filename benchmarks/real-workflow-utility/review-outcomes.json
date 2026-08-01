@@ -1,0 +1,163 @@
+{
+  "schema_version": "aos-real-workflow-review-outcomes/v0",
+  "study_id": "aos-real-workflow-utility-2026-08-01",
+  "frozen_at": "2026-08-01T08:23:00Z",
+  "retains_raw_comment_text": false,
+  "stage_a_definition": "Human review history is classified before AOS execution. Bot-only output, merge alone, approval without rationale, and silence do not establish an actionable outcome.",
+  "protocol_deviation": {
+    "affected_cases": 5,
+    "case_ids": [
+      "pl-allegro-hermes-2052",
+      "global-apache-kafka-23015",
+      "pl-softwaremill-tapir-5442",
+      "global-scala-scala3-25393",
+      "pl-saleor-saleor-19587"
+    ],
+    "reason": "AOS execution preceded Stage A review extraction.",
+    "effect": "These cases are excluded from blinded historical-action alignment. They remain eligible for mechanism, timing, exact-SHA, contrast, and message-structure metrics."
+  },
+  "cases": [
+    {
+      "case_id": "global-django-django-21681",
+      "stage_a_status": "frozen_before_aos",
+      "source_urls": [
+        "https://github.com/django/django/pull/21681#pullrequestreview-4822524661",
+        "https://github.com/django/django/pull/21681#issuecomment-5150259194"
+      ],
+      "human_outcome_available": true,
+      "outcome": "Reviewer requested that validation errors identify the failing file; the author changed error handling, added regression tests, and documented the validation parameter.",
+      "review_effect": "changes_requested_then_action_taken",
+      "business_relevance": "material",
+      "business_risk": "reliability_and_user_facing_diagnostics",
+      "confidence": "high",
+      "stage_b": {
+        "alignment": "none",
+        "rationale": "AOS warned that no status check was required; the human outcome concerned file-specific validation errors, regression tests, and documentation."
+      }
+    },
+    {
+      "case_id": "pl-virtuslab-scala-cli-4403",
+      "stage_a_status": "frozen_before_aos",
+      "source_urls": [
+        "https://github.com/VirtusLab/scala-cli/pull/4403#pullrequestreview-4817303742"
+      ],
+      "human_outcome_available": false,
+      "outcome": "Human approval is visible, but it contains no rationale from which a problem or action can be extracted.",
+      "review_effect": "approval_without_extractable_outcome",
+      "business_relevance": "insufficient",
+      "business_risk": "insufficient",
+      "confidence": "high",
+      "stage_b": {
+        "alignment": "insufficient",
+        "rationale": "The approval contains no extractable human problem or action."
+      }
+    },
+    {
+      "case_id": "global-sbt-sbt-9515",
+      "stage_a_status": "frozen_before_aos",
+      "source_urls": [
+        "https://github.com/sbt/sbt/pull/9515#issuecomment-5094086306",
+        "https://github.com/sbt/sbt/pull/9515#issuecomment-5099446502"
+      ],
+      "human_outcome_available": true,
+      "outcome": "A maintainer requested splitting a broad change because the update task has many downstream users; the author split the work into four pull requests.",
+      "review_effect": "scope_reduction_requested_then_action_taken",
+      "business_relevance": "material",
+      "business_risk": "change_blast_radius_and_release_risk",
+      "confidence": "high",
+      "stage_b": {
+        "alignment": "none",
+        "rationale": "AOS warned that no status check was required; the maintainer requested splitting a broad change because of downstream blast radius."
+      }
+    },
+    {
+      "case_id": "pl-callstack-react-native-paper-5038",
+      "stage_a_status": "frozen_before_aos",
+      "source_urls": [],
+      "human_outcome_available": false,
+      "outcome": "No public human review outcome was available at the data cutoff.",
+      "review_effect": "right_censored_open_case",
+      "business_relevance": "insufficient",
+      "business_risk": "insufficient",
+      "confidence": "high",
+      "stage_b": {
+        "alignment": "insufficient",
+        "rationale": "No public human outcome was available."
+      }
+    },
+    {
+      "case_id": "global-mui-material-ui-48888",
+      "stage_a_status": "frozen_before_aos",
+      "source_urls": [
+        "https://github.com/mui/material-ui/pull/48888#issuecomment-5149784815"
+      ],
+      "human_outcome_available": false,
+      "outcome": "Only an automated deployment-preview comment was available at the data cutoff.",
+      "review_effect": "bot_only_right_censored_open_case",
+      "business_relevance": "insufficient",
+      "business_risk": "insufficient",
+      "confidence": "high",
+      "stage_b": {
+        "alignment": "insufficient",
+        "rationale": "Only automated output was available."
+      }
+    }
+  ],
+  "post_aos_exploratory_cases": [
+    {
+      "case_id": "pl-allegro-hermes-2052",
+      "source_urls": [
+        "https://github.com/allegro/hermes/pull/2052#issuecomment-5059037504"
+      ],
+      "human_outcome_available": false,
+      "outcome": "Only an automated benchmark comparison was available.",
+      "business_relevance": "insufficient"
+    },
+    {
+      "case_id": "global-apache-kafka-23015",
+      "source_urls": [
+        "https://github.com/apache/kafka/pull/23015#issuecomment-5150235794",
+        "https://github.com/apache/kafka/pull/23015#pullrequestreview-4833962128",
+        "https://github.com/apache/kafka/pull/23015#issuecomment-5150402691"
+      ],
+      "human_outcome_available": true,
+      "outcome": "A maintainer requested broader command coverage because Gradle upgrades had caused prior problems; additional commands were executed and reported.",
+      "business_relevance": "material",
+      "business_risk": "build_and_release_regression",
+      "stage_b": {
+        "alignment": "same_surface",
+        "rationale": "Both concern incomplete verification, but the human request names additional Gradle commands while AOS names a missing required CI aggregator that GitHub already awaited."
+      }
+    },
+    {
+      "case_id": "pl-softwaremill-tapir-5442",
+      "source_urls": [],
+      "human_outcome_available": false,
+      "outcome": "No public human review outcome was available.",
+      "business_relevance": "insufficient"
+    },
+    {
+      "case_id": "global-scala-scala3-25393",
+      "source_urls": [
+        "https://github.com/scala/scala3/pull/25393#discussion_r2865367845",
+        "https://github.com/scala/scala3/pull/25393#discussion_r3520140374",
+        "https://github.com/scala/scala3/pull/25393#issuecomment-4994423276"
+      ],
+      "human_outcome_available": true,
+      "outcome": "Review focused on unintended code scope, language semantics, and a possibly spurious HTML Proofer failure; AOS returned PASS for required checks.",
+      "business_relevance": "material",
+      "business_risk": "language_semantics_and_change_scope",
+      "stage_b": {
+        "alignment": "none",
+        "rationale": "The required-check gate did not model the semantic and scope concerns raised by reviewers."
+      }
+    },
+    {
+      "case_id": "pl-saleor-saleor-19587",
+      "source_urls": [],
+      "human_outcome_available": false,
+      "outcome": "No public human review outcome was available.",
+      "business_relevance": "insufficient"
+    }
+  ]
+}

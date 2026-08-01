@@ -1,0 +1,256 @@
+{
+  "can_block": false,
+  "generator": {
+    "tool": "aos-workflow-gate",
+    "verifier_manifest": {
+      "files": {
+        "__init__.py": "850a445add6ed7ef05b6fb220b3dd578a56eebb658a85a4fd44b508faf749da6",
+        "__main__.py": "5c9593931cf0c39297c5b4c29c7151af598be0376dfde1444b5c2498e80a8fcb",
+        "adapters.py": "ac1640d3d1c62bfd0c10f74a69e73c7fee9331ef12641d1884d852de9bc0a6fe",
+        "agent_action.py": "ec2d44122b4936c6eae54ad6a5b0bbe6ff17bbcbd51ec0c96ba4c57bccb71de1",
+        "bench.py": "ced7112d3e06d6fe402d578a8da7c888e9beea6d2b128c4b97036f1ce70a927d",
+        "canonical.py": "06c5b89156d072159c98eaaee7ae55e2ba33e807570f1f9c9a76a67a5e8ffb0b",
+        "change_proof.py": "4475fcbf51f2c3d978590ae0176c525509830e8ebdcefb03f815b6dc60b8a080",
+        "checkpr.py": "c61a94169fc3f612fbec9ceb386b89c6e5939f4a2b3659e982037c923ec3735e",
+        "cli.py": "b1ed35d34d404000feba0677c7d6d14dc54460d237c51bed6bf56b6ffe0201d9",
+        "collect.py": "139fe35af31a3573b97cc9465ba18b9b44ee6e02857d1a86f387dc3ec96d29dc",
+        "diagnostics.py": "3a87867df52d713273928e5ccd5dea76a88070d85e4a8d5dd2098449111a7e20",
+        "errors.py": "1bf32a57c6a3dcb23a3c9e281864998f188a4b87a958a5d2eabb12381a1f0ea6",
+        "evaluate.py": "3e92eb472d7d770e40123c093af238605a4fd4622c87dd968a3b64a60a953ee8",
+        "evidence.py": "2e67d6f1e92dd473b79c19abfb4cdaaba84cb0ee39b951223d3d5995d3869138",
+        "export.py": "0d8f28fc9c4ed5abffb0c761223200608262edd1460e80677a5712a1b1238340",
+        "github_decision_check.py": "d23dbbc449026b69766d1f6267db414620d5cbf3f032028bd0614b753adab897",
+        "manifest.py": "d21463f2bfab7d0c642d2cf07c9692fbe79c22321331258831cb25a90be5c66d",
+        "packs/agent-review-advisory.yml": "e5470dbe10ca7cc4a85c72ae820c850270189af9d67d3a864747531f17e1ef8a",
+        "packs/code-change-proof.yml": "892aaa426ae8a489dba230e4b7f3e2eabfb15202191c39ea1cb9537a9432e6ca",
+        "packs/evidence-integrity.yml": "9b5e51adeee56dc9c0cb755a2668ae229356d2d8467c8002e1ec7160500b6ecd",
+        "packs/minimal-pr-gate.yml": "1ddc1447fc1fd2167e898a7d31146cbe1beb175d011b4fc597de22be4d7d2b5d",
+        "packs/project-check.yml": "ff0d8c16a527687adac4eb3c2a391fda565d8c4f0c7f50bb4aa125e6ea145aa0",
+        "packs/release-candidate.yml": "53dc65b046595734cbfae4f064f4f1677b9918bdd39c1a0a59f323c71d57d4e1",
+        "paths.py": "4ef71be9542817de4e8ab0900fab68bd865ed12eb1e862b19711d6d2475848c1",
+        "policy.py": "e1e4d6205aa2017bd706b5f0c3cfb479b8de3a0344356b3ecec751d773aa4070",
+        "preflight.py": "147f73ec1d337260a3867dd423558bddc1681b34ed23b14a2b3884560de8f6de",
+        "project_check.py": "f41fe66148fe62ff43b6d906fddb3f5462ef1bda3530d3a06ecabeb76ca9aa2f",
+        "requirements.py": "dad78b09daae9f567e9c4f2f53e3104bbdbe3944f8ffe8d87cee4f21544abac9",
+        "source_contract.py": "fc5f521f160bbbb89cd796da4a16b12f46f2b5e242e5150756f8e2fc532f22f7",
+        "summarize.py": "7ac1711975db965fcdcb47f6155cc5b8e219b6e649282cda28e2272d87e57775",
+        "verifier_change.py": "34a5e63d63a5b74a69ad9c114216e83e9e5b82fcf5c7d340c77432dcb46fb451",
+        "version.py": "b07fbe6d591529935a5fdb3b0a3d4049ef3b2b1b10e953233dc93e3cdd9f702e",
+        "workflow_state.py": "1def696fff927cc7516030c0b94164d265006d8b720ee4cea0dd62d2e403c38f"
+      },
+      "manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+      "schema_version": "verifier-manifest-v0"
+    },
+    "verifier_manifest_digest": "sha256:79a7ffd908fc2d0748a98a36b6d08859c6c02881f12b20150ee1ee974bc5a527",
+    "version": "0.38.0"
+  },
+  "input_bundle_digest": "sha256:c56419182f90c32145f0b22372c31ef5b00d4d5115c4c2edc7d6cf8b6adffa66",
+  "inputs": [
+    {
+      "digest": "sha256:f0099785dd4269107305b850d006c87551bd4c59d71f46e0bb1d661ec0416ea6",
+      "id": "Continuous Releases",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:0dcde0c1f1aaadae209fef79e263e85da3d2bf8cfe16b5c7c133beafb922e074",
+      "id": "Publish Dry Run",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:2999de64926d70acba484d9d1abeb5d08f3cc99db97086d817b81048235ff71d",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:6856ed8316fc78fc4cd4fa5c21679cb0ef05cacfae0d4ee9f23c5943fe801afb",
+      "id": "ci/circleci: test_browser",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:bfa011553dbe139c60e04db8981aaf69178505c53c67f206c2e697016c9793db",
+      "id": "ci/circleci: test_browser_legacy",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:8321beda89b8a7d490a4afc6a1a16137f94a1cdcec43afc03a447027733a34a7",
+      "id": "ci/circleci: test_bundle_size_monitor",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:9038003fbc0b0701114be4aa97a3ad9891bf53608a7785d711e53815ba9f0901",
+      "id": "ci/circleci: test_e2e",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:591205b316f8b25224450d35a3e114f0b54de58f226319de620388fe0477761a",
+      "id": "ci/circleci: test_e2e_website",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:cf4e9f533f342b4d9455dd827fb7176c510f5f5e0bb7d2054a86151204355790",
+      "id": "ci/circleci: test_lint",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:823cdf2279ef29d96f39a46a81e3116ee2527260606c041a2d99f58980246f02",
+      "id": "ci/circleci: test_regressions",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:67b250986a8c6279a2bdbead101e4419736760dac80eaf5389f4c06988e96e84",
+      "id": "ci/circleci: test_static",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:57f77b6bef502b55a73281ff13920183e7acafd8e13bc755224bd77ff0a90176",
+      "id": "ci/circleci: test_types",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:0c869c51963268800e2e78311ea52f506bf7c737eca4560f42f9648d81694288",
+      "id": "ci/circleci: test_unit",
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:d461aad0722bacc1956bdb1a6987770eb3d31e2eba2660cbee6bc16a44b6353f",
+      "id": "test-dev (macos-latest)",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:85c62fcb2332c18eed510bc383378ec257c67cc013e292981a1ff7c9346459f8",
+      "id": "test-dev (ubuntu-latest)",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:4f4bd334e2d477fa4cac4d3a04086bcff163f564ebd702cb734bf1a21df89b8d",
+      "id": "test-dev (windows-latest)",
+      "kind": "github_check",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success"
+    },
+    {
+      "digest": "sha256:26734b1d57dcc7a67d165b24a894354fcea9a0a6c3e9973f86cf85439595d52a",
+      "id": "test-label-applied",
+      "kind": "github_check",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure"
+    }
+  ],
+  "observation": {
+    "github_baseline": "waiting",
+    "observation_scope": {
+      "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+      "repository": "mui/material-ui"
+    },
+    "observed_at": "2026-08-01T08:49:06Z",
+    "protection_source": "rulesets",
+    "status": "wait_timeout",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "acknowledged": false,
+      "available": true,
+      "non_independent_sources": 0,
+      "routine_bump_excluded": false
+    },
+    "workflow_visibility": {
+      "action_required": 0,
+      "available": true,
+      "not_started": 0,
+      "units_total": 3
+    }
+  },
+  "policy": {
+    "digest": "sha256:5c328680a30ddd2ae3f2238ee850a45fccac80b482eed8231d699a9a00e2cb9c",
+    "mode": "advisory",
+    "policy_id": "collected-advisory",
+    "required_status_semantics": "github",
+    "verification_status": "UNSIGNED_NOT_OFFICIAL"
+  },
+  "reasons": [
+    {
+      "detail": "collection ended 'wait_timeout', not 'complete': signals that exist for this commit may be absent from the bundle, so a clean result cannot be read as a complete PASS",
+      "rule": "incomplete_collection",
+      "severity": "WARN",
+      "source_id": null,
+      "state": "wait_timeout"
+    },
+    {
+      "detail": "required source is absent from the bundle (requirement state: unverifiable)",
+      "rule": "missing_required_source",
+      "severity": "BLOCK",
+      "source_id": "argos",
+      "state": "unverifiable"
+    },
+    {
+      "detail": "required source is absent from the bundle (requirement state: unverifiable)",
+      "rule": "missing_required_source",
+      "severity": "BLOCK",
+      "source_id": "deploy/netlify",
+      "state": "unverifiable"
+    },
+    {
+      "detail": "advisory source status is 'failure'",
+      "rule": "advisory_warning",
+      "severity": "PASS",
+      "source_id": "test-label-applied"
+    }
+  ],
+  "record_digest": "sha256:10662b9ecf0ac5e5a0b9676c45c317779243524fed327df0593835917fdb925e",
+  "schema_version": "aos-workflow-gate-decision/v0",
+  "subject": {
+    "pull_request": 48888,
+    "ref": "refs/pull/48888/head",
+    "repository": "mui/material-ui",
+    "sha": "0638f439ab59289fa49a7d9202cfefc07364fbea"
+  },
+  "summary": "Gate BLOCK: 2 blocking issue(s). missing_required_source:argos; missing_required_source:deploy/netlify",
+  "verdict": "BLOCK",
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

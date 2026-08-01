@@ -1,0 +1,61 @@
+BLOCK  Gate BLOCK: 7 blocking issue(s). missing_required_source:Build docs; missing_required_source:Build example; missing_required_source:Build package; missing_required_source:Lint; missing_required_source:Typecheck; missing_required_source:Unit tests; missing_required_source:Validate PR title
+record: benchmarks\real-workflow-utility\cases\pl-callstack-react-native-paper-5038\gate-decision.json
+Merge protection: 7 required status check(s) enforced by rulesets on 'main'.
+GitHub baseline (status checks only): waiting.
+Fork PR: some checks may not run for forks by repository policy.
+Workflow visibility: 2 execution unit(s) on this commit have not started (2 awaiting approval/action): CI, Semantic Pull Request
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: BLOCK
+
+**Problem:** Required check 'Build docs' did not run for this commit.
+**Why it matters:** The protection expected from this control was not applied to this commit.
+**Affected area:** Required control 'Build docs'
+**Severity:** BLOCK
+**Next step:** restore the workflow that emits 'Build docs' or remove the obsolete required-check setting, then re-run the gate
+**Decision contrast:** GitHub already blocks or waits on required checks; AOS explains and preserves that existing control gap.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 7 required (0 successful); 2 other observation(s)
+**Scope:** 7 required check(s) plus recorded workflow signals on callstack/react-native-paper@2d099bd2a91e; requirements read from rulesets; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:48:59Z; collection wait\_timeout; 2 workflow unit(s) had not started
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | callstack/react-native-paper |
+| Ref | `refs/pull/5038/head` |
+| Commit | `2d099bd2a91ec946db547751b8e0f06a1c824155` |
+| Pull request | #5038 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:63e3ec3c64567517fda997fafa48c73217c96166cacb50a1506bb484afbab398` |
+| Input bundle digest | `sha256:41cfb9617e2fc86392b366d1be14257177f2773b0cfccc97924d500431ecd9c8` |
+| Record digest | `sha256:d913c8d853d03f8af3610229216251ca42ddba6192cf22bb17b83d416c0fa1ed` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+**Dominant problem:** 'Build docs': required source is absent from the bundle (requirement state: missing)
+
+### Top gaps
+
+- BLOCK `missing_required_source` Build docs: required source is absent from the bundle (requirement state: missing)
+  - Hint: restore the workflow that emits 'Build docs' or remove the obsolete required-check setting, then re-run the gate
+- BLOCK `missing_required_source` Build example: required source is absent from the bundle (requirement state: missing)
+  - Hint: restore the workflow that emits 'Build example' or remove the obsolete required-check setting, then re-run the gate
+- BLOCK `missing_required_source` Build package: required source is absent from the bundle (requirement state: missing)
+  - Hint: restore the workflow that emits 'Build package' or remove the obsolete required-check setting, then re-run the gate
+- ...and 5 more reason(s) - every one is in the record JSON and the HTML evidence view.
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| Add contributor label | github\_check | no | success |
+| branch.rules | branch\_rules\_summary | no | success |
+
+### Coverage
+
+- Required sources: 0 of 2
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "Add contributor label"`

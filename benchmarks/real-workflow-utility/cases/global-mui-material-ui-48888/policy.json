@@ -1,0 +1,45 @@
+{
+  "advisory_sources": [
+    "Publish Dry Run",
+    "branch.rules",
+    "test-label-applied"
+  ],
+  "mode": "advisory",
+  "policy_id": "collected-advisory",
+  "required_sources": [
+    "Continuous Releases",
+    "argos",
+    "ci/circleci: test_browser",
+    "ci/circleci: test_browser_legacy",
+    "ci/circleci: test_bundle_size_monitor",
+    "ci/circleci: test_e2e",
+    "ci/circleci: test_e2e_website",
+    "ci/circleci: test_lint",
+    "ci/circleci: test_regressions",
+    "ci/circleci: test_static",
+    "ci/circleci: test_types",
+    "ci/circleci: test_unit",
+    "deploy/netlify",
+    "test-dev (macos-latest)",
+    "test-dev (ubuntu-latest)",
+    "test-dev (windows-latest)"
+  ],
+  "required_status_semantics": "github",
+  "rules": {
+    "advisory_warning": "PASS",
+    "failed_required_source": "BLOCK",
+    "incomplete_collection": "WARN",
+    "malformed_input": "BLOCK",
+    "missing_required_source": "BLOCK",
+    "no_required_sources": "WARN",
+    "non_independent_evidence": "WARN",
+    "sarif_findings": "WARN",
+    "verifier_change_unavailable": "WARN"
+  },
+  "schema_version": "draft-0",
+  "subject": {
+    "require_repository": true,
+    "require_sha": true
+  },
+  "verification_status": "UNSIGNED_NOT_OFFICIAL"
+}

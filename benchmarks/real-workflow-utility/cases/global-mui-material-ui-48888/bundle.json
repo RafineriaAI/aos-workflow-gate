@@ -1,0 +1,586 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "counterfactual_blockers": [
+      "test-label-applied"
+    ],
+    "github_baseline": "waiting",
+    "incomplete_required": [
+      "argos",
+      "deploy/netlify"
+    ],
+    "observation_scope": {
+      "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+      "repository": "mui/material-ui"
+    },
+    "observed_at": "2026-08-01T08:49:06Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:cd43f61a56d6a7c86bd8b2700bc487600f6321429a4049cd1263bbd05d3a2092",
+    "protection_source": "rulesets",
+    "required_controls": [
+      {
+        "context": "Continuous Releases",
+        "integration_id": 882742,
+        "source_id": "Continuous Releases"
+      },
+      {
+        "context": "argos",
+        "integration_id": 57576,
+        "source_id": "argos"
+      },
+      {
+        "context": "ci/circleci: test_browser",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_browser"
+      },
+      {
+        "context": "ci/circleci: test_browser_legacy",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_browser_legacy"
+      },
+      {
+        "context": "ci/circleci: test_bundle_size_monitor",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_bundle_size_monitor"
+      },
+      {
+        "context": "ci/circleci: test_e2e",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_e2e"
+      },
+      {
+        "context": "ci/circleci: test_e2e_website",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_e2e_website"
+      },
+      {
+        "context": "ci/circleci: test_lint",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_lint"
+      },
+      {
+        "context": "ci/circleci: test_regressions",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_regressions"
+      },
+      {
+        "context": "ci/circleci: test_static",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_static"
+      },
+      {
+        "context": "ci/circleci: test_types",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_types"
+      },
+      {
+        "context": "ci/circleci: test_unit",
+        "integration_id": null,
+        "source_id": "ci/circleci: test_unit"
+      },
+      {
+        "context": "deploy/netlify",
+        "integration_id": 13473,
+        "source_id": "deploy/netlify"
+      },
+      {
+        "context": "test-dev (macos-latest)",
+        "integration_id": 15368,
+        "source_id": "test-dev (macos-latest)"
+      },
+      {
+        "context": "test-dev (ubuntu-latest)",
+        "integration_id": 15368,
+        "source_id": "test-dev (ubuntu-latest)"
+      },
+      {
+        "context": "test-dev (windows-latest)",
+        "integration_id": 15368,
+        "source_id": "test-dev (windows-latest)"
+      }
+    ],
+    "requirements": [
+      {
+        "context": "Continuous Releases",
+        "github_equivalent": "would_pass",
+        "integration_id": 882742,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "argos",
+        "github_equivalent": "would_wait",
+        "integration_id": 57576,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "unverifiable"
+      },
+      {
+        "context": "ci/circleci: test_browser",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "ci/circleci: test_browser_legacy",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "ci/circleci: test_bundle_size_monitor",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "ci/circleci: test_e2e",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "ci/circleci: test_e2e_website",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "ci/circleci: test_lint",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "ci/circleci: test_regressions",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "ci/circleci: test_static",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "ci/circleci: test_types",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "ci/circleci: test_unit",
+        "github_equivalent": "would_pass",
+        "integration_id": null,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "deploy/netlify",
+        "github_equivalent": "would_wait",
+        "integration_id": 13473,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "unverifiable"
+      },
+      {
+        "context": "test-dev (macos-latest)",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "test-dev (ubuntu-latest)",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "test-dev (windows-latest)",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "satisfied"
+      }
+    ],
+    "rules_digest": "sha256:2999de64926d70acba484d9d1abeb5d08f3cc99db97086d817b81048235ff71d",
+    "status": "wait_timeout",
+    "strict_up_to_date_required": false,
+    "unverifiable_required": [
+      "argos",
+      "deploy/netlify"
+    ],
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "6cca37e953d70fa314e67d897a98d4d52f3b8999",
+        "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+        "pull_request": 48888,
+        "repository": "mui/material-ui"
+      },
+      "unchanged_workflow_runs": 2,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [],
+      "states": {
+        "action_required": 0,
+        "completed": 3,
+        "pending": 0
+      },
+      "units_total": 3
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:f0099785dd4269107305b850d006c87551bd4c59d71f46e0bb1d661ec0416ea6",
+      "id": "Continuous Releases",
+      "identity": {
+        "check_run_id": 91326174068,
+        "completed_at": "2026-08-01T04:26:52Z",
+        "conclusion": "success",
+        "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+        "name": "Continuous Releases",
+        "requirement_identity": {
+          "context": "Continuous Releases",
+          "integration_id": 882742
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T04:26:52Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91326174068 concluded success."
+    },
+    {
+      "digest": "sha256:0dcde0c1f1aaadae209fef79e263e85da3d2bf8cfe16b5c7c133beafb922e074",
+      "id": "Publish Dry Run",
+      "identity": {
+        "check_run_id": 91325860247,
+        "completed_at": "2026-08-01T04:25:36Z",
+        "conclusion": "success",
+        "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+        "name": "Publish Dry Run",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T04:25:36Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91325860247 concluded success."
+    },
+    {
+      "digest": "sha256:2999de64926d70acba484d9d1abeb5d08f3cc99db97086d817b81048235ff71d",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: creationx1, deletionx1, non_fast_forwardx1, pull_requestx2, repository_deletex1, repository_namex1, repository_transferx1, required_status_checksx1; 16 required status check(s)."
+    },
+    {
+      "digest": "sha256:6856ed8316fc78fc4cd4fa5c21679cb0ef05cacfae0d4ee9f23c5943fe801afb",
+      "id": "ci/circleci: test_browser",
+      "identity": {
+        "context": "ci/circleci: test_browser",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_browser' is success."
+    },
+    {
+      "digest": "sha256:bfa011553dbe139c60e04db8981aaf69178505c53c67f206c2e697016c9793db",
+      "id": "ci/circleci: test_browser_legacy",
+      "identity": {
+        "context": "ci/circleci: test_browser_legacy",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_browser_legacy' is success."
+    },
+    {
+      "digest": "sha256:8321beda89b8a7d490a4afc6a1a16137f94a1cdcec43afc03a447027733a34a7",
+      "id": "ci/circleci: test_bundle_size_monitor",
+      "identity": {
+        "context": "ci/circleci: test_bundle_size_monitor",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_bundle_size_monitor' is success."
+    },
+    {
+      "digest": "sha256:9038003fbc0b0701114be4aa97a3ad9891bf53608a7785d711e53815ba9f0901",
+      "id": "ci/circleci: test_e2e",
+      "identity": {
+        "context": "ci/circleci: test_e2e",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_e2e' is success."
+    },
+    {
+      "digest": "sha256:591205b316f8b25224450d35a3e114f0b54de58f226319de620388fe0477761a",
+      "id": "ci/circleci: test_e2e_website",
+      "identity": {
+        "context": "ci/circleci: test_e2e_website",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_e2e_website' is success."
+    },
+    {
+      "digest": "sha256:cf4e9f533f342b4d9455dd827fb7176c510f5f5e0bb7d2054a86151204355790",
+      "id": "ci/circleci: test_lint",
+      "identity": {
+        "context": "ci/circleci: test_lint",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_lint' is success."
+    },
+    {
+      "digest": "sha256:823cdf2279ef29d96f39a46a81e3116ee2527260606c041a2d99f58980246f02",
+      "id": "ci/circleci: test_regressions",
+      "identity": {
+        "context": "ci/circleci: test_regressions",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_regressions' is success."
+    },
+    {
+      "digest": "sha256:67b250986a8c6279a2bdbead101e4419736760dac80eaf5389f4c06988e96e84",
+      "id": "ci/circleci: test_static",
+      "identity": {
+        "context": "ci/circleci: test_static",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_static' is success."
+    },
+    {
+      "digest": "sha256:57f77b6bef502b55a73281ff13920183e7acafd8e13bc755224bd77ff0a90176",
+      "id": "ci/circleci: test_types",
+      "identity": {
+        "context": "ci/circleci: test_types",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_types' is success."
+    },
+    {
+      "digest": "sha256:0c869c51963268800e2e78311ea52f506bf7c737eca4560f42f9648d81694288",
+      "id": "ci/circleci: test_unit",
+      "identity": {
+        "context": "ci/circleci: test_unit",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": true,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'ci/circleci: test_unit' is success."
+    },
+    {
+      "digest": "sha256:d461aad0722bacc1956bdb1a6987770eb3d31e2eba2660cbee6bc16a44b6353f",
+      "id": "test-dev (macos-latest)",
+      "identity": {
+        "check_run_id": 91325860268,
+        "completed_at": "2026-08-01T04:35:09Z",
+        "conclusion": "success",
+        "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+        "name": "test-dev (macos-latest)",
+        "requirement_identity": {
+          "context": "test-dev (macos-latest)",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T04:35:09Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91325860268 concluded success."
+    },
+    {
+      "digest": "sha256:85c62fcb2332c18eed510bc383378ec257c67cc013e292981a1ff7c9346459f8",
+      "id": "test-dev (ubuntu-latest)",
+      "identity": {
+        "check_run_id": 91325860263,
+        "completed_at": "2026-08-01T04:34:15Z",
+        "conclusion": "success",
+        "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+        "name": "test-dev (ubuntu-latest)",
+        "requirement_identity": {
+          "context": "test-dev (ubuntu-latest)",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T04:34:15Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91325860263 concluded success."
+    },
+    {
+      "digest": "sha256:4f4bd334e2d477fa4cac4d3a04086bcff163f564ebd702cb734bf1a21df89b8d",
+      "id": "test-dev (windows-latest)",
+      "identity": {
+        "check_run_id": 91325860253,
+        "completed_at": "2026-08-01T04:34:57Z",
+        "conclusion": "success",
+        "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+        "name": "test-dev (windows-latest)",
+        "requirement_identity": {
+          "context": "test-dev (windows-latest)",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T04:34:57Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91325860253 concluded success."
+    },
+    {
+      "digest": "sha256:26734b1d57dcc7a67d165b24a894354fcea9a0a6c3e9973f86cf85439595d52a",
+      "id": "test-label-applied",
+      "identity": {
+        "check_run_id": 91325860189,
+        "completed_at": "2026-08-01T04:23:27Z",
+        "conclusion": "failure",
+        "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+        "name": "test-label-applied",
+        "run_status": "completed",
+        "status": "failure"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T04:23:27Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure",
+      "summary": "GitHub check run 91325860189 concluded failure."
+    }
+  ],
+  "subject": {
+    "pull_request": 48888,
+    "ref": "refs/pull/48888/head",
+    "repository": "mui/material-ui",
+    "sha": "0638f439ab59289fa49a7d9202cfefc07364fbea"
+  }
+}

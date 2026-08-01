@@ -1,0 +1,13 @@
+{
+  "artifact_serialization": "ascii-safe-json",
+  "case_id": "pl-softwaremill-tapir-5442",
+  "completed_at": "2026-08-01T08:48:21Z",
+  "elapsed_seconds": 5.774,
+  "exit_code": 0,
+  "record_self_check": true,
+  "schema_version": "aos-real-workflow-execution/v0",
+  "selected_head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+  "started_from_pr_url": "https://github.com/softwaremill/tapir/pull/5442",
+  "stdout_encoding": "utf-8",
+  "token_present": true
+}

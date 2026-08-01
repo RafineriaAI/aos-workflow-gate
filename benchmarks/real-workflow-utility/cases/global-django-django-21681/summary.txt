@@ -1,0 +1,99 @@
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).
+record: benchmarks\real-workflow-utility\cases\global-django-django-21681\gate-decision.json
+Merge protection: 0 required status check(s) enforced by none on 'main'.
+GitHub baseline (status checks only): no_required_checks.
+Effect: nothing in the branch rules blocks this merge on status checks; the record is evidence, not enforcement.
+Fork PR: some checks may not run for forks by repository policy.
+Counterfactual: would BLOCK if required: Coverage Tests (PostgreSQL), PostgreSQL, PostgreSQL ${{ matrix.pg_major }}, Run_benchmarks, SQLite, Screenshots, Ubuntu, SQLite, Python 3.14t, check-commit-prefix, define-matrix, python
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: WARN
+
+**Problem:** GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+**Decision contrast:** GitHub has no required status-check gate for this branch; AOS records that coverage fact separately.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 0 required (0 successful); 46 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on django/django@8251b3bf9863; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:48:39Z; collection complete
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | django/django |
+| Ref | `refs/pull/21681/head` |
+| Commit | `8251b3bf9863d2603b4cb05b2a35a44a1e37c570` |
+| Pull request | #21681 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:08973911ff0dddc1298a6d23a1a53965177bc907bf2c5c43d19a5e2146b99001` |
+| Input bundle digest | `sha256:37c6fd84f6b5c7f6c9c89f6f5372e12e46662027b13e5ed7532cd9d685d85a92` |
+| Record digest | `sha256:ce7250c6d6f64caafb821f12c416d4394281f146cd44c4654dca6c4956c6c5f1` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+### Top gaps
+
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| Coverage Tests (PostgreSQL) | github\_check | no | skipped |
+| JavaScript tests | github\_check | no | success |
+| PostgreSQL | github\_check | no | skipped |
+| PostgreSQL ${{ matrix.pg\_major }} | github\_check | no | skipped |
+| Run Quality Checks on a PR | github\_check | no | success |
+| Run\_benchmarks | github\_check | no | skipped |
+| SQLite | github\_check | no | skipped |
+| Screenshots | github\_check | no | skipped |
+| Scripts tests | github\_check | no | success |
+| Ubuntu, SQLite, Python 3.14t | github\_check | no | failure |
+| Windows, SQLite, Python 3.14 | github\_check | no | success |
+| biome | github\_check | no | success |
+| black | github\_check | no | success |
+| branch.rules | branch\_rules\_summary | no | success |
+| check-commit-prefix | github\_check | no | skipped |
+| check-commit-suffix | github\_check | no | success |
+| define-matrix | github\_check | no | skipped |
+| docs | github\_check | no | success |
+| flake8 | github\_check | no | success |
+| isort | github\_check | no | success |
+| pr-mariadb/database=mysql,label=mariadb,python=python3.14 | commit\_status | no | success |
+| pr-mariadb/database=mysql\_gis,label=mariadb,python=python3.14 | commit\_status | no | success |
+| pull-requests-noble/database=mysql,label=noble-pr,python=python3.12 | commit\_status | no | success |
+| pull-requests-noble/database=mysql,label=noble-pr,python=python3.13 | commit\_status | no | success |
+| pull-requests-noble/database=mysql,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| pull-requests-noble/database=mysql\_gis,label=noble-pr,python=python3.12 | commit\_status | no | success |
+| pull-requests-noble/database=mysql\_gis,label=noble-pr,python=python3.13 | commit\_status | no | success |
+| pull-requests-noble/database=mysql\_gis,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| pull-requests-noble/database=postgis,label=noble-pr,python=python3.12 | commit\_status | no | success |
+| pull-requests-noble/database=postgis,label=noble-pr,python=python3.13 | commit\_status | no | success |
+| pull-requests-noble/database=postgis,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| pull-requests-noble/database=postgres,label=noble-pr,python=python3.12 | commit\_status | no | success |
+| pull-requests-noble/database=postgres,label=noble-pr,python=python3.13 | commit\_status | no | success |
+| pull-requests-noble/database=postgres,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| pull-requests-noble/database=spatialite,label=noble-pr,python=python3.12 | commit\_status | no | success |
+| pull-requests-noble/database=spatialite,label=noble-pr,python=python3.13 | commit\_status | no | success |
+| pull-requests-noble/database=spatialite,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.12 | commit\_status | no | success |
+| pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.13 | commit\_status | no | success |
+| pull-requests-noble/database=sqlite3,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| pull-requests-pg-server-side-binding/database=postgis,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| pull-requests-pg-server-side-binding/database=postgres,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| pull-requests-postgresql-psycopg2/database=postgis,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| pull-requests-postgresql-psycopg2/database=postgres,label=noble-pr,python=python3.14 | commit\_status | no | success |
+| python | github\_check | no | skipped |
+| zizmor | github\_check | no | success |
+
+### Coverage
+
+- Required sources: 0 of 46
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "Coverage Tests (PostgreSQL), JavaScript tests, PostgreSQL, PostgreSQL ${{ matrix.pg_major }}, Run Quality Checks on a PR"`

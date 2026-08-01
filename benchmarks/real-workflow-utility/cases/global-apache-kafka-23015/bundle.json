@@ -1,0 +1,362 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "counterfactual_blockers": [
+      "build / JUnit tests Java 17 (flaky)",
+      "build / JUnit tests Java 25 (flaky)"
+    ],
+    "github_baseline": "waiting",
+    "incomplete_required": [
+      "build / CI checks completed"
+    ],
+    "observation_scope": {
+      "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+      "repository": "apache/kafka"
+    },
+    "observed_at": "2026-08-01T08:48:11Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": false,
+      "state": "open"
+    },
+    "protection_digest": "sha256:1673b51d420bcbf0cba69558a850fa2674535df9ffd25d086b1d05e5cc0d1abb",
+    "protection_source": "rulesets",
+    "required_controls": [
+      {
+        "context": "build / CI checks completed",
+        "integration_id": 15368,
+        "source_id": "build / CI checks completed"
+      }
+    ],
+    "requirements": [
+      {
+        "context": "build / CI checks completed",
+        "github_equivalent": "would_wait",
+        "integration_id": 15368,
+        "required_by": [
+          "rulesets"
+        ],
+        "state": "missing"
+      }
+    ],
+    "rules_digest": "sha256:be8d7249366d01a87c8cbdbe7fc5b957e30f8bb790b95c118e69fd21a23a677d",
+    "status": "wait_timeout",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "429701a0bc0767950f815b0d8ffdd132e485f704",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "pull_request": 23015,
+        "repository": "apache/kafka"
+      },
+      "unchanged_workflow_runs": 7,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83225770852,
+          "conclusion": "action_required",
+          "event": "pull_request",
+          "run_id": 30688183138,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Pull Request Reviewed"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83225771181,
+          "conclusion": null,
+          "event": "pull_request",
+          "run_id": 30688183265,
+          "source": "check_suites",
+          "state": "pending",
+          "status": "in_progress",
+          "workflow_name": "CI"
+        },
+        {
+          "app_id": 15368,
+          "app_slug": "github-actions",
+          "check_suite_id": 83227990543,
+          "conclusion": "action_required",
+          "event": "pull_request_review",
+          "run_id": 30689058929,
+          "source": "check_suites",
+          "state": "action_required",
+          "status": "completed",
+          "workflow_name": "Pull Request Reviewed"
+        }
+      ],
+      "states": {
+        "action_required": 2,
+        "completed": 4,
+        "pending": 1
+      },
+      "units_total": 7
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:3d3032f9303836cc101cd8888330015c9e1ee73fe1af6e455aa8d07d49382bad",
+      "id": "Add triage label",
+      "identity": {
+        "check_run_id": 91337959529,
+        "completed_at": "2026-08-01T06:40:22Z",
+        "conclusion": "success",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "Add triage label",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T06:40:22Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91337959529 concluded success."
+    },
+    {
+      "digest": "sha256:39e27d50c074234033cfa802dc0615e4fd06595e5d4b63491ea6730f67aeb9ab",
+      "id": "Approve CI",
+      "identity": {
+        "check_run_id": 91338030021,
+        "completed_at": "2026-08-01T06:41:13Z",
+        "conclusion": "success",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "Approve CI",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T06:41:13Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91338030021 concluded success."
+    },
+    {
+      "digest": "sha256:74f6e09aebc1262347d1ad30d8e6aad6d35c18803237d70243e67518a5d8ef11",
+      "id": "Labeler",
+      "identity": {
+        "check_run_id": 91337959573,
+        "completed_at": "2026-08-01T06:40:29Z",
+        "conclusion": "success",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "Labeler",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T06:40:29Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91337959573 concluded success."
+    },
+    {
+      "digest": "sha256:dc8de085d175f49aa01b449b87239e99fa3b87f92fd5d3487128fceb8707bd3a",
+      "id": "PR Linter",
+      "identity": {
+        "context": "PR Linter",
+        "state": "success",
+        "status": "success"
+      },
+      "kind": "commit_status",
+      "required": false,
+      "signal_source": "github_status_api",
+      "status": "success",
+      "summary": "Legacy commit status 'PR Linter' is success."
+    },
+    {
+      "digest": "sha256:37be4e73a26c08dac8520bd4589a6fb0b8fccd24d913f8676962076fa94ad233",
+      "id": "Save PR Number",
+      "identity": {
+        "check_run_id": 91342246066,
+        "completed_at": "2026-08-01T07:26:43Z",
+        "conclusion": "success",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "Save PR Number",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T07:26:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91342246066 concluded success."
+    },
+    {
+      "digest": "sha256:be8d7249366d01a87c8cbdbe7fc5b957e30f8bb790b95c118e69fd21a23a677d",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: deletionx1, non_fast_forwardx1, pull_requestx1, required_status_checksx1; 1 required status check(s)."
+    },
+    {
+      "digest": "sha256:4b7942e19beb96a0d4806671e874974fd2a32592978910e364097ec5884899d3",
+      "id": "build / Compile and Check (Merge Ref)",
+      "identity": {
+        "check_run_id": 91338059061,
+        "completed_at": "2026-08-01T06:55:03Z",
+        "conclusion": "success",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "build / Compile and Check (Merge Ref)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T06:55:03Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91338059061 concluded success."
+    },
+    {
+      "digest": "sha256:9a6b856cd51c4e37c82c2dcd1f77dd5a2a6ddc2ef6be9cb43c10f2ad162f7f90",
+      "id": "build / Configure Workflow",
+      "identity": {
+        "check_run_id": 91338049930,
+        "completed_at": "2026-08-01T06:41:19Z",
+        "conclusion": "success",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "build / Configure Workflow",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T06:41:19Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91338049930 concluded success."
+    },
+    {
+      "digest": "sha256:50b65e8a23ddcf4d1bd95132d472a05b590d7dbb196c0dc45fc518a184af5ac4",
+      "id": "build / JUnit tests Java 17 (flaky)",
+      "identity": {
+        "check_run_id": 91339357286,
+        "completed_at": "2026-08-01T07:06:47Z",
+        "conclusion": "failure",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "build / JUnit tests Java 17 (flaky)",
+        "run_status": "completed",
+        "status": "failure"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T07:06:47Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure",
+      "summary": "GitHub check run 91339357286 concluded failure."
+    },
+    {
+      "digest": "sha256:757b3666518f59124147a5a55047855ae7f96aec77acf51a77b0c18df501b2dc",
+      "id": "build / JUnit tests Java 17 (new)",
+      "identity": {
+        "check_run_id": 91339357315,
+        "completed_at": "2026-08-01T07:05:11Z",
+        "conclusion": "success",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "build / JUnit tests Java 17 (new)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T07:05:11Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91339357315 concluded success."
+    },
+    {
+      "digest": "sha256:ab7126ff1880cee8add61a3596f0272d1ed6a1411df8ec1d4a8fd4df7da0bea0",
+      "id": "build / JUnit tests Java 25 (flaky)",
+      "identity": {
+        "check_run_id": 91339357332,
+        "completed_at": "2026-08-01T07:06:10Z",
+        "conclusion": "failure",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "build / JUnit tests Java 25 (flaky)",
+        "run_status": "completed",
+        "status": "failure"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T07:06:10Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "failure",
+      "summary": "GitHub check run 91339357332 concluded failure."
+    },
+    {
+      "digest": "sha256:bedf1e54ebefae35e510157e959c5eb099081e089a4b655f4a3b1d7208c77d60",
+      "id": "build / JUnit tests Java 25 (new)",
+      "identity": {
+        "check_run_id": 91339357303,
+        "completed_at": "2026-08-01T07:04:59Z",
+        "conclusion": "success",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "build / JUnit tests Java 25 (new)",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T07:04:59Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91339357303 concluded success."
+    },
+    {
+      "digest": "sha256:0fcc8e6f9d80338b8e85c732337a4698e14950fa7f344c518614fea31368c684",
+      "id": "build / Load Test Catalog",
+      "identity": {
+        "check_run_id": 91338059092,
+        "completed_at": "2026-08-01T06:41:39Z",
+        "conclusion": "success",
+        "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+        "name": "build / Load Test Catalog",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-08-01T06:41:39Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 91338059092 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 23015,
+    "ref": "refs/pull/23015/head",
+    "repository": "apache/kafka",
+    "sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31"
+  }
+}

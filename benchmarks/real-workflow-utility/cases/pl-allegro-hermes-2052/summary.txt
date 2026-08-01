@@ -1,0 +1,18 @@
+PASS  Gate PASS: all required checks satisfied; no advisory warnings.
+record: benchmarks\real-workflow-utility\cases\pl-allegro-hermes-2052\gate-decision.json
+Merge protection: 3 required status check(s) enforced by classic_branch_protection on 'master'.
+Workflow visibility: 3 execution unit(s) on this commit have not started: github-pages, github-classroom, codecov
+Counterfactual: would BLOCK if required: Generate Allure Report
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: PASS
+
+**Result:** Every required check AOS evaluated completed successfully for this commit.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+**Next step:** set enforce: "true" (or a blocking policy) so a BLOCK verdict fails the job
+
+**Signals:** 3 required (3 successful); 11 other observation(s)
+**Scope:** 3 required check(s) plus recorded workflow signals on allegro/hermes@3537e6e6a937; requirements read from classic\_branch\_protection; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:48:03Z; collection complete; 3 workflow unit(s) had not started
+
+Record `sha256:d794ca1faf7c088e05f0d122bb3d20de2ae383787aa0af9d80d113085f1991dc` | bundle `sha256:7736a246db091bc7778658490e303c7a9371c9e98976d7ecd4595249af1f2608` | self-check OK | UNSIGNED\_NOT\_OFFICIAL

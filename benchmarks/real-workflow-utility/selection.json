@@ -1,0 +1,198 @@
+{
+  "schema_version": "aos-real-workflow-selection/v0",
+  "study_id": "aos-real-workflow-utility-2026-08-01",
+  "selected_at": "2026-08-01T08:11:30Z",
+  "status": "LOCKED_BEFORE_AOS",
+  "manifest_digest": "sha256:41ea5ee62856a3d057781bfb4988cc742e33bbc50ae0c0ee636d76e52197e1f8",
+  "selection_source": "public GitHub pull-request pages, pull-request metadata, and PR-triggered workflow-run metadata",
+  "completed_pairs": 5,
+  "selected_cases": 10,
+  "polish_cases": 5,
+  "global_cases": 5,
+  "cases": [
+    {
+      "case_id": "pl-allegro-hermes-2052",
+      "pair_id": "jvm-event-platform",
+      "cohort": "polish",
+      "repository": "allegro/hermes",
+      "pr_number": 2052,
+      "pr_url": "https://github.com/allegro/hermes/pull/2052",
+      "pr_state": "open",
+      "head_sha": "3537e6e6a9376e6f4e1aeb69baca240c9fc75cb9",
+      "workflow_runs": [
+        {"id": 30012649693, "name": "Performance benchmarks comparison", "status": "completed", "conclusion": "success"},
+        {"id": 30012649965, "name": "CI", "status": "completed", "conclusion": "success"},
+        {"id": 30012649742, "name": "Google java format", "status": "completed", "conclusion": "success"},
+        {"id": 30012649728, "name": "CodeQL", "status": "completed", "conclusion": "success"}
+      ]
+    },
+    {
+      "case_id": "global-apache-kafka-23015",
+      "pair_id": "jvm-event-platform",
+      "cohort": "global",
+      "repository": "apache/kafka",
+      "pr_number": 23015,
+      "pr_url": "https://github.com/apache/kafka/pull/23015",
+      "pr_state": "open",
+      "head_sha": "49b2a0658edfe3ac956ce4bff050deeb11f70a31",
+      "workflow_runs": [
+        {"id": 30689740157, "name": "Pull Request Reviewed", "status": "completed", "conclusion": "success"},
+        {"id": 30689677926, "name": "Pull Request Reviewed", "status": "completed", "conclusion": "success"},
+        {"id": 30688183138, "name": "Pull Request Reviewed", "status": "completed", "conclusion": "action_required"},
+        {"id": 30688183265, "name": "CI", "status": "in_progress", "conclusion": null}
+      ]
+    },
+    {
+      "case_id": "pl-softwaremill-tapir-5442",
+      "pair_id": "scala-http-api",
+      "cohort": "polish",
+      "repository": "softwaremill/tapir",
+      "pr_number": 5442,
+      "pr_url": "https://github.com/softwaremill/tapir/pull/5442",
+      "pr_state": "open",
+      "head_sha": "150d73d020779a01506df30c1b8c7f5fbf597113",
+      "workflow_runs": [
+        {"id": 30530387036, "name": "CI", "status": "completed", "conclusion": "failure"}
+      ]
+    },
+    {
+      "case_id": "global-scala-scala3-25393",
+      "pair_id": "scala-http-api",
+      "cohort": "global",
+      "repository": "scala/scala3",
+      "pr_number": 25393,
+      "pr_url": "https://github.com/scala/scala3/pull/25393",
+      "pr_state": "open",
+      "head_sha": "dcb982e90283a4f4ee79583d545c03f34a3ee654",
+      "workflow_runs": [
+        {"id": 30678953599, "name": "Specification", "status": "completed", "conclusion": "success"},
+        {"id": 30678953631, "name": "MiMa Binary Compatibility Checks", "status": "completed", "conclusion": "success"},
+        {"id": 30678953598, "name": "Compile Full Standard Library", "status": "completed", "conclusion": "success"},
+        {"id": 30678953657, "name": "Scala 3", "status": "completed", "conclusion": "success"},
+        {"id": 30678953601, "name": "Test CLI Launchers on all the platforms", "status": "completed", "conclusion": "success"},
+        {"id": 30678953611, "name": "Miscellaneous Tests", "status": "completed", "conclusion": "success"},
+        {"id": 30678953603, "name": "scaladoc", "status": "completed", "conclusion": "success"},
+        {"id": 30678953573, "name": "Scoverage", "status": "completed", "conclusion": "skipped"},
+        {"id": 30678953575, "name": "Community Build", "status": "completed", "conclusion": "success"},
+        {"id": 30678953586, "name": "Compiler Tests", "status": "in_progress", "conclusion": null}
+      ]
+    },
+    {
+      "case_id": "pl-saleor-saleor-19587",
+      "pair_id": "python-web-platform",
+      "cohort": "polish",
+      "repository": "saleor/saleor",
+      "pr_number": 19587,
+      "pr_url": "https://github.com/saleor/saleor/pull/19587",
+      "pr_state": "open",
+      "head_sha": "7580cf1771c8968a70fa141fbe3564140e3ef298",
+      "workflow_runs": [
+        {"id": 30671527486, "name": "Migrations performance test", "status": "completed", "conclusion": "action_required"},
+        {"id": 30671527482, "name": "Changelog check", "status": "completed", "conclusion": "action_required"},
+        {"id": 30671527491, "name": "Migration performance test required", "status": "completed", "conclusion": "action_required"},
+        {"id": 30671527481, "name": "e2e suite", "status": "completed", "conclusion": "action_required"},
+        {"id": 30671527479, "name": "GraphQL Inspector", "status": "completed", "conclusion": "action_required"},
+        {"id": 30671527502, "name": "Tests", "status": "completed", "conclusion": "action_required"},
+        {"id": 30671527488, "name": "Test migrations compatibility", "status": "completed", "conclusion": "action_required"},
+        {"id": 30671527535, "name": "Linters", "status": "completed", "conclusion": "action_required"}
+      ]
+    },
+    {
+      "case_id": "global-django-django-21681",
+      "pair_id": "python-web-platform",
+      "cohort": "global",
+      "repository": "django/django",
+      "pr_number": 21681,
+      "pr_url": "https://github.com/django/django/pull/21681",
+      "pr_state": "open",
+      "head_sha": "8251b3bf9863d2603b4cb05b2a35a44a1e37c570",
+      "workflow_runs": [
+        {"id": 30686711939, "name": "Tests", "status": "completed", "conclusion": "failure"},
+        {"id": 30686711951, "name": "Coverage Tests", "status": "completed", "conclusion": "skipped"},
+        {"id": 30686711960, "name": "Benchmark", "status": "completed", "conclusion": "skipped"},
+        {"id": 30686711971, "name": "GeoDjango Tests", "status": "completed", "conclusion": "skipped"},
+        {"id": 30686711961, "name": "Selenium Tests", "status": "completed", "conclusion": "skipped"},
+        {"id": 30686711945, "name": "Check commit prefix", "status": "completed", "conclusion": "success"},
+        {"id": 30686711937, "name": "Visual Regression Tests", "status": "completed", "conclusion": "skipped"},
+        {"id": 30686711967, "name": "Python Matrix from config file", "status": "completed", "conclusion": "skipped"},
+        {"id": 30686711940, "name": "Linters", "status": "completed", "conclusion": "success"},
+        {"id": 30686711938, "name": "Docs", "status": "completed", "conclusion": "success"}
+      ]
+    },
+    {
+      "case_id": "pl-virtuslab-scala-cli-4403",
+      "pair_id": "scala-build-tooling",
+      "cohort": "polish",
+      "repository": "VirtusLab/scala-cli",
+      "pr_number": 4403,
+      "pr_url": "https://github.com/VirtusLab/scala-cli/pull/4403",
+      "pr_state": "merged",
+      "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+      "workflow_runs": [
+        {"id": 30461597779, "name": "CI", "status": "completed", "conclusion": "success"}
+      ]
+    },
+    {
+      "case_id": "global-sbt-sbt-9515",
+      "pair_id": "scala-build-tooling",
+      "cohort": "global",
+      "repository": "sbt/sbt",
+      "pr_number": 9515,
+      "pr_url": "https://github.com/sbt/sbt/pull/9515",
+      "pr_state": "open",
+      "head_sha": "783fcc96709beb6c362d0cb3cbaba43dc5abce60",
+      "workflow_runs": [
+        {"id": 30615438465, "name": "Scala CLA", "status": "completed", "conclusion": "success"},
+        {"id": 30615438493, "name": "Client Test", "status": "completed", "conclusion": "success"},
+        {"id": 30615438437, "name": "Server Test", "status": "completed", "conclusion": "success"},
+        {"id": 30615438429, "name": "CI", "status": "completed", "conclusion": "failure"}
+      ]
+    },
+    {
+      "case_id": "pl-callstack-react-native-paper-5038",
+      "pair_id": "typescript-ui-library",
+      "cohort": "polish",
+      "repository": "callstack/react-native-paper",
+      "pr_number": 5038,
+      "pr_url": "https://github.com/callstack/react-native-paper/pull/5038",
+      "pr_state": "open",
+      "head_sha": "2d099bd2a91ec946db547751b8e0f06a1c824155",
+      "workflow_runs": [
+        {"id": 30282918148, "name": "CI", "status": "completed", "conclusion": "action_required"},
+        {"id": 30282918216, "name": "Semantic Pull Request", "status": "completed", "conclusion": "action_required"}
+      ]
+    },
+    {
+      "case_id": "global-mui-material-ui-48888",
+      "pair_id": "typescript-ui-library",
+      "cohort": "global",
+      "repository": "mui/material-ui",
+      "pr_number": 48888,
+      "pr_url": "https://github.com/mui/material-ui/pull/48888",
+      "pr_state": "open",
+      "head_sha": "0638f439ab59289fa49a7d9202cfefc07364fbea",
+      "workflow_runs": [
+        {"id": 30683844443, "name": "Check if PR has label", "status": "completed", "conclusion": "failure"},
+        {"id": 30683844455, "name": "CI", "status": "completed", "conclusion": "success"}
+      ]
+    }
+  ],
+  "excluded_pairs": [
+    {
+      "pair_id": "python-ai-framework",
+      "reason": "paired_attrition",
+      "polish_case": {
+        "repository": "deepsense-ai/ragbits",
+        "pr_number": 981,
+        "head_sha": "540c706ab4159f0987ac90a48282c7cc0a7a7d18",
+        "exclusion": "no_visible_pr_workflow_run"
+      },
+      "global_case": {
+        "repository": "run-llama/llama_index",
+        "pr_number": 22529,
+        "head_sha": "02005c9f1b9f23ce4a3f219ae74de172b11f5429",
+        "exclusion": "paired_counterpart_ineligible"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1733 @@
+{
+  "collection": {
+    "api_calls": 5,
+    "counterfactual_blockers": [
+      "Publish to SDKMAN",
+      "Update CentOS packages",
+      "Update Debian packages",
+      "Update Windows packages",
+      "Update installation script",
+      "Update scala-cli brew formula",
+      "Update scala-cli setup",
+      "Update scala-experimental brew formula",
+      "Update standalone launcher",
+      "launchers",
+      "publish"
+    ],
+    "github_baseline": "clear",
+    "observation_scope": {
+      "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+      "repository": "VirtusLab/scala-cli"
+    },
+    "observed_at": "2026-08-01T08:48:46Z",
+    "pr": {
+      "draft": false,
+      "from_fork": true,
+      "merged": true,
+      "state": "closed"
+    },
+    "protection_digest": "sha256:374f73c174d50a41f19c7b27611befd3d6a16cc4c116b7f4e4a188a3c1490394",
+    "protection_source": "classic_branch_protection",
+    "required_controls": [
+      {
+        "context": "bloop-memory-footprint",
+        "integration_id": 15368,
+        "source_id": "bloop-memory-footprint"
+      },
+      {
+        "context": "checks",
+        "integration_id": 15368,
+        "source_id": "checks"
+      },
+      {
+        "context": "docs-tests",
+        "integration_id": 15368,
+        "source_id": "docs-tests"
+      },
+      {
+        "context": "format",
+        "integration_id": 15368,
+        "source_id": "format"
+      },
+      {
+        "context": "generate-linux-launcher",
+        "integration_id": 15368,
+        "source_id": "generate-linux-launcher"
+      },
+      {
+        "context": "generate-macos-launcher",
+        "integration_id": 15368,
+        "source_id": "generate-macos-launcher"
+      },
+      {
+        "context": "generate-mostly-static-launcher",
+        "integration_id": 15368,
+        "source_id": "generate-mostly-static-launcher"
+      },
+      {
+        "context": "generate-static-launcher",
+        "integration_id": 15368,
+        "source_id": "generate-static-launcher"
+      },
+      {
+        "context": "generate-windows-launcher",
+        "integration_id": 15368,
+        "source_id": "generate-windows-launcher"
+      },
+      {
+        "context": "jvm-bootstrapped-tests-default",
+        "integration_id": 15368,
+        "source_id": "jvm-bootstrapped-tests-default"
+      },
+      {
+        "context": "jvm-tests-default",
+        "integration_id": 15368,
+        "source_id": "jvm-tests-default"
+      },
+      {
+        "context": "jvm-tests-lts",
+        "integration_id": 15368,
+        "source_id": "jvm-tests-lts"
+      },
+      {
+        "context": "jvm-tests-rc",
+        "integration_id": 15368,
+        "source_id": "jvm-tests-rc"
+      },
+      {
+        "context": "jvm-tests-scala-2-12",
+        "integration_id": 15368,
+        "source_id": "jvm-tests-scala-2-12"
+      },
+      {
+        "context": "jvm-tests-scala-2-13",
+        "integration_id": 15368,
+        "source_id": "jvm-tests-scala-2-13"
+      },
+      {
+        "context": "native-linux-arm64-tests-default",
+        "integration_id": 15368,
+        "source_id": "native-linux-arm64-tests-default"
+      },
+      {
+        "context": "native-linux-arm64-tests-rc",
+        "integration_id": 15368,
+        "source_id": "native-linux-arm64-tests-rc"
+      },
+      {
+        "context": "native-linux-tests-default",
+        "integration_id": 15368,
+        "source_id": "native-linux-tests-default"
+      },
+      {
+        "context": "native-linux-tests-lts",
+        "integration_id": 15368,
+        "source_id": "native-linux-tests-lts"
+      },
+      {
+        "context": "native-linux-tests-rc",
+        "integration_id": 15368,
+        "source_id": "native-linux-tests-rc"
+      },
+      {
+        "context": "native-linux-tests-scala-2-12",
+        "integration_id": 15368,
+        "source_id": "native-linux-tests-scala-2-12"
+      },
+      {
+        "context": "native-linux-tests-scala-2-13",
+        "integration_id": 15368,
+        "source_id": "native-linux-tests-scala-2-13"
+      },
+      {
+        "context": "native-macos-arm64-tests-default",
+        "integration_id": 15368,
+        "source_id": "native-macos-arm64-tests-default"
+      },
+      {
+        "context": "native-macos-arm64-tests-rc",
+        "integration_id": 15368,
+        "source_id": "native-macos-arm64-tests-rc"
+      },
+      {
+        "context": "native-macos-tests-default",
+        "integration_id": 15368,
+        "source_id": "native-macos-tests-default"
+      },
+      {
+        "context": "native-macos-tests-rc",
+        "integration_id": 15368,
+        "source_id": "native-macos-tests-rc"
+      },
+      {
+        "context": "native-mostly-static-tests-default",
+        "integration_id": 15368,
+        "source_id": "native-mostly-static-tests-default"
+      },
+      {
+        "context": "native-mostly-static-tests-rc",
+        "integration_id": 15368,
+        "source_id": "native-mostly-static-tests-rc"
+      },
+      {
+        "context": "native-static-tests-default",
+        "integration_id": 15368,
+        "source_id": "native-static-tests-default"
+      },
+      {
+        "context": "native-static-tests-rc",
+        "integration_id": 15368,
+        "source_id": "native-static-tests-rc"
+      },
+      {
+        "context": "native-windows-tests-default",
+        "integration_id": 15368,
+        "source_id": "native-windows-tests-default"
+      },
+      {
+        "context": "native-windows-tests-lts",
+        "integration_id": 15368,
+        "source_id": "native-windows-tests-lts"
+      },
+      {
+        "context": "native-windows-tests-rc",
+        "integration_id": 15368,
+        "source_id": "native-windows-tests-rc"
+      },
+      {
+        "context": "reference-doc",
+        "integration_id": 15368,
+        "source_id": "reference-doc"
+      },
+      {
+        "context": "test-fish-shell",
+        "integration_id": 15368,
+        "source_id": "test-fish-shell"
+      },
+      {
+        "context": "unit-tests",
+        "integration_id": 15368,
+        "source_id": "unit-tests"
+      }
+    ],
+    "requirements": [
+      {
+        "context": "bloop-memory-footprint",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "checks",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "docs-tests",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "format",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "generate-linux-launcher",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "generate-macos-launcher",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "generate-mostly-static-launcher",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "generate-static-launcher",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "generate-windows-launcher",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "jvm-bootstrapped-tests-default",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "jvm-tests-default",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "jvm-tests-lts",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "jvm-tests-rc",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "jvm-tests-scala-2-12",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "jvm-tests-scala-2-13",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-linux-arm64-tests-default",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-linux-arm64-tests-rc",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-linux-tests-default",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-linux-tests-lts",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-linux-tests-rc",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-linux-tests-scala-2-12",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-linux-tests-scala-2-13",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-macos-arm64-tests-default",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-macos-arm64-tests-rc",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-macos-tests-default",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-macos-tests-rc",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-mostly-static-tests-default",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-mostly-static-tests-rc",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-static-tests-default",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-static-tests-rc",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-windows-tests-default",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-windows-tests-lts",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "native-windows-tests-rc",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "reference-doc",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "test-fish-shell",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      },
+      {
+        "context": "unit-tests",
+        "github_equivalent": "would_pass",
+        "integration_id": 15368,
+        "required_by": [
+          "classic_branch_protection"
+        ],
+        "state": "satisfied"
+      }
+    ],
+    "rules_digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+    "status": "complete",
+    "strict_up_to_date_required": false,
+    "verifier_change": {
+      "analyzed": true,
+      "available": true,
+      "changed": {
+        "policy": [],
+        "scanner_config": [],
+        "test_cases": [
+          "modules/cli/src/test/scala/scala/cli/commands/publish/PublishChecksumTests.scala",
+          "modules/integration/src/test/scala/scala/cli/integration/PublishTestDefinitions.scala"
+        ],
+        "test_harness": [],
+        "workflow": []
+      },
+      "complete": true,
+      "non_independent_sources": [],
+      "non_independent_suites": [],
+      "note": "mechanical determination from changed paths, workflow-run paths, and check-suite ids; no model output participates in any verdict path",
+      "routine_bump_excluded": false,
+      "scope": "changed_workflow_definitions_v0",
+      "self_validating_workflows": [],
+      "subject": {
+        "base_sha": "d381a479115be138c507a79aa2a83c6ba97f77bd",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "pull_request": 4403,
+        "repository": "VirtusLab/scala-cli"
+      },
+      "unchanged_workflow_runs": 1,
+      "verifier_change": false
+    },
+    "waited_seconds": 0.0,
+    "workflow_visibility": {
+      "available": true,
+      "not_started": [],
+      "states": {
+        "action_required": 0,
+        "completed": 1,
+        "pending": 0
+      },
+      "units_total": 1
+    }
+  },
+  "schema_version": "draft-0",
+  "sources": [
+    {
+      "digest": "sha256:fa1b3d0721e537fd488ec7a50c13a3d4a9a8f0c301e29c84b6a4dbc1af2af483",
+      "id": "Publish to SDKMAN",
+      "identity": {
+        "check_run_id": 90804625611,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "Publish to SDKMAN",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804625611 concluded skipped."
+    },
+    {
+      "digest": "sha256:d131354a8983aee994b70c4b0a3bead66e0b577eedc042139ea6d1f4f5ab625a",
+      "id": "Update CentOS packages",
+      "identity": {
+        "check_run_id": 90804626156,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "Update CentOS packages",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804626156 concluded skipped."
+    },
+    {
+      "digest": "sha256:1f7230b9b7835372fa366695c4c5230d92ef3310eaa118b01212231afde13f82",
+      "id": "Update Debian packages",
+      "identity": {
+        "check_run_id": 90804625625,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "Update Debian packages",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804625625 concluded skipped."
+    },
+    {
+      "digest": "sha256:fd44f2ebcbe964db1b8effa8e9e599c67a66848407bc475051a55f31bc9790e8",
+      "id": "Update Windows packages",
+      "identity": {
+        "check_run_id": 90804625968,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "Update Windows packages",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804625968 concluded skipped."
+    },
+    {
+      "digest": "sha256:4144c5a06535b232734ea7019446d73110120c1e0c3b11a535e7bd0c33f8c9cd",
+      "id": "Update installation script",
+      "identity": {
+        "check_run_id": 90804626100,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "Update installation script",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804626100 concluded skipped."
+    },
+    {
+      "digest": "sha256:dfa3329248a2b43e9cafb3b72430495d489f9424a414af478ee4cb51af9436bc",
+      "id": "Update scala-cli brew formula",
+      "identity": {
+        "check_run_id": 90804625683,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "Update scala-cli brew formula",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804625683 concluded skipped."
+    },
+    {
+      "digest": "sha256:c070093bcfec10e9f80f4e22a70c2aff9f1b52431d10a96f24f8063655d79288",
+      "id": "Update scala-cli setup",
+      "identity": {
+        "check_run_id": 90804626223,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "Update scala-cli setup",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804626223 concluded skipped."
+    },
+    {
+      "digest": "sha256:9ac44e90a8eace920ca0924587f3592e129b926e47dec12c4d9ce04954d3a79a",
+      "id": "Update scala-experimental brew formula",
+      "identity": {
+        "check_run_id": 90804625796,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "Update scala-experimental brew formula",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804625796 concluded skipped."
+    },
+    {
+      "digest": "sha256:f39c32fa90ba48112dadfa4de323192f204f2a73370a073757455d68a087c553",
+      "id": "Update standalone launcher",
+      "identity": {
+        "check_run_id": 90804626044,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "Update standalone launcher",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804626044 concluded skipped."
+    },
+    {
+      "digest": "sha256:9ae3d0993a8cbbae2f113091d3974c41df46c737cf114372d86195db3fd5643c",
+      "id": "bloop-memory-footprint",
+      "identity": {
+        "check_run_id": 90785549269,
+        "completed_at": "2026-07-29T14:51:16Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "bloop-memory-footprint",
+        "requirement_identity": {
+          "context": "bloop-memory-footprint",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:51:16Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549269 concluded success."
+    },
+    {
+      "digest": "sha256:7b054182350855e9910781d9753d1761565dcc805398a833637ab4e8ade5c106",
+      "id": "branch.rules",
+      "kind": "branch_rules_summary",
+      "required": false,
+      "signal_source": "github_rules_api",
+      "status": "success",
+      "summary": "Active branch rules: none; 0 required status check(s)."
+    },
+    {
+      "digest": "sha256:de570eef35fdaab43377a81dd503618076c73c8b6de163b8bda7f9c69288f2a2",
+      "id": "changes",
+      "identity": {
+        "check_run_id": 90785561847,
+        "completed_at": "2026-07-29T14:35:27Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "changes",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:35:27Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785561847 concluded success."
+    },
+    {
+      "digest": "sha256:bfcfa045316c627f7859f050fb2c99961bd36b5b86d4324a62fb795fe3069cae",
+      "id": "checks",
+      "identity": {
+        "check_run_id": 90785549211,
+        "completed_at": "2026-07-29T14:46:59Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "checks",
+        "requirement_identity": {
+          "context": "checks",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:46:59Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549211 concluded success."
+    },
+    {
+      "digest": "sha256:d0611cdf53bcde65f2a5e0694e26ea7fe539dd18093604614a9d1ab4c1fedafd",
+      "id": "docs-tests",
+      "identity": {
+        "check_run_id": 90785549539,
+        "completed_at": "2026-07-29T15:26:21Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "docs-tests",
+        "requirement_identity": {
+          "context": "docs-tests",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:26:21Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549539 concluded success."
+    },
+    {
+      "digest": "sha256:6a3c0494fba228ff6d9257ba709ddabf6b7aec524b3d2819e211ce3cd0ccea49",
+      "id": "format",
+      "identity": {
+        "check_run_id": 90785565311,
+        "completed_at": "2026-07-29T14:36:07Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "format",
+        "requirement_identity": {
+          "context": "format",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:36:07Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785565311 concluded success."
+    },
+    {
+      "digest": "sha256:719d4f1ddf263cf65015a9bc815c45f5fc709b103d272054052bcf54316091a3",
+      "id": "generate-linux-arm64-native-launcher",
+      "identity": {
+        "check_run_id": 90785567341,
+        "completed_at": "2026-07-29T14:42:13Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "generate-linux-arm64-native-launcher",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:42:13Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785567341 concluded success."
+    },
+    {
+      "digest": "sha256:d55e4c856e22a533e8b013dfcf352c0c9dcfa6828fce8be4daddae242a961195",
+      "id": "generate-linux-launcher",
+      "identity": {
+        "check_run_id": 90785568175,
+        "completed_at": "2026-07-29T14:45:16Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "generate-linux-launcher",
+        "requirement_identity": {
+          "context": "generate-linux-launcher",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:45:16Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785568175 concluded success."
+    },
+    {
+      "digest": "sha256:bef254adf5119fea2f2bce7a3c81ae8e7d1d9f50ecef47bb1ecc42bab6c27fd5",
+      "id": "generate-macos-arm64-launcher",
+      "identity": {
+        "check_run_id": 90785549391,
+        "completed_at": "2026-07-29T14:53:07Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "generate-macos-arm64-launcher",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:53:07Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549391 concluded success."
+    },
+    {
+      "digest": "sha256:b7fa665b3ed7550461018b4040fe4acda063b24797c4c26a3eca48cfd2e1a682",
+      "id": "generate-macos-launcher",
+      "identity": {
+        "check_run_id": 90785566029,
+        "completed_at": "2026-07-29T14:52:10Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "generate-macos-launcher",
+        "requirement_identity": {
+          "context": "generate-macos-launcher",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:52:10Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785566029 concluded success."
+    },
+    {
+      "digest": "sha256:d365a9c42fdd2c9bb016d22d1d4d2dd14a51a4cd18337d7dce88b1536bf2db62",
+      "id": "generate-mostly-static-launcher",
+      "identity": {
+        "check_run_id": 90785549279,
+        "completed_at": "2026-07-29T14:43:16Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "generate-mostly-static-launcher",
+        "requirement_identity": {
+          "context": "generate-mostly-static-launcher",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:43:16Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549279 concluded success."
+    },
+    {
+      "digest": "sha256:ac7355193653fcef6e7a04e8c65ef7a9d4f302159970d96b07265316b65a1325",
+      "id": "generate-static-launcher",
+      "identity": {
+        "check_run_id": 90785549354,
+        "completed_at": "2026-07-29T14:43:57Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "generate-static-launcher",
+        "requirement_identity": {
+          "context": "generate-static-launcher",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:43:57Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549354 concluded success."
+    },
+    {
+      "digest": "sha256:559acffe2c12f0e473be707ba3248d08df02f2bc37b0c0888228d715d3f958fd",
+      "id": "generate-windows-launcher",
+      "identity": {
+        "check_run_id": 90785549229,
+        "completed_at": "2026-07-29T14:47:25Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "generate-windows-launcher",
+        "requirement_identity": {
+          "context": "generate-windows-launcher",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:47:25Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549229 concluded success."
+    },
+    {
+      "digest": "sha256:bd760889b00d959a6d97ead9940cce9341e258b6faa97793c859f1e7f5cd515f",
+      "id": "jvm-bootstrapped-tests-default",
+      "identity": {
+        "check_run_id": 90785563913,
+        "completed_at": "2026-07-29T16:29:52Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "jvm-bootstrapped-tests-default",
+        "requirement_identity": {
+          "context": "jvm-bootstrapped-tests-default",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T16:29:52Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785563913 concluded success."
+    },
+    {
+      "digest": "sha256:c8bc81fc6dee516937df281c95aea4da2df66fcdaac787bf0c6755a01f2bbb7f",
+      "id": "jvm-tests-default",
+      "identity": {
+        "check_run_id": 90785571180,
+        "completed_at": "2026-07-29T16:46:16Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "jvm-tests-default",
+        "requirement_identity": {
+          "context": "jvm-tests-default",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T16:46:16Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785571180 concluded success."
+    },
+    {
+      "digest": "sha256:3d9f27f06c9728c9b3c137ed064367b1d81259fab7c67b95a6c7bf36d4346ea4",
+      "id": "jvm-tests-lts",
+      "identity": {
+        "check_run_id": 90785549410,
+        "completed_at": "2026-07-29T16:38:11Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "jvm-tests-lts",
+        "requirement_identity": {
+          "context": "jvm-tests-lts",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T16:38:11Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549410 concluded success."
+    },
+    {
+      "digest": "sha256:f062eff36eac0f961500964da01f9c9cc4291a4f068f9d5aee661e57f1ad8cf8",
+      "id": "jvm-tests-rc",
+      "identity": {
+        "check_run_id": 90785549252,
+        "completed_at": "2026-07-29T15:51:04Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "jvm-tests-rc",
+        "requirement_identity": {
+          "context": "jvm-tests-rc",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:51:04Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549252 concluded success."
+    },
+    {
+      "digest": "sha256:602f3e2b3795075c8b1be68d3e6430c3a48b7ed70f05098291538af7d4686c9d",
+      "id": "jvm-tests-scala-2-12",
+      "identity": {
+        "check_run_id": 90785548607,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "jvm-tests-scala-2-12",
+        "requirement_identity": {
+          "context": "jvm-tests-scala-2-12",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785548607 concluded success."
+    },
+    {
+      "digest": "sha256:6b611f9b14a6b892936c026e9238a8234cd47077a0bd0cea5d5ba9b9b93b0eae",
+      "id": "jvm-tests-scala-2-13",
+      "identity": {
+        "check_run_id": 90785549027,
+        "completed_at": "2026-07-29T16:16:19Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "jvm-tests-scala-2-13",
+        "requirement_identity": {
+          "context": "jvm-tests-scala-2-13",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T16:16:19Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549027 concluded success."
+    },
+    {
+      "digest": "sha256:54e06dc0a80fda1aa6d7c505a057c42d4b3c9514f7221d08a44491315261f517",
+      "id": "launchers",
+      "identity": {
+        "check_run_id": 90804625892,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "launchers",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804625892 concluded skipped."
+    },
+    {
+      "digest": "sha256:0bc767ac149bb6ad801fe03fa2bf842060a4025b29db5af7f2b70fd1937461e7",
+      "id": "native-linux-arm64-tests-default",
+      "identity": {
+        "check_run_id": 90785549636,
+        "completed_at": "2026-07-29T15:44:38Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-linux-arm64-tests-default",
+        "requirement_identity": {
+          "context": "native-linux-arm64-tests-default",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:44:38Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549636 concluded success."
+    },
+    {
+      "digest": "sha256:3e285de442ca457ed3b91d57bac7912e8ef9c8f5644a2576307b097d0279c764",
+      "id": "native-linux-arm64-tests-rc",
+      "identity": {
+        "check_run_id": 90785549760,
+        "completed_at": "2026-07-29T15:25:33Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-linux-arm64-tests-rc",
+        "requirement_identity": {
+          "context": "native-linux-arm64-tests-rc",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:25:33Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549760 concluded success."
+    },
+    {
+      "digest": "sha256:ce97548159e88ac2f828c6a164517d3b92070b164f578bab0775de80b5835f35",
+      "id": "native-linux-tests-default",
+      "identity": {
+        "check_run_id": 90785549584,
+        "completed_at": "2026-07-29T15:53:13Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-linux-tests-default",
+        "requirement_identity": {
+          "context": "native-linux-tests-default",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:53:13Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549584 concluded success."
+    },
+    {
+      "digest": "sha256:e9a8a1969e1950161d99872da175a214e44c97498651e14da64fd37e96f4a7f7",
+      "id": "native-linux-tests-lts",
+      "identity": {
+        "check_run_id": 90785549716,
+        "completed_at": "2026-07-29T15:37:05Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-linux-tests-lts",
+        "requirement_identity": {
+          "context": "native-linux-tests-lts",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:37:05Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549716 concluded success."
+    },
+    {
+      "digest": "sha256:0b6cfc1385cc5dd4693bb1583a0fc71cbffc4b4f270cba2dc7f66da8cdecc829",
+      "id": "native-linux-tests-rc",
+      "identity": {
+        "check_run_id": 90785549509,
+        "completed_at": "2026-07-29T15:30:37Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-linux-tests-rc",
+        "requirement_identity": {
+          "context": "native-linux-tests-rc",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:30:37Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549509 concluded success."
+    },
+    {
+      "digest": "sha256:12f94be0f8699fd57a923884401459749c0fec2182ca26459b2f75ef6a752fef",
+      "id": "native-linux-tests-scala-2-12",
+      "identity": {
+        "check_run_id": 90785549806,
+        "completed_at": "2026-07-29T15:39:45Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-linux-tests-scala-2-12",
+        "requirement_identity": {
+          "context": "native-linux-tests-scala-2-12",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:39:45Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549806 concluded success."
+    },
+    {
+      "digest": "sha256:451c8f5227ffc8708fe144f99ae4a1b0edca5ce90d97072039fda9abf3ea26e0",
+      "id": "native-linux-tests-scala-2-13",
+      "identity": {
+        "check_run_id": 90785549419,
+        "completed_at": "2026-07-29T15:36:06Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-linux-tests-scala-2-13",
+        "requirement_identity": {
+          "context": "native-linux-tests-scala-2-13",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:36:06Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549419 concluded success."
+    },
+    {
+      "digest": "sha256:4a3e66b8d05e01001dafb789d5ee9a8322ac32a48ce7044e0d0ccc90748d3f2c",
+      "id": "native-macos-arm64-tests-default",
+      "identity": {
+        "check_run_id": 90785549515,
+        "completed_at": "2026-07-29T15:03:50Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-macos-arm64-tests-default",
+        "requirement_identity": {
+          "context": "native-macos-arm64-tests-default",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:03:50Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549515 concluded success."
+    },
+    {
+      "digest": "sha256:6afc777f622ee194b8b7401e645e539a0b97dc3966a32b9e56229da51b6b05c6",
+      "id": "native-macos-arm64-tests-rc",
+      "identity": {
+        "check_run_id": 90785549556,
+        "completed_at": "2026-07-29T14:58:12Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-macos-arm64-tests-rc",
+        "requirement_identity": {
+          "context": "native-macos-arm64-tests-rc",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:58:12Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549556 concluded success."
+    },
+    {
+      "digest": "sha256:cde76ae17dd8506d4ef84de54fad6910fa6323bc118c4b7d816da98e331d38de",
+      "id": "native-macos-tests-default",
+      "identity": {
+        "check_run_id": 90785549666,
+        "completed_at": "2026-07-29T15:03:02Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-macos-tests-default",
+        "requirement_identity": {
+          "context": "native-macos-tests-default",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:03:02Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549666 concluded success."
+    },
+    {
+      "digest": "sha256:e2cf2f6b762da74f83700a5c7e0ab6859257c7a63df08eebce280c5c5718a311",
+      "id": "native-macos-tests-rc",
+      "identity": {
+        "check_run_id": 90785549452,
+        "completed_at": "2026-07-29T15:00:02Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-macos-tests-rc",
+        "requirement_identity": {
+          "context": "native-macos-tests-rc",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:00:02Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549452 concluded success."
+    },
+    {
+      "digest": "sha256:2dfb8d096108f4c9069e8d7a0c9b3652978b8b5322e589c84e925eaaf4315ca3",
+      "id": "native-mostly-static-tests-default",
+      "identity": {
+        "check_run_id": 90785549420,
+        "completed_at": "2026-07-29T15:56:51Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-mostly-static-tests-default",
+        "requirement_identity": {
+          "context": "native-mostly-static-tests-default",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:56:51Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549420 concluded success."
+    },
+    {
+      "digest": "sha256:082fef62328b02cc2dd1c46ec8bba3584b762be1c590e144af6a6cce27869a8e",
+      "id": "native-mostly-static-tests-rc",
+      "identity": {
+        "check_run_id": 90785549298,
+        "completed_at": "2026-07-29T15:36:52Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-mostly-static-tests-rc",
+        "requirement_identity": {
+          "context": "native-mostly-static-tests-rc",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:36:52Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549298 concluded success."
+    },
+    {
+      "digest": "sha256:12310f93a734b6edb7caab11807b33520c4de66b96b39a0461bcc1cc87c81113",
+      "id": "native-static-tests-default",
+      "identity": {
+        "check_run_id": 90785549505,
+        "completed_at": "2026-07-29T16:03:43Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-static-tests-default",
+        "requirement_identity": {
+          "context": "native-static-tests-default",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T16:03:43Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549505 concluded success."
+    },
+    {
+      "digest": "sha256:d3458d4fd4b6ef1f32ab05ede84a505f9f7ab999871c0f15fdba0a91cee13f18",
+      "id": "native-static-tests-rc",
+      "identity": {
+        "check_run_id": 90785549498,
+        "completed_at": "2026-07-29T15:38:01Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-static-tests-rc",
+        "requirement_identity": {
+          "context": "native-static-tests-rc",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:38:01Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549498 concluded success."
+    },
+    {
+      "digest": "sha256:744cb8b7e139b6c9ae96d41d8a149e86368192a8dda7ef0bf1c8393099c1cb6f",
+      "id": "native-windows-tests-default",
+      "identity": {
+        "check_run_id": 90785549353,
+        "completed_at": "2026-07-29T16:05:38Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-windows-tests-default",
+        "requirement_identity": {
+          "context": "native-windows-tests-default",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T16:05:38Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549353 concluded success."
+    },
+    {
+      "digest": "sha256:264be49e55d73ee48814cfdb4a6bea1e8f2e64c9fb0e3945c1179ea58bedf2b6",
+      "id": "native-windows-tests-lts",
+      "identity": {
+        "check_run_id": 90785549406,
+        "completed_at": "2026-07-29T15:59:55Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-windows-tests-lts",
+        "requirement_identity": {
+          "context": "native-windows-tests-lts",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:59:55Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549406 concluded success."
+    },
+    {
+      "digest": "sha256:42f7e2be3ac9bc1506c9b253aeac4fc2bc455837ea829494f101c3edf0993d45",
+      "id": "native-windows-tests-rc",
+      "identity": {
+        "check_run_id": 90785549673,
+        "completed_at": "2026-07-29T15:55:07Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "native-windows-tests-rc",
+        "requirement_identity": {
+          "context": "native-windows-tests-rc",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T15:55:07Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549673 concluded success."
+    },
+    {
+      "digest": "sha256:fd0537e10fb7b2d674b40bd5c28821e69a33a5b3b75669f2526ee9eb564232a8",
+      "id": "publish",
+      "identity": {
+        "check_run_id": 90804625594,
+        "completed_at": "2026-07-30T07:11:43Z",
+        "conclusion": "skipped",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "publish",
+        "run_status": "completed",
+        "status": "skipped"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-30T07:11:43Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "skipped",
+      "summary": "GitHub check run 90804625594 concluded skipped."
+    },
+    {
+      "digest": "sha256:e75ed9d92c67f9a945ec28c97048f22087f3733e9116c69111b3e7ba3284a499",
+      "id": "reference-doc",
+      "identity": {
+        "check_run_id": 90785549431,
+        "completed_at": "2026-07-29T14:37:53Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "reference-doc",
+        "requirement_identity": {
+          "context": "reference-doc",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:37:53Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549431 concluded success."
+    },
+    {
+      "digest": "sha256:812a6f5f689e8003f621b937cf42b0c92783fcbf297c2b03f38921c450eb44eb",
+      "id": "test-fish-shell",
+      "identity": {
+        "check_run_id": 90785549346,
+        "completed_at": "2026-07-29T14:40:55Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "test-fish-shell",
+        "requirement_identity": {
+          "context": "test-fish-shell",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:40:55Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549346 concluded success."
+    },
+    {
+      "digest": "sha256:7f118a38858911f78b2afdf0da5b6344db01915e86f066897fb56306c3f5946d",
+      "id": "test-hypothetical-sbt-export",
+      "identity": {
+        "check_run_id": 90785549348,
+        "completed_at": "2026-07-29T14:36:02Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "test-hypothetical-sbt-export",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:36:02Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549348 concluded success."
+    },
+    {
+      "digest": "sha256:2dd009c42663d316ae0b654b421e83f8fdf913790fefd504bf6ee8b17e53bc4a",
+      "id": "unit-tests",
+      "identity": {
+        "check_run_id": 90785549131,
+        "completed_at": "2026-07-29T14:49:30Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "unit-tests",
+        "requirement_identity": {
+          "context": "unit-tests",
+          "integration_id": 15368
+        },
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:49:30Z",
+      "required": true,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785549131 concluded success."
+    },
+    {
+      "digest": "sha256:6eab63cc1068774b1c2f7ff922cea6430eaec0fcb5567550a990a230701f74a4",
+      "id": "vc-redist",
+      "identity": {
+        "check_run_id": 90785567136,
+        "completed_at": "2026-07-29T14:37:17Z",
+        "conclusion": "success",
+        "head_sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6",
+        "name": "vc-redist",
+        "run_status": "completed",
+        "status": "success"
+      },
+      "kind": "github_check",
+      "observed_at": "2026-07-29T14:37:17Z",
+      "required": false,
+      "signal_source": "github_check_runs_api",
+      "status": "success",
+      "summary": "GitHub check run 90785567136 concluded success."
+    }
+  ],
+  "subject": {
+    "pull_request": 4403,
+    "ref": "refs/pull/4403/head",
+    "repository": "VirtusLab/scala-cli",
+    "sha": "65fca6bb151716bd3fde878535cab5df4b5a4cf6"
+  }
+}

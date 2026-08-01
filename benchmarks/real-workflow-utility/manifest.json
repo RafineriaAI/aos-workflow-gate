@@ -1,0 +1,170 @@
+{
+  "schema_version": "aos-real-workflow-utility/v0",
+  "study_id": "aos-real-workflow-utility-2026-08-01",
+  "preregistered_at": "2026-08-01T08:04:33Z",
+  "data_cutoff": "2026-08-01T08:04:33Z",
+  "status": "PREREGISTERED",
+  "claim_boundary": "Read-only exploratory benchmark over public pull-request metadata and exact-head workflow observations. It may measure first-run completion, diagnostic specificity, actionable-message coverage, observed GitHub contrast, and historical-review concordance. Without enrolled users it cannot establish actual decision change, alert acceptance, retention, willingness to pay, defect prevention, or production readiness.",
+  "sampling": {
+    "unit": "repository_workflow",
+    "target_cases": 12,
+    "matched_pairs": 6,
+    "polish_cases": 6,
+    "global_cases": 6,
+    "maximum_cases_per_repository": 1,
+    "paired_attrition": "If either repository in a pair has no eligible PR, exclude the whole pair. Do not substitute after observing AOS output.",
+    "minimum_completed_pairs": 4,
+    "pr_selection": [
+      "Take the most recently updated open, non-draft pull request whose author is not classified as a bot and whose exact head SHA has at least one visible pull-request workflow run.",
+      "If no open PR is eligible, take the most recently merged non-bot pull request since 2026-05-01 with an exact head SHA and at least one visible pull-request workflow run.",
+      "Inspect at most the first 20 candidates in GitHub updated-descending order.",
+      "Do not filter on AOS verdict, check conclusion, review outcome, or changed paths."
+    ],
+    "bot_login_fragments": [
+      "[bot]",
+      "dependabot",
+      "renovate",
+      "scala-steward",
+      "softwaremill-ci",
+      "github-actions"
+    ]
+  },
+  "cohorts": {
+    "polish_definition": "Repository maintained by an organization whose official material identifies a Polish registered office, headquarters, or founding location. Individual nationality and comment language are not used.",
+    "pairs": [
+      {
+        "id": "jvm-event-platform",
+        "polish": {
+          "repository": "allegro/hermes",
+          "affiliation_source": "https://allegro.pl/regulamin/en"
+        },
+        "global": {
+          "repository": "apache/kafka"
+        }
+      },
+      {
+        "id": "scala-http-api",
+        "polish": {
+          "repository": "softwaremill/tapir",
+          "affiliation_source": "https://softwaremill.com/"
+        },
+        "global": {
+          "repository": "scala/scala3"
+        }
+      },
+      {
+        "id": "python-web-platform",
+        "polish": {
+          "repository": "saleor/saleor",
+          "affiliation_source": "https://saleor.io/legal/privacy"
+        },
+        "global": {
+          "repository": "django/django"
+        }
+      },
+      {
+        "id": "scala-build-tooling",
+        "polish": {
+          "repository": "VirtusLab/scala-cli",
+          "affiliation_source": "https://careers.virtuslab.com/faq/"
+        },
+        "global": {
+          "repository": "sbt/sbt"
+        }
+      },
+      {
+        "id": "python-ai-framework",
+        "polish": {
+          "repository": "deepsense-ai/ragbits",
+          "affiliation_source": "https://deepsense.ai/contact-us/"
+        },
+        "global": {
+          "repository": "run-llama/llama_index"
+        }
+      },
+      {
+        "id": "typescript-ui-library",
+        "polish": {
+          "repository": "callstack/react-native-paper",
+          "affiliation_source": "https://www.callstack.com/about-us"
+        },
+        "global": {
+          "repository": "mui/material-ui"
+        }
+      }
+    ]
+  },
+  "execution": {
+    "mode": "advisory",
+    "repository_modification": "forbidden",
+    "code_execution_from_subject_repositories": "forbidden",
+    "code_upload": "none",
+    "exact_head_sha_required": true,
+    "maximum_runtime_seconds_per_case": 300,
+    "retain_raw_comment_text": false,
+    "retain": [
+      "public URLs",
+      "head SHA",
+      "workflow and check identities",
+      "normalized state",
+      "AOS decision record and digests",
+      "review classification and source digest"
+    ]
+  },
+  "comparators": [
+    {
+      "id": "github-native",
+      "definition": "Observed GitHub merge/check baseline for the exact head SHA."
+    },
+    {
+      "id": "required-checks-only",
+      "definition": "Decision from required check state without AOS policy context or replay evidence."
+    },
+    {
+      "id": "all-non-success-naive",
+      "definition": "WARN when any visible check is not success, without requiredness or skip semantics."
+    }
+  ],
+  "metrics": {
+    "first_run_completion_rate": "case returns a bounded diagnosis and evidence within 300 seconds",
+    "exact_sha_binding_rate": "case binds observations to the selected PR head SHA",
+    "actionable_message_rate": "each non-PASS result contains Reason, Impact, named Target, one executable Next, and Severity",
+    "diagnosis_specificity_rate": "primary problem names a concrete check, file, workflow, or configuration",
+    "incremental_finding_rate": "AOS names a material gap absent from the frozen GitHub-native and required-checks-only baselines",
+    "business_relevance_proxy_rate": "independent public review or maintainer action aligns with security, reliability, data-loss, API-contract, release, or required-control risk",
+    "historical_action_alignment_rate": "AOS primary reason directly or strongly aligns with an independently observed human review action",
+    "noise_proxy_rate": "evidence shows the warning was expected, irrelevant to the change, already covered, or required no maintainer decision",
+    "time_to_diagnosis_seconds": "wall-clock time from command start to complete diagnosis",
+    "github_contrast_rate": "AOS and GitHub-native baseline differ for an explained, evidence-backed reason"
+  },
+  "unmeasured_without_users": [
+    "actual_decision_change_rate",
+    "alert_acceptance_rate",
+    "retention",
+    "willingness_to_pay",
+    "incident_reduction",
+    "time_saved"
+  ],
+  "adjudication": {
+    "review_outcome_before_aos": true,
+    "alignment_classes": [
+      "direct",
+      "strong_indirect",
+      "same_surface",
+      "none",
+      "contradictory",
+      "insufficient"
+    ],
+    "business_relevance_classes": [
+      "material",
+      "minor",
+      "none",
+      "insufficient"
+    ],
+    "silence_is_noise": false,
+    "merged_is_acceptance": false,
+    "right_censor_open_cases": true
+  },
+  "stopping_rule": "Evaluate every eligible matched pair. Do not stop after favorable results. Fewer than four completed pairs yields INSUFFICIENT_SAMPLE.",
+  "verdict_rule": "This exploratory benchmark may yield WORKFLOW_UTILITY_SIGNAL, NO_CLEAR_WORKFLOW_UTILITY, or INSUFFICIENT_SAMPLE. It cannot yield PRODUCT_USEFUL, production readiness, or a commercial GO."
+}

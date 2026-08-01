@@ -1,0 +1,70 @@
+WARN  Gate WARN: the policy requires nothing, so nothing can block; 1 warning(s).
+record: benchmarks\real-workflow-utility\cases\pl-softwaremill-tapir-5442\gate-decision.json
+Merge protection: 0 required status check(s) enforced by none on 'master'.
+GitHub baseline (status checks only): no_required_checks.
+Effect: nothing in the branch rules blocks this merge on status checks; the record is evidence, not enforcement.
+Fork PR: some checks may not run for forks by repository policy.
+Counterfactual: would BLOCK if required: Publish release, auto-merge-dependabot, auto-merge-github-actions, ci (2.13, JVM, 21), ci (3, JVM, 21), label
+Note: this check is a read-only observer of status-check rules and not a full merge-readiness assessment; reviews and other rule types are summarized in 'branch.rules' but not evaluated, and rule bypass actors are not observable from the public API.
+
+## AOS Workflow Gate: WARN
+
+**Problem:** GitHub has no required status checks for this branch, so green checks do not enforce a merge gate.
+**Why it matters:** Visible green checks do not guarantee that any control must run before merge.
+**Affected area:** GitHub branch requirements
+**Severity:** WARN
+**Next step:** configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+**Decision contrast:** GitHub has no required status-check gate for this branch; AOS records that coverage fact separately.
+**Effect:** advisory only; WARN/BLOCK is reported but does not fail this job
+
+**Signals:** 0 required (0 successful); 17 other observation(s)
+**Scope:** 0 required check(s) plus recorded workflow signals on softwaremill/tapir@150d73d02077; not full merge-readiness
+**Freshness:** observed 2026-08-01T08:48:18Z; collection complete
+
+### Technical evidence
+
+| Field | Value |
+| --- | --- |
+| Repository | softwaremill/tapir |
+| Ref | `refs/pull/5442/head` |
+| Commit | `150d73d020779a01506df30c1b8c7f5fbf597113` |
+| Pull request | #5442 |
+| Policy | `collected-advisory` (advisory) |
+| Policy digest | `sha256:06f9ca7b55f90ac157a2a5f656135f6a5325cc18894dc41cda9b2224502c1bc9` |
+| Input bundle digest | `sha256:8ffa183842c6b18ef46f4110d4b095e5ad900b617cc46f82d8a328ff2b6b3f8b` |
+| Record digest | `sha256:168d493d73a6ad509b3eb51e5a5ecdc52770cfb8fc0b81644317e2883c98a2bd` |
+| Record self-check | OK |
+| Verification status | UNSIGNED\_NOT\_OFFICIAL |
+
+### Top gaps
+
+- WARN `no_required_sources` -: the policy requires nothing, so no missing or failed check can make this gate BLOCK - the record is evidence, not enforcement
+  - Hint: configure at least one required status check in GitHub, or pass required-checks explicitly, then re-run AOS
+
+### Inputs
+
+| Id | Kind | Required | Status |
+| --- | --- | --- | --- |
+| Publish release | github\_check | no | skipped |
+| auto-merge-dependabot | github\_check | no | skipped |
+| auto-merge-github-actions | github\_check | no | skipped |
+| branch.rules | branch\_rules\_summary | no | success |
+| ci (2.12, JS, 11) | github\_check | no | success |
+| ci (2.12, JVM, 11) | github\_check | no | success |
+| ci (2.12, Native, 11) | github\_check | no | success |
+| ci (2.13, JS, 11) | github\_check | no | success |
+| ci (2.13, JVM, 11) | github\_check | no | success |
+| ci (2.13, JVM, 21) | github\_check | no | failure |
+| ci (2.13, Native, 11) | github\_check | no | success |
+| ci (3, JS, 11) | github\_check | no | success |
+| ci (3, JVM, 11) | github\_check | no | success |
+| ci (3, JVM, 21) | github\_check | no | failure |
+| ci (3, Native, 11) | github\_check | no | success |
+| label | github\_check | no | skipped |
+| mima / mima | github\_check | no | success |
+
+### Coverage
+
+- Required sources: 0 of 17
+- Decision gap: no source is required, so a missing or failed check cannot make this gate BLOCK. The record is evidence, not enforcement.
+- Suggestion: start with your detected checks, then trim: `required-checks: "Publish release, auto-merge-dependabot, auto-merge-github-actions, ci (2.12, JS, 11), ci (2.12, JVM, 11)"`
